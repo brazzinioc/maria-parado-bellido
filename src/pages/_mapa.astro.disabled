@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InteractiveMap from '../components/InteractiveMap';
+import { fetchTours, fetchFestivities } from '../lib/api';
+
+const tours = await fetchTours();
+const festivities = await fetchFestivities();
+
+const allMarkers = [
+  ...tours.flatMap((tour) =>
+    tour.locations.map((loc) => ({
+      id: `tour-${tour.id}-${loc.name}`,
+      title: `Tour: ${tour.title}`,
+      type: 'tour' as const,
+      slug: tour.slug,
+      image: tour.images[0],
+      ...loc,
+    }))
+  ),
+  ...festivities.map((fest) => ({
+    id: `fest-${fest.id}`,
+    title: `Festividad: ${fest.name}`,
+    type: 'festivity' as const,
+    slug: fest.slug,
+    image: fest.images[0],
+    ...fest.place,
+  })),
+];
+---
+
+<BaseLayout
+  title="Mapa Interactivo de María Parado de Bellido"
+  description="Explora el mapa interactivo de María Parado de Bellido con ubicaciones de tours, festividades y puntos de interés turístico en Ayacucho."
+  image="/images/hero-map.jpg"
+>
+  <div class="h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-white shadow-md py-6 z-10">
+      <div class="container-custom">
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-indigo mb-2">
+          Mapa Interactivo
+        </h1>
+        <p class="text-gray-600">
+          Explora tours, festividades y lugares de interés en nuestro distrito
+        </p>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="flex-1 relative">
+      <InteractiveMap
+        client:load
+        markers={allMarkers}
+        center={[-13.31, -74.21]}
+        zoom={13}
+        className="w-full h-full"
+      />
+
+      <!-- Legend -->
+      <div class="absolute bottom-6 left-6 bg-white rounded-lg shadow-xl p-4 max-w-xs z-[1000]">
+        <h3 class="font-heading font-semibold text-sm text-gray-800 mb-3">Leyenda</h3>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-indigo rounded-full"></div>
+            <span class="text-xs text-gray-700">Tours</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-terracota rounded-full"></div>
+            <span class="text-xs text-gray-700">Festividades</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-mostaza rounded-full"></div>
+            <span class="text-xs text-gray-700">Lugares</span>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <p class="text-xs text-gray-600">
+            Haz clic en los marcadores para ver más detalles
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

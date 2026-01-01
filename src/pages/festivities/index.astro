@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import FestivityCard from "../../components/FestivityCard.astro";
+import { fetchFestivities } from "../../lib/api";
+
+const festivities = await fetchFestivities();
+
+// Sort by date
+const sortedFestivities = [...festivities].sort(
+  (a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+);
+---
+
+<BaseLayout
+  title="Festividades y Celebraciones Tradicionales"
+  description="Calendario de festividades y fiestas costumbristas en María Parado de Bellido, Ayacucho. Descubre nuestras celebraciones patronales, cargontes y tradiciones andinas."
+  image="/images/hero-festivities.webp"
+>
+  <Hero
+    title="Festividades y Celebraciones"
+    subtitle="La fe y la tradición se encuentran en nuestras fiestas"
+    image="/images/hero-festivities.webp"
+    imageAlt="Festividades tradicionales en María Parado de Bellido"
+    height="medium"
+  />
+
+  <section class="container-custom py-16 md:py-20">
+    <div class="max-w-4xl mx-auto text-center reveal mb-12">
+      <h2 class="section-heading">Calendario Festivo</h2>
+      <p class="text-evocative mb-4">
+        Las festividades de María Parado de Bellido son expresiones vivas de
+        nuestra fe católica entrelazada con creencias ancestrales andinas. Cada
+        celebración es organizada por los cargontes, familias que con devoción y
+        sacrificio asumen la responsabilidad de honrar a nuestros santos
+        patronos.
+      </p>
+      <p class="text-evocative">
+        Procesiones, danzas tradicionales, misas solemnes y comida comunitaria
+        se unen en una explosión de color, música y espiritualidad que convoca a
+        toda la comunidad.
+      </p>
+    </div>
+
+    {
+      sortedFestivities.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedFestivities.map((festivity) => (
+            <div class="reveal">
+              <FestivityCard festivity={festivity} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-gray-600 mb-4">
+            No hay festividades programadas en este momento. Consulta
+            próximamente o contáctanos para más información.
+          </p>
+          <a href="/contact" class="btn-primary">
+            Contáctanos
+          </a>
+        </div>
+      )
+    }
+  </section>
+
+  <section
+    class="bg-gradient-to-br from-indigo to-indigo-dark text-white py-16 md:py-20 pattern-overlay"
+  >
+    <div class="container-custom">
+      <div class="max-w-4xl mx-auto text-center reveal">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">
+          El Sistema de Cargontes
+        </h2>
+        <p class="text-lg mb-6 text-white/90 leading-relaxed">
+          Los cargontes son el corazón de nuestras festividades. Familias
+          enteras asumen el cargo de organizar las celebraciones: financian la
+          banda de música, preparan la comida para cientos de personas, adornan
+          la iglesia y coordinan las procesiones. Es un acto de fe, generosidad
+          y servicio comunitario que fortalece nuestros lazos sociales y
+          espirituales.
+        </p>
+        <p class="text-lg text-white/90">
+          Ser cargonte es un honor que se transmite con orgullo y que deja una
+          huella imborrable en la memoria colectiva del distrito.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

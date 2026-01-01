@@ -1,0 +1,178 @@
+---
+/**
+ * Pompones.astro
+ *
+ * Pompones decorativos flotantes para esquinas y posiciones especificas.
+ * Componente simplificado para decoraciones puntuales (no guirnaldas).
+ *
+ * CONTEXTO CULTURAL:
+ * Los pompones de lana son omnipresentes en las festividades ayacuchanas.
+ * Adornan sombreros de bailarines, altares de iglesias, carros alegoricos,
+ * y cualquier celebracion importante. Su colorido vibrante refleja
+ * la alegria y vitalidad de la cultura andina.
+ *
+ * USO RECOMENDADO:
+ * - Decoracion de esquinas de tarjetas
+ * - Acentos visuales en secciones
+ * - Elementos decorativos en heroes y banners
+ */
+
+interface Props {
+  /** Posicion del grupo de pompones */
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';
+  /** Tamanio del grupo */
+  size?: 'small' | 'medium' | 'large';
+  /** Activar animacion de flotacion */
+  animated?: boolean;
+  /** Clase CSS adicional */
+  className?: string;
+  /** ID unico */
+  uniqueId?: string;
+}
+
+const {
+  position = 'top-right',
+  size = 'medium',
+  animated = true,
+  className = '',
+  uniqueId = 'pmp'
+} = Astro.props;
+
+// Posiciones
+const positionClasses = {
+  'top-left': 'top-0 left-0 -translate-x-1/4 -translate-y-1/4',
+  'top-right': 'top-0 right-0 translate-x-1/4 -translate-y-1/4',
+  'bottom-left': 'bottom-0 left-0 -translate-x-1/4 translate-y-1/4',
+  'bottom-right': 'bottom-0 right-0 translate-x-1/4 translate-y-1/4',
+  'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+};
+
+// Tamanios
+const sizeConfig = {
+  small: { container: 'w-28 h-28', viewBox: '0 0 150 150' },
+  medium: { container: 'w-40 h-40', viewBox: '0 0 200 200' },
+  large: { container: 'w-56 h-56', viewBox: '0 0 250 250' }
+};
+
+const config = sizeConfig[size];
+
+// Colores de pompones
+const pompones = [
+  { cx: 100, cy: 100, r: 28, color: '#E91E8C', delay: 0 },      // Fucsia central
+  { cx: 50, cy: 50, r: 18, color: '#D42C2A', delay: 0.2 },      // Rojo
+  { cx: 150, cy: 50, r: 18, color: '#FDB913', delay: 0.4 },     // Amarillo
+  { cx: 50, cy: 150, r: 18, color: '#00B5CC', delay: 0.3 },     // Turquesa
+  { cx: 150, cy: 150, r: 18, color: '#FF6B35', delay: 0.5 },    // Naranja
+  { cx: 100, cy: 40, r: 12, color: '#27AE60', delay: 0.6 },     // Verde pequeno
+  { cx: 160, cy: 100, r: 12, color: '#8B4789', delay: 0.7 }     // Purpura pequeno
+];
+
+// Funcion para aclarar color
+const lighten = (hex: string): string => {
+  const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + 50);
+  const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + 50);
+  const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + 50);
+  return `rgb(${r}, ${g}, ${b})`;
+};
+---
+
+<div
+  class:list={[
+    'absolute pointer-events-none z-10',
+    positionClasses[position],
+    config.container,
+    className
+  ]}
+>
+  <svg
+    viewBox={config.viewBox}
+    class={`w-full h-full ${animated ? 'pompones-float' : ''}`}
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+  >
+    <defs>
+      <!-- Filtro de textura esponjosa -->
+      <filter id={`${uniqueId}-fluffy`}>
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="6"/>
+        <feGaussianBlur stdDeviation="1"/>
+      </filter>
+
+      <!-- Gradientes para cada pompon -->
+      {pompones.map((p, i) => (
+        <radialGradient id={`${uniqueId}-grad-${i}`}>
+          <stop offset="0%" stop-color={lighten(p.color)}/>
+          <stop offset="50%" stop-color={p.color}/>
+          <stop offset="100%" stop-color={p.color} stop-opacity="0.8"/>
+        </radialGradient>
+      ))}
+    </defs>
+
+    <!-- Pompones -->
+    {pompones.map((pompon, i) => (
+      <g
+        class={animated ? 'pompon-item' : ''}
+        style={`--delay: ${pompon.delay}s`}
+      >
+        <!-- Pompon principal -->
+        <circle
+          cx={pompon.cx}
+          cy={pompon.cy}
+          r={pompon.r}
+          fill={`url(#${uniqueId}-grad-${i})`}
+          filter={`url(#${uniqueId}-fluffy)`}
+          opacity="0.9"
+        />
+        <!-- Capa de brillo interno -->
+        <circle
+          cx={pompon.cx - pompon.r * 0.15}
+          cy={pompon.cy - pompon.r * 0.15}
+          r={pompon.r * 0.6}
+          fill={lighten(pompon.color)}
+          opacity="0.4"
+          filter={`url(#${uniqueId}-fluffy)`}
+        />
+        <!-- Punto de brillo -->
+        <circle
+          cx={pompon.cx - pompon.r * 0.25}
+          cy={pompon.cy - pompon.r * 0.25}
+          r={pompon.r * 0.12}
+          fill="white"
+          opacity="0.25"
+        />
+      </g>
+    ))}
+  </svg>
+</div>
+
+<style>
+  @keyframes pompon-float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(3deg);
+    }
+  }
+
+  @keyframes pompon-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .pompones-float .pompon-item {
+    animation: pompon-float 5s ease-in-out infinite, pompon-pulse 3s ease-in-out infinite;
+    animation-delay: var(--delay);
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pompones-float .pompon-item {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,370 @@
+---
+/**
+ * AyacuchoPatterns.astro
+ *
+ * Componente maestro de patrones decorativos ayacuchanos.
+ * Proporciona multiples patrones visuales inspirados en la cultura de Ayacucho
+ * para usar como fondos sutiles o decoraciones en la pagina.
+ *
+ * PATRONES DISPONIBLES:
+ *
+ * 1. PARACAS - Patrones escalonados de la cultura Paracas (500 a.C. - 200 d.C.)
+ *    Caracterizados por formas geometricas y colores vibrantes que representaban
+ *    divinidades, animales y simbolos de poder.
+ *
+ * 2. RETABLO - Decoraciones inspiradas en los retablos ayacuchanos
+ *    Incluye arcos, ventanas y elementos arquitectonicos de las cajas de retablo.
+ *
+ * 3. POMPONES - Patron de pompones de lana coloridos
+ *    Representacion estilizada de los pompones usados en festividades.
+ *
+ * 4. FLORES - Flores estilo retablo ayacuchano
+ *    Claveles, rosas y flores de campo con el estilo naif caracteristico.
+ *
+ * 5. PICAFLORES - Siluetas de colibries
+ *    Los "q'enti" o colibries, mensajeros entre mundos en la cosmovision andina.
+ *
+ * 6. TIJERAS - Patron de tijeras de danzante
+ *    Homenaje a los Danzantes de Tijeras, patrimonio inmaterial de la humanidad.
+ *
+ * 7. ANDINO - Grecas y escalonados andinos
+ *    Patrones geometricos que representan montanas, andenes y niveles cosmicos.
+ *
+ * 8. CHAKANA - Cruces andinas
+ *    La chakana o cruz escalonada, simbolo sagrado de la cosmovision andina.
+ *
+ * USO RECOMENDADO:
+ * - Opacidad 0.03-0.08 para fondos sutiles
+ * - Opacidad 0.1-0.2 para decoraciones mas visibles
+ * - Combinar con position="top" o "bottom" para bordes decorativos
+ */
+
+interface Props {
+  /** Tipo de patron decorativo */
+  pattern?: 'paracas' | 'retablo' | 'pompones' | 'flores' | 'picaflores' | 'tijeras' | 'andino' | 'chakana';
+  /** Posicion del patron en el contenedor */
+  position?: 'full' | 'top' | 'bottom' | 'left' | 'right';
+  /** Opacidad del patron (0.01-1) */
+  opacity?: number;
+  /** Clase CSS adicional */
+  className?: string;
+  /** ID unico para evitar conflictos */
+  uniqueId?: string;
+}
+
+const {
+  pattern = 'paracas',
+  position = 'full',
+  opacity = 0.08,
+  className = '',
+  uniqueId = 'ap'
+} = Astro.props;
+
+// Colores de la paleta ayacuchana
+const colors = {
+  rojo: '#D42C2A',
+  fucsia: '#E91E8C',
+  naranja: '#FF6B35',
+  amarillo: '#FDB913',
+  verde: '#27AE60',
+  turquesa: '#00B5CC',
+  azul: '#2E4C8A',
+  purpura: '#8B4789',
+  tierra: '#8B6F47'
+};
+
+// Clases de posicionamiento
+const positionClasses = {
+  full: 'inset-0',
+  top: 'top-0 left-0 right-0 h-40',
+  bottom: 'bottom-0 left-0 right-0 h-40',
+  left: 'left-0 top-0 bottom-0 w-40',
+  right: 'right-0 top-0 bottom-0 w-40'
+};
+---
+
+<div
+  class:list={[
+    'absolute pointer-events-none overflow-hidden',
+    positionClasses[position],
+    className
+  ]}
+  aria-hidden="true"
+>
+  <svg class="w-full h-full" style={`opacity: ${opacity}`} preserveAspectRatio="xMidYMid slice">
+    <defs>
+      {/* PATRON PARACAS */}
+      {pattern === 'paracas' && (
+        <pattern id={`${uniqueId}-paracas`} x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+          <!-- Patron escalonado tipico Paracas -->
+          <path
+            d="M0 30 L30 30 L30 0 L60 0 L60 30 L90 30 L90 60 L60 60 L60 90 L30 90 L30 60 L0 60 Z"
+            fill={colors.fucsia}
+            fill-opacity="0.35"
+          />
+          <path
+            d="M30 60 L60 60 L60 30 L90 30 L90 60 L120 60 L120 90 L90 90 L90 120 L60 120 L60 90 L30 90 Z"
+            fill={colors.amarillo}
+            fill-opacity="0.35"
+          />
+          <circle cx="45" cy="45" r="8" fill={colors.naranja} fill-opacity="0.45"/>
+          <circle cx="105" cy="105" r="8" fill={colors.turquesa} fill-opacity="0.45"/>
+          <!-- Lineas decorativas -->
+          <line x1="0" y1="60" x2="30" y2="60" stroke={colors.rojo} stroke-width="2" opacity="0.4"/>
+          <line x1="90" y1="60" x2="120" y2="60" stroke={colors.rojo} stroke-width="2" opacity="0.4"/>
+        </pattern>
+      )}
+
+      {/* PATRON RETABLO */}
+      {pattern === 'retablo' && (
+        <pattern id={`${uniqueId}-retablo`} x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+          <!-- Arco superior (caracteristico de retablos) -->
+          <path
+            d="M20 20 Q50 0 80 20"
+            stroke={colors.rojo}
+            stroke-width="3"
+            fill="none"
+          />
+          <!-- Marco/ventana -->
+          <rect
+            x="15"
+            y="25"
+            width="70"
+            height="55"
+            stroke={colors.amarillo}
+            stroke-width="2"
+            fill="none"
+          />
+          <!-- Decoracion interior -->
+          <circle cx="50" cy="50" r="12" fill={colors.fucsia} fill-opacity="0.3"/>
+          <circle cx="50" cy="50" r="6" fill={colors.amarillo} fill-opacity="0.4"/>
+          <!-- Triangulo decorativo inferior -->
+          <path
+            d="M35 80 L50 60 L65 80 Z"
+            stroke={colors.naranja}
+            stroke-width="2"
+            fill={colors.naranja}
+            fill-opacity="0.2"
+          />
+          <!-- Columnas laterales estilizadas -->
+          <line x1="20" y1="25" x2="20" y2="80" stroke={colors.tierra} stroke-width="3"/>
+          <line x1="80" y1="25" x2="80" y2="80" stroke={colors.tierra} stroke-width="3"/>
+        </pattern>
+      )}
+
+      {/* PATRON POMPONES */}
+      {pattern === 'pompones' && (
+        <pattern id={`${uniqueId}-pompones`} x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+          <!-- Pompones en cuadricula -->
+          <g>
+            <!-- Pompon fucsia -->
+            <circle cx="20" cy="20" r="14" fill={colors.fucsia} opacity="0.5"/>
+            <circle cx="20" cy="20" r="10" fill="#FF3CA8" opacity="0.35"/>
+            <circle cx="17" cy="17" r="4" fill="white" opacity="0.2"/>
+            <!-- Pompon amarillo -->
+            <circle cx="60" cy="20" r="14" fill={colors.amarillo} opacity="0.5"/>
+            <circle cx="60" cy="20" r="10" fill="#FFCA3A" opacity="0.35"/>
+            <circle cx="57" cy="17" r="4" fill="white" opacity="0.2"/>
+            <!-- Pompon turquesa -->
+            <circle cx="20" cy="60" r="14" fill={colors.turquesa} opacity="0.5"/>
+            <circle cx="20" cy="60" r="10" fill="#00D4E6" opacity="0.35"/>
+            <circle cx="17" cy="57" r="4" fill="white" opacity="0.2"/>
+            <!-- Pompon verde -->
+            <circle cx="60" cy="60" r="14" fill={colors.verde} opacity="0.5"/>
+            <circle cx="60" cy="60" r="10" fill="#2ECC71" opacity="0.35"/>
+            <circle cx="57" cy="57" r="4" fill="white" opacity="0.2"/>
+          </g>
+          <!-- Hilos conectores sutiles -->
+          <path d="M20 34 L20 46" stroke={colors.tierra} stroke-width="1" opacity="0.3"/>
+          <path d="M60 34 L60 46" stroke={colors.tierra} stroke-width="1" opacity="0.3"/>
+          <path d="M34 20 L46 20" stroke={colors.tierra} stroke-width="1" opacity="0.3"/>
+          <path d="M34 60 L46 60" stroke={colors.tierra} stroke-width="1" opacity="0.3"/>
+        </pattern>
+      )}
+
+      {/* PATRON FLORES */}
+      {pattern === 'flores' && (
+        <pattern id={`${uniqueId}-flores`} x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+          <!-- Flor roja grande -->
+          <g transform="translate(35, 35)">
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+              <ellipse
+                cx="0"
+                cy="-14"
+                rx="6"
+                ry="12"
+                fill={colors.rojo}
+                opacity="0.55"
+                transform={`rotate(${angle})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="7" fill={colors.amarillo} opacity="0.7"/>
+            <circle cx="-2" cy="-2" r="2" fill="white" opacity="0.3"/>
+          </g>
+          <!-- Hojas -->
+          <ellipse cx="15" cy="40" rx="8" ry="4" fill={colors.verde} opacity="0.4" transform="rotate(-30 15 40)"/>
+          <ellipse cx="55" cy="40" rx="8" ry="4" fill={colors.verde} opacity="0.4" transform="rotate(30 55 40)"/>
+
+          <!-- Flor fucsia pequena -->
+          <g transform="translate(90, 90)">
+            {[0, 60, 120, 180, 240, 300].map((angle) => (
+              <ellipse
+                cx="0"
+                cy="-10"
+                rx="5"
+                ry="9"
+                fill={colors.fucsia}
+                opacity="0.5"
+                transform={`rotate(${angle})`}
+              />
+            ))}
+            <circle cx="0" cy="0" r="5" fill={colors.amarillo} opacity="0.65"/>
+          </g>
+          <!-- Hojas de flor pequena -->
+          <ellipse cx="100" cy="75" rx="6" ry="3" fill={colors.verde} opacity="0.35" transform="rotate(45 100 75)"/>
+        </pattern>
+      )}
+
+      {/* PATRON PICAFLORES */}
+      {pattern === 'picaflores' && (
+        <pattern id={`${uniqueId}-picaflores`} x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse">
+          <!-- Colibri 1 -->
+          <g transform="translate(45, 45)">
+            <!-- Cuerpo -->
+            <ellipse cx="0" cy="0" rx="14" ry="9" fill={colors.verde} opacity="0.5" transform="rotate(-15)"/>
+            <!-- Pecho iridiscente -->
+            <ellipse cx="-5" cy="2" rx="7" ry="5" fill={colors.fucsia} opacity="0.4"/>
+            <!-- Cabeza -->
+            <circle cx="-14" cy="-3" r="6" fill={colors.verde} opacity="0.55"/>
+            <!-- Pico -->
+            <path d="M-20 -2 L-38 0 L-20 2 Z" fill={colors.tierra} opacity="0.6"/>
+            <!-- Alas -->
+            <path d="M5 -5 Q22 -28 38 -18 Q28 -8 14 -2 Z" fill={colors.turquesa} opacity="0.45"/>
+            <!-- Cola -->
+            <path d="M12 2 Q22 5 28 14 Q18 10 12 5 Z" fill={colors.verde} opacity="0.45"/>
+            <!-- Ojo -->
+            <circle cx="-16" cy="-4" r="2" fill="black" opacity="0.7"/>
+          </g>
+
+          <!-- Colibri 2 (espejado) -->
+          <g transform="translate(110, 110) scale(-0.7, 0.7)">
+            <ellipse cx="0" cy="0" rx="14" ry="9" fill={colors.purpura} opacity="0.45" transform="rotate(15)"/>
+            <ellipse cx="-5" cy="2" rx="7" ry="5" fill={colors.amarillo} opacity="0.35"/>
+            <circle cx="-14" cy="-3" r="6" fill={colors.purpura} opacity="0.5"/>
+            <path d="M-20 -2 L-35 0 L-20 2 Z" fill={colors.tierra} opacity="0.55"/>
+            <path d="M5 -5 Q20 -25 35 -15 Q25 -7 12 -2 Z" fill={colors.turquesa} opacity="0.4"/>
+            <circle cx="-16" cy="-4" r="2" fill="black" opacity="0.65"/>
+          </g>
+
+          <!-- Flor para libar -->
+          <g transform="translate(75, 75)">
+            {[0, 72, 144, 216, 288].map((angle) => (
+              <ellipse cx="0" cy="-8" rx="4" ry="8" fill={colors.naranja} opacity="0.4" transform={`rotate(${angle})`}/>
+            ))}
+            <circle cx="0" cy="0" r="4" fill={colors.amarillo} opacity="0.5"/>
+          </g>
+        </pattern>
+      )}
+
+      {/* PATRON TIJERAS */}
+      {pattern === 'tijeras' && (
+        <pattern id={`${uniqueId}-tijeras`} x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+          <!-- Tijeras cruzadas (simbolo de danzante) -->
+          <g transform="translate(50, 50)">
+            <!-- Hoja 1 -->
+            <path
+              d="M-35 -35 L5 5 L-5 5 L-35 -25 Z"
+              fill={colors.rojo}
+              opacity="0.4"
+            />
+            <!-- Hoja 2 -->
+            <path
+              d="M35 -35 L-5 5 L5 5 L35 -25 Z"
+              fill={colors.rojo}
+              opacity="0.4"
+            />
+            <!-- Centro/eje -->
+            <circle cx="0" cy="0" r="8" fill={colors.amarillo} opacity="0.6"/>
+            <circle cx="0" cy="0" r="4" fill={colors.tierra} opacity="0.5"/>
+            <!-- Mangos -->
+            <ellipse cx="-30" cy="30" rx="8" ry="12" fill={colors.fucsia} opacity="0.35" transform="rotate(-45 -30 30)"/>
+            <ellipse cx="30" cy="30" rx="8" ry="12" fill={colors.turquesa} opacity="0.35" transform="rotate(45 30 30)"/>
+          </g>
+          <!-- Puntos decorativos en esquinas -->
+          <circle cx="10" cy="10" r="4" fill={colors.fucsia} opacity="0.4"/>
+          <circle cx="90" cy="10" r="4" fill={colors.turquesa} opacity="0.4"/>
+          <circle cx="10" cy="90" r="4" fill={colors.amarillo} opacity="0.4"/>
+          <circle cx="90" cy="90" r="4" fill={colors.verde} opacity="0.4"/>
+        </pattern>
+      )}
+
+      {/* PATRON ANDINO (Grecas escalonadas) */}
+      {pattern === 'andino' && (
+        <pattern id={`${uniqueId}-andino`} x="0" y="0" width="80" height="40" patternUnits="userSpaceOnUse">
+          <!-- Greca escalonada clasica -->
+          <path
+            d={`
+              M0 20
+              L10 20 L10 10 L20 10 L20 0
+              L30 0 L30 10 L40 10 L40 20
+              L50 20 L50 10 L60 10 L60 0
+              L70 0 L70 10 L80 10 L80 20
+            `}
+            stroke={colors.tierra}
+            stroke-width="2"
+            fill="none"
+            opacity="0.5"
+          />
+          <path
+            d={`
+              M0 20
+              L10 20 L10 30 L20 30 L20 40
+              L30 40 L30 30 L40 30 L40 20
+              L50 20 L50 30 L60 30 L60 40
+              L70 40 L70 30 L80 30 L80 20
+            `}
+            stroke={colors.rojo}
+            stroke-width="2"
+            fill="none"
+            opacity="0.45"
+          />
+          <!-- Puntos decorativos -->
+          <circle cx="20" cy="20" r="2" fill={colors.amarillo} opacity="0.5"/>
+          <circle cx="60" cy="20" r="2" fill={colors.amarillo} opacity="0.5"/>
+        </pattern>
+      )}
+
+      {/* PATRON CHAKANA */}
+      {pattern === 'chakana' && (
+        <pattern id={`${uniqueId}-chakana`} x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+          <!-- Cruz andina (Chakana) -->
+          <path
+            d={`
+              M40 8
+              L48 8 L48 24 L56 24 L56 32 L72 32 L72 40
+              L72 48 L56 48 L56 56 L48 56 L48 72 L40 72
+              L32 72 L32 56 L24 56 L24 48 L8 48 L8 40
+              L8 32 L24 32 L24 24 L32 24 L32 8
+              Z
+            `}
+            stroke={colors.tierra}
+            stroke-width="2"
+            fill={colors.rojo}
+            fill-opacity="0.2"
+          />
+          <!-- Circulo central (vacio cosmico) -->
+          <circle cx="40" cy="40" r="8" stroke={colors.amarillo} stroke-width="1.5" fill="none" opacity="0.6"/>
+          <circle cx="40" cy="40" r="3" fill={colors.amarillo} opacity="0.5"/>
+          <!-- Puntos en los brazos -->
+          <circle cx="40" cy="16" r="2" fill={colors.turquesa} opacity="0.5"/>
+          <circle cx="40" cy="64" r="2" fill={colors.turquesa} opacity="0.5"/>
+          <circle cx="16" cy="40" r="2" fill={colors.turquesa} opacity="0.5"/>
+          <circle cx="64" cy="40" r="2" fill={colors.turquesa} opacity="0.5"/>
+        </pattern>
+      )}
+    </defs>
+
+    <!-- Aplicar el patron seleccionado -->
+    <rect width="100%" height="100%" fill={`url(#${uniqueId}-${pattern})`}/>
+  </svg>
+</div>

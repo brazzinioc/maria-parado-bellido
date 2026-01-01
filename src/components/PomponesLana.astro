@@ -1,0 +1,538 @@
+---
+/**
+ * PomponesLana.astro
+ *
+ * Pompones de lana tradicionales ayacuchanos con textura autentica de fibras.
+ *
+ * CONTEXTO CULTURAL:
+ * Los pompones de lana de oveja son elementos decorativos fundamentales en la
+ * cultura ayacuchana. Se elaboran enrollando hilos de lana teñida con tintes
+ * naturales (cochinilla, añil, molle) alrededor de un carton circular, luego
+ * se cortan y se sacuden para lograr la textura esponjosa caracteristica.
+ *
+ * USOS TRADICIONALES:
+ * - Adornos de sombreros (especialmente para fiestas patronales)
+ * - Decoracion de polleras y mantas ceremoniales
+ * - Guirnaldas para altares y procesiones religiosas
+ * - Ornamentos en las monturas de caballos durante las fiestas
+ * - Decoracion de retablos y nacimientos navideños
+ *
+ * Este componente ofrece dos modalidades:
+ * - VERTICAL: Pompones colgantes (para laterales de paginas, decoraciones de esquinas)
+ * - HORIZONTAL: Guirnaldas festivas (para encabezados, separadores de secciones)
+ *
+ * CARACTERISTICAS VISUALES AUTENTICAS (v2.0):
+ * - Forma irregular y esponjosa (no circulos perfectos)
+ * - 18-26 hebras de lana visibles saliendo del cuerpo del pompon
+ * - Contorno ondulado con "mechones" que simulan el volumen real
+ * - Variacion de color en las fibras (mas claras y mas oscuras)
+ * - Centro ligeramente visible (donde se ata la lana)
+ * - Hebras curvas con grosor variable (como lana real)
+ * - Ligera rotacion aleatoria para naturalidad
+ *
+ * Referencias: Pompones artesanales de mercados de Ayacucho, Huamanga
+ * y decoraciones tradicionales de fiestas patronales andinas.
+ */
+
+interface Props {
+  /** Orientacion: vertical (colgantes) u horizontal (guirnalda) */
+  orientation?: 'vertical' | 'horizontal';
+  /** Posicion del elemento en el contenedor padre */
+  position?: 'left' | 'right' | 'top' | 'bottom' | 'center';
+  /** Tamanio general del componente */
+  size?: 'small' | 'medium' | 'large';
+  /** Numero de pompones (3-9 recomendado) */
+  count?: number;
+  /** Colores personalizados (usa paleta ayacuchana por defecto) */
+  colors?: string[];
+  /** Mostrar cuerda/hilo que conecta los pompones */
+  showCord?: boolean;
+  /** Animacion suave de balanceo */
+  animated?: boolean;
+  /** Clase CSS adicional */
+  className?: string;
+  /** ID unico para evitar conflictos de filtros SVG */
+  uniqueId?: string;
+}
+
+const {
+  orientation = 'vertical',
+  position = 'left',
+  size = 'medium',
+  count = 5,
+  colors = ['#E91E8C', '#D42C2A', '#FDB913', '#00B5CC', '#27AE60', '#FF6B35', '#8B4789'],
+  showCord = true,
+  animated = true,
+  className = '',
+  uniqueId = 'pl'
+} = Astro.props;
+
+// Configuracion de tamanios segun orientacion
+const sizeConfig = {
+  vertical: {
+    small: { pomponBase: 18, spacing: 55, viewBox: '0 0 70 350', containerClass: 'w-18 h-[22rem]' },
+    medium: { pomponBase: 25, spacing: 70, viewBox: '0 0 90 450', containerClass: 'w-24 h-[28rem]' },
+    large: { pomponBase: 32, spacing: 85, viewBox: '0 0 110 550', containerClass: 'w-28 h-[34rem]' }
+  },
+  horizontal: {
+    small: { pomponBase: 14, spacing: 50, viewBox: '0 0 400 80', containerClass: 'w-full h-20' },
+    medium: { pomponBase: 18, spacing: 65, viewBox: '0 0 500 100', containerClass: 'w-full h-24' },
+    large: { pomponBase: 22, spacing: 80, viewBox: '0 0 600 120', containerClass: 'w-full h-28' }
+  }
+};
+
+// Clases de posicionamiento
+const positionClasses = {
+  vertical: {
+    left: 'left-0 top-0 h-full',
+    right: 'right-0 top-0 h-full',
+    center: 'left-1/2 -translate-x-1/2 top-0 h-full'
+  },
+  horizontal: {
+    top: 'top-0 left-0 w-full',
+    bottom: 'bottom-0 left-0 w-full',
+    center: 'top-1/2 -translate-y-1/2 left-0 w-full'
+  }
+};
+
+const config = sizeConfig[orientation][size];
+const actualCount = Math.min(Math.max(count, 3), 9);
+
+// Generador de numeros pseudo-aleatorios con semilla para consistencia en builds
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
+};
+
+// Generar datos de pompones con variacion natural
+const generatePompones = () => {
+  const pompones = [];
+  const baseSize = config.pomponBase;
+
+  for (let i = 0; i < actualCount; i++) {
+    // Variacion de tamaño (+-20%)
+    const sizeVariation = 0.8 + (Math.sin(i * 1.5) * 0.2 + 0.2);
+    const pomponSize = baseSize * sizeVariation;
+
+    // Calcular posicion
+    let x, y;
+    if (orientation === 'vertical') {
+      x = 45 + (i % 2 === 0 ? -8 : 8); // Zigzag horizontal
+      y = 40 + (i * config.spacing);
+    } else {
+      x = 35 + (i * config.spacing);
+      y = 50 + (i % 2 === 0 ? -6 : 6); // Zigzag vertical
+    }
+
+    // Generar muchas fibras para textura autentica de lana (16-24 hebras por pompon)
+    // Los pompones reales tienen cientos de fibras, simulamos las mas prominentes
+    const fiberCount = 18 + Math.floor(seededRandom(i * 7) * 8);
+    const fibers = [];
+    for (let f = 0; f < fiberCount; f++) {
+      const baseAngle = (f / fiberCount) * 360; // Distribucion circular
+      const angleVariation = seededRandom(i * 100 + f) * 40 - 20; // +/- 20 grados
+      const lengthVariation = 0.25 + seededRandom(i * 200 + f) * 0.35; // 25-60% del radio
+      const thickness = 0.6 + seededRandom(i * 300 + f) * 0.8; // Grosor variable
+      const curvature = (seededRandom(i * 400 + f) - 0.5) * 0.4; // Curvatura de la hebra
+
+      fibers.push({
+        angle: baseAngle + angleVariation,
+        length: pomponSize * lengthVariation,
+        thickness,
+        curvature,
+        // Algunas fibras son mas claras, otras mas oscuras
+        colorShift: (seededRandom(i * 500 + f) - 0.5) * 60
+      });
+    }
+
+    // Generar "mechones" irregulares del borde (efecto esponjoso)
+    const tufts = [];
+    const tuftCount = 12 + Math.floor(seededRandom(i * 11) * 6);
+    for (let t = 0; t < tuftCount; t++) {
+      const angle = (t / tuftCount) * 360 + seededRandom(i * 600 + t) * 30;
+      const bulge = 0.85 + seededRandom(i * 700 + t) * 0.25; // Cuanto sobresale del circulo base
+      tufts.push({ angle, bulge });
+    }
+
+    pompones.push({
+      x,
+      y,
+      size: pomponSize,
+      color: colors[i % colors.length],
+      delay: i * 0.12,
+      fibers,
+      tufts,
+      // Ligera irregularidad en la forma general
+      squish: 0.92 + seededRandom(i * 13) * 0.16, // 0.92 a 1.08
+      rotation: seededRandom(i * 17) * 15 - 7.5 // Rotacion aleatoria -7.5 a 7.5 grados
+    });
+  }
+  return pompones;
+};
+
+const pompones = generatePompones();
+
+// Funciones de color
+const lighten = (hex: string, amount: number = 45): string => {
+  const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + amount);
+  const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + amount);
+  const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + amount);
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
+const darken = (hex: string, amount: number = 35): string => {
+  const r = Math.max(0, parseInt(hex.slice(1, 3), 16) - amount);
+  const g = Math.max(0, parseInt(hex.slice(3, 5), 16) - amount);
+  const b = Math.max(0, parseInt(hex.slice(5, 7), 16) - amount);
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
+// Generar path SVG para forma irregular del pompon (contorno esponjoso)
+const generateFluffyPath = (cx: number, cy: number, baseRadius: number, tufts: {angle: number, bulge: number}[], squish: number): string => {
+  const points: {x: number, y: number}[] = [];
+  const numPoints = tufts.length * 2; // Puntos intermedios para suavizar
+
+  for (let i = 0; i < numPoints; i++) {
+    const t = i / numPoints;
+    const tuftIndex = Math.floor(t * tufts.length);
+    const nextTuftIndex = (tuftIndex + 1) % tufts.length;
+    const localT = (t * tufts.length) % 1;
+
+    // Interpolar entre mechones
+    const angle1 = tufts[tuftIndex].angle * Math.PI / 180;
+    const angle2 = tufts[nextTuftIndex].angle * Math.PI / 180;
+    const bulge1 = tufts[tuftIndex].bulge;
+    const bulge2 = tufts[nextTuftIndex].bulge;
+
+    const angle = angle1 + (angle2 - angle1) * localT;
+    const bulge = bulge1 + (bulge2 - bulge1) * localT * 0.5; // Menos interpolacion para mas irregularidad
+
+    const radius = baseRadius * bulge;
+    const x = cx + Math.cos(angle) * radius * (1 + (squish - 1) * Math.abs(Math.cos(angle)));
+    const y = cy + Math.sin(angle) * radius * (1 + (1 - squish) * Math.abs(Math.sin(angle)));
+    points.push({ x, y });
+  }
+
+  // Generar path con curvas suaves
+  let path = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 0; i < points.length; i++) {
+    const p0 = points[(i - 1 + points.length) % points.length];
+    const p1 = points[i];
+    const p2 = points[(i + 1) % points.length];
+    const p3 = points[(i + 2) % points.length];
+
+    // Control points para curva suave Catmull-Rom simplificada
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+    path += ` C ${cp1x} ${cp1y} ${cp2x} ${cp2y} ${p2.x} ${p2.y}`;
+  }
+  path += ' Z';
+  return path;
+};
+
+// Generar path de la cuerda
+const generateCordPath = (): string => {
+  if (orientation === 'vertical') {
+    let path = `M45 10`;
+    pompones.forEach((p, i) => {
+      const controlX = p.x + (i % 2 === 0 ? 15 : -15);
+      path += ` Q${controlX} ${p.y - 20} ${p.x} ${p.y - p.size}`;
+    });
+    const lastP = pompones[pompones.length - 1];
+    path += ` L${lastP.x} ${lastP.y + lastP.size + 30}`;
+    return path;
+  } else {
+    let path = `M10 50`;
+    pompones.forEach((p, i) => {
+      const controlY = p.y + (i % 2 === 0 ? 12 : -12);
+      path += ` Q${p.x - 15} ${controlY} ${p.x - p.size} ${p.y}`;
+    });
+    const lastP = pompones[pompones.length - 1];
+    path += ` L${lastP.x + lastP.size + 30} ${lastP.y}`;
+    return path;
+  }
+};
+
+const cordPath = generateCordPath();
+const posClass = orientation === 'vertical'
+  ? positionClasses.vertical[position as 'left' | 'right' | 'center']
+  : positionClasses.horizontal[position as 'top' | 'bottom' | 'center'];
+---
+
+<div
+  class:list={[
+    'absolute pointer-events-none z-10 overflow-visible',
+    posClass,
+    config.containerClass,
+    className
+  ]}
+>
+  <svg
+    viewBox={config.viewBox}
+    class={`w-full h-full ${animated ? 'pompones-lana-animated' : ''}`}
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+  >
+    <defs>
+      <!-- Filtro de textura esponjosa de lana -->
+      <filter id={`${uniqueId}-wool`} x="-50%" y="-50%" width="200%" height="200%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.9"
+          numOctaves="4"
+          seed="42"
+          result="noise"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="5"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+
+      <!-- Filtro de borde difuso -->
+      <filter id={`${uniqueId}-fluffy`} x="-25%" y="-25%" width="150%" height="150%">
+        <feGaussianBlur stdDeviation="1.2" in="SourceGraphic" result="blur"/>
+        <feMorphology operator="dilate" radius="0.5" in="blur" result="dilate"/>
+        <feComposite in="SourceGraphic" in2="dilate" operator="over"/>
+      </filter>
+
+      <!-- Patron de textura de fibras de lana -->
+      <pattern id={`${uniqueId}-fibers`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+        <path d="M0 5 Q2.5 3 5 5 Q7.5 7 10 5" stroke="white" stroke-width="0.4" fill="none" opacity="0.3"/>
+        <path d="M0 2 Q5 0 10 2" stroke="white" stroke-width="0.3" fill="none" opacity="0.2"/>
+        <path d="M0 8 Q5 10 10 8" stroke="white" stroke-width="0.3" fill="none" opacity="0.2"/>
+        <circle cx="3" cy="7" r="0.6" fill="white" opacity="0.15"/>
+        <circle cx="7" cy="3" r="0.6" fill="white" opacity="0.15"/>
+      </pattern>
+
+      <!-- Gradientes radiales para cada pompon -->
+      {pompones.map((p, i) => (
+        <radialGradient id={`${uniqueId}-grad-${i}`} cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stop-color={lighten(p.color, 55)} />
+          <stop offset="35%" stop-color={lighten(p.color, 20)} />
+          <stop offset="60%" stop-color={p.color} />
+          <stop offset="100%" stop-color={darken(p.color, 40)} />
+        </radialGradient>
+      ))}
+    </defs>
+
+    <!-- Cuerda de lana trenzada -->
+    {showCord && (
+      <g class="cord-group">
+        <!-- Sombra de la cuerda -->
+        <path
+          d={cordPath}
+          stroke="rgba(0,0,0,0.15)"
+          stroke-width="4"
+          fill="none"
+          transform="translate(2, 2)"
+        />
+        <!-- Cuerda base -->
+        <path
+          d={cordPath}
+          stroke="#8B6F47"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+        />
+        <!-- Textura de trenzado -->
+        <path
+          d={cordPath}
+          stroke="#A67C52"
+          stroke-width="2"
+          fill="none"
+          stroke-dasharray="4 3"
+          opacity="0.6"
+        />
+        <!-- Brillo superior -->
+        <path
+          d={cordPath}
+          stroke="#C4A574"
+          stroke-width="1"
+          fill="none"
+          opacity="0.4"
+          transform="translate(-0.5, -0.5)"
+        />
+      </g>
+    )}
+
+    <!-- Pompones de lana con forma autentica -->
+    {pompones.map((pompon, index) => {
+      // Pre-calcular path de forma esponjosa
+      const fluffyPath = generateFluffyPath(pompon.x, pompon.y, pompon.size, pompon.tufts, pompon.squish);
+
+      return (
+        <g
+          class={`pompon-lana ${animated ? 'pompon-sway' : ''}`}
+          style={`--delay: ${pompon.delay}s; --sway-amount: ${3 + (index % 3)}px;`}
+          transform={`rotate(${pompon.rotation} ${pompon.x} ${pompon.y})`}
+        >
+          <!-- Sombra proyectada con forma irregular -->
+          <path
+            d={fluffyPath}
+            fill="rgba(0,0,0,0.15)"
+            transform={`translate(3, 4) scale(0.9)`}
+            filter={`url(#${uniqueId}-fluffy)`}
+            transform-origin={`${pompon.x}px ${pompon.y}px`}
+          />
+
+          <!-- Capa base del pompon con forma esponjosa y textura de lana -->
+          <path
+            d={fluffyPath}
+            fill={`url(#${uniqueId}-grad-${index})`}
+            filter={`url(#${uniqueId}-wool)`}
+          />
+
+          <!-- Segunda capa ligeramente mas pequena para profundidad -->
+          <path
+            d={generateFluffyPath(pompon.x, pompon.y, pompon.size * 0.88, pompon.tufts, pompon.squish)}
+            fill={pompon.color}
+            opacity="0.7"
+          />
+
+          <!-- Textura de fibras superpuesta -->
+          <path
+            d={fluffyPath}
+            fill={`url(#${uniqueId}-fibers)`}
+            opacity="0.4"
+          />
+
+          <!-- Capa de brillo interno (iluminacion superior izquierda) -->
+          <ellipse
+            cx={pompon.x - pompon.size * 0.22}
+            cy={pompon.y - pompon.size * 0.22}
+            rx={pompon.size * 0.5}
+            ry={pompon.size * 0.45}
+            fill={lighten(pompon.color, 65)}
+            filter={`url(#${uniqueId}-fluffy)`}
+            opacity="0.4"
+          />
+
+          <!-- Capa de profundidad (sombra inferior derecha) -->
+          <ellipse
+            cx={pompon.x + pompon.size * 0.2}
+            cy={pompon.y + pompon.size * 0.2}
+            rx={pompon.size * 0.4}
+            ry={pompon.size * 0.35}
+            fill={darken(pompon.color, 55)}
+            opacity="0.3"
+          />
+
+          <!-- Hebras de lana saliendo del pompon (textura caracteristica) -->
+          <g class="wool-fibers">
+            {pompon.fibers.map((fiber, fi) => {
+              const angleRad = fiber.angle * Math.PI / 180;
+              // Las fibras empiezan desde dentro del pompon
+              const startRadius = pompon.size * 0.7;
+              const startX = pompon.x + Math.cos(angleRad) * startRadius;
+              const startY = pompon.y + Math.sin(angleRad) * startRadius;
+              // Y terminan fuera, creando el efecto peludo
+              const endX = pompon.x + Math.cos(angleRad) * (pompon.size + fiber.length);
+              const endY = pompon.y + Math.sin(angleRad) * (pompon.size + fiber.length);
+
+              // Punto de control para curvatura natural de la hebra
+              const ctrlX = (startX + endX) / 2 + fiber.curvature * pompon.size * Math.sin(angleRad);
+              const ctrlY = (startY + endY) / 2 - fiber.curvature * pompon.size * Math.cos(angleRad);
+
+              // Color de la fibra con variacion
+              const fiberColor = fiber.colorShift > 0
+                ? lighten(pompon.color, Math.abs(fiber.colorShift))
+                : darken(pompon.color, Math.abs(fiber.colorShift));
+
+              return (
+                <path
+                  d={`M ${startX} ${startY} Q ${ctrlX} ${ctrlY} ${endX} ${endY}`}
+                  stroke={fiberColor}
+                  stroke-width={fiber.thickness}
+                  fill="none"
+                  stroke-linecap="round"
+                  opacity={0.5 + seededRandom(index * 1000 + fi) * 0.4}
+                />
+              );
+            })}
+          </g>
+
+          <!-- Centro del pompon (donde se ata) - ligeramente visible -->
+          <circle
+            cx={pompon.x}
+            cy={pompon.y}
+            r={pompon.size * 0.12}
+            fill={darken(pompon.color, 70)}
+            opacity="0.2"
+          />
+
+          <!-- Puntos de brillo especular (luz reflejada en fibras) -->
+          <circle
+            cx={pompon.x - pompon.size * 0.3}
+            cy={pompon.y - pompon.size * 0.32}
+            r={pompon.size * 0.1}
+            fill="white"
+            opacity="0.3"
+          />
+          <circle
+            cx={pompon.x - pompon.size * 0.12}
+            cy={pompon.y - pompon.size * 0.42}
+            r={pompon.size * 0.05}
+            fill="white"
+            opacity="0.25"
+          />
+          <!-- Pequenos brillos adicionales simulando luz en fibras individuales -->
+          <circle
+            cx={pompon.x + pompon.size * 0.25}
+            cy={pompon.y - pompon.size * 0.28}
+            r={pompon.size * 0.04}
+            fill="white"
+            opacity="0.18"
+          />
+        </g>
+      );
+    })}
+  </svg>
+</div>
+
+<style>
+  @keyframes pompon-sway {
+    0%, 100% {
+      transform: translateX(0) rotate(0deg);
+    }
+    25% {
+      transform: translateX(calc(var(--sway-amount) * -1)) rotate(-1.5deg);
+    }
+    75% {
+      transform: translateX(var(--sway-amount)) rotate(1.5deg);
+    }
+  }
+
+  @keyframes cord-gentle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(2px);
+    }
+  }
+
+  .pompones-lana-animated .pompon-sway {
+    animation: pompon-sway 5s ease-in-out infinite;
+    animation-delay: var(--delay);
+    transform-origin: center top;
+  }
+
+  .pompones-lana-animated .cord-group {
+    animation: cord-gentle 7s ease-in-out infinite;
+  }
+
+  /* Reducir animacion si el usuario prefiere menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    .pompones-lana-animated .pompon-sway,
+    .pompones-lana-animated .cord-group {
+      animation: none;
+    }
+  }
+</style>

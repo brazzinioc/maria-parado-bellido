@@ -1,0 +1,144 @@
+---
+interface Props {
+  type: 'website' | 'place' | 'event' | 'tour' | 'organization';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+const generateSchema = () => {
+  const baseUrl = Astro.site || 'https://mariaparadodebellido.com';
+
+  switch (type) {
+    case 'website':
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'María Parado de Bellido - Turismo Cultural',
+        url: baseUrl,
+        description:
+          'Descubre el distrito de María Parado de Bellido en Ayacucho, Perú. Turismo cultural, paisajes andinos, festividades tradicionales y gastronomía local a 3600 msnm.',
+        inLanguage: 'es-PE',
+      };
+
+    case 'organization':
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Municipalidad de María Parado de Bellido',
+        url: baseUrl,
+        logo: `${baseUrl}/images/logo.png`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'María Parado de Bellido',
+          addressRegion: 'Ayacucho',
+          addressCountry: 'PE',
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: -13.31,
+          longitude: -74.21,
+        },
+      };
+
+    case 'place':
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'TouristAttraction',
+        name: data.name,
+        description: data.description,
+        image: data.images?.map((img: string) => `${baseUrl}${img}`) || [],
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: data.location?.lat,
+          longitude: data.location?.lng,
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'María Parado de Bellido',
+          addressRegion: 'Ayacucho',
+          addressCountry: 'PE',
+        },
+        ...(data.entryFee && {
+          offers: {
+            '@type': 'Offer',
+            price: data.entryFee,
+            priceCurrency: data.currency || 'PEN',
+          },
+        }),
+      };
+
+    case 'event':
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        name: data.name,
+        description: data.description,
+        startDate: data.start_date,
+        endDate: data.end_date,
+        image: data.images?.map((img: string) => `${baseUrl}${img}`) || [],
+        location: {
+          '@type': 'Place',
+          name: data.place?.name,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'María Parado de Bellido',
+            addressRegion: 'Ayacucho',
+            addressCountry: 'PE',
+          },
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: data.place?.lat,
+            longitude: data.place?.lng,
+          },
+        },
+        organizer: data.cargontes?.map((c: any) => ({
+          '@type': 'Person',
+          name: c.name,
+          jobTitle: c.role,
+        })) || [],
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      };
+
+    case 'tour':
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'TouristTrip',
+        name: data.title,
+        description: data.description,
+        image: data.images?.map((img: string) => `${baseUrl}${img}`) || [],
+        touristType: 'Cultural Tourism',
+        itinerary: data.locations?.map((loc: any) => ({
+          '@type': 'Place',
+          name: loc.name,
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: loc.lat,
+            longitude: loc.lng,
+          },
+        })) || [],
+        offers: {
+          '@type': 'Offer',
+          price: data.price,
+          priceCurrency: data.currency || 'PEN',
+          availability: 'https://schema.org/InStock',
+          validFrom: new Date().toISOString(),
+        },
+        duration: `PT${data.duration_hours}H`,
+        provider: {
+          '@type': 'Person',
+          name: data.guide?.name,
+          telephone: data.guide?.phone,
+        },
+      };
+
+    default:
+      return {};
+  }
+};
+
+const schema = generateSchema();
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

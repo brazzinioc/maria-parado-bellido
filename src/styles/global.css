@@ -1,0 +1,301 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Pacifico&family=Lora:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  /* Colores inspirados en la cultura ayacuchana */
+  /* Rojo intenso - Danzantes de tijera */
+  --color-rojo: #d42c2a;
+  --color-rojo-light: #e84745;
+  --color-rojo-dark: #b91c1c;
+  --color-rojo-bright: #ff3b3b;
+
+  /* Fucsia/Magenta - Pompones y tejidos Paracas */
+  --color-fucsia: #e91e8c;
+  --color-fucsia-light: #ff3ca8;
+  --color-fucsia-dark: #c91673;
+  --color-fucsia-bright: #ff69b4;
+
+  /* Naranja vibrante - Frutos de molle y retablos */
+  --color-naranja: #ff6b35;
+  --color-naranja-light: #ff8555;
+  --color-naranja-dark: #e85525;
+  --color-naranja-bright: #ff7f50;
+
+  /* Amarillo dorado - Sol andino */
+  --color-amarillo: #fdb913;
+  --color-amarillo-light: #ffca3a;
+  --color-amarillo-dark: #f39c12;
+  --color-amarillo-gold: #ffd700;
+
+  /* Verde esmeralda - Naturaleza */
+  --color-verde: #27ae60;
+  --color-verde-light: #2ecc71;
+  --color-verde-dark: #1e8449;
+  --color-verde-jade: #00a896;
+
+  /* Turquesa - Cielos andinos */
+  --color-turquesa: #00b5cc;
+  --color-turquesa-light: #00d4e6;
+  --color-turquesa-dark: #0097a7;
+  --color-turquesa-bright: #40e0d0;
+
+  /* Azul profundo - Cielo nocturno */
+  --color-azul: #2e4c8a;
+  --color-azul-light: #4169e1;
+  --color-azul-dark: #1a2f5c;
+  --color-azul-royal: #4169e1;
+
+  /* Púrpura - Textiles ceremoniales */
+  --color-purpura: #8b4789;
+  --color-purpura-light: #9b59b6;
+  --color-purpura-dark: #6c3483;
+  --color-purpura-bright: #a855f7;
+
+  /* Colores tierra y neutrales */
+  --color-terracota: #c85a45;
+  --color-terracota-light: #e07856;
+  --color-terracota-dark: #a84332;
+
+  --color-tierra: #8b6f47;
+  --color-tierra-light: #a67c52;
+  --color-tierra-dark: #6b5635;
+
+  --color-crema: #fff8f0;
+  --color-crema-warm: #ffefd5;
+  --color-crema-dark: #f5e6d3;
+
+  /* Aliases para compatibilidad */
+  --color-indigo: #2e4c8a;
+  --color-indigo-light: #4169e1;
+  --color-indigo-dark: #1a2f5c;
+
+  --color-mostaza: #fdb913;
+  --color-mostaza-light: #ffca3a;
+  --color-mostaza-dark: #f39c12;
+
+  /* Colores gray para compatibilidad */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  /* Colores blancos y negros */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Colores transparentes */
+  --color-transparent: transparent;
+
+  /* Fuentes */
+  --font-heading: Montserrat, Lora, serif;
+  --font-body: Poppins, Inter, sans-serif;
+  --font-decorative: Pacifico, cursive;
+
+  /* Animaciones personalizadas */
+  --animate-fade-in: fadeIn 0.8s ease-in-out;
+  --animate-slide-up: slideUp 0.6s ease-out;
+  --animate-slide-in-left: slideInLeft 0.7s ease-out;
+  --animate-slide-in-right: slideInRight 0.7s ease-out;
+  --animate-bounce-slow: bounce 3s infinite;
+  --animate-wiggle: wiggle 1s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-spin-slow: spin 8s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(233, 30, 140, 0.5),
+      0 0 10px rgba(253, 185, 19, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(233, 30, 140, 0.8),
+      0 0 30px rgba(253, 185, 19, 0.6);
+  }
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-crema text-gray-800 font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
+    transition-all duration-300 bg-gradient-to-r from-rojo via-fucsia to-naranja
+    text-white hover:shadow-2xl hover:scale-105 hover:-translate-y-1
+    focus:outline-none focus:ring-4 focus:ring-fucsia/50 focus:ring-offset-2
+    transform active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
+    transition-all duration-300 border-2 border-turquesa text-turquesa-dark
+    hover:bg-gradient-to-r hover:from-turquesa hover:to-azul hover:text-white
+    hover:shadow-xl hover:scale-105 hover:border-transparent
+    focus:outline-none focus:ring-4 focus:ring-turquesa/50 focus:ring-offset-2
+    transform active:scale-95;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
+    transition-all duration-300 bg-gradient-to-r from-amarillo via-naranja to-rojo
+    text-white hover:shadow-2xl hover:scale-105 hover:-translate-y-1
+    focus:outline-none focus:ring-4 focus:ring-amarillo/50 focus:ring-offset-2
+    transform active:scale-95;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-lg overflow-hidden
+    transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:rotate-1
+    border-t-4 border-transparent hover:border-fucsia;
+  }
+
+  .card-colorful {
+    @apply bg-gradient-to-br from-white via-crema-warm to-white rounded-2xl shadow-xl
+    overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3
+    border-4 border-transparent hover:border-fucsia
+    relative;
+  }
+
+  .section-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold
+    bg-gradient-to-r from-rojo via-fucsia to-azul bg-clip-text text-transparent
+    mb-6 drop-shadow-sm;
+  }
+
+  .section-heading-alt {
+    @apply text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold
+    text-indigo-dark mb-6 relative inline-block
+    after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0
+    after:h-2 after:bg-gradient-to-r after:from-amarillo after:via-naranja after:to-rojo
+    after:rounded-full after:transform after:scale-x-0 hover:after:scale-x-100
+    after:transition-transform after:duration-500;
+  }
+
+  .text-evocative {
+    @apply text-lg md:text-xl leading-relaxed text-gray-700 font-body;
+  }
+
+  .decorative-border {
+    @apply border-4 border-transparent bg-origin-border
+    bg-gradient-to-r from-rojo via-fucsia via-amarillo via-verde to-turquesa;
+  }
+}
+
+@layer utilities {
+  .pattern-overlay {
+    position: relative;
+  }
+
+  .pattern-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* background-image: url("/patterns/andean-pattern.svg"); */
+    background-repeat: repeat;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+}
+
+/* Animaciones suaves para scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}

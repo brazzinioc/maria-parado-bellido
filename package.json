@@ -1,0 +1,56 @@
+{
+  "name": "maria-parado-bellido",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Sitio web para promover el turismo cultural en el distrito María Parado de Bellido, Cangallo, Ayacucho, Perú. Proyecto comunitario open source.",
+  "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "Proyecto Comunitario María Parado de Bellido",
+    "email": "dev@mariaparadodebellido.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brazzinioc/maria-parado-de-bellido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brazzinioc/maria-parado-de-bellido/issues"
+  },
+  "homepage": "https://mariaparadodebellido.com",
+  "keywords": [
+    "turismo",
+    "ayacucho",
+    "peru",
+    "maria-parado-bellido",
+    "pomabamba",
+    "cangallo",
+    "turismo-cultural",
+    "astro",
+    "andes",
+    "patrimonio-cultural"
+  ],
+  "scripts": {
+    "dev": "astro dev --host",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.6.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.5",
+    "leaflet": "^1.9.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-leaflet": "^5.0.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.21",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}

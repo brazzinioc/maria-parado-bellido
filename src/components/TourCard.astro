@@ -1,0 +1,111 @@
+---
+import type { Tour } from "../types";
+
+interface Props {
+  tour: Tour;
+}
+
+const { tour } = Astro.props;
+const primaryImage = tour.images[0] || "/images/placeholder-tour.webp";
+const difficultyLabels = {
+  easy: "Fácil",
+  moderate: "Moderado",
+  hard: "Difícil",
+};
+---
+
+<article class="card group">
+  <!-- Image -->
+  <div class="relative h-56 overflow-hidden">
+    <img
+      src={primaryImage}
+      alt={tour.title}
+      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      loading="lazy"
+    />
+    {
+      tour.difficulty && (
+        <span class="absolute top-3 right-3 bg-white/95 text-indigo text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+          {difficultyLabels[tour.difficulty]}
+        </span>
+      )
+    }
+  </div>
+
+  <!-- Content -->
+  <div class="p-6">
+    <h3
+      class="text-xl font-heading font-semibold text-indigo mb-2 line-clamp-2"
+    >
+      {tour.title}
+    </h3>
+
+    <p class="text-gray-600 mb-4 line-clamp-3">
+      {tour.summary}
+    </p>
+
+    <!-- Meta Info -->
+    <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+      <div class="flex items-center gap-1">
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>{tour.duration_hours}h</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          ></path>
+        </svg>
+        <span>Máx. {tour.max_participants || "∞"}</span>
+      </div>
+    </div>
+
+    <!-- Price & CTA -->
+    <div class="">
+      <div class="mb-4">
+        <span class="text-2xl font-bold text-terracota">
+          {tour.currency}
+          {tour.price.toFixed(2)}
+        </span>
+        <span class="text-sm text-gray-500 ml-1">por persona</span>
+      </div>
+      <a
+        href={`/tours/${tour.slug}`}
+        class="px-4 py-2 bg-indigo text-white rounded-lg hover:bg-indigo-dark transition-colors duration-300 text-sm font-medium"
+      >
+        Ver detalles
+      </a>
+    </div>
+
+    <!-- Guide -->
+    {
+      tour.guide && (
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <p class="text-xs text-gray-500">
+            Guía:{" "}
+            <span class="font-medium text-gray-700">{tour.guide.name}</span>
+          </p>
+        </div>
+      )
+    }
+  </div>
+</article>

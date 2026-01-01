@@ -1,0 +1,351 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import TourCard from "../components/TourCard.astro";
+import FestivityCard from "../components/FestivityCard.astro";
+// MAPA TEMPORALMENTE DESHABILITADO
+// import InteractiveMap from "../components/InteractiveMap";
+import AyacuchoPatterns from "../components/AyacuchoPatterns.astro";
+import Pompones from "../components/Pompones.astro";
+import { fetchTours, fetchFestivities } from "../lib/api";
+
+// Fetch data at build time
+const tours = await fetchTours();
+const festivities = await fetchFestivities();
+
+// Get next 3 tours and festivities
+const featuredTours = tours.slice(0, 3);
+const upcomingFestivities = festivities
+  .sort(
+    (a, b) =>
+      new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+  )
+  .slice(0, 3);
+
+// MAPA TEMPORALMENTE DESHABILITADO - Marcadores para el mapa interactivo
+// const mapMarkers = [
+//   ...tours.slice(0, 2).flatMap((tour) =>
+//     tour.locations.map((loc) => ({
+//       id: `tour-${tour.id}-${loc.name}`,
+//       title: tour.title,
+//       type: "tour" as const,
+//       slug: tour.slug,
+//       image: tour.images[0],
+//       ...loc,
+//     }))
+//   ),
+//   ...festivities.slice(0, 2).map((fest) => ({
+//     id: `fest-${fest.id}`,
+//     title: fest.name,
+//     type: "festivity" as const,
+//     slug: fest.slug,
+//     image: fest.images[0],
+//     ...fest.place,
+//   })),
+// ];
+---
+
+<BaseLayout
+  title="Pomabamba: Turismo Vivencial en los Andes de Ayacucho"
+  description="Pomabamba te invita a vivir los Andes como local: trekking entre tres ecosistemas, turismo vivencial con familias campesinas, y fiestas donde bailarás hasta el amanecer. A 3 horas de Ayacucho, la aventura auténtica te espera."
+  image="/images/hero-main.webp"
+>
+  <!-- Hero Section -->
+  <Hero
+    title="Pomabamba: Donde los Andes Guardan sus Secretos"
+    subtitle="Vive la autenticidad campesina a 3,236 metros, donde el tiempo fluye al ritmo del ayni"
+    image="/images/hero-main.webp"
+    imageAlt="Amanecer dorado sobre los campos de Pomabamba con la cordillera al fondo"
+  />
+
+  <!-- Welcome Section -->
+  <section class="relative py-20 md:py-32 overflow-hidden w-full">
+    <div class="container-custom">
+      <AyacuchoPatterns pattern="flores" position="full" opacity={0.06} />
+
+      <div class="max-w-4xl mx-auto text-center mb-20 reveal relative z-10">
+        <h2 class="section-heading mb-8">Bienvenido a Pomabamba</h2>
+        <p class="text-evocative text-xl md:text-2xl font-medium">
+          Aquí, en el corazón de <span class="text-rojo font-bold"
+            >Cangallo</span
+          >, el espíritu de <span class="text-turquesa font-bold"
+            >María Parado de Bellido</span
+          >
+          —la heroína que dio su vida por la libertad— aún vive en cada sendero y
+          cada rostro. Desde <span class="text-verde-jade font-semibold"
+            >1962</span
+          >, este pueblo lleva su nombre con orgullo, custodiando tradiciones
+          que los Andes no han olvidado.
+        </p>
+        <p class="text-evocative mt-6 text-xl">
+          Caminarás entre <span class="text-turquesa font-semibold"
+            >tres mundos verticales</span
+          >: los valles templados donde madura el maíz entre terrazas
+          ancestrales, las laderas donde florece la quinua bajo cielos
+          infinitos, y las punas frías donde el viento recorre bofedales y
+          pastos naturales junto a ríos cristalinos.
+          <span class="text-fucsia font-semibold"
+            >En este territorio viven más de tres mil personas</span
+          > que aún practican el <span class="text-rojo font-bold">ayni</span> y la
+          <span class="text-naranja font-bold">minka</span>, formas ancestrales
+          de cooperación que mantienen viva la identidad del distrito.
+        </p>
+      </div>
+    </div>
+
+    <!-- Stats con diseño vibrante -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto reveal relative z-10"
+    >
+      <div
+        class="relative text-center p-8 bg-linear-to-br from-rojo-light to-rojo rounded-3xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+      >
+        <div class="relative z-10">
+          <div
+            class="text-5xl md:text-6xl font-heading font-black text-white mb-3 drop-shadow-lg"
+          >
+            3,236m
+          </div>
+          <div
+            class="text-sm text-white/90 uppercase tracking-wider font-semibold"
+          >
+            Amaneceres que rozan las nubes
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative text-center p-8 bg-linear-to-br from-turquesa to-azul rounded-3xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+      >
+        <div class="relative z-10">
+          <div
+            class="text-6xl font-heading font-black text-white mb-3 drop-shadow-lg"
+          >
+            3
+          </div>
+          <div
+            class="text-sm text-white/90 uppercase tracking-wider font-semibold"
+          >
+            Ecosistemas para explorar a pie o en bicicleta
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative text-center p-8 bg-linear-to-br from-amarillo to-naranja rounded-3xl shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+      >
+        <div class="relative z-10">
+          <div
+            class="text-6xl font-heading font-black text-white mb-3 drop-shadow-lg"
+          >
+            100%
+          </div>
+          <div
+            class="text-sm text-white/90 uppercase tracking-wider font-semibold"
+          >
+            Auténtico: familias que te reciben en su tierra
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tours Section -->
+  <section
+    class="relative bg-linear-to-br from-crema via-crema-warm to-crema py-20 md:py-32 overflow-hidden"
+  >
+    <AyacuchoPatterns pattern="chakana" position="full" opacity={0.06} />
+
+    <div class="container-custom relative z-10">
+      <div class="text-center mb-16 reveal">
+        <h2 class="section-heading mb-6">
+          Vive los Andes con Tus Propias Manos
+        </h2>
+        <p
+          class="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto font-medium"
+        >
+          <span class="text-verde-jade font-bold"
+            >Siembra junto a una familia campesina</span
+          >
+          en chacras que llevan siglos alimentando a los Andes.
+          <span class="text-turquesa font-bold">Pedalea por senderos</span>
+          de altura, entre cerros abiertos y pastos naturales donde la neblina avanza
+          en silencio.
+          <span class="text-rojo font-bold"
+            >Despierta con el canto del gallo</span
+          >
+          en una casa de adobe y desayuna caldo de cuy recién preparado. Aquí no eres
+          turista: eres <span class="text-fucsia font-bold"
+            >parte de la minka</span
+          >, y cuando compartas la pachamanca bajo las estrellas, entenderás por
+          qué los Andes se sienten como hogar.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+        {
+          featuredTours.map((tour) => (
+            <div class="reveal">
+              <TourCard tour={tour} />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="text-center reveal">
+        <a href="/tours" class="btn-primary text-lg">
+          Encuentra Tu Aventura en Pomabamba
+          <svg
+            class="w-6 h-6 ml-2 inline"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Festivities Section -->
+  <section class="relative py-20 md:py-32 overflow-hidden">
+    <div class="container-custom">
+      <AyacuchoPatterns pattern="picaflores" position="full" opacity={0.06} />
+      <!-- <Pompones position="top-right" size="large" />
+      <Pompones position="bottom-right" size="small" /> -->
+
+      <div class="text-center mb-16 reveal relative z-10">
+        <h2 class="section-heading mb-6">Fiestas que Solo Existen Aquí</h2>
+        <p
+          class="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto font-medium"
+        >
+          En Pomabamba, <span class="text-purpura font-bold"
+            >los Chancas nunca se fueron</span
+          >: su espíritu guerrero y festivo late en cada celebración. Cuando
+          llega la fiesta patronal, el pueblo entero danza y canta hasta el
+          amanecer. Las procesiones recorren calles de tierra bajo cielos
+          estrellados mientras el aroma del <span class="text-naranja font-bold"
+            >caldo de mote en fogón de leña</span
+          >
+          llena el aire frío de la sierra. Ven a ser parte de una fiesta donde <span
+            class="text-verde-jade font-bold">nadie es extraño</span
+          >
+          y donde bailar juntos es la forma más antigua de decir "bienvenido".
+        </p>
+      </div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12 relative z-10"
+      >
+        {
+          upcomingFestivities.map((festivity) => (
+            <div class="reveal">
+              <FestivityCard festivity={festivity} />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="text-center reveal relative z-10">
+        <a href="/festivities" class="btn-secondary text-lg">
+          Calendario de Fiestas: Elige Cuándo Venir
+          <svg
+            class="w-6 h-6 ml-2 inline"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN DE MAPA TEMPORALMENTE DESHABILITADA -->
+  <!-- Para reactivar, descomenta esta sección completa -->
+  <!-- <section class="bg-gradient-to-b from-crema to-white py-16 md:py-24">
+    <div class="container-custom">
+      <div class="text-center mb-12 reveal">
+        <h2 class="section-heading">Tu Ruta por Tres Mundos Verticales</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Desde los valles de maíz hasta las punas de alpacas: planifica tu
+          recorrido por los senderos de Pomabamba.
+        </p>
+      </div>
+
+      <div class="reveal">
+        <InteractiveMap
+          client:load
+          markers={mapMarkers}
+          className="h-[500px] rounded-xl overflow-hidden shadow-2xl"
+        />
+      </div>
+
+      <div class="text-center mt-8 reveal">
+        <a href="/mapa" class="btn-primary">
+          Planifica Tu Ruta Paso a Paso
+          <svg
+            class="w-5 h-5 ml-2 inline"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- CTA Section -->
+  <section
+    class="relative bg-linear-to-br from-azul via-purpura to-fucsia text-white py-24 md:py-32 overflow-hidden"
+  >
+    <AyacuchoPatterns pattern="tijeras" position="full" opacity={0.12} />
+    <!-- <Pompones position="top-left" size="large" />
+    <Pompones position="bottom-right" size="large" /> -->
+
+    <div class="container-custom text-center reveal relative z-10">
+      <h2
+        class="text-4xl md:text-5xl lg:text-6xl font-heading font-black mb-8 drop-shadow-2xl"
+      >
+        Los Andes Te Esperan con Pachamanca Lista
+      </h2>
+      <p
+        class="text-2xl md:text-3xl mb-12 max-w-3xl mx-auto font-semibold drop-shadow-lg"
+      >
+        A solo <span class="text-fucsia font-black">3 horas de Ayacucho</span>,
+        un pueblo entero está listo para recibirte como familia. Trae tu
+        curiosidad, tus ganas de caminar bajo cielos infinitos, y déjanos
+        mostrarte por qué
+        <span class="text-amarillo-gold font-black"
+          >quien viene a Pomabamba, siempre vuelve</span
+        >.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center">
+        <a href="/contact" class="btn-accent text-xl shadow-2xl">
+          Quiero Planificar Mi Viaje
+        </a>
+        <a
+          href="/about"
+          class="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold text-xl transition-all duration-300 bg-white text-indigo-dark hover:bg-crema hover:scale-105 shadow-2xl transform active:scale-95"
+        >
+          Conoce Nuestra Historia
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

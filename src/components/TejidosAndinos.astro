@@ -1,0 +1,445 @@
+---
+/**
+ * TejidosAndinos.astro
+ *
+ * Patrones geometricos seamless inspirados en tejidos tradicionales andinos.
+ *
+ * CONTEXTO CULTURAL:
+ * Los tejidos andinos son una forma de escritura visual que transmite historia,
+ * identidad y cosmovision. En Ayacucho, la tradicion textil se remonta a las
+ * culturas Wari y Paracas, y continua viva en comunidades como San Juan Bautista.
+ *
+ * PATRONES INCLUIDOS:
+ *
+ * 1. GRECAS ESCALONADAS (Pata-pata)
+ *    Representan los andenes agricolas y las montanas. El escalonamiento
+ *    simboliza los niveles del mundo andino: Hanan Pacha (mundo de arriba),
+ *    Kay Pacha (mundo presente), Uku Pacha (mundo de abajo).
+ *
+ * 2. ROMBOS CONCENTRICOS (Ñawi)
+ *    Simbolizan ojos que protegen, espejos de agua (qochas), y semillas.
+ *    Aparecen en tejidos de uso ceremonial y de proteccion.
+ *
+ * 3. ZIGZAG (Qenqo)
+ *    Representa el rayo, el agua en movimiento, y las serpientes (amaru).
+ *    Es simbolo de energia, fertilidad y transformacion.
+ *
+ * 4. CHAKANA (Cruz Andina)
+ *    Simbolo sagrado que representa la constelacion de la Cruz del Sur,
+ *    los cuatro puntos cardinales, y la conexion entre mundos.
+ *    El escalon central representa el vacio cosmico (Qhapaq Ñan).
+ *
+ * 5. TOCAPU
+ *    Cuadrados con diseños geometricos internos usados en textiles incaicos.
+ *    Cada tocapu tiene un significado especifico, funcionando como
+ *    un sistema de comunicacion visual.
+ *
+ * TECNICA:
+ * Todos los patrones son seamless (se repiten sin costuras visibles) usando
+ * SVG patterns con patternUnits="userSpaceOnUse". Estan optimizados para
+ * rendimiento usando formas simples y colores solidos.
+ */
+
+interface Props {
+  /** Tipo de patron */
+  pattern?: 'grecas' | 'rombos' | 'zigzag' | 'chakana' | 'tocapu' | 'mixto';
+  /** Escala del patron */
+  scale?: 'fine' | 'medium' | 'coarse';
+  /** Paleta de colores: tradicional (tierras), vibrante (festivo), o monocromo */
+  palette?: 'tradicional' | 'vibrante' | 'monocromo';
+  /** Opacidad general (0.03-0.15 recomendado para fondos) */
+  opacity?: number;
+  /** Posicion del patron */
+  position?: 'full' | 'top' | 'bottom' | 'left' | 'right';
+  /** Clase CSS adicional */
+  className?: string;
+  /** ID unico para evitar conflictos SVG */
+  uniqueId?: string;
+}
+
+const {
+  pattern = 'grecas',
+  scale = 'medium',
+  palette = 'tradicional',
+  opacity = 0.08,
+  position = 'full',
+  className = '',
+  uniqueId = 'ta'
+} = Astro.props;
+
+// Paletas de colores
+const palettes = {
+  tradicional: {
+    primary: '#8B6F47',     // Tierra/marron
+    secondary: '#C85A45',   // Terracota
+    accent: '#D42C2A',      // Rojo cochinilla
+    highlight: '#FDB913',   // Amarillo molle
+    dark: '#4A3728'         // Marron oscuro
+  },
+  vibrante: {
+    primary: '#E91E8C',     // Fucsia
+    secondary: '#00B5CC',   // Turquesa
+    accent: '#FDB913',      // Amarillo
+    highlight: '#27AE60',   // Verde
+    dark: '#8B4789'         // Purpura
+  },
+  monocromo: {
+    primary: '#5A4A3A',
+    secondary: '#7A6A5A',
+    accent: '#8A7A6A',
+    highlight: '#9A8A7A',
+    dark: '#4A3A2A'
+  }
+};
+
+const colors = palettes[palette];
+
+// Configuracion de escala
+const scaleConfig = {
+  fine: { size: 40, strokeWidth: 1 },
+  medium: { size: 60, strokeWidth: 1.5 },
+  coarse: { size: 90, strokeWidth: 2 }
+};
+
+const config = scaleConfig[scale];
+
+// Clases de posicionamiento
+const positionClasses = {
+  full: 'inset-0',
+  top: 'top-0 left-0 right-0 h-48',
+  bottom: 'bottom-0 left-0 right-0 h-48',
+  left: 'left-0 top-0 bottom-0 w-48',
+  right: 'right-0 top-0 bottom-0 w-48'
+};
+---
+
+<div
+  class:list={[
+    'absolute pointer-events-none overflow-hidden',
+    positionClasses[position],
+    className
+  ]}
+  style={`opacity: ${opacity}`}
+  aria-hidden="true"
+>
+  <svg class="w-full h-full" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      {/* PATRON: GRECAS ESCALONADAS */}
+      {(pattern === 'grecas' || pattern === 'mixto') && (
+        <pattern
+          id={`${uniqueId}-grecas`}
+          x="0"
+          y="0"
+          width={config.size}
+          height={config.size}
+          patternUnits="userSpaceOnUse"
+        >
+          <!-- Greca escalonada principal -->
+          <path
+            d={`
+              M0 ${config.size * 0.5}
+              L${config.size * 0.2} ${config.size * 0.5}
+              L${config.size * 0.2} ${config.size * 0.3}
+              L${config.size * 0.4} ${config.size * 0.3}
+              L${config.size * 0.4} ${config.size * 0.1}
+              L${config.size * 0.6} ${config.size * 0.1}
+              L${config.size * 0.6} ${config.size * 0.3}
+              L${config.size * 0.8} ${config.size * 0.3}
+              L${config.size * 0.8} ${config.size * 0.5}
+              L${config.size} ${config.size * 0.5}
+            `}
+            stroke={colors.primary}
+            stroke-width={config.strokeWidth}
+            fill="none"
+          />
+          <!-- Greca escalonada espejo (inferior) -->
+          <path
+            d={`
+              M0 ${config.size * 0.5}
+              L${config.size * 0.2} ${config.size * 0.5}
+              L${config.size * 0.2} ${config.size * 0.7}
+              L${config.size * 0.4} ${config.size * 0.7}
+              L${config.size * 0.4} ${config.size * 0.9}
+              L${config.size * 0.6} ${config.size * 0.9}
+              L${config.size * 0.6} ${config.size * 0.7}
+              L${config.size * 0.8} ${config.size * 0.7}
+              L${config.size * 0.8} ${config.size * 0.5}
+              L${config.size} ${config.size * 0.5}
+            `}
+            stroke={colors.secondary}
+            stroke-width={config.strokeWidth}
+            fill="none"
+          />
+          <!-- Punto central decorativo -->
+          <circle
+            cx={config.size * 0.5}
+            cy={config.size * 0.5}
+            r={config.size * 0.03}
+            fill={colors.accent}
+          />
+        </pattern>
+      )}
+
+      {/* PATRON: ROMBOS CONCENTRICOS */}
+      {(pattern === 'rombos' || pattern === 'mixto') && (
+        <pattern
+          id={`${uniqueId}-rombos`}
+          x="0"
+          y="0"
+          width={config.size}
+          height={config.size}
+          patternUnits="userSpaceOnUse"
+        >
+          <!-- Rombo exterior -->
+          <polygon
+            points={`
+              ${config.size * 0.5},${config.size * 0.1}
+              ${config.size * 0.9},${config.size * 0.5}
+              ${config.size * 0.5},${config.size * 0.9}
+              ${config.size * 0.1},${config.size * 0.5}
+            `}
+            stroke={colors.primary}
+            stroke-width={config.strokeWidth}
+            fill="none"
+          />
+          <!-- Rombo medio -->
+          <polygon
+            points={`
+              ${config.size * 0.5},${config.size * 0.25}
+              ${config.size * 0.75},${config.size * 0.5}
+              ${config.size * 0.5},${config.size * 0.75}
+              ${config.size * 0.25},${config.size * 0.5}
+            `}
+            stroke={colors.secondary}
+            stroke-width={config.strokeWidth}
+            fill="none"
+          />
+          <!-- Rombo interior -->
+          <polygon
+            points={`
+              ${config.size * 0.5},${config.size * 0.38}
+              ${config.size * 0.62},${config.size * 0.5}
+              ${config.size * 0.5},${config.size * 0.62}
+              ${config.size * 0.38},${config.size * 0.5}
+            `}
+            stroke={colors.accent}
+            stroke-width={config.strokeWidth * 0.8}
+            fill={colors.highlight}
+            fill-opacity="0.3"
+          />
+          <!-- Centro (ojo/semilla) -->
+          <circle
+            cx={config.size * 0.5}
+            cy={config.size * 0.5}
+            r={config.size * 0.04}
+            fill={colors.dark}
+          />
+        </pattern>
+      )}
+
+      {/* PATRON: ZIGZAG (Qenqo) */}
+      {(pattern === 'zigzag' || pattern === 'mixto') && (
+        <pattern
+          id={`${uniqueId}-zigzag`}
+          x="0"
+          y="0"
+          width={config.size}
+          height={config.size * 0.5}
+          patternUnits="userSpaceOnUse"
+        >
+          <!-- Linea zigzag principal -->
+          <polyline
+            points={`
+              0,${config.size * 0.25}
+              ${config.size * 0.25},${config.size * 0.05}
+              ${config.size * 0.5},${config.size * 0.25}
+              ${config.size * 0.75},${config.size * 0.05}
+              ${config.size},${config.size * 0.25}
+            `}
+            stroke={colors.primary}
+            stroke-width={config.strokeWidth * 1.2}
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <!-- Linea zigzag secundaria (paralela) -->
+          <polyline
+            points={`
+              0,${config.size * 0.35}
+              ${config.size * 0.25},${config.size * 0.15}
+              ${config.size * 0.5},${config.size * 0.35}
+              ${config.size * 0.75},${config.size * 0.15}
+              ${config.size},${config.size * 0.35}
+            `}
+            stroke={colors.secondary}
+            stroke-width={config.strokeWidth * 0.8}
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <!-- Puntos en los vertices -->
+          <circle cx={config.size * 0.25} cy={config.size * 0.05} r={config.size * 0.025} fill={colors.accent}/>
+          <circle cx={config.size * 0.75} cy={config.size * 0.05} r={config.size * 0.025} fill={colors.accent}/>
+        </pattern>
+      )}
+
+      {/* PATRON: CHAKANA (Cruz Andina) */}
+      {(pattern === 'chakana' || pattern === 'mixto') && (
+        <pattern
+          id={`${uniqueId}-chakana`}
+          x="0"
+          y="0"
+          width={config.size}
+          height={config.size}
+          patternUnits="userSpaceOnUse"
+        >
+          <!-- Chakana completa -->
+          <path
+            d={`
+              M${config.size * 0.5} ${config.size * 0.1}
+              L${config.size * 0.6} ${config.size * 0.1}
+              L${config.size * 0.6} ${config.size * 0.3}
+              L${config.size * 0.7} ${config.size * 0.3}
+              L${config.size * 0.7} ${config.size * 0.4}
+              L${config.size * 0.9} ${config.size * 0.4}
+              L${config.size * 0.9} ${config.size * 0.5}
+              L${config.size * 0.9} ${config.size * 0.6}
+              L${config.size * 0.7} ${config.size * 0.6}
+              L${config.size * 0.7} ${config.size * 0.7}
+              L${config.size * 0.6} ${config.size * 0.7}
+              L${config.size * 0.6} ${config.size * 0.9}
+              L${config.size * 0.5} ${config.size * 0.9}
+              L${config.size * 0.4} ${config.size * 0.9}
+              L${config.size * 0.4} ${config.size * 0.7}
+              L${config.size * 0.3} ${config.size * 0.7}
+              L${config.size * 0.3} ${config.size * 0.6}
+              L${config.size * 0.1} ${config.size * 0.6}
+              L${config.size * 0.1} ${config.size * 0.5}
+              L${config.size * 0.1} ${config.size * 0.4}
+              L${config.size * 0.3} ${config.size * 0.4}
+              L${config.size * 0.3} ${config.size * 0.3}
+              L${config.size * 0.4} ${config.size * 0.3}
+              L${config.size * 0.4} ${config.size * 0.1}
+              Z
+            `}
+            stroke={colors.primary}
+            stroke-width={config.strokeWidth}
+            fill={colors.secondary}
+            fill-opacity="0.15"
+          />
+          <!-- Circulo central (vacio cosmico) -->
+          <circle
+            cx={config.size * 0.5}
+            cy={config.size * 0.5}
+            r={config.size * 0.08}
+            stroke={colors.accent}
+            stroke-width={config.strokeWidth * 0.8}
+            fill="none"
+          />
+          <!-- Punto central -->
+          <circle
+            cx={config.size * 0.5}
+            cy={config.size * 0.5}
+            r={config.size * 0.03}
+            fill={colors.highlight}
+          />
+        </pattern>
+      )}
+
+      {/* PATRON: TOCAPU */}
+      {(pattern === 'tocapu' || pattern === 'mixto') && (
+        <pattern
+          id={`${uniqueId}-tocapu`}
+          x="0"
+          y="0"
+          width={config.size}
+          height={config.size}
+          patternUnits="userSpaceOnUse"
+        >
+          <!-- Marco del tocapu -->
+          <rect
+            x={config.size * 0.05}
+            y={config.size * 0.05}
+            width={config.size * 0.9}
+            height={config.size * 0.9}
+            stroke={colors.primary}
+            stroke-width={config.strokeWidth}
+            fill="none"
+          />
+          <!-- Marco interno -->
+          <rect
+            x={config.size * 0.15}
+            y={config.size * 0.15}
+            width={config.size * 0.7}
+            height={config.size * 0.7}
+            stroke={colors.secondary}
+            stroke-width={config.strokeWidth * 0.7}
+            fill="none"
+          />
+          <!-- Diagonales internas (simbolo geometrico) -->
+          <line
+            x1={config.size * 0.25}
+            y1={config.size * 0.25}
+            x2={config.size * 0.75}
+            y2={config.size * 0.75}
+            stroke={colors.accent}
+            stroke-width={config.strokeWidth * 0.6}
+          />
+          <line
+            x1={config.size * 0.75}
+            y1={config.size * 0.25}
+            x2={config.size * 0.25}
+            y2={config.size * 0.75}
+            stroke={colors.accent}
+            stroke-width={config.strokeWidth * 0.6}
+          />
+          <!-- Cuadrado central -->
+          <rect
+            x={config.size * 0.4}
+            y={config.size * 0.4}
+            width={config.size * 0.2}
+            height={config.size * 0.2}
+            fill={colors.highlight}
+            fill-opacity="0.4"
+          />
+          <!-- Puntos en esquinas -->
+          <circle cx={config.size * 0.25} cy={config.size * 0.25} r={config.size * 0.025} fill={colors.dark}/>
+          <circle cx={config.size * 0.75} cy={config.size * 0.25} r={config.size * 0.025} fill={colors.dark}/>
+          <circle cx={config.size * 0.25} cy={config.size * 0.75} r={config.size * 0.025} fill={colors.dark}/>
+          <circle cx={config.size * 0.75} cy={config.size * 0.75} r={config.size * 0.025} fill={colors.dark}/>
+        </pattern>
+      )}
+    </defs>
+
+    <!-- Aplicar patron(es) -->
+    {pattern === 'mixto' ? (
+      <g>
+        <!-- Fondo con grecas -->
+        <rect width="100%" height="33%" fill={`url(#${uniqueId}-grecas)`}/>
+        <!-- Seccion media con rombos -->
+        <rect y="33%" width="100%" height="34%" fill={`url(#${uniqueId}-rombos)`}/>
+        <!-- Seccion inferior con chakana -->
+        <rect y="67%" width="100%" height="33%" fill={`url(#${uniqueId}-chakana)`}/>
+      </g>
+    ) : (
+      <rect width="100%" height="100%" fill={`url(#${uniqueId}-${pattern})`}/>
+    )}
+  </svg>
+</div>
+
+<style>
+  /* Animacion sutil opcional para patrones (desactivada por defecto) */
+  @keyframes pattern-shift {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100% 100%;
+    }
+  }
+
+  /* Clase para activar animacion si se desea */
+  .pattern-animated svg {
+    animation: pattern-shift 60s linear infinite;
+  }
+</style>

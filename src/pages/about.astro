@@ -1,0 +1,213 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+---
+
+<BaseLayout
+  title="Sobre Nosotros - Historia y Cultura"
+  description="Conoce la historia, geografía y cultura del distrito María Parado de Bellido en Cangallo, Ayacucho. Un pueblo andino rico en tradiciones a 3,236 msnm."
+  image="/images/hero-about.webp"
+>
+  <Hero
+    title="Nuestra Historia"
+    subtitle="Un distrito con alma andina y corazón peruano"
+    image="/images/hero-about.webp"
+    imageAlt="Comunidad de María Parado de Bellido"
+    height="medium"
+  />
+
+  <!-- Historia Section -->
+  <section class="container-custom py-16 md:py-20">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal mb-12">
+        <h2 class="section-heading">
+          María Parado de Bellido: Heroína Nacional
+        </h2>
+        <p class="text-evocative mb-4">
+          Nuestro distrito lleva el nombre de una de las heroínas más valientes
+          de la independencia del Perú.
+          <strong>María Parado de Bellido</strong> (1761-1822), natural de Huamanga,
+          fue una patriota que sacrificó su vida por la libertad de nuestra nación.
+        </p>
+        <p class="text-evocative mb-4">
+          Condenada a muerte por negarse a revelar información sobre las fuerzas
+          independentistas, María Parado enfrentó el fusilamiento con valentía
+          inquebrantable, dejando un legado de coraje que inspira a cada
+          generación de peruanos.
+        </p>
+        <p class="text-evocative">
+          En honor a su memoria y sacrificio, nuestro distrito adoptó su nombre
+          mediante <strong>Ley N.° 14140</strong>, promulgada el <strong
+            >18 de junio de 1962</strong
+          >
+          e instalado el 4 de octubre del mismo año, convirtiéndose en un símbolo
+          viviente de la resistencia y el espíritu indomable del pueblo ayacuchano.
+        </p>
+      </div>
+
+      <div class="reveal mb-12">
+        <h2 class="section-heading">Geografía y Territorio</h2>
+        <div class="bg-white p-8 rounded-xl shadow-md mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-heading font-semibold text-indigo mb-3">
+                Ubicación
+              </h3>
+              <ul class="space-y-2 text-gray-700">
+                <li><strong>Departamento:</strong> Ayacucho</li>
+                <li><strong>Provincia:</strong> Cangallo</li>
+                <li><strong>Capital distrital:</strong> Pomabamba</li>
+                <li><strong>Altitud:</strong> 3,236 msnm (capital)</li>
+                <li><strong>Superficie:</strong> 129 km² (12,913 hectáreas)</li>
+                <li>
+                  <strong>Coordenadas:</strong>
+                  <a
+                    class="underline"
+                    href="https://maps.app.goo.gl/MJNp5zsYJbbQZGDr8"
+                    target="_blank"
+                    rel="noopener noreferrer">Ver en Google Maps</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-indigo mb-3">Clima</h3>
+              <ul class="space-y-2 text-gray-700">
+                <li><strong>Tipo:</strong> Sierra - Seco y frío</li>
+                <li><strong>Temperatura:</strong> -4°C a 24°C</li>
+                <li><strong>Precipitación:</strong> 700-1,150 mm anuales</li>
+                <li><strong>Época lluviosa:</strong> Noviembre - Marzo</li>
+                <li><strong>Época seca:</strong> Abril - Octubre</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="text-evocative">
+          Nuestro territorio se extiende desde <strong
+            >2,500 hasta 4,800 msnm</strong
+          >, abarcando <strong>tres pisos ecológicos</strong>: la zona Quechua
+          (cultivos), Suni (ganadería) y Puna (pastos naturales). Estamos
+          bañados por los <strong>ríos Pampas, Macro y Pillpimayo</strong>, con
+          manantiales y puquiales en las zonas altas.
+        </p>
+      </div>
+
+      <div class="reveal mb-12">
+        <h2 class="section-heading">Cultura y Tradiciones Comunales</h2>
+        <p class="text-evocative mb-6">
+          Mantenemos <strong>fuerte identidad cultural</strong> y sentido comunitario.
+          Somos <strong>3,047 habitantes</strong> (2005) con un <strong
+            >67% de población joven</strong
+          > (0-34 años) que preserva las tradiciones de nuestros ancestros Chancas.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div
+            class="bg-gradient-to-br from-terracota/10 to-transparent p-6 rounded-lg"
+          >
+            <h3 class="font-heading font-semibold text-terracota text-xl mb-3">
+              Ayni y Minka
+            </h3>
+            <p class="text-gray-700">
+              El <strong>ayni</strong> (reciprocidad andina) y la <strong
+                >minka</strong
+              > (trabajo comunitario) son prácticas vivas. El ayni es trabajo recíproco
+              entre familias; la minka es trabajo colectivo para el bien común. Estas
+              tradiciones fortalecen nuestra cohesión social y organización comunal.
+            </p>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-indigo/10 to-transparent p-6 rounded-lg"
+          >
+            <h3 class="font-heading font-semibold text-indigo text-xl mb-3">
+              Festividades Religiosas
+            </h3>
+            <p class="text-gray-700">
+              Nuestras festividades religiosas se celebran con participación de
+              toda la población. Los mayordomos asumen con devoción la
+              organización de las fiestas patronales, manteniendo vivo el
+              espíritu comunitario que nos caracteriza.
+            </p>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-mostaza/10 to-transparent p-6 rounded-lg"
+          >
+            <h3 class="font-heading font-semibold text-mostaza text-xl mb-3">
+              Economía Agropecuaria
+            </h3>
+            <p class="text-gray-700">
+              El <strong>76% de nuestra población</strong> se dedica a agricultura
+              y ganadería. Cultivamos <strong
+                >papa, maíz, cebada, trigo, avena, quinua y kiwicha</strong
+              >. Criamos <strong
+                >ovinos (54%), vacunos (18.8%) y camélidos</strong
+              > de forma extensiva.
+            </p>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-tierra/10 to-transparent p-6 rounded-lg"
+          >
+            <h3 class="font-heading font-semibold text-tierra text-xl mb-3">
+              Flora y Fauna
+            </h3>
+            <p class="text-gray-700">
+              Contamos con bosques de <strong
+                >queñua, molle, tara, eucalipto</strong
+              > y plantas como <strong>cabuya y tuna</strong>. Fauna: <strong
+                >vizcacha, zorro andino, taruca</strong
+              > y aves alto andinas. El 72% de nuestro ambiente está conservado.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <h2 class="section-heading">Potencialidades y Desarrollo</h2>
+        <p class="text-evocative mb-4">
+          Somos un distrito con <strong>población joven y activa</strong> que enfrenta
+          desafíos de pobreza pero mantiene <strong
+            >disposición al progreso</strong
+          > y fe en el futuro. Nuestras principales potencialidades incluyen: tres
+          pisos ecológicos con alta biodiversidad, recursos agrícolas y forestales,
+          yacimientos minerales (yeso, mármol, agregados) y posición estratégica en
+          el eje <strong>Ayacucho-Cangallo-Sarhua-Huancasancos-Ica-Nazca</strong
+          >.
+        </p>
+        <p class="text-evocative mb-4">
+          Nuestra producción es mayormente de <strong>autoconsumo</strong>, con
+          parcelas familiares de 3-4 yugadas promedio. Criamos <strong
+            >7,920 cabezas de ganado</strong
+          > entre ovinos, vacunos, porcinos, equinos y camélidos. La lana de oveja
+          se usa para hilado y confección de textiles tradicionales.
+        </p>
+        <p class="text-evocative">
+          Trabajamos por convertirnos en <strong>proveedor regional</strong> de productos
+          agrícolas, ganaderos y plantas medicinales. El proyecto de <strong
+            >Represa de Pastocorralpata</strong
+          > es clave para nuestro desarrollo agrícola interprovincial.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section
+    class="bg-gradient-to-r from-mostaza to-tierra text-white py-12 md:py-16 pattern-overlay"
+  >
+    <div class="container-custom text-center reveal">
+      <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4">
+        Ven y Vive Nuestra Cultura
+      </h2>
+      <p class="text-lg mb-6 max-w-2xl mx-auto text-white/90">
+        Te invitamos a conocer nuestras tradiciones, probar nuestra gastronomía
+        y compartir la calidez de nuestra gente.
+      </p>
+      <a href="/tours" class="btn-primary bg-white text-indigo hover:bg-crema">
+        Explora Nuestros Tours
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+# robots.txt for María Parado de Bellido Tourism Site
+
+User-agent: *
+# Allow: /
+Disallow: /
+
+# Sitemap
+Sitemap: https://mariaparadodebellido.com/sitemap-index.xml
+
+# Disallow administrative or private paths (if any in the future)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Crawl-delay (optional, for rate limiting)
+Crawl-delay: 1

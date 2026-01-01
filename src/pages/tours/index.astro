@@ -1,0 +1,298 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import TourCard from "../../components/TourCard.astro";
+import { fetchTours } from "../../lib/api";
+
+// Fetch tours at build time
+const tours = await fetchTours();
+
+// Sort by price for variety
+const sortedTours = [...tours].sort((a, b) => a.price - b.price);
+---
+
+<BaseLayout
+  title="Tours y Experiencias en María Parado de Bellido"
+  description="Explora tours guiados en María Parado de Bellido, Ayacucho. Caminatas a miradores andinos, visitas a talleres artesanales y experiencias culturales auténticas a 3600 msnm."
+  image="/images/hero-tours.webp"
+>
+  <Hero
+    title="Tours y Experiencias"
+    subtitle="Descubre los secretos de los Andes con guías locales"
+    image="/images/hero-tours.webp"
+    imageAlt="Tours en María Parado de Bellido"
+    height="medium"
+  />
+
+  <!-- Intro -->
+  <section class="container-custom py-16 md:py-20">
+    <div class="max-w-4xl mx-auto text-center reveal">
+      <h2 class="section-heading">Vive los Andes con Autenticidad</h2>
+      <p class="text-evocative mb-4">
+        Nuestros tours están diseñados para conectarte con la esencia de María
+        Parado de Bellido. Guiados por habitantes locales que conocen cada
+        sendero, cada historia y cada secreto del territorio, te invitamos a
+        vivir experiencias que transforman la manera de entender los Andes.
+      </p>
+      <p class="text-evocative">
+        Desde caminatas suaves hasta inmersiones culturales profundas, cada tour
+        respeta el ritmo de la naturaleza y las tradiciones de nuestra
+        comunidad.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filters & Search -->
+  <section class="bg-white py-8">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="flex flex-wrap gap-3">
+          <button class="filter-btn active cursor-pointer" data-filter="all">
+            Todos los Tours
+          </button>
+          <button class="filter-btn cursor-pointer" data-filter="easy">
+            Fácil
+          </button>
+          <button class="filter-btn cursor-pointer" data-filter="moderate">
+            Moderado
+          </button>
+          <button class="filter-btn cursor-pointer" data-filter="hard">
+            Difícil
+          </button>
+        </div>
+        <div class="text-sm text-gray-600">
+          {tours.length}
+          {tours.length === 1 ? "tour disponible" : "tours disponibles"}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tours Grid -->
+  <section class="container-custom py-12 md:py-16">
+    {
+      sortedTours.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedTours.map((tour) => (
+            <div
+              class="reveal tour-item"
+              data-difficulty={tour.difficulty || "all"}
+            >
+              <TourCard tour={tour} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <svg
+            class="w-16 h-16 text-gray-400 mx-auto mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <h3 class="text-xl font-heading font-semibold text-gray-700 mb-2">
+            No hay tours disponibles en este momento
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Estamos preparando nuevas experiencias. Vuelve pronto o contáctanos
+            para consultas personalizadas.
+          </p>
+          <a href="/contact" class="btn-primary">
+            Contáctanos
+          </a>
+        </div>
+      )
+    }
+  </section>
+
+  <!-- Info Section -->
+  <section class="bg-gradient-to-br from-crema to-white py-16 md:py-20">
+    <div class="container-custom">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="section-heading text-center mb-12 reveal">
+          ¿Qué Incluyen Nuestros Tours?
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="flex gap-4 reveal">
+            <div class="flex-shrink-0">
+              <div
+                class="w-12 h-12 bg-indigo rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-indigo mb-2">
+                Guías Locales Certificados
+              </h3>
+              <p class="text-gray-700 text-sm">
+                Conocimiento profundo del territorio, historias auténticas y
+                compromiso con tu seguridad.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 reveal">
+            <div class="flex-shrink-0">
+              <div
+                class="w-12 h-12 bg-mostaza rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-indigo mb-2">
+                Horarios Flexibles
+              </h3>
+              <p class="text-gray-700 text-sm">
+                Tours matutinos, vespertinos y de día completo. Adaptamos la
+                experiencia a tu ritmo.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 reveal">
+            <div class="flex-shrink-0">
+              <div
+                class="w-12 h-12 bg-terracota rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-indigo mb-2">
+                Grupos Pequeños
+              </h3>
+              <p class="text-gray-700 text-sm">
+                Máximo 10 participantes para garantizar una experiencia
+                personalizada e íntima.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 reveal">
+            <div class="flex-shrink-0">
+              <div
+                class="w-12 h-12 bg-tierra rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-indigo mb-2">
+                Turismo Responsable
+              </h3>
+              <p class="text-gray-700 text-sm">
+                Respeto por el medio ambiente y apoyo directo a la economía
+                local.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 2px solid #d1d5db;
+    color: #374151;
+  }
+
+  .filter-btn:hover {
+    border-color: #2e4c8a;
+    color: #2e4c8a;
+  }
+
+  .filter-btn.active {
+    background-color: #2e4c8a;
+    color: white;
+    border-color: #2e4c8a;
+  }
+</style>
+
+<script>
+  // Simple filter functionality
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const tourItems = document.querySelectorAll(".tour-item");
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.getAttribute("data-filter");
+
+      // Update active button
+      filterButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      // Filter tours
+      tourItems.forEach((item) => {
+        const difficulty = item.getAttribute("data-difficulty");
+        if (filter === "all" || difficulty === filter) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+</script>

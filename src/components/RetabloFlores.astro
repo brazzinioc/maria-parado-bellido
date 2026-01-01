@@ -1,0 +1,534 @@
+---
+/**
+ * RetabloFlores.astro
+ *
+ * Flores y colibries estilo retablo ayacuchano para decoracion de paginas.
+ *
+ * CONTEXTO CULTURAL:
+ * Los retablos ayacuchanos son cajas de madera decoradas que contienen escenas
+ * de la vida cotidiana, religiosa y festiva. Originarios de los "Sanmarcos"
+ * (cajones de santero), evolucionaron gracias a maestros como Joaquin Lopez Antay.
+ *
+ * ELEMENTOS FLORALES EN RETABLOS:
+ * - Claveles: Flor predominante, simboliza alegria y festividad
+ * - Rosas: Representan devocion religiosa y amor
+ * - Flores de cantuta: Flor sagrada incaica (rojo y amarillo)
+ * - Flores de campo andinas: Margaritas, campanillas
+ *
+ * PICAFLORES/COLIBRIES:
+ * Los colibries (quechua: "q'enti") son mensajeros entre mundos en la cosmovision
+ * andina. En los retablos aparecen libando flores, simbolizando la conexion
+ * entre la tierra (kay pacha) y el cielo (hanan pacha).
+ *
+ * ESTILO ARTISTICO:
+ * - Formas naif, simplificadas pero expresivas
+ * - Colores brillantes y saturados
+ * - Perspectiva plana (sin profundidad realista)
+ * - Contornos definidos
+ */
+
+interface Props {
+  /** Tipo de elemento: flores, colibries, o composicion mixta */
+  variant?: 'flores' | 'colibries' | 'composicion';
+  /** Posicion en el contenedor */
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';
+  /** Tamanio del componente */
+  size?: 'small' | 'medium' | 'large';
+  /** Animacion suave */
+  animated?: boolean;
+  /** Opacidad general (util para fondos sutiles) */
+  opacity?: number;
+  /** Clase CSS adicional */
+  className?: string;
+  /** ID unico para evitar conflictos SVG */
+  uniqueId?: string;
+}
+
+const {
+  variant = 'composicion',
+  position = 'top-right',
+  size = 'medium',
+  animated = true,
+  opacity = 1,
+  className = '',
+  uniqueId = 'rf'
+} = Astro.props;
+
+// Colores tradicionales de retablo
+const colors = {
+  rojo: '#D42C2A',
+  rojoClaro: '#E84745',
+  fucsia: '#E91E8C',
+  fucsiaClaro: '#FF3CA8',
+  naranja: '#FF6B35',
+  amarillo: '#FDB913',
+  amarilloClaro: '#FFCA3A',
+  verde: '#27AE60',
+  verdeOscuro: '#1E8449',
+  verdeJade: '#00A896',
+  turquesa: '#00B5CC',
+  purpura: '#8B4789',
+  tierra: '#8B6F47'
+};
+
+// Configuracion de tamanios
+const sizeConfig = {
+  small: { viewBox: '0 0 150 150', container: 'w-36 h-36' },
+  medium: { viewBox: '0 0 220 220', container: 'w-52 h-52' },
+  large: { viewBox: '0 0 300 300', container: 'w-72 h-72' }
+};
+
+// Clases de posicionamiento
+const positionClasses = {
+  'top-left': 'top-0 left-0 -translate-x-1/4 -translate-y-1/4',
+  'top-right': 'top-0 right-0 translate-x-1/4 -translate-y-1/4',
+  'bottom-left': 'bottom-0 left-0 -translate-x-1/4 translate-y-1/4',
+  'bottom-right': 'bottom-0 right-0 translate-x-1/4 translate-y-1/4',
+  'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+};
+
+const config = sizeConfig[size];
+---
+
+<div
+  class:list={[
+    'absolute pointer-events-none z-10',
+    positionClasses[position],
+    config.container,
+    className
+  ]}
+  style={`opacity: ${opacity}`}
+>
+  <svg
+    viewBox={config.viewBox}
+    class={`w-full h-full ${animated ? 'retablo-animated' : ''}`}
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+  >
+    <defs>
+      <!-- Filtro de sombra suave para profundidad -->
+      <filter id={`${uniqueId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.2)"/>
+      </filter>
+
+      <!-- Gradientes para flores -->
+      <radialGradient id={`${uniqueId}-clavel-rojo`} cx="50%" cy="40%" r="60%">
+        <stop offset="0%" stop-color={colors.rojoClaro}/>
+        <stop offset="60%" stop-color={colors.rojo}/>
+        <stop offset="100%" stop-color="#9A1F1D"/>
+      </radialGradient>
+
+      <radialGradient id={`${uniqueId}-clavel-fucsia`} cx="50%" cy="40%" r="60%">
+        <stop offset="0%" stop-color={colors.fucsiaClaro}/>
+        <stop offset="60%" stop-color={colors.fucsia}/>
+        <stop offset="100%" stop-color="#A8156A"/>
+      </radialGradient>
+
+      <radialGradient id={`${uniqueId}-rosa-naranja`} cx="50%" cy="40%" r="60%">
+        <stop offset="0%" stop-color="#FF8C5A"/>
+        <stop offset="60%" stop-color={colors.naranja}/>
+        <stop offset="100%" stop-color="#D4522A"/>
+      </radialGradient>
+
+      <radialGradient id={`${uniqueId}-centro-flor`} cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color={colors.amarilloClaro}/>
+        <stop offset="70%" stop-color={colors.amarillo}/>
+        <stop offset="100%" stop-color="#D49A10"/>
+      </radialGradient>
+
+      <linearGradient id={`${uniqueId}-hoja`} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color={colors.verde}/>
+        <stop offset="50%" stop-color={colors.verdeOscuro}/>
+        <stop offset="100%" stop-color="#155D34"/>
+      </linearGradient>
+
+      <!-- Gradientes para colibri -->
+      <linearGradient id={`${uniqueId}-colibri-cuerpo`} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color={colors.verdeJade}/>
+        <stop offset="50%" stop-color={colors.verde}/>
+        <stop offset="100%" stop-color={colors.verdeOscuro}/>
+      </linearGradient>
+
+      <linearGradient id={`${uniqueId}-colibri-ala`} x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color={colors.turquesa}/>
+        <stop offset="50%" stop-color="#00D4E6"/>
+        <stop offset="100%" stop-color={colors.turquesa}/>
+      </linearGradient>
+
+      <linearGradient id={`${uniqueId}-colibri-pecho`} x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color={colors.fucsia}/>
+        <stop offset="100%" stop-color={colors.rojo}/>
+      </linearGradient>
+    </defs>
+
+    {/* VARIANTE: FLORES */}
+    {(variant === 'flores' || variant === 'composicion') && (
+      <g class="flores-group">
+        <!-- Clavel rojo grande (flor principal) -->
+        <g class={`flor-clavel ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0s;">
+          <g transform={size === 'large' ? 'translate(100, 90)' : size === 'medium' ? 'translate(75, 70)' : 'translate(55, 52)'}>
+            <!-- Tallo -->
+            <path
+              d={size === 'large' ? 'M0 25 Q-5 50 -2 80 Q0 110 5 130' : 'M0 18 Q-3 35 -1 55 Q0 75 3 90'}
+              stroke={colors.verdeOscuro}
+              stroke-width="3"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <!-- Hojas del tallo -->
+            <ellipse cx="-8" cy={size === 'large' ? 55 : 40} rx="12" ry="5" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(-30 -8 ${size === 'large' ? 55 : 40})`}/>
+            <ellipse cx="6" cy={size === 'large' ? 75 : 55} rx="10" ry="4" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(25 6 ${size === 'large' ? 75 : 55})`}/>
+
+            <!-- Petalos del clavel (multiples capas para efecto rizado) -->
+            <g transform="translate(0, 0)">
+              <!-- Capa externa de petalos -->
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+                <ellipse
+                  cx="0"
+                  cy={size === 'large' ? -22 : -16}
+                  rx={size === 'large' ? 10 : 7}
+                  ry={size === 'large' ? 18 : 13}
+                  fill={`url(#${uniqueId}-clavel-rojo)`}
+                  transform={`rotate(${angle} 0 0)`}
+                  opacity="0.9"
+                />
+              ))}
+              <!-- Capa media de petalos -->
+              {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((angle) => (
+                <ellipse
+                  cx="0"
+                  cy={size === 'large' ? -18 : -13}
+                  rx={size === 'large' ? 8 : 6}
+                  ry={size === 'large' ? 14 : 10}
+                  fill={colors.rojoClaro}
+                  transform={`rotate(${angle} 0 0)`}
+                  opacity="0.85"
+                />
+              ))}
+              <!-- Borde ondulado caracteristico del clavel -->
+              {[0, 60, 120, 180, 240, 300].map((angle) => (
+                <path
+                  d={size === 'large'
+                    ? `M${Math.cos(angle * Math.PI / 180) * 15} ${Math.sin(angle * Math.PI / 180) * 15 - 5} Q${Math.cos(angle * Math.PI / 180) * 20} ${Math.sin(angle * Math.PI / 180) * 20 - 8} ${Math.cos((angle + 30) * Math.PI / 180) * 15} ${Math.sin((angle + 30) * Math.PI / 180) * 15 - 5}`
+                    : `M${Math.cos(angle * Math.PI / 180) * 11} ${Math.sin(angle * Math.PI / 180) * 11 - 4} Q${Math.cos(angle * Math.PI / 180) * 15} ${Math.sin(angle * Math.PI / 180) * 15 - 6} ${Math.cos((angle + 30) * Math.PI / 180) * 11} ${Math.sin((angle + 30) * Math.PI / 180) * 11 - 4}`
+                  }
+                  stroke={colors.rojo}
+                  stroke-width="2"
+                  fill="none"
+                />
+              ))}
+              <!-- Centro del clavel -->
+              <circle cx="0" cy="0" r={size === 'large' ? 8 : 6} fill={`url(#${uniqueId}-centro-flor)`}/>
+              <circle cx="-2" cy="-2" r={size === 'large' ? 3 : 2} fill="white" opacity="0.3"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- Rosa fucsia (flor secundaria) -->
+        <g class={`flor-rosa ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0.3s;">
+          <g transform={size === 'large' ? 'translate(170, 140)' : size === 'medium' ? 'translate(130, 110)' : 'translate(100, 85)'}>
+            <!-- Tallo -->
+            <path
+              d={size === 'large' ? 'M0 20 Q5 45 3 70' : 'M0 15 Q3 32 2 50'}
+              stroke={colors.verdeOscuro}
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <!-- Hoja -->
+            <ellipse cx="8" cy={size === 'large' ? 40 : 30} rx="10" ry="4" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(20 8 ${size === 'large' ? 40 : 30})`}/>
+
+            <!-- Petalos de rosa (espiral caracteristica) -->
+            <g transform="translate(0, 0)">
+              <!-- Petalos externos -->
+              {[0, 72, 144, 216, 288].map((angle) => (
+                <ellipse
+                  cx="0"
+                  cy={size === 'large' ? -16 : -12}
+                  rx={size === 'large' ? 8 : 6}
+                  ry={size === 'large' ? 14 : 10}
+                  fill={`url(#${uniqueId}-clavel-fucsia)`}
+                  transform={`rotate(${angle} 0 0)`}
+                  opacity="0.9"
+                />
+              ))}
+              <!-- Petalos internos -->
+              {[36, 108, 180, 252, 324].map((angle) => (
+                <ellipse
+                  cx="0"
+                  cy={size === 'large' ? -12 : -9}
+                  rx={size === 'large' ? 6 : 4.5}
+                  ry={size === 'large' ? 10 : 7}
+                  fill={colors.fucsiaClaro}
+                  transform={`rotate(${angle} 0 0)`}
+                  opacity="0.85"
+                />
+              ))}
+              <!-- Centro -->
+              <circle cx="0" cy="0" r={size === 'large' ? 6 : 4.5} fill={`url(#${uniqueId}-centro-flor)`}/>
+              <circle cx="-1.5" cy="-1.5" r={size === 'large' ? 2 : 1.5} fill="white" opacity="0.25"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- Flor naranja pequena -->
+        <g class={`flor-pequena ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0.5s;">
+          <g transform={size === 'large' ? 'translate(55, 160)' : size === 'medium' ? 'translate(45, 125)' : 'translate(35, 95)'}>
+            <!-- Tallo corto -->
+            <path
+              d={size === 'large' ? 'M0 12 L0 40' : 'M0 9 L0 28'}
+              stroke={colors.verdeOscuro}
+              stroke-width="2"
+              fill="none"
+            />
+            <!-- Petalos simples -->
+            {[0, 60, 120, 180, 240, 300].map((angle) => (
+              <ellipse
+                cx="0"
+                cy={size === 'large' ? -10 : -7}
+                rx={size === 'large' ? 5 : 3.5}
+                ry={size === 'large' ? 10 : 7}
+                fill={`url(#${uniqueId}-rosa-naranja)`}
+                transform={`rotate(${angle} 0 0)`}
+                opacity="0.9"
+              />
+            ))}
+            <circle cx="0" cy="0" r={size === 'large' ? 5 : 3.5} fill={`url(#${uniqueId}-centro-flor)`}/>
+          </g>
+        </g>
+
+        <!-- Hojas decorativas sueltas -->
+        <g class="hojas-decorativas">
+          <ellipse
+            cx={size === 'large' ? 140 : size === 'medium' ? 105 : 80}
+            cy={size === 'large' ? 200 : size === 'medium' ? 155 : 115}
+            rx={size === 'large' ? 18 : 13}
+            ry={size === 'large' ? 7 : 5}
+            fill={`url(#${uniqueId}-hoja)`}
+            transform={`rotate(-15 ${size === 'large' ? 140 : size === 'medium' ? 105 : 80} ${size === 'large' ? 200 : size === 'medium' ? 155 : 115})`}
+          />
+          <ellipse
+            cx={size === 'large' ? 200 : size === 'medium' ? 155 : 115}
+            cy={size === 'large' ? 85 : size === 'medium' ? 65 : 48}
+            rx={size === 'large' ? 14 : 10}
+            ry={size === 'large' ? 5 : 3.5}
+            fill={`url(#${uniqueId}-hoja)`}
+            transform={`rotate(30 ${size === 'large' ? 200 : size === 'medium' ? 155 : 115} ${size === 'large' ? 85 : size === 'medium' ? 65 : 48})`}
+          />
+        </g>
+      </g>
+    )}
+
+    {/* VARIANTE: COLIBRIES */}
+    {(variant === 'colibries' || variant === 'composicion') && (
+      <g class="colibries-group">
+        <!-- Colibri principal volando hacia la derecha -->
+        <g
+          class={`colibri ${animated ? 'colibri-hover' : ''}`}
+          transform={size === 'large' ? 'translate(180, 60)' : size === 'medium' ? 'translate(140, 45)' : 'translate(105, 35)'}
+          filter={`url(#${uniqueId}-shadow)`}
+        >
+          <!-- Cuerpo del colibri -->
+          <ellipse
+            cx="0"
+            cy="0"
+            rx={size === 'large' ? 18 : size === 'medium' ? 14 : 10}
+            ry={size === 'large' ? 10 : size === 'medium' ? 8 : 6}
+            fill={`url(#${uniqueId}-colibri-cuerpo)`}
+            transform="rotate(-15)"
+          />
+
+          <!-- Pecho iridiscente -->
+          <ellipse
+            cx={size === 'large' ? -5 : -4}
+            cy={size === 'large' ? 3 : 2}
+            rx={size === 'large' ? 8 : 6}
+            ry={size === 'large' ? 6 : 4.5}
+            fill={`url(#${uniqueId}-colibri-pecho)`}
+            opacity="0.8"
+          />
+
+          <!-- Cabeza -->
+          <circle
+            cx={size === 'large' ? -18 : size === 'medium' ? -14 : -10}
+            cy={size === 'large' ? -3 : -2}
+            r={size === 'large' ? 7 : size === 'medium' ? 5.5 : 4}
+            fill={colors.verdeOscuro}
+          />
+
+          <!-- Ojo -->
+          <circle
+            cx={size === 'large' ? -20 : size === 'medium' ? -16 : -11}
+            cy={size === 'large' ? -4 : -3}
+            r={size === 'large' ? 2 : 1.5}
+            fill="black"
+          />
+          <circle
+            cx={size === 'large' ? -20.5 : size === 'medium' ? -16.3 : -11.2}
+            cy={size === 'large' ? -4.5 : -3.3}
+            r={size === 'large' ? 0.8 : 0.6}
+            fill="white"
+          />
+
+          <!-- Pico largo -->
+          <path
+            d={size === 'large'
+              ? 'M-25 -2 L-45 0 L-25 2 Z'
+              : size === 'medium'
+              ? 'M-19 -1.5 L-35 0 L-19 1.5 Z'
+              : 'M-14 -1 L-26 0 L-14 1 Z'
+            }
+            fill={colors.tierra}
+          />
+
+          <!-- Ala superior -->
+          <path
+            d={size === 'large'
+              ? 'M5 -5 Q25 -30 40 -20 Q30 -10 15 -3 Z'
+              : size === 'medium'
+              ? 'M4 -4 Q20 -24 32 -16 Q24 -8 12 -2.5 Z'
+              : 'M3 -3 Q15 -18 24 -12 Q18 -6 9 -2 Z'
+            }
+            fill={`url(#${uniqueId}-colibri-ala)`}
+            class={animated ? 'ala-flutter' : ''}
+            opacity="0.9"
+          />
+
+          <!-- Ala inferior -->
+          <path
+            d={size === 'large'
+              ? 'M5 8 Q20 25 35 18 Q25 12 12 8 Z'
+              : size === 'medium'
+              ? 'M4 6 Q16 20 28 14 Q20 9 10 6 Z'
+              : 'M3 4.5 Q12 15 21 11 Q15 7 7.5 4.5 Z'
+            }
+            fill={`url(#${uniqueId}-colibri-ala)`}
+            class={animated ? 'ala-flutter-delay' : ''}
+            opacity="0.85"
+          />
+
+          <!-- Cola -->
+          <path
+            d={size === 'large'
+              ? 'M15 2 Q25 5 30 12 Q22 8 18 5 Q28 10 32 18 Q20 12 15 5 Z'
+              : size === 'medium'
+              ? 'M12 1.5 Q20 4 24 9.5 Q17 6 14 4 Q22 8 25 14 Q16 9.5 12 4 Z'
+              : 'M9 1 Q15 3 18 7 Q13 4.5 11 3 Q17 6 19 10.5 Q12 7 9 3 Z'
+            }
+            fill={colors.verdeOscuro}
+          />
+        </g>
+
+        <!-- Colibri secundario (mas pequeno, diferente angulo) - solo en composicion y tamanios grandes -->
+        {variant === 'composicion' && size !== 'small' && (
+          <g
+            class={`colibri-small ${animated ? 'colibri-hover-delay' : ''}`}
+            transform={size === 'large' ? 'translate(230, 180) scale(-0.6, 0.6)' : 'translate(175, 140) scale(-0.5, 0.5)'}
+            filter={`url(#${uniqueId}-shadow)`}
+          >
+            <!-- Cuerpo -->
+            <ellipse cx="0" cy="0" rx="14" ry="8" fill={colors.purpura} transform="rotate(10)"/>
+            <!-- Pecho -->
+            <ellipse cx="-4" cy="2" rx="6" ry="4.5" fill={colors.amarillo} opacity="0.7"/>
+            <!-- Cabeza -->
+            <circle cx="-14" cy="-2" r="5.5" fill={colors.purpura}/>
+            <!-- Ojo -->
+            <circle cx="-15.5" cy="-3" r="1.5" fill="black"/>
+            <circle cx="-15.8" cy="-3.3" r="0.5" fill="white"/>
+            <!-- Pico -->
+            <path d="M-19 -1 L-32 0 L-19 1 Z" fill={colors.tierra}/>
+            <!-- Alas -->
+            <path d="M4 -4 Q18 -22 28 -14 Q20 -7 10 -2 Z" fill={colors.turquesa} opacity="0.85"/>
+            <path d="M4 5 Q15 18 25 12 Q18 8 9 5 Z" fill={colors.turquesa} opacity="0.8"/>
+            <!-- Cola -->
+            <path d="M12 1 Q20 4 24 10 Q16 6 14 3.5 Q22 8 25 14 Q14 9 12 3.5 Z" fill="#6C3483"/>
+          </g>
+        )}
+      </g>
+    )}
+
+    {/* Puntos decorativos estilo retablo (pequenos circulos de color) */}
+    {variant === 'composicion' && (
+      <g class="puntos-decorativos" opacity="0.6">
+        <circle cx={size === 'large' ? 40 : 30} cy={size === 'large' ? 40 : 30} r="3" fill={colors.amarillo}/>
+        <circle cx={size === 'large' ? 260 : size === 'medium' ? 195 : 130} cy={size === 'large' ? 260 : size === 'medium' ? 195 : 130} r="2.5" fill={colors.turquesa}/>
+        <circle cx={size === 'large' ? 250 : size === 'medium' ? 190 : 125} cy={size === 'large' ? 50 : 38} r="2" fill={colors.fucsia}/>
+      </g>
+    )}
+  </svg>
+</div>
+
+<style>
+  @keyframes flor-sway {
+    0%, 100% {
+      transform: rotate(0deg) translateY(0);
+    }
+    25% {
+      transform: rotate(-2deg) translateY(-1px);
+    }
+    75% {
+      transform: rotate(2deg) translateY(1px);
+    }
+  }
+
+  @keyframes colibri-hover {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-3px, -2px);
+    }
+    50% {
+      transform: translate(0, -4px);
+    }
+    75% {
+      transform: translate(3px, -2px);
+    }
+  }
+
+  @keyframes ala-flutter {
+    0%, 100% {
+      transform: scaleY(1) rotate(0deg);
+    }
+    50% {
+      transform: scaleY(0.7) rotate(-5deg);
+    }
+  }
+
+  .retablo-animated .flor-sway {
+    animation: flor-sway 4s ease-in-out infinite;
+    animation-delay: var(--delay);
+    transform-origin: bottom center;
+  }
+
+  .retablo-animated .colibri-hover {
+    animation: colibri-hover 3s ease-in-out infinite;
+  }
+
+  .retablo-animated .colibri-hover-delay {
+    animation: colibri-hover 3.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  .retablo-animated .ala-flutter {
+    animation: ala-flutter 0.15s ease-in-out infinite;
+    transform-origin: left center;
+  }
+
+  .retablo-animated .ala-flutter-delay {
+    animation: ala-flutter 0.15s ease-in-out infinite;
+    animation-delay: 0.075s;
+    transform-origin: left center;
+  }
+
+  /* Reducir animacion si el usuario prefiere menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    .retablo-animated .flor-sway,
+    .retablo-animated .colibri-hover,
+    .retablo-animated .colibri-hover-delay,
+    .retablo-animated .ala-flutter,
+    .retablo-animated .ala-flutter-delay {
+      animation: none;
+    }
+  }
+</style>
