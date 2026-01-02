@@ -14,6 +14,21 @@ interface Props {
 
 const { title, description, image, article, canonical, structuredData } =
   Astro.props;
+
+// Get current pathname for active link highlighting
+const currentPath = Astro.url.pathname;
+
+// Helper function to determine if a link is active
+function isActivePath(linkPath: string): boolean {
+  // Exact match for homepage
+  if (linkPath === "/" && currentPath === "/") return true;
+
+  // For other pages, check if current path starts with the link path
+  // This handles both exact matches (/tours) and sub-pages (/tours/slug)
+  if (linkPath !== "/" && currentPath.startsWith(linkPath)) return true;
+
+  return false;
+}
 ---
 
 <!doctype html>
@@ -82,17 +97,41 @@ const { title, description, image, article, canonical, structuredData } =
 
           <!-- Desktop Navigation -->
           <ul class="hidden lg:flex items-center gap-6">
-            <li><a href="/about" class="nav-link">Nosotros</a></li>
-            <li><a href="/places" class="nav-link">Sitios Turísticos</a></li>
-            <li><a href="/tours" class="nav-link">Tours</a></li>
-            <li><a href="/festivities" class="nav-link">Festividades</a></li>
+            <li>
+              <a
+                href="/about"
+                class={`nav-link ${isActivePath("/about") ? "nav-link-active" : ""}`}
+                >Nosotros</a
+              >
+            </li>
+            <li>
+              <a
+                href="/places"
+                class={`nav-link ${isActivePath("/places") ? "nav-link-active" : ""}`}
+                >Sitios Turísticos</a
+              >
+            </li>
+            <li>
+              <a
+                href="/tours"
+                class={`nav-link ${isActivePath("/tours") ? "nav-link-active" : ""}`}
+                >Tours</a
+              >
+            </li>
+            <li>
+              <a
+                href="/festivities"
+                class={`nav-link ${isActivePath("/festivities") ? "nav-link-active" : ""}`}
+                >Festividades</a
+              >
+            </li>
             <!-- <li><a href="/food" class="nav-link">Gastronomía</a></li> -->
             <!-- MAPA TEMPORALMENTE DESHABILITADO -->
             <!-- <li><a href="/mapa" class="nav-link">Mapa</a></li> -->
             <li>
               <a
                 href="/contact"
-                class="inline-flex items-center px-5 py-2 rounded-lg bg-fucsia text-white font-semibold text-sm hover:bg-rojo hover:shadow-md transition-all duration-300"
+                class={`inline-flex items-center px-5 py-2 rounded-lg ${isActivePath("/contact") ? "bg-rojo" : "bg-fucsia"} text-white font-semibold text-sm hover:bg-rojo hover:shadow-md transition-all duration-300`}
                 >Contacto</a
               >
             </li>
@@ -128,28 +167,28 @@ const { title, description, image, article, canonical, structuredData } =
             <li>
               <a
                 href="/about"
-                class="block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium text-gray-700 hover:text-fucsia transition-all duration-300"
+                class={`block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium transition-all duration-300 ${isActivePath("/about") ? "bg-fucsia/10 text-fucsia font-semibold" : "text-gray-700 hover:text-fucsia"}`}
                 >Nosotros</a
               >
             </li>
             <li>
               <a
                 href="/places"
-                class="block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium text-gray-700 hover:text-fucsia transition-all duration-300"
+                class={`block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium transition-all duration-300 ${isActivePath("/places") ? "bg-fucsia/10 text-fucsia font-semibold" : "text-gray-700 hover:text-fucsia"}`}
                 >Sitios Turísticos</a
               >
             </li>
             <li>
               <a
                 href="/tours"
-                class="block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium text-gray-700 hover:text-fucsia transition-all duration-300"
+                class={`block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium transition-all duration-300 ${isActivePath("/tours") ? "bg-fucsia/10 text-fucsia font-semibold" : "text-gray-700 hover:text-fucsia"}`}
                 >Tours</a
               >
             </li>
             <li>
               <a
                 href="/festivities"
-                class="block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium text-gray-700 hover:text-fucsia transition-all duration-300"
+                class={`block px-4 py-2 hover:bg-fucsia/10 rounded-lg font-medium transition-all duration-300 ${isActivePath("/festivities") ? "bg-fucsia/10 text-fucsia font-semibold" : "text-gray-700 hover:text-fucsia"}`}
                 >Festividades</a
               >
             </li>
@@ -171,7 +210,7 @@ const { title, description, image, article, canonical, structuredData } =
             <li>
               <a
                 href="/contact"
-                class="block px-4 py-3 bg-fucsia text-white rounded-lg text-center font-semibold hover:bg-rojo transition-all duration-300"
+                class={`block px-4 py-3 rounded-lg text-center font-semibold transition-all duration-300 ${isActivePath("/contact") ? "bg-rojo text-white" : "bg-fucsia text-white hover:bg-rojo"}`}
                 >Contacto</a
               >
             </li>
@@ -445,6 +484,15 @@ const { title, description, image, article, canonical, structuredData } =
       }
 
       .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Active link styles */
+      .nav-link-active {
+        color: #e91e8c;
+      }
+
+      .nav-link-active::after {
         width: 100%;
       }
     </style>
