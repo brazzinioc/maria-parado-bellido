@@ -1,6 +1,8 @@
 ---
 import SEO from "../components/SEO.astro";
 import StructuredData from "../components/StructuredData.astro";
+import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -63,6 +65,9 @@ function isActivePath(linkPath: string): boolean {
           : `${title} | María Parado de Bellido`
       }
     </title>
+
+    <!-- Google Analytics -->
+    <GoogleAnalytics />
   </head>
   <body>
     <!-- Header -->
@@ -128,13 +133,14 @@ function isActivePath(linkPath: string): boolean {
             <!-- <li><a href="/food" class="nav-link">Gastronomía</a></li> -->
             <!-- MAPA TEMPORALMENTE DESHABILITADO -->
             <!-- <li><a href="/mapa" class="nav-link">Mapa</a></li> -->
-            <li>
+            <!-- CONTACTO DESHABILITADO - REEMPLAZADO CON WHATSAPP CTA -->
+            <!-- <li>
               <a
                 href="/contact"
                 class={`inline-flex items-center px-5 py-2 rounded-lg ${isActivePath("/contact") ? "bg-rojo" : "bg-fucsia"} text-white font-semibold text-sm hover:bg-rojo hover:shadow-md transition-all duration-300`}
                 >Contacto</a
               >
-            </li>
+            </li> -->
           </ul>
 
           <!-- Mobile menu button -->
@@ -207,13 +213,14 @@ function isActivePath(linkPath: string): boolean {
                 >Mapa</a
               >
             </li> -->
-            <li>
+            <!-- CONTACTO DESHABILITADO - REEMPLAZADO CON WHATSAPP CTA -->
+            <!-- <li>
               <a
                 href="/contact"
                 class={`block px-4 py-3 rounded-lg text-center font-semibold transition-all duration-300 ${isActivePath("/contact") ? "bg-rojo text-white" : "bg-fucsia text-white hover:bg-rojo"}`}
                 >Contacto</a
               >
-            </li>
+            </li> -->
           </ul>
         </div>
       </nav>
@@ -223,6 +230,9 @@ function isActivePath(linkPath: string): boolean {
     <main>
       <slot />
     </main>
+
+    <!-- WhatsApp Floating CTA Button -->
+    <WhatsAppCTA />
 
     <!-- Footer -->
     <footer

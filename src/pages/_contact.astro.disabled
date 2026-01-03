@@ -1,11 +1,12 @@
----
+<!-- CONTACT PAGE TEMPORARILY DISABLED - REPLACED WITH WHATSAPP CTA -->
+<!-- ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || "YOUR_FORM_ID";
 ---
 
-<BaseLayout
+<!-- <BaseLayout
   title="Contacto"
   description="Contáctanos para planificar tu visita a María Parado de Bellido, Ayacucho. Información sobre tours, festividades y turismo cultural."
   image="/images/hero-contact.webp"
@@ -368,9 +369,9 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || "YOUR_FORM_ID";
       </div>
     </div>
   </section>
-</BaseLayout>
+</BaseLayout> -->
 
-<script>
+<!-- <script>
   // Anti-spam: Record page load timestamp
   const formLoadedAt = document.getElementById(
     "form_loaded_at"
@@ -534,9 +535,9 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || "YOUR_FORM_ID";
       setLoading(false);
     }
   });
-</script>
+</script> -->
 
-<style>
+<!-- <style>
   /* Ensure honeypot field is completely hidden */
   input[name="_gotcha"] {
     position: absolute !important;
@@ -545,4 +546,4 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || "YOUR_FORM_ID";
     height: 1px !important;
     opacity: 0 !important;
   }
-</style>
+</style> -->
