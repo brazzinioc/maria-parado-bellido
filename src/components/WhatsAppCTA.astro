@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {
-  phoneNumber = "+51999888777", // Remove spaces for WhatsApp API
+  phoneNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "+51999888777", // Use env variable or fallback
   message = "Hola! Me gustaría obtener más información sobre María Parado de Bellido"
 } = Astro.props;
 
