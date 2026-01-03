@@ -2,6 +2,7 @@
 import SEO from "../components/SEO.astro";
 import StructuredData from "../components/StructuredData.astro";
 import WhatsAppCTA from "../components/WhatsAppCTA.astro";
+import FeedbackWidget from "../components/FeedbackWidget.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import "../styles/global.css";
 
@@ -233,6 +234,9 @@ function isActivePath(linkPath: string): boolean {
 
     <!-- WhatsApp Floating CTA Button -->
     <WhatsAppCTA />
+
+    <!-- Feedback Widget -->
+    <FeedbackWidget />
 
     <!-- Footer -->
     <footer

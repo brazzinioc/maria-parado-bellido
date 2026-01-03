@@ -1,0 +1,192 @@
+---
+// Feedback Widget - Botón flotante para recopilar opiniones de usuarios
+//
+// UX POSITIONING: Este widget está apilado VERTICALMENTE sobre WhatsAppCTA
+// Jerarquía: WhatsApp (crítico para conversiones) abajo, Feedback (secundario) arriba
+// Ambos widgets en esquina inferior derecha - patrón familiar y mobile-friendly
+//
+const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL || "#";
+---
+
+<div class="feedback-widget-container">
+  <a
+    href={feedbackUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="feedback-button group"
+    aria-label="Enviar tu opinión o sugerencia"
+  >
+    <!-- Ícono de mensaje/chat -->
+    <svg
+      class="feedback-icon"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+      ></path>
+    </svg>
+
+    <!-- Texto del botón (visible en desktop) -->
+    <span class="feedback-text">Tu Opinión</span>
+
+    <!-- Indicador pulsante (animación llamativa) -->
+    <span class="feedback-pulse"></span>
+  </a>
+</div>
+
+<style>
+  .feedback-widget-container {
+    position: fixed;
+    bottom: 6.5rem; /* Espacio suficiente sobre WhatsApp (3.25rem btn + 1.5rem margen + 1.75rem gap) */
+    right: 1.5rem;
+    z-index: 998; /* Justo debajo de WhatsApp (999) pero por encima del contenido */
+  }
+
+  @media (min-width: 640px) {
+    .feedback-widget-container {
+      bottom: 7.5rem; /* Espacio sobre WhatsApp en desktop (3.5rem btn + 2rem margen + 2rem gap) */
+      right: 2rem; /* Alineado con WhatsApp */
+    }
+  }
+
+  .feedback-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    background: linear-gradient(135deg, #e91e8c 0%, #d42c2a 50%, #ff6b35 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 20px rgba(233, 30, 140, 0.4),
+      0 2px 10px rgba(212, 44, 42, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: visible;
+    text-decoration: none;
+  }
+
+  /* Efecto hover */
+  .feedback-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 30px rgba(233, 30, 140, 0.6),
+      0 4px 15px rgba(212, 44, 42, 0.5);
+    background: linear-gradient(135deg, #ff3ca8 0%, #e84745 50%, #ff8555 100%);
+  }
+
+  /* Efecto activo/click */
+  .feedback-button:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  /* Ícono */
+  .feedback-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .feedback-button:hover .feedback-icon {
+    transform: rotate(15deg) scale(1.1);
+  }
+
+  /* Texto (oculto en móvil, visible en desktop) */
+  .feedback-text {
+    display: none;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 640px) {
+    .feedback-text {
+      display: inline-block;
+    }
+  }
+
+  /* Animación pulsante - llamativa pero no invasiva */
+  .feedback-pulse {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    background: #fdb913; /* Amarillo dorado */
+    border-radius: 50%;
+    animation: pulse-feedback 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-feedback {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.4);
+    }
+  }
+
+  /* Animación adicional al hacer hover */
+  .feedback-button:hover .feedback-pulse {
+    animation: pulse-feedback-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-feedback-fast {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.6);
+    }
+  }
+
+  /* Versión móvil más compacta */
+  @media (max-width: 639px) {
+    .feedback-button {
+      padding: 0.75rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      justify-content: center;
+    }
+
+    .feedback-icon {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+  }
+
+  /* Accesibilidad: mejor contraste en modo de alto contraste */
+  @media (prefers-contrast: high) {
+    .feedback-button {
+      border: 2px solid white;
+    }
+  }
+
+  /* Reducir animaciones si el usuario lo prefiere */
+  @media (prefers-reduced-motion: reduce) {
+    .feedback-button,
+    .feedback-icon {
+      transition: none;
+    }
+
+    .feedback-pulse {
+      animation: none;
+      opacity: 0.8;
+    }
+
+    .feedback-button:hover {
+      transform: none;
+    }
+  }
+</style>
