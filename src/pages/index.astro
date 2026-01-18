@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FestivityCard from "../components/FestivityCard.astro";
-import WeatherWidget from "../components/WeatherWidget";
+import WeatherStat from "../components/WeatherStat";
 import { fetchFestivities } from "../lib/api";
 
 // Fetch data at build time
@@ -37,11 +37,6 @@ const upcomingFestivities = festivities
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 md:bg-none"></div>
     <!-- Desktop: gradient from left to reveal right side of image -->
     <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-
-    <!-- Weather Widget -->
-    <div class="absolute top-28 right-4 md:top-28 md:right-6 z-20">
-      <WeatherWidget client:load />
-    </div>
 
     <!-- Main Content -->
     <div class="absolute inset-0 flex items-end md:items-center justify-start z-10 pt-20 md:pt-[92px]">
@@ -132,6 +127,11 @@ const upcomingFestivities = festivities
               <span class="font-bold text-white text-lg">3hrs</span>
               <span>desde Ayacucho</span>
             </div>
+          </div>
+
+          <!-- Weather (inline, styled distinctively) -->
+          <div class="mt-4">
+            <WeatherStat client:load />
           </div>
         </div>
       </div>

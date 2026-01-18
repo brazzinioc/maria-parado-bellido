@@ -395,8 +395,17 @@ const navGroups = {
           <p class="text-gray-500 text-center sm:text-left">
             © {new Date().getFullYear()} Distrito María Parado de Bellido, Cangallo, Ayacucho
           </p>
-          <p class="text-gray-600 text-xs">
-            Hecho con ❤️ para nuestra comunidad
+          <p class="text-gray-600 text-xs flex items-center gap-2">
+            <span>Hecho con ❤️ para nuestra comunidad</span>
+            <span class="sm:hidden">·</span>
+            <a
+              href={import.meta.env.PUBLIC_FEEDBACK_URL || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="sm:hidden text-fucsia hover:text-fucsia-light transition-colors"
+            >
+              Tu Opinión
+            </a>
           </p>
         </div>
       </div>
