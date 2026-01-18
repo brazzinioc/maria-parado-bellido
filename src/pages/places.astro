@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import MiniHero from "../components/MiniHero.astro";
+import PageHeader from "../components/PageHeader.astro";
 import PlaceCard from "../components/PlaceCard.astro";
 import type { TouristPlace } from "../types";
 
@@ -150,11 +150,11 @@ const culturalPlaces = touristPlaces.filter(p => p.category === "cultural");
   description="Descubre los atractivos turísticos de María Parado de Bellido: sitios arqueológicos Chancas, miradores naturales, el río Pampas y lugares históricos en los Andes de Ayacucho."
   image="/images/default-photo.webp"
 >
-  <MiniHero
+  <PageHeader
     title="Sitios Turísticos"
     subtitle="Descubre los tesoros escondidos entre los Andes ayacuchanos"
-    image="/images/default-photo.webp"
-    imageAlt="Paisajes de María Parado de Bellido"
+    icon="🗺️"
+    variant="gradient"
   />
 
   <!-- Intro Section -->

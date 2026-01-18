@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import MiniHero from "../../components/MiniHero.astro";
+import PageHeader from "../../components/PageHeader.astro";
 import FestivityCard from "../../components/FestivityCard.astro";
 import { fetchFestivities } from "../../lib/api";
 
@@ -17,11 +17,11 @@ const sortedFestivities = [...festivities].sort(
   description="Calendario de festividades y fiestas costumbristas en María Parado de Bellido, Ayacucho. Descubre nuestras celebraciones patronales, cargontes y tradiciones andinas."
   image="/images/hero-festivities.webp"
 >
-  <MiniHero
+  <PageHeader
     title="Festividades y Celebraciones"
     subtitle="La fe y la tradición se encuentran en nuestras fiestas"
-    image="/images/hero-festivities.webp"
-    imageAlt="Festividades tradicionales en María Parado de Bellido"
+    icon="🎉"
+    variant="gradient"
   />
 
   <section class="container-custom py-16 md:py-20">
