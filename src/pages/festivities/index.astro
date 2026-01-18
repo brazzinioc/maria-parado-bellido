@@ -10,12 +10,59 @@ const festivities = await fetchFestivities();
 const sortedFestivities = [...festivities].sort(
   (a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
 );
+
+// SEO Keywords para festividades
+const festivitiesKeywords = [
+  "festividades Ayacucho",
+  "fiestas patronales Perú",
+  "cargontes tradición andina",
+  "celebraciones María Parado de Bellido",
+  "fiestas costumbristas Cangallo",
+  "danzas tradicionales Ayacucho",
+  "calendario festivo Pomabamba",
+  "procesiones andinas",
+  "fiesta patronal Perú",
+  "tradiciones peruanas",
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Festividades", url: "/festivities" },
+];
+
+// Generar Event schema para cada festividad
+const eventSchemas = sortedFestivities.map((festivity) => ({
+  type: "event" as const,
+  data: festivity,
+}));
+
+// ItemList schema para la lista de festividades
+const festivitiesStructuredData = [
+  {
+    type: "itemList" as const,
+    data: {
+      name: "Festividades de María Parado de Bellido",
+      description: "Calendario completo de festividades y celebraciones tradicionales en el distrito María Parado de Bellido, Ayacucho.",
+      items: sortedFestivities.map((f) => ({
+        name: f.name,
+        description: f.description,
+        url: `/festivities/${f.slug}`,
+        image: f.images?.[0],
+      })),
+    },
+  },
+  ...eventSchemas,
+];
 ---
 
 <BaseLayout
   title="Festividades y Celebraciones Tradicionales"
   description="Calendario de festividades y fiestas costumbristas en María Parado de Bellido, Ayacucho. Descubre nuestras celebraciones patronales, cargontes y tradiciones andinas."
   image="/images/hero-festivities.webp"
+  keywords={festivitiesKeywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={festivitiesStructuredData}
 >
   <PageHeader
     title="Festividades y Celebraciones"

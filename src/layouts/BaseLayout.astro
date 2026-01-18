@@ -4,6 +4,7 @@ import StructuredData from "../components/StructuredData.astro";
 import WhatsAppCTA from "../components/WhatsAppCTA.astro";
 import FeedbackWidget from "../components/FeedbackWidget.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
+import type { BreadcrumbItem } from "../types";
 import "../styles/global.css";
 
 interface Props {
@@ -12,11 +13,31 @@ interface Props {
   image?: string;
   article?: boolean;
   canonical?: string;
-  structuredData?: { type: any; data: any };
+  keywords?: string[];
+  author?: string;
+  section?: string;
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  structuredData?: { type: any; data: any; breadcrumbs?: BreadcrumbItem[] }[];
 }
 
-const { title, description, image, article, canonical, structuredData } =
-  Astro.props;
+const {
+  title,
+  description,
+  image,
+  article,
+  canonical,
+  keywords,
+  author,
+  section,
+  noindex,
+  publishedTime,
+  modifiedTime,
+  breadcrumbs = [],
+  structuredData = [],
+} = Astro.props;
 
 // Get current pathname for active link highlighting
 const currentPath = Astro.url.pathname;
@@ -76,29 +97,32 @@ const navGroups = {
       image={image}
       article={article}
       canonical={canonical}
+      keywords={keywords}
+      author={author}
+      section={section}
+      noindex={noindex}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
     />
 
-    <!-- Structured Data -->
-    <StructuredData type="website" data={{}} />
-    <StructuredData type="organization" data={{}} />
-    {
-      structuredData && (
-        <StructuredData type={structuredData.type} data={structuredData.data} />
-      )
-    }
+    <!-- Structured Data - Base schemas on every page -->
+    <StructuredData type="website" />
+    <StructuredData type="organization" />
 
-    <title>
-      {
-        title.includes("María Parado de Bellido")
-          ? title
-          : `${title} | María Parado de Bellido`
-      }
-    </title>
+    <!-- Breadcrumbs schema if provided -->
+    {breadcrumbs.length > 0 && (
+      <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
+    )}
+
+    <!-- Additional page-specific structured data -->
+    {structuredData.map((sd) => (
+      <StructuredData type={sd.type} data={sd.data} breadcrumbs={sd.breadcrumbs} />
+    ))}
 
     <!-- Google Analytics -->
     <GoogleAnalytics />
   </head>
-  <body class="antialiased overflow-x-hidden">
+  <body class="antialiased">
     <!-- Skip Link for Accessibility -->
     <a
       href="#main-content"
@@ -292,7 +316,7 @@ const navGroups = {
     </header>
 
     <!-- Main Content -->
-    <main id="main-content" tabindex="-1" class="overflow-x-hidden">
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
 

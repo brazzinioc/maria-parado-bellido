@@ -218,11 +218,58 @@ const businessesByCategory = categories.map(cat => ({
   ...cat,
   items: businesses.filter(b => b.category === cat.key)
 }));
+
+// SEO Keywords para directorio
+const directorioKeywords = [
+  "hospedajes María Parado de Bellido",
+  "restaurantes Pomabamba",
+  "hoteles Cangallo Ayacucho",
+  "dónde comer en María Parado de Bellido",
+  "transporte a Pomabamba",
+  "artesanías Ayacucho",
+  "guía turístico Cangallo",
+  "servicios turísticos Ayacucho",
+  "alojamiento rural Perú",
+  "turismo comunitario Ayacucho",
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Directorio", url: "/directorio" },
+];
+
+// Generar LocalBusiness schema para cada negocio verificado
+const verifiedBusinesses = businesses.filter(b => b.isVerified);
+const businessSchemas = verifiedBusinesses.map((business) => ({
+  type: "localBusiness" as const,
+  data: business,
+}));
+
+// ItemList schema para el directorio
+const directorioStructuredData = [
+  {
+    type: "itemList" as const,
+    data: {
+      name: "Directorio de Negocios de María Parado de Bellido",
+      description: "Guía completa de hospedajes, restaurantes, tiendas, transporte, artesanía y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho.",
+      items: businesses.map((b) => ({
+        name: b.name,
+        description: b.description,
+        url: `/directorio#${b.category}`,
+      })),
+    },
+  },
+  ...businessSchemas,
+];
 ---
 
 <BaseLayout
   title="Directorio de Negocios | María Parado de Bellido"
   description="Encuentra hospedajes, restaurantes, tiendas, transporte y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+  keywords={directorioKeywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={directorioStructuredData}
 >
   <PageHeader
     title="Directorio Local"

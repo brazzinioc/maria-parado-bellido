@@ -187,11 +187,13 @@
 
 @layer base {
   html {
-    @apply scroll-smooth overflow-x-hidden;
+    @apply scroll-smooth;
+    overflow-x: clip;
   }
 
   body {
-    @apply bg-crema text-gray-800 font-body antialiased overflow-x-hidden;
+    @apply bg-crema text-gray-800 font-body antialiased;
+    overflow-x: clip;
   }
 
   h1,

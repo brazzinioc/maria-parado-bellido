@@ -1,12 +1,54 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
+
+// SEO Keywords para página de historia
+const aboutKeywords = [
+  "historia María Parado de Bellido",
+  "heroína independencia Perú",
+  "cultura Chanca Ayacucho",
+  "Pomabamba historia",
+  "pueblos andinos historia",
+  "patrimonio cultural Ayacucho",
+  "María Parado de Bellido biografía",
+  "Cangallo historia",
+  "independencia del Perú",
+  "1822 fusilamiento",
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Nuestra Historia", url: "/about" },
+];
+
+// Article schema para contenido histórico
+const aboutStructuredData = [
+  {
+    type: "article" as const,
+    data: {
+      title: "Historia de María Parado de Bellido - Orígenes y Legado",
+      description: "Conoce la historia milenaria de María Parado de Bellido: desde los antiguos Chancas hasta la heroína que nos da nombre. Un pueblo andino a 3,236 msnm con raíces profundas.",
+      url: "/about",
+      image: "/images/hero-about.webp",
+      section: "Historia",
+      keywords: aboutKeywords,
+      publishedTime: "2024-01-01T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
+    },
+  },
+];
 ---
 
 <BaseLayout
   title="Nuestra Historia - María Parado de Bellido"
   description="Conoce la historia milenaria de María Parado de Bellido: desde los antiguos Chancas hasta la heroína que nos da nombre. Un pueblo andino a 3,236 msnm con raíces profundas."
   image="/images/hero-about.webp"
+  article={true}
+  section="Historia"
+  keywords={aboutKeywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={aboutStructuredData}
 >
   <PageHeader
     title="Nuestra Historia"

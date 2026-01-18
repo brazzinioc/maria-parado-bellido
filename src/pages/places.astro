@@ -143,12 +143,59 @@ const naturalPlaces = touristPlaces.filter(p => p.category === "natural");
 const archaeologicalPlaces = touristPlaces.filter(p => p.category === "archaeological");
 const historicalPlaces = touristPlaces.filter(p => p.category === "historical");
 const culturalPlaces = touristPlaces.filter(p => p.category === "cultural");
+
+// SEO Keywords para sitios turísticos
+const placesKeywords = [
+  "lugares turísticos Ayacucho",
+  "sitios arqueológicos Chancas",
+  "turismo María Parado de Bellido",
+  "qué visitar en Cangallo",
+  "miradores Andes Perú",
+  "río Pampas turismo",
+  "atractivos turísticos Ayacucho",
+  "Allcaqapata Pomabamba",
+  "Tururumi Ayacucho",
+  "ecoturismo Cangallo",
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Sitios Turísticos", url: "/places" },
+];
+
+// Generar Place schema para cada lugar turístico
+const placeSchemas = touristPlaces.map((place) => ({
+  type: "place" as const,
+  data: place,
+}));
+
+// ItemList schema para la lista de lugares
+const placesStructuredData = [
+  {
+    type: "itemList" as const,
+    data: {
+      name: "Sitios Turísticos de María Parado de Bellido",
+      description: "Guía completa de atractivos turísticos del distrito María Parado de Bellido: sitios arqueológicos, paisajes naturales, lugares históricos y culturales en Ayacucho, Perú.",
+      items: touristPlaces.map((p) => ({
+        name: p.name,
+        description: p.description,
+        url: `/places#${p.slug}`,
+        image: p.images?.[0],
+      })),
+    },
+  },
+  ...placeSchemas,
+];
 ---
 
 <BaseLayout
   title="Sitios Turísticos - María Parado de Bellido"
   description="Descubre los atractivos turísticos de María Parado de Bellido: sitios arqueológicos Chancas, miradores naturales, el río Pampas y lugares históricos en los Andes de Ayacucho."
   image="/images/default-photo.webp"
+  keywords={placesKeywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={placesStructuredData}
 >
   <PageHeader
     title="Sitios Turísticos"

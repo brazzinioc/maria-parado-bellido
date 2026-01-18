@@ -14,12 +14,44 @@ const upcomingFestivities = festivities
       new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
   )
   .slice(0, 3);
+
+// SEO Keywords específicos para Home
+const homeKeywords = [
+  "turismo vivencial Ayacucho",
+  "Pomabamba turismo",
+  "qué hacer en Cangallo",
+  "pueblos andinos Perú",
+  "destinos turísticos Ayacucho",
+  "turismo rural comunitario",
+  "viajes a los Andes peruanos",
+  "ecoturismo Ayacucho",
+  "3236 msnm",
+  "cultura Chanca",
+];
+
+// Structured Data para la página principal
+const homeStructuredData = [
+  {
+    type: "touristDestination" as const,
+    data: {
+      description: "Pomabamba, capital del distrito María Parado de Bellido, es un destino turístico andino a 3,236 msnm. Ofrece turismo vivencial, festividades tradicionales, gastronomía local y paisajes impresionantes en la provincia de Cangallo, Ayacucho.",
+      image: "/images/hero-main.webp",
+      attractions: [
+        { name: "Allcaqapata", description: "Mirador natural con vistas panorámicas de los Andes" },
+        { name: "Tururumi", description: "Formación rocosa de importancia arqueológica" },
+        { name: "Festividades Patronales", description: "Celebraciones tradicionales con danzas y música andina" },
+      ],
+    },
+  },
+];
 ---
 
 <BaseLayout
   title="Pomabamba: Turismo Vivencial en los Andes de Ayacucho"
   description="Descubre Pomabamba, corazón de María Parado de Bellido. Turismo vivencial, trekking andino y festividades auténticas a 3,236 msnm en Cangallo, Ayacucho."
   image="/images/hero-main.webp"
+  keywords={homeKeywords}
+  structuredData={homeStructuredData}
 >
   <!-- Hero Section -->
   <section class="relative h-dvh min-h-[600px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">

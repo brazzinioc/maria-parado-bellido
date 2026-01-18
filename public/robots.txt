@@ -1,15 +1,29 @@
 # robots.txt for María Parado de Bellido Tourism Site
+# https://mariaparadodebellido.com
 
 User-agent: *
 # Allow: /
 Disallow: /
 
-# Sitemap
+# Disallow administrative or private paths
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /*.json$
+
+# Sitemap location
 Sitemap: https://mariaparadodebellido.com/sitemap-index.xml
 
-# Disallow administrative or private paths (if any in the future)
-# Disallow: /admin/
-# Disallow: /private/
+# Crawl-delay for polite crawling
+Crawl-delay: 1
 
-# Crawl-delay (optional, for rate limiting)
+# Google specific
+User-agent: Googlebot
+# Allow: /
+Disallow: /
+Crawl-delay: 0
+
+# Bing specific
+User-agent: Bingbot
+# Allow: /
+Disallow: /
 Crawl-delay: 1

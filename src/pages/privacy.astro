@@ -1,107 +1,596 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+// SEO para página legal
+const privacyKeywords = [
+  "política de privacidad",
+  "protección de datos",
+  "Ley 29733 Perú",
+  "derechos ARCO",
+  "María Parado de Bellido",
+];
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Política de Privacidad", url: "/privacy" },
+];
+
+// Fecha de última actualización
+const lastUpdated = "18 de enero de 2026";
+const effectiveDate = "18 de enero de 2026";
+
+// Email de contacto para ejercer derechos ARCO (desde variable de entorno)
+const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL;
 ---
 
 <BaseLayout
   title="Política de Privacidad"
-  description="Política de privacidad del sitio web de María Parado de Bellido, Ayacucho."
+  description="Política de privacidad y protección de datos personales del sitio web de María Parado de Bellido, conforme a la Ley N° 29733 del Perú."
+  keywords={privacyKeywords}
+  breadcrumbs={breadcrumbs}
+  noindex={false}
 >
-  <div class="container-custom py-16 md:py-20">
+  <PageHeader
+    title="Política de Privacidad"
+    subtitle="Protección de tus datos personales conforme a la legislación peruana"
+    icon="🔒"
+    variant="default"
+  />
+
+  <div class="container-custom py-12 md:py-16">
     <div class="max-w-4xl mx-auto">
-      <h1 class="section-heading mb-8">Política de Privacidad</h1>
 
-      <div class="prose prose-lg max-w-none">
-        <p class="text-gray-600 mb-6">
-          <strong>Última actualización:</strong> {new Date().toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' })}
+      <!-- Información de actualización -->
+      <div class="bg-gradient-to-r from-azul/5 to-turquesa/5 border-l-4 border-azul rounded-r-xl p-6 mb-10">
+        <p class="text-gray-700 text-sm">
+          <strong>Última actualización:</strong> {lastUpdated}<br />
+          <strong>Fecha de entrada en vigencia:</strong> {effectiveDate}
         </p>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">1. Información que Recopilamos</h2>
-          <p class="text-gray-700 mb-4">
-            Cuando utilizas nuestro formulario de contacto, recopilamos la siguiente información:
-          </p>
-          <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
-            <li>Nombre completo</li>
-            <li>Dirección de correo electrónico</li>
-            <li>Número de teléfono (opcional)</li>
-            <li>Mensaje o consulta</li>
-          </ul>
-          <p class="text-gray-700">
-            Esta información se utiliza únicamente para responder a tus consultas y mejorar nuestros servicios turísticos.
-          </p>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">2. Uso de la Información</h2>
-          <p class="text-gray-700 mb-4">
-            La información personal que proporcionas se utiliza para:
-          </p>
-          <ul class="list-disc list-inside text-gray-700 space-y-2">
-            <li>Responder a tus consultas sobre tours y servicios turísticos</li>
-            <li>Enviar información solicitada sobre festividades y eventos</li>
-            <li>Mejorar la experiencia del usuario en nuestro sitio web</li>
-            <li>Cumplir con obligaciones legales</li>
-          </ul>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">3. Cookies y Tecnologías Similares</h2>
-          <p class="text-gray-700 mb-4">
-            Este sitio web utiliza cookies mínimas necesarias para su funcionamiento. No utilizamos cookies de seguimiento
-            de terceros con fines publicitarios.
-          </p>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">4. Compartir Información</h2>
-          <p class="text-gray-700">
-            No vendemos, alquilamos ni compartimos tu información personal con terceros, excepto cuando sea necesario
-            para proporcionarte los servicios solicitados o cuando la ley lo requiera.
-          </p>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">5. Seguridad</h2>
-          <p class="text-gray-700">
-            Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal contra
-            acceso no autorizado, alteración, divulgación o destrucción.
-          </p>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">6. Tus Derechos</h2>
-          <p class="text-gray-700 mb-4">
-            Tienes derecho a:
-          </p>
-          <ul class="list-disc list-inside text-gray-700 space-y-2">
-            <li>Acceder a tus datos personales</li>
-            <li>Rectificar información inexacta</li>
-            <li>Solicitar la eliminación de tus datos</li>
-            <li>Oponerte al procesamiento de tus datos</li>
-            <li>Solicitar la portabilidad de tus datos</li>
-          </ul>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">7. Contacto</h2>
-          <p class="text-gray-700">
-            Para ejercer tus derechos o si tienes preguntas sobre esta política de privacidad, contáctanos:
-          </p>
-          <div class="bg-crema p-6 rounded-lg mt-4">
-            <p class="text-gray-700"><strong>Email:</strong> info@mariaparadodebellido.com</p>
-            <p class="text-gray-700"><strong>Teléfono:</strong> +51 999 888 777</p>
-            <p class="text-gray-700"><strong>Dirección:</strong> Plaza Principal, María Parado de Bellido, Cangallo, Ayacucho</p>
-          </div>
-        </section>
-
-        <section>
-          <h2 class="text-2xl font-heading font-semibold text-indigo mb-4">8. Cambios a esta Política</h2>
-          <p class="text-gray-700">
-            Nos reservamos el derecho de actualizar esta política de privacidad. Cualquier cambio será publicado en esta
-            página con la fecha de actualización correspondiente.
-          </p>
-        </section>
       </div>
+
+      <!-- Marco Legal -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="text-azul">§</span> Marco Legal Aplicable
+        </h2>
+        <div class="bg-crema/50 rounded-xl p-6 border border-crema-dark">
+          <p class="text-gray-700 mb-4">
+            La presente Política de Privacidad ha sido elaborada en cumplimiento de la normativa peruana de protección de datos personales:
+          </p>
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-2">
+              <span class="text-verde mt-1">✓</span>
+              <span><strong>Ley N° 29733</strong> - Ley de Protección de Datos Personales</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-verde mt-1">✓</span>
+              <span><strong>Decreto Supremo N° 003-2013-JUS</strong> - Reglamento de la Ley de Protección de Datos Personales</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-verde mt-1">✓</span>
+              <span><strong>Directiva de Seguridad de la Información</strong> - Resolución Directoral N° 019-2013-JUS/DGPDP</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 1. Responsable del Tratamiento -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">1</span>
+          Responsable del Tratamiento de Datos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Este es un <strong>proyecto comunitario de código abierto</strong> desarrollado y mantenido por voluntarios comprometidos con la promoción turística y cultural del distrito María Parado de Bellido.
+          </p>
+          <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+            <dl class="space-y-3">
+              <div>
+                <dt class="font-semibold text-gray-800">Responsable:</dt>
+                <dd class="text-gray-700">Equipo de Desarrollo y Mantenedores del Proyecto</dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-gray-800">Naturaleza:</dt>
+                <dd class="text-gray-700">Proyecto comunitario sin fines de lucro</dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-gray-800">Ubicación del proyecto:</dt>
+                <dd class="text-gray-700">Distrito María Parado de Bellido, Provincia de Cangallo, Departamento de Ayacucho, Perú</dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-gray-800">Sitio web:</dt>
+                <dd class="text-gray-700">
+                  <a href="https://mariaparadodebellido.com" class="text-fucsia hover:text-rojo transition-colors">
+                    https://mariaparadodebellido.com
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <p class="text-gray-600 text-sm mt-4 italic">
+            Este sitio web no está afiliado oficialmente a ninguna entidad gubernamental. Es una iniciativa independiente de la comunidad para promover el turismo y la cultura local.
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. Datos que Recopilamos -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">2</span>
+          Datos Personales que Recopilamos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-6">
+            Este sitio web recopila información de los visitantes a través de dos canales específicos:
+          </p>
+
+          <!-- Canal WhatsApp -->
+          <div class="bg-green-50 rounded-xl p-6 mb-6 border border-green-200">
+            <h3 class="text-xl font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              A través de WhatsApp (Interacción Voluntaria)
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Cuando el visitante <strong>inicia voluntariamente</strong> una conversación a través del botón de WhatsApp del sitio, podemos recibir:
+            </p>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2">
+                <span class="text-green-600">•</span>
+                <span>Número de teléfono móvil asociado a la cuenta de WhatsApp</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-600">•</span>
+                <span>Nombre de perfil configurado en WhatsApp</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-600">•</span>
+                <span>Contenido de los mensajes enviados (consultas sobre el distrito)</span>
+              </li>
+            </ul>
+            <p class="text-sm text-green-700 mt-4 italic">
+              <strong>Nota:</strong> El tratamiento de estos datos está sujeto también a la
+              <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="underline hover:text-green-900">
+                Política de Privacidad de WhatsApp/Meta
+              </a>.
+            </p>
+          </div>
+
+          <!-- Canal Google Analytics -->
+          <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
+            <h3 class="text-xl font-semibold text-blue-800 mb-3 flex items-center gap-2">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.84 2.9982v17.9966c.0086.2613-.0925.5142-.2807.7024s-.4411.2893-.7024.2807H2.1431c-.5765-.0001-1.0436-.4673-1.0435-1.0438V2.9982c-.0086-.2613.0925-.5142.2807-.7024s.4411-.2893.7024-.2807h19.7138c.5765.0001 1.0436.4673 1.0435 1.0438v-.0607zM12 18.2884l3.4966-9.2884H8.5034L12 18.2884z"/>
+              </svg>
+              A través de Google Analytics (Recopilación Automática)
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Utilizamos Google Analytics para analizar el tráfico del sitio web. Esta herramienta recopila de forma <strong>automática y anónima</strong>:
+            </p>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Dirección IP (anonimizada)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Tipo de dispositivo y navegador</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Sistema operativo</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Páginas visitadas y tiempo de permanencia</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Ubicación geográfica aproximada (país/región)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-600">•</span>
+                <span>Fuente de referencia (cómo llegaste al sitio)</span>
+              </li>
+            </ul>
+            <p class="text-sm text-blue-700 mt-4 italic">
+              <strong>Nota:</strong> Google Analytics utiliza cookies. Puedes consultar la
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="underline hover:text-blue-900">
+                Política de Privacidad de Google
+              </a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Finalidad del Tratamiento -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">3</span>
+          Finalidad del Tratamiento de Datos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Los datos personales recopilados se utilizan exclusivamente para las siguientes finalidades:
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+              <h4 class="font-semibold text-gray-800 mb-2">📞 Atención de Consultas</h4>
+              <p class="text-gray-600 text-sm">
+                Responder a las consultas realizadas voluntariamente por los visitantes sobre el distrito, servicios turísticos, festividades y actividades comunales.
+              </p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+              <h4 class="font-semibold text-gray-800 mb-2">📊 Análisis Estadístico</h4>
+              <p class="text-gray-600 text-sm">
+                Comprender el comportamiento de los visitantes para mejorar el contenido y la experiencia de navegación del sitio web.
+              </p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+              <h4 class="font-semibold text-gray-800 mb-2">🎯 Mejora del Servicio</h4>
+              <p class="text-gray-600 text-sm">
+                Optimizar la información turística y los recursos ofrecidos a los visitantes del distrito.
+              </p>
+            </div>
+            <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+              <h4 class="font-semibold text-gray-800 mb-2">⚖️ Cumplimiento Legal</h4>
+              <p class="text-gray-600 text-sm">
+                Cumplir con las obligaciones legales aplicables conforme a la legislación peruana vigente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Base Legal -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">4</span>
+          Base Legal para el Tratamiento
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Conforme al artículo 13 de la Ley N° 29733, el tratamiento de datos personales se realiza bajo las siguientes bases legales:
+          </p>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4 p-4 bg-verde/5 rounded-lg border-l-4 border-verde">
+              <span class="text-2xl">✅</span>
+              <div>
+                <h4 class="font-semibold text-gray-800">Consentimiento del Titular</h4>
+                <p class="text-gray-600 text-sm">
+                  Al iniciar una conversación por WhatsApp, el usuario otorga su consentimiento libre, previo, expreso, informado e inequívoco para el tratamiento de sus datos con la finalidad de atender su consulta.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 bg-turquesa/5 rounded-lg border-l-4 border-turquesa">
+              <span class="text-2xl">✅</span>
+              <div>
+                <h4 class="font-semibold text-gray-800">Interés Legítimo</h4>
+                <p class="text-gray-600 text-sm">
+                  El análisis estadístico mediante Google Analytics se realiza bajo interés legítimo para mejorar los servicios del sitio web, utilizando datos anonimizados que no permiten la identificación directa del usuario.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Plazo de Conservación -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">5</span>
+          Plazo de Conservación de los Datos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-xl overflow-hidden border border-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">Tipo de Dato</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">Plazo de Conservación</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 text-gray-700">Conversaciones de WhatsApp</td>
+                  <td class="px-6 py-4 text-gray-600">Hasta 12 meses después de la última interacción, o hasta que el titular solicite su eliminación</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 text-gray-700">Datos de Google Analytics</td>
+                  <td class="px-6 py-4 text-gray-600">26 meses (configuración predeterminada de Google Analytics)</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 text-gray-700">Cookies de sesión</td>
+                  <td class="px-6 py-4 text-gray-600">Hasta el cierre del navegador</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Derechos ARCO -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">6</span>
+          Tus Derechos (Derechos ARCO)
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-6">
+            Conforme a la Ley N° 29733 y su Reglamento, como titular de datos personales tienes los siguientes derechos:
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-gradient-to-br from-rojo/5 to-transparent rounded-xl p-5 border border-rojo/20">
+              <h4 class="font-bold text-rojo mb-2 flex items-center gap-2">
+                <span class="text-xl">A</span> Acceso
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Derecho a obtener información sobre si tus datos personales están siendo tratados y, en caso afirmativo, acceder a dichos datos.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-naranja/5 to-transparent rounded-xl p-5 border border-naranja/20">
+              <h4 class="font-bold text-naranja-dark mb-2 flex items-center gap-2">
+                <span class="text-xl">R</span> Rectificación
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Derecho a solicitar la corrección de datos personales inexactos o incompletos.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-turquesa/5 to-transparent rounded-xl p-5 border border-turquesa/20">
+              <h4 class="font-bold text-turquesa-dark mb-2 flex items-center gap-2">
+                <span class="text-xl">C</span> Cancelación
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Derecho a solicitar la supresión de tus datos personales cuando ya no sean necesarios para la finalidad para la que fueron recabados.
+              </p>
+            </div>
+            <div class="bg-gradient-to-br from-purpura/5 to-transparent rounded-xl p-5 border border-purpura/20">
+              <h4 class="font-bold text-purpura mb-2 flex items-center gap-2">
+                <span class="text-xl">O</span> Oposición
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Derecho a oponerte al tratamiento de tus datos personales o a que cese el mismo cuando no sea necesario tu consentimiento.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Cómo Ejercer tus Derechos -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">7</span>
+          Cómo Ejercer tus Derechos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Para ejercer cualquiera de tus derechos ARCO, puedes contactarnos a través de correo electrónico:
+          </p>
+          <div class="bg-crema rounded-xl p-6 border border-crema-dark">
+            {contactEmail ? (
+              <div class="flex items-center gap-3 mb-4">
+                <svg class="w-8 h-8 text-fucsia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-800">Correo Electrónico</p>
+                  <a href={`mailto:${contactEmail}?subject=Solicitud%20de%20ejercicio%20de%20derechos%20ARCO`} class="text-fucsia hover:text-rojo transition-colors">
+                    {contactEmail}
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div class="flex items-center gap-3 mb-4 p-4 bg-amarillo/10 rounded-lg border border-amarillo/30">
+                <svg class="w-6 h-6 text-amarillo-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p class="text-gray-700 text-sm">
+                  El correo electrónico de contacto para ejercer tus derechos ARCO no está disponible en este momento. Por favor, intenta más tarde.
+                </p>
+              </div>
+            )}
+            <p class="text-gray-600 text-sm">
+              <strong>Información requerida para tu solicitud:</strong>
+            </p>
+            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+              <li>• Nombre completo</li>
+              <li>• Número de documento de identidad (DNI)</li>
+              <li>• Descripción del derecho que deseas ejercer</li>
+              <li>• Documentación que acredite tu identidad (opcional, puede ser requerida)</li>
+            </ul>
+          </div>
+          <p class="text-gray-700 mt-4">
+            <strong>Plazo de respuesta:</strong> Atenderemos tu solicitud en un plazo máximo de <strong>20 días hábiles</strong> conforme a lo establecido en el artículo 29 del Reglamento de la Ley N° 29733.
+          </p>
+        </div>
+      </section>
+
+      <!-- 8. Cookies -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">8</span>
+          Uso de Cookies
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Este sitio web utiliza cookies y tecnologías similares para su funcionamiento y análisis:
+          </p>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-xl overflow-hidden border border-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-800">Cookie</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-800">Proveedor</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-800">Finalidad</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-800">Duración</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 text-sm">
+                <tr>
+                  <td class="px-4 py-3 text-gray-700 font-mono">_ga</td>
+                  <td class="px-4 py-3 text-gray-600">Google Analytics</td>
+                  <td class="px-4 py-3 text-gray-600">Distinguir usuarios únicos</td>
+                  <td class="px-4 py-3 text-gray-600">2 años</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 text-gray-700 font-mono">_ga_*</td>
+                  <td class="px-4 py-3 text-gray-600">Google Analytics</td>
+                  <td class="px-4 py-3 text-gray-600">Mantener estado de sesión</td>
+                  <td class="px-4 py-3 text-gray-600">2 años</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-amarillo/10 rounded-xl p-5 mt-4 border border-amarillo/30">
+            <h4 class="font-semibold text-amarillo-dark mb-2">¿Cómo desactivar las cookies?</h4>
+            <p class="text-gray-600 text-sm">
+              Puedes configurar tu navegador para rechazar cookies o eliminar las existentes. Ten en cuenta que esto podría afectar la funcionalidad del sitio. También puedes optar por no participar en Google Analytics instalando el
+              <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" class="text-fucsia hover:text-rojo underline">
+                complemento de inhabilitación de Google Analytics
+              </a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Transferencia de Datos -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">9</span>
+          Transferencia de Datos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            <strong>No vendemos, alquilamos ni cedemos</strong> tus datos personales a terceros para fines comerciales.
+          </p>
+          <p class="text-gray-700 mb-4">
+            Sin embargo, los siguientes proveedores de servicios pueden tener acceso a ciertos datos para cumplir con sus funciones:
+          </p>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <span class="text-gray-400">→</span>
+              <div>
+                <strong class="text-gray-800">Google LLC (Google Analytics)</strong>
+                <p class="text-gray-600 text-sm">Procesamiento de datos analíticos en servidores ubicados en Estados Unidos, bajo el marco de protección de datos EU-US Data Privacy Framework.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-gray-400">→</span>
+              <div>
+                <strong class="text-gray-800">Meta Platforms, Inc. (WhatsApp)</strong>
+                <p class="text-gray-600 text-sm">Gestión de mensajería en servidores ubicados en Estados Unidos, sujeto a la Política de Privacidad de WhatsApp.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 10. Seguridad -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">10</span>
+          Medidas de Seguridad
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Implementamos medidas técnicas y organizativas apropiadas para proteger tus datos personales:
+          </p>
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-2">
+              <span class="text-verde">🔒</span>
+              <span>Conexión segura mediante protocolo HTTPS (cifrado SSL/TLS)</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-verde">🔒</span>
+              <span>Cifrado de extremo a extremo en conversaciones de WhatsApp</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-verde">🔒</span>
+              <span>Anonimización de direcciones IP en Google Analytics</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-verde">🔒</span>
+              <span>Acceso restringido a los datos solo a personal autorizado</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 11. Menores de Edad -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">11</span>
+          Protección de Menores de Edad
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700">
+            Este sitio web no está dirigido a menores de 14 años. No recopilamos intencionalmente datos personales de menores. Si eres padre o tutor y crees que tu hijo nos ha proporcionado datos personales, contáctanos para proceder a su eliminación inmediata, conforme al artículo 13 de la Ley N° 29733.
+          </p>
+        </div>
+      </section>
+
+      <!-- 12. Autoridad de Control -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">12</span>
+          Autoridad Nacional de Protección de Datos
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700 mb-4">
+            Si consideras que el tratamiento de tus datos personales vulnera la normativa vigente, tienes derecho a presentar una reclamación ante:
+          </p>
+          <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+            <h4 class="font-bold text-gray-800 mb-3">
+              Autoridad Nacional de Protección de Datos Personales (ANPDP)
+            </h4>
+            <dl class="space-y-2 text-sm">
+              <div>
+                <dt class="font-semibold text-gray-700">Dirección:</dt>
+                <dd class="text-gray-600">Scipión Llona 350, Miraflores, Lima - Perú</dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-gray-700">Teléfono:</dt>
+                <dd class="text-gray-600">(01) 204-8020</dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-gray-700">Portal Web:</dt>
+                <dd>
+                  <a href="https://www.gob.pe/anpdp" target="_blank" rel="noopener noreferrer" class="text-fucsia hover:text-rojo underline">
+                    https://www.gob.pe/anpdp
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. Cambios a esta Política -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia text-sm font-bold">13</span>
+          Modificaciones a esta Política
+        </h2>
+        <div class="prose prose-lg max-w-none">
+          <p class="text-gray-700">
+            Nos reservamos el derecho de actualizar esta Política de Privacidad para reflejar cambios en nuestras prácticas o en la legislación aplicable. Cualquier modificación será publicada en esta página con la fecha de actualización correspondiente. Te recomendamos revisar periódicamente esta política para mantenerte informado sobre cómo protegemos tus datos.
+          </p>
+        </div>
+      </section>
+
+      <!-- Cierre -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <p class="text-center text-gray-500 text-sm">
+          Esta Política de Privacidad fue actualizada por última vez el <strong>{lastUpdated}</strong>.
+        </p>
+        <p class="text-center text-gray-500 text-sm mt-2">
+          © {new Date().getFullYear()} Proyecto Comunitario María Parado de Bellido. Todos los derechos reservados.
+        </p>
+      </div>
+
     </div>
   </div>
 </BaseLayout>

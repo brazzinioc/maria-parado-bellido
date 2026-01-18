@@ -81,6 +81,16 @@ export interface SEOProps {
   publishedTime?: string;
   modifiedTime?: string;
   canonical?: string;
+  keywords?: string[];
+  author?: string;
+  section?: string; // For articles: "Historia", "Turismo", etc.
+  noindex?: boolean; // For pages that shouldn't be indexed
+}
+
+// Tipos para Breadcrumbs (SEO)
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
 }
 
 // Tipos para Actividades Comunales
