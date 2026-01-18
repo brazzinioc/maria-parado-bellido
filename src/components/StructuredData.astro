@@ -2,16 +2,16 @@
 import type { BreadcrumbItem } from "../types";
 
 type SchemaType =
-  | 'website'
-  | 'organization'
-  | 'place'
-  | 'event'
-  | 'tour'
-  | 'breadcrumb'
-  | 'article'
-  | 'localBusiness'
-  | 'itemList'
-  | 'touristDestination';
+  | "website"
+  | "organization"
+  | "place"
+  | "event"
+  | "tour"
+  | "breadcrumb"
+  | "article"
+  | "localBusiness"
+  | "itemList"
+  | "touristDestination";
 
 interface Props {
   type: SchemaType;
@@ -20,7 +20,9 @@ interface Props {
 }
 
 const { type, data = {}, breadcrumbs = [] } = Astro.props;
-const baseUrl = (Astro.site || 'https://mariaparadodebellido.com').toString().replace(/\/$/, '');
+const baseUrl = (Astro.site || "https://mariaparadodebellido.com")
+  .toString()
+  .replace(/\/$/, "");
 
 // Coordenadas exactas de Pomabamba
 const LOCATION = {
@@ -31,163 +33,179 @@ const LOCATION = {
 
 const generateSchema = () => {
   switch (type) {
-    case 'website':
+    case "website":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        '@id': `${baseUrl}/#website`,
-        name: 'María Parado de Bellido - Turismo Ayacucho',
-        alternateName: 'Pomabamba Turismo',
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        name: "María Parado de Bellido - Turismo Ayacucho",
+        alternateName: "Pomabamba Turismo",
         url: baseUrl,
-        description: 'Descubre el distrito de María Parado de Bellido en Ayacucho, Perú. Turismo vivencial, paisajes andinos, festividades tradicionales y gastronomía local a 3,236 msnm.',
-        inLanguage: 'es-PE',
+        description:
+          "Descubre el distrito de María Parado de Bellido en Ayacucho, Perú. Turismo vivencial, paisajes andinos, festividades tradicionales y gastronomía local a 3,236 msnm.",
+        inLanguage: "es-PE",
         potentialAction: {
-          '@type': 'SearchAction',
+          "@type": "SearchAction",
           target: {
-            '@type': 'EntryPoint',
+            "@type": "EntryPoint",
             urlTemplate: `${baseUrl}/search?q={search_term_string}`,
           },
-          'query-input': 'required name=search_term_string',
+          "query-input": "required name=search_term_string",
         },
       };
 
-    case 'organization':
+    case "organization":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'GovernmentOrganization',
-        '@id': `${baseUrl}/#organization`,
-        name: 'Municipalidad Distrital de María Parado de Bellido',
-        alternateName: 'Municipalidad de Pomabamba',
+        "@context": "https://schema.org",
+        "@type": "GovernmentOrganization",
+        "@id": `${baseUrl}/#organization`,
+        name: "Municipalidad Distrital de María Parado de Bellido",
+        alternateName: "Municipalidad de Pomabamba",
         url: baseUrl,
         logo: {
-          '@type': 'ImageObject',
+          "@type": "ImageObject",
           url: `${baseUrl}/images/Maria_Parado_de_Bellido_Pomabamba.png`,
           width: 200,
           height: 200,
         },
-        image: `${baseUrl}/images/hero-main.webp`,
+        image: `${baseUrl}/images/hero_1.webp`,
         address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Plaza de Armas s/n',
-          addressLocality: 'María Parado de Bellido (Pomabamba)',
-          addressRegion: 'Ayacucho',
-          postalCode: '05650',
-          addressCountry: 'PE',
+          "@type": "PostalAddress",
+          streetAddress: "Plaza de Armas s/n",
+          addressLocality: "María Parado de Bellido (Pomabamba)",
+          addressRegion: "Ayacucho",
+          postalCode: "05650",
+          addressCountry: "PE",
         },
         geo: {
-          '@type': 'GeoCoordinates',
+          "@type": "GeoCoordinates",
           latitude: LOCATION.lat,
           longitude: LOCATION.lng,
           elevation: LOCATION.altitude,
         },
         areaServed: {
-          '@type': 'AdministrativeArea',
-          name: 'Distrito María Parado de Bellido, Provincia Cangallo, Departamento Ayacucho',
+          "@type": "AdministrativeArea",
+          name: "Distrito María Parado de Bellido, Provincia Cangallo, Departamento Ayacucho",
         },
-        sameAs: [
-          'https://www.facebook.com/mariaparadodebellido',
-        ],
+        sameAs: ["https://www.facebook.com/mariaparadodebellido"],
       };
 
-    case 'touristDestination':
+    case "touristDestination":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'TouristDestination',
-        '@id': `${baseUrl}/#destination`,
-        name: 'María Parado de Bellido - Pomabamba',
-        description: data.description || 'Distrito andino a 3,236 msnm con rica historia Chanca, festividades tradicionales, y paisajes impresionantes en los Andes de Ayacucho, Perú.',
+        "@context": "https://schema.org",
+        "@type": "TouristDestination",
+        "@id": `${baseUrl}/#destination`,
+        name: "María Parado de Bellido - Pomabamba",
+        description:
+          data.description ||
+          "Distrito andino a 3,236 msnm con rica historia Chanca, festividades tradicionales, y paisajes impresionantes en los Andes de Ayacucho, Perú.",
         url: baseUrl,
-        image: data.image ? `${baseUrl}${data.image}` : `${baseUrl}/images/hero-main.webp`,
+        image: data.image
+          ? `${baseUrl}${data.image}`
+          : `${baseUrl}/images/hero_1.webp`,
         geo: {
-          '@type': 'GeoCoordinates',
+          "@type": "GeoCoordinates",
           latitude: LOCATION.lat,
           longitude: LOCATION.lng,
           elevation: LOCATION.altitude,
         },
         containedInPlace: {
-          '@type': 'AdministrativeArea',
-          name: 'Cangallo, Ayacucho, Perú',
+          "@type": "AdministrativeArea",
+          name: "Cangallo, Ayacucho, Perú",
         },
-        touristType: ['Cultural tourism', 'Rural tourism', 'Adventure tourism', 'Ecotourism'],
-        includesAttraction: data.attractions?.map((attr: any) => ({
-          '@type': 'TouristAttraction',
-          name: attr.name,
-          description: attr.description,
-        })) || [],
+        touristType: [
+          "Cultural tourism",
+          "Rural tourism",
+          "Adventure tourism",
+          "Ecotourism",
+        ],
+        includesAttraction:
+          data.attractions?.map((attr: any) => ({
+            "@type": "TouristAttraction",
+            name: attr.name,
+            description: attr.description,
+          })) || [],
       };
 
-    case 'breadcrumb':
+    case "breadcrumb":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
         itemListElement: breadcrumbs.map((item, index) => ({
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: index + 1,
           name: item.name,
-          item: item.url.startsWith('http') ? item.url : `${baseUrl}${item.url}`,
+          item: item.url.startsWith("http")
+            ? item.url
+            : `${baseUrl}${item.url}`,
         })),
       };
 
-    case 'article':
+    case "article":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        '@id': `${baseUrl}${data.url || ''}#article`,
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": `${baseUrl}${data.url || ""}#article`,
         headline: data.title,
         description: data.description,
-        image: data.image ? `${baseUrl}${data.image}` : `${baseUrl}/images/hero-main.webp`,
+        image: data.image
+          ? `${baseUrl}${data.image}`
+          : `${baseUrl}/images/hero_1.webp`,
         datePublished: data.publishedTime || new Date().toISOString(),
         dateModified: data.modifiedTime || new Date().toISOString(),
         author: {
-          '@type': 'Organization',
-          name: 'Municipalidad de María Parado de Bellido',
+          "@type": "Organization",
+          name: "Municipalidad de María Parado de Bellido",
           url: baseUrl,
         },
         publisher: {
-          '@type': 'Organization',
-          name: 'María Parado de Bellido - Turismo Ayacucho',
+          "@type": "Organization",
+          name: "María Parado de Bellido - Turismo Ayacucho",
           logo: {
-            '@type': 'ImageObject',
+            "@type": "ImageObject",
             url: `${baseUrl}/images/Maria_Parado_de_Bellido_Pomabamba.png`,
           },
         },
         mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': `${baseUrl}${data.url || ''}`,
+          "@type": "WebPage",
+          "@id": `${baseUrl}${data.url || ""}`,
         },
-        articleSection: data.section || 'Turismo',
-        keywords: data.keywords?.join(', ') || 'María Parado de Bellido, Ayacucho, turismo',
-        inLanguage: 'es-PE',
+        articleSection: data.section || "Turismo",
+        keywords:
+          data.keywords?.join(", ") ||
+          "María Parado de Bellido, Ayacucho, turismo",
+        inLanguage: "es-PE",
       };
 
-    case 'place':
+    case "place":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'TouristAttraction',
-        '@id': `${baseUrl}/places/${data.slug || ''}#place`,
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        "@id": `${baseUrl}/places/${data.slug || ""}#place`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/places/${data.slug || ''}`,
-        image: data.images?.map((img: string) =>
-          img.startsWith('http') ? img : `${baseUrl}${img}`
-        ) || [],
+        url: `${baseUrl}/places/${data.slug || ""}`,
+        image:
+          data.images?.map((img: string) =>
+            img.startsWith("http") ? img : `${baseUrl}${img}`,
+          ) || [],
         geo: {
-          '@type': 'GeoCoordinates',
+          "@type": "GeoCoordinates",
           latitude: data.location?.lat || LOCATION.lat,
           longitude: data.location?.lng || LOCATION.lng,
         },
         address: {
-          '@type': 'PostalAddress',
-          addressLocality: data.location?.name || 'María Parado de Bellido',
-          addressRegion: 'Ayacucho',
-          addressCountry: 'PE',
+          "@type": "PostalAddress",
+          addressLocality: data.location?.name || "María Parado de Bellido",
+          addressRegion: "Ayacucho",
+          addressCountry: "PE",
         },
         isAccessibleForFree: !data.entryFee,
         ...(data.entryFee && {
           offers: {
-            '@type': 'Offer',
+            "@type": "Offer",
             price: data.entryFee,
-            priceCurrency: data.currency || 'PEN',
+            priceCurrency: data.currency || "PEN",
           },
         }),
         ...(data.category && {
@@ -197,132 +215,145 @@ const generateSchema = () => {
         touristType: getTouristType(data.category),
       };
 
-    case 'event':
+    case "event":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'Event',
-        '@id': `${baseUrl}/festivities/${data.slug || ''}#event`,
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "@id": `${baseUrl}/festivities/${data.slug || ""}#event`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/festivities/${data.slug || ''}`,
+        url: `${baseUrl}/festivities/${data.slug || ""}`,
         startDate: data.start_date,
         endDate: data.end_date,
-        image: data.images?.map((img: string) =>
-          img.startsWith('http') ? img : `${baseUrl}${img}`
-        ) || [],
+        image:
+          data.images?.map((img: string) =>
+            img.startsWith("http") ? img : `${baseUrl}${img}`,
+          ) || [],
         location: {
-          '@type': 'Place',
-          name: data.place?.name || 'María Parado de Bellido',
+          "@type": "Place",
+          name: data.place?.name || "María Parado de Bellido",
           address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'María Parado de Bellido',
-            addressRegion: 'Ayacucho',
-            addressCountry: 'PE',
+            "@type": "PostalAddress",
+            addressLocality: "María Parado de Bellido",
+            addressRegion: "Ayacucho",
+            addressCountry: "PE",
           },
           geo: {
-            '@type': 'GeoCoordinates',
+            "@type": "GeoCoordinates",
             latitude: data.place?.lat || LOCATION.lat,
             longitude: data.place?.lng || LOCATION.lng,
           },
         },
-        organizer: data.cargontes?.length > 0 ? data.cargontes.map((c: any) => ({
-          '@type': 'Person',
-          name: c.name,
-          jobTitle: c.role,
-        })) : {
-          '@type': 'Organization',
-          name: 'Comunidad de María Parado de Bellido',
-        },
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        organizer:
+          data.cargontes?.length > 0
+            ? data.cargontes.map((c: any) => ({
+                "@type": "Person",
+                name: c.name,
+                jobTitle: c.role,
+              }))
+            : {
+                "@type": "Organization",
+                name: "Comunidad de María Parado de Bellido",
+              },
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         isAccessibleForFree: true,
-        inLanguage: 'es',
-        typicalAgeRange: 'all ages',
+        inLanguage: "es",
+        typicalAgeRange: "all ages",
         audience: {
-          '@type': 'Audience',
-          audienceType: 'Tourists, Locals, Families',
+          "@type": "Audience",
+          audienceType: "Tourists, Locals, Families",
         },
       };
 
-    case 'tour':
+    case "tour":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'TouristTrip',
-        '@id': `${baseUrl}/tours/${data.slug || ''}#tour`,
+        "@context": "https://schema.org",
+        "@type": "TouristTrip",
+        "@id": `${baseUrl}/tours/${data.slug || ""}#tour`,
         name: data.title,
         description: data.description,
-        url: `${baseUrl}/tours/${data.slug || ''}`,
-        image: data.images?.map((img: string) =>
-          img.startsWith('http') ? img : `${baseUrl}${img}`
-        ) || [],
-        touristType: 'Cultural Tourism',
-        itinerary: data.locations?.map((loc: any, index: number) => ({
-          '@type': 'Place',
-          name: loc.name,
-          position: index + 1,
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: loc.lat,
-            longitude: loc.lng,
-          },
-        })) || [],
+        url: `${baseUrl}/tours/${data.slug || ""}`,
+        image:
+          data.images?.map((img: string) =>
+            img.startsWith("http") ? img : `${baseUrl}${img}`,
+          ) || [],
+        touristType: "Cultural Tourism",
+        itinerary:
+          data.locations?.map((loc: any, index: number) => ({
+            "@type": "Place",
+            name: loc.name,
+            position: index + 1,
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: loc.lat,
+              longitude: loc.lng,
+            },
+          })) || [],
         offers: {
-          '@type': 'Offer',
+          "@type": "Offer",
           price: data.price,
-          priceCurrency: data.currency || 'PEN',
-          availability: 'https://schema.org/InStock',
+          priceCurrency: data.currency || "PEN",
+          availability: "https://schema.org/InStock",
           validFrom: new Date().toISOString(),
-          priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+          priceValidUntil: new Date(
+            Date.now() + 365 * 24 * 60 * 60 * 1000,
+          ).toISOString(),
         },
         duration: `PT${data.duration_hours}H`,
-        provider: data.guide ? {
-          '@type': 'Person',
-          name: data.guide.name,
-          telephone: data.guide.phone,
-        } : {
-          '@type': 'Organization',
-          name: 'María Parado de Bellido Turismo',
-        },
+        provider: data.guide
+          ? {
+              "@type": "Person",
+              name: data.guide.name,
+              telephone: data.guide.phone,
+            }
+          : {
+              "@type": "Organization",
+              name: "María Parado de Bellido Turismo",
+            },
       };
 
-    case 'localBusiness':
+    case "localBusiness":
       return {
-        '@context': 'https://schema.org',
-        '@type': getBusinessType(data.category),
-        '@id': `${baseUrl}/directorio/${data.slug || ''}#business`,
+        "@context": "https://schema.org",
+        "@type": getBusinessType(data.category),
+        "@id": `${baseUrl}/directorio/${data.slug || ""}#business`,
         name: data.name,
         description: data.description,
         url: `${baseUrl}/directorio`,
-        image: data.images?.map((img: string) =>
-          img.startsWith('http') ? img : `${baseUrl}${img}`
-        ) || [],
+        image:
+          data.images?.map((img: string) =>
+            img.startsWith("http") ? img : `${baseUrl}${img}`,
+          ) || [],
         address: {
-          '@type': 'PostalAddress',
+          "@type": "PostalAddress",
           streetAddress: data.address,
-          addressLocality: 'María Parado de Bellido',
-          addressRegion: 'Ayacucho',
-          addressCountry: 'PE',
+          addressLocality: "María Parado de Bellido",
+          addressRegion: "Ayacucho",
+          addressCountry: "PE",
         },
-        geo: data.location ? {
-          '@type': 'GeoCoordinates',
-          latitude: data.location.lat,
-          longitude: data.location.lng,
-        } : {
-          '@type': 'GeoCoordinates',
-          latitude: LOCATION.lat,
-          longitude: LOCATION.lng,
-        },
+        geo: data.location
+          ? {
+              "@type": "GeoCoordinates",
+              latitude: data.location.lat,
+              longitude: data.location.lng,
+            }
+          : {
+              "@type": "GeoCoordinates",
+              latitude: LOCATION.lat,
+              longitude: LOCATION.lng,
+            },
         telephone: data.phone,
         ...(data.hours && { openingHours: data.hours }),
         ...(data.priceRange && { priceRange: getPriceRange(data.priceRange) }),
         ...(data.services && {
           hasOfferCatalog: {
-            '@type': 'OfferCatalog',
-            name: 'Servicios',
+            "@type": "OfferCatalog",
+            name: "Servicios",
             itemListElement: data.services.map((service: string) => ({
-              '@type': 'Offer',
+              "@type": "Offer",
               itemOffered: {
-                '@type': 'Service',
+                "@type": "Service",
                 name: service,
               },
             })),
@@ -330,21 +361,22 @@ const generateSchema = () => {
         }),
       };
 
-    case 'itemList':
+    case "itemList":
       return {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
+        "@context": "https://schema.org",
+        "@type": "ItemList",
         name: data.name,
         description: data.description,
         numberOfItems: data.items?.length || 0,
-        itemListElement: data.items?.map((item: any, index: number) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          url: item.url ? `${baseUrl}${item.url}` : undefined,
-          name: item.name,
-          description: item.description,
-          image: item.image ? `${baseUrl}${item.image}` : undefined,
-        })) || [],
+        itemListElement:
+          data.items?.map((item: any, index: number) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: item.url ? `${baseUrl}${item.url}` : undefined,
+            name: item.name,
+            description: item.description,
+            image: item.image ? `${baseUrl}${item.image}` : undefined,
+          })) || [],
       };
 
     default:
@@ -355,48 +387,53 @@ const generateSchema = () => {
 // Helper functions
 function getBusinessType(category: string): string {
   const types: Record<string, string> = {
-    hostal: 'LodgingBusiness',
-    restaurante: 'Restaurant',
-    tienda: 'Store',
-    transporte: 'TaxiService',
-    artesania: 'Store',
-    servicio: 'LocalBusiness',
+    hostal: "LodgingBusiness",
+    restaurante: "Restaurant",
+    tienda: "Store",
+    transporte: "TaxiService",
+    artesania: "Store",
+    servicio: "LocalBusiness",
   };
-  return types[category] || 'LocalBusiness';
+  return types[category] || "LocalBusiness";
 }
 
 function getPriceRange(range: string): string {
   const ranges: Record<string, string> = {
-    economico: '$',
-    moderado: '$$',
-    premium: '$$$',
+    economico: "$",
+    moderado: "$$",
+    premium: "$$$",
   };
-  return ranges[range] || '$$';
+  return ranges[range] || "$$";
 }
 
 function getCategoryType(category: string): string {
   const types: Record<string, string> = {
-    natural: 'https://schema.org/NaturalFeature',
-    cultural: 'https://schema.org/CulturalEvent',
-    historical: 'https://schema.org/HistoricSite',
-    archaeological: 'https://schema.org/ArchaeologicalSite',
+    natural: "https://schema.org/NaturalFeature",
+    cultural: "https://schema.org/CulturalEvent",
+    historical: "https://schema.org/HistoricSite",
+    archaeological: "https://schema.org/ArchaeologicalSite",
   };
-  return types[category] || 'https://schema.org/TouristAttraction';
+  return types[category] || "https://schema.org/TouristAttraction";
 }
 
 function getTouristType(category: string): string[] {
   const types: Record<string, string[]> = {
-    natural: ['Ecotourism', 'Adventure tourism'],
-    cultural: ['Cultural tourism', 'Heritage tourism'],
-    historical: ['Heritage tourism', 'Cultural tourism'],
-    archaeological: ['Archaeological tourism', 'Cultural tourism'],
+    natural: ["Ecotourism", "Adventure tourism"],
+    cultural: ["Cultural tourism", "Heritage tourism"],
+    historical: ["Heritage tourism", "Cultural tourism"],
+    archaeological: ["Archaeological tourism", "Cultural tourism"],
   };
-  return types[category] || ['Cultural tourism'];
+  return types[category] || ["Cultural tourism"];
 }
 
 const schema = generateSchema();
 ---
 
-{Object.keys(schema).length > 0 && (
-  <script type="application/ld+json" set:html={JSON.stringify(schema, null, 0)} />
-)}
+{
+  Object.keys(schema).length > 0 && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema, null, 0)}
+    />
+  )
+}

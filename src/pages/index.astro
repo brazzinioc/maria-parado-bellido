@@ -2,10 +2,35 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FestivityCard from "../components/FestivityCard.astro";
 import WeatherStat from "../components/WeatherStat";
+import HeroSlider from "../components/HeroSlider";
 import { fetchFestivities } from "../lib/api";
 
 // Fetch data at build time
 const festivities = await fetchFestivities();
+
+// Hero slider images
+const heroSlides = [
+  {
+    image: "/images/hero_1.webp",
+    alt: "Vista panorámica de Pomabamba con campos de cultivo andinos"
+  },
+  {
+    image: "/images/hero_2.webp",
+    alt: "Cordillera andina y paisajes de María Parado de Bellido"
+  },
+  {
+    image: "/images/hero_3.webp",
+    alt: "Tradiciones y cultura viva en Pomabamba"
+  },
+  {
+    image: "/images/hero_4.webp",
+    alt: "Naturaleza y ecosistemas del distrito"
+  },
+  {
+    image: "/images/hero_5.webp",
+    alt: "Vida comunitaria en los Andes de Ayacucho"
+  }
+];
 
 // Get featured content
 const upcomingFestivities = festivities
@@ -55,15 +80,8 @@ const homeStructuredData = [
 >
   <!-- Hero Section -->
   <section class="relative h-dvh min-h-[600px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
-    <!-- Background Image -->
-    <div class="absolute inset-0">
-      <img
-        src="/images/hero-main.webp"
-        alt="Vista panorámica de los campos de Pomabamba con la cordillera andina al fondo"
-        class="w-full h-full object-cover object-bottom"
-        loading="eager"
-      />
-    </div>
+    <!-- Background Slider -->
+    <HeroSlider client:load slides={heroSlides} autoPlayInterval={5500} />
 
     <!-- Gradient Overlay -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 md:bg-none"></div>
