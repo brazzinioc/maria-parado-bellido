@@ -1,88 +1,107 @@
-# María Parado de Bellido - Sitio Web Turístico
+# María Parado de Bellido - Portal Turístico y Cultural
 
-Sitio web estático (SSG) para promover el turismo cultural en el distrito María Parado de Bellido, provincia de Cangallo, departamento de Ayacucho, Perú (3600 msnm).
+Portal web híbrido (turístico-informativo) para promover el turismo cultural y brindar información útil sobre el distrito María Parado de Bellido, provincia de Cangallo, departamento de Ayacucho, Perú (3,236 msnm).
 
-## 🌄 Descripción
+## Descripción
 
-Plataforma web diseñada para mostrar al mundo la riqueza cultural, histórica, gastronómica y natural del distrito María Parado de Bellido. El sitio integra:
+Plataforma web comunitaria diseñada para mostrar la riqueza cultural, histórica, gastronómica y natural del distrito María Parado de Bellido. El sitio funciona como un portal híbrido que combina promoción turística con información útil para visitantes y residentes.
 
-- Historia y cultura andina
-- Tours guiados con información detallada
-- Festividades costumbristas y sistema de cargontes
-- Gastronomía tradicional
-- Mapa interactivo de sitios turísticos
-- Optimización SEO y accesibilidad
+### Características principales
 
-## 🚀 Stack Tecnológico
+- **Historia y cultura** - Reseña histórica desde los Chancas hasta la actualidad
+- **Sitios turísticos** - Lugares arqueológicos, naturales e históricos
+- **Festividades** - Calendario de celebraciones y sistema de cargontes
+- **Gastronomía** - Platos tradicionales ayacuchanos
+- **Comunidad** - Información sobre eventos y actividades comunales
+- **Directorio** - Negocios y servicios locales verificados
+- **Widget de clima** - Información meteorológica en tiempo real
+- **SEO optimizado** - Structured data, breadcrumbs, meta tags
+- **Cumplimiento legal** - Política de privacidad conforme a Ley N° 29733 (Perú)
 
-- **Astro 4.x** - Generador de sitios estáticos (SSG)
-- **React 18.x** - Componentes interactivos (hidratación parcial)
-- **Tailwind CSS 3.x** - Estilos utilitarios y diseño responsive
-- **Leaflet** - Mapas interactivos
-- **TypeScript** - Tipado estático
+## Stack Tecnológico
 
-## 📁 Estructura del Proyecto
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| **Astro** | 5.x | Generador de sitios estáticos (SSG) |
+| **React** | 19.x | Componentes interactivos (hidratación parcial) |
+| **Tailwind CSS** | 4.x | Estilos utilitarios y diseño responsive |
+| **Leaflet** | 1.9.x | Mapas interactivos |
+| **TypeScript** | 5.x | Tipado estático |
+
+## Estructura del Proyecto
 
 ```
 maria-parado-bellido/
 ├── public/
-│   ├── images/                      # Imágenes estáticas (hero, tours, food, etc.)
-│   ├── robots.txt
+│   ├── images/                    # Imágenes estáticas
+│   └── robots.txt                 # Configuración para crawlers
 ├── src/
 │   ├── components/
-│   │   ├── Hero.astro              # Hero banner reutilizable
-│   │   ├── TourCard.astro          # Tarjeta de tour
-│   │   ├── FestivityCard.astro     # Tarjeta de festividad
-│   │   ├── InteractiveMap.tsx      # Mapa con Leaflet (React)
-│   │   ├── SEO.astro               # Meta tags, Open Graph, Twitter Cards
-│   │   └── StructuredData.astro    # JSON-LD para SEO
+│   │   ├── Hero.astro             # Hero banner principal
+│   │   ├── PageHeader.astro       # Header reutilizable para páginas
+│   │   ├── WeatherStat.tsx        # Widget de clima (React)
+│   │   ├── InteractiveMap.tsx     # Mapa con Leaflet (React)
+│   │   ├── FeedbackWidget.astro   # Widget de feedback flotante
+│   │   ├── WhatsAppCTA.astro      # Botón flotante de WhatsApp
+│   │   ├── TourCard.astro         # Tarjeta de tour
+│   │   ├── FestivityCard.astro    # Tarjeta de festividad
+│   │   ├── PlaceCard.astro        # Tarjeta de lugar turístico
+│   │   ├── BusinessCard.astro     # Tarjeta de negocio/servicio
+│   │   ├── CommunityEventCard.astro # Tarjeta de evento comunal
+│   │   ├── SEO.astro              # Meta tags, Open Graph, Twitter Cards
+│   │   ├── StructuredData.astro   # JSON-LD para SEO
+│   │   ├── GoogleAnalytics.astro  # Integración GA4
+│   │   └── [Decorativos]          # AyacuchoPatterns, Pompones, RetabloFlores, etc.
 │   ├── layouts/
-│   │   └── BaseLayout.astro        # Layout principal con header/footer
+│   │   └── BaseLayout.astro       # Layout principal con header/footer/nav
 │   ├── lib/
-│   │   └── api.ts                  # Funciones para fetch de datos (tours, festivities)
+│   │   └── api.ts                 # Funciones para fetch de datos
 │   ├── pages/
-│   │   ├── index.astro             # Home page
-│   │   ├── about.astro             # Historia y cultura
-│   │   ├── food.astro              # Gastronomía
-│   │   ├── mapa.astro              # Mapa interactivo
-│   │   ├── contact.astro           # Formulario de contacto
-│   │   ├── tours/
-│   │   │   ├── index.astro         # Listado de tours
-│   │   │   └── [slug].astro        # Detalle de tour (dinámico)
-│   │   └── festivities/
-│   │       └── index.astro         # Listado de festividades
+│   │   ├── index.astro            # Home page
+│   │   ├── about.astro            # Historia y cultura
+│   │   ├── places.astro           # Sitios turísticos
+│   │   ├── food.astro             # Gastronomía
+│   │   ├── privacy.astro          # Política de privacidad (Ley 29733)
+│   │   ├── festivities/
+│   │   │   └── index.astro        # Listado de festividades
+│   │   ├── comunidad/
+│   │   │   └── index.astro        # Actividades comunales
+│   │   └── directorio/
+│   │       └── index.astro        # Negocios y servicios
 │   ├── styles/
-│   │   └── global.css              # Estilos globales y Tailwind
+│   │   └── global.css             # Estilos globales, colores, animaciones
 │   └── types/
-│       └── index.ts                # Definiciones TypeScript
+│       └── index.ts               # Definiciones TypeScript
+├── .env.example                   # Variables de entorno de ejemplo
 ├── astro.config.mjs
-├── tailwind.config.mjs
 ├── tsconfig.json
+├── CONTRIBUTING.md                # Guía de contribución
 └── package.json
 ```
 
-## 🎨 Diseño y Estética
+## Paleta de Colores
 
-### Paleta de Colores (Inspirada en Tejidos Andinos)
+Inspirada en los tejidos tradicionales ayacuchanos y la cultura andina:
 
-- **Terracota**: `#B33A2B` - Pasión, tierra
-- **Índigo**: `#27408B` - Cielo andino, profundidad
-- **Mostaza**: `#D9982D` - Sol, cosecha
-- **Tierra**: `#A67C52` - Conexión con la naturaleza
-- **Crema**: `#F7F3EE` - Fondo suave y cálido
+| Color | Código | Inspiración |
+|-------|--------|-------------|
+| **Rojo** | `#d42c2a` | Danzantes de tijera |
+| **Fucsia** | `#e91e8c` | Pompones y tejidos Paracas |
+| **Naranja** | `#ff6b35` | Frutos de molle y retablos |
+| **Amarillo** | `#fdb913` | Sol andino |
+| **Verde** | `#27ae60` | Naturaleza |
+| **Turquesa** | `#00b5cc` | Cielos andinos |
+| **Azul** | `#2e4c8a` | Cielo nocturno |
+| **Púrpura** | `#8b4789` | Textiles ceremoniales |
+| **Crema** | `#fff8f0` | Fondo cálido |
 
 ### Tipografías
 
-- **Headings**: Lora (serif elegante)
-- **Body**: Inter (legibilidad en pantalla)
+- **Headings**: Montserrat, Lora (serif)
+- **Body**: Poppins, Inter (sans-serif)
+- **Decorativa**: Pacifico (cursive)
 
-### Patrones Visuales
-
-- Patrón SVG con motivos andinos (chakana, rombos, zigzags)
-- Overlays sutiles con baja opacidad
-- Animaciones suaves (fade-in, slide-up)
-
-## 🔧 Instalación y Desarrollo
+## Instalación y Desarrollo
 
 ### Prerrequisitos
 
@@ -93,33 +112,41 @@ maria-parado-bellido/
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/brazzinioc/maria-parado-bellido.git
+git clone https://github.com/brazzinioc/maria-parado-de-bellido.git
 cd maria-parado-bellido
 
 # Instalar dependencias
 npm install
-# o
-yarn install
-# o
-pnpm install
 ```
 
 ### Variables de Entorno
 
-Crea un archivo `.env` en la raíz del proyecto:
+Crea un archivo `.env` basado en `.env.example`:
 
 ```env
-# URL base de la API (opcional)
+# API Configuration
 PUBLIC_API_URL=https://api.example.com
 
-# Formspree ID para formulario de contacto (opcional)
-PUBLIC_FORMSPREE_ID=YOUR_FORMSPREE_ID
+# Site URL (para SEO y canonical URLs)
+PUBLIC_SITE_URL=https://mariaparadodebellido.com
+
+# Google Analytics 4
+PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXX
+
+# WhatsApp Contact Number
+PUBLIC_WHATSAPP_NUMBER=+51XXXXXXXX
+
+# Feedback Form URL (Google Forms, Typeform, etc.)
+PUBLIC_FEEDBACK_URL=https://forms.gle/XXXXXXX
+
+# Contact Email (para ejercer derechos ARCO)
+PUBLIC_CONTACT_EMAIL=contacto@example.com
 ```
 
 ### Comandos Disponibles
 
 ```bash
-# Desarrollo local (http://localhost:4321)
+# Desarrollo local (http://localhost:4321) con acceso de red
 npm run dev
 
 # Build estático para producción
@@ -129,187 +156,89 @@ npm run build
 npm run preview
 ```
 
-## 🌐 Integración con API
+## SEO y Structured Data
 
-El sitio consume datos de tours y festividades desde una API REST externa.
+### Tipos de Schema.org implementados
 
-### Endpoints Esperados
+- `WebSite` - Información general del sitio
+- `Organization` - Datos del proyecto comunitario
+- `TouristDestination` - Destino turístico principal
+- `TouristAttraction` - Lugares turísticos individuales
+- `Event` - Festividades y celebraciones
+- `LocalBusiness` - Negocios del directorio
+- `Article` - Contenido histórico/cultural
+- `BreadcrumbList` - Navegación estructurada
+- `ItemList` - Listas de elementos
 
-#### `GET /api/tours`
+### Características SEO
 
-Retorna un array de objetos `Tour`:
+- Meta tags únicos por página
+- Open Graph (Facebook) y Twitter Cards
+- Canonical URLs
+- Hreflang tags (es-PE, es, x-default)
+- Sitemap XML automático
+- robots.txt configurado
+- Keywords optimizados para turismo regional
 
-```json
-[
-  {
-    "id": "t123",
-    "title": "Tour al Mirador de Puka Pampa",
-    "slug": "mirador-puka-pampa",
-    "summary": "Caminata leve de 2 horas...",
-    "description": "...",
-    "duration_hours": 2,
-    "price": 25.0,
-    "currency": "PEN",
-    "locations": [{ "name": "Mirador Puka Pampa", "lat": -13.3, "lng": -74.2 }],
-    "guide": {
-      "id": "g1",
-      "name": "Rosa Quispe",
-      "phone": "+51 999 888 777"
-    },
-    "images": ["https://..."],
-    "difficulty": "easy",
-    "max_participants": 15
-  }
-]
-```
+## Cumplimiento Legal
 
-#### `GET /api/festivities`
+### Política de Privacidad (Ley N° 29733)
 
-Retorna un array de objetos `Festivity`:
+El sitio cumple con la normativa peruana de protección de datos:
 
-```json
-[
-  {
-    "id": "f456",
-    "name": "Fiesta Patronal de San Juan",
-    "slug": "fiesta-san-juan-2026",
-    "description": "...",
-    "start_date": "2026-06-24",
-    "end_date": "2026-06-26",
-    "place": { "name": "Plaza Principal", "lat": -13.31, "lng": -74.21 },
-    "cargontes": [
-      {
-        "name": "Familia Quispe Huamán",
-        "role": "Mayordomo",
-        "notes": "Líder del cargo 2026"
-      }
-    ],
-    "images": ["..."],
-    "schedule": [
-      {
-        "date": "2026-06-24T09:00:00Z",
-        "activity": "Misa",
-        "location": "Iglesia"
-      }
-    ]
-  }
-]
-```
+- **Ley N° 29733** - Ley de Protección de Datos Personales
+- **DS N° 003-2013-JUS** - Reglamento de la Ley
+- **Derechos ARCO** - Acceso, Rectificación, Cancelación, Oposición
 
-### Estrategia de Datos
+Datos recopilados:
+- Google Analytics (datos anonimizados de tráfico)
+- WhatsApp (solo interacción voluntaria del usuario)
 
-- **Build-time fetch**: Los datos se obtienen durante el build (`astro build`), generando páginas estáticas.
-- **Fallback**: Si la API no está disponible, se usan datos de ejemplo definidos en `src/lib/api.ts`.
-- **Rebuilds**: Para actualizar el sitio con nuevos datos, ejecuta `npm run build` o configura webhooks con tu proveedor de hosting.
+## Despliegue
 
-## 📦 Despliegue
-
-### Vercel
+El sitio genera archivos estáticos compatibles con cualquier hosting:
 
 ```bash
-npm install -g vercel
-vercel --prod
-```
-
-## 🔍 SEO y Rendimiento
-
-### Features SEO
-
-- ✅ Meta tags únicos por página
-- ✅ Open Graph (Facebook)
-- ✅ Twitter Cards
-- ✅ JSON-LD structured data (WebSite, Organization, Event, TouristTrip, Place)
-- ✅ Sitemap.xml generado automáticamente
-- ✅ robots.txt
-- ✅ Canonical URLs
-- ✅ Alt text en imágenes
-
-### Optimizaciones
-
-- Lazy loading de imágenes
-- Componentes React con hidratación parcial (`client:load`)
-- Fuentes optimizadas (Google Fonts con preconnect)
-- CSS inlineado para rutas críticas
-- Build estático (SSG) para velocidad máxima
-
-### Lighthouse Goals
-
-- **Performance**: > 90
-- **Accessibility**: > 90
-- **Best Practices**: > 90
-- **SEO**: > 90
-
-## ♿ Accesibilidad
-
-- Contraste AA mínimo (WCAG)
-- Navegación por teclado
-- ARIA labels en componentes interactivos
-- Alt text descriptivo
-- Tamaños táctiles adecuados (mobile first)
-
-## 🗺️ Mapas Interactivos
-
-El mapa usa **Leaflet** con tiles de OpenStreetMap.
-
-- Marcadores con colores distintivos (tours, festividades, lugares)
-- Popups con imagen y enlace
-- Responsive (full-screen toggle en móvil)
-- Clusters para mejor rendimiento
-
-## 📝 Contenido y Tono
-
-- Voz tranquila, evocadora y respetuosa
-- Términos locales: cargontes, fiesta patronal, Pachamama, etc.
-- Párrafos breves y escaneables
-- Fotografías con color grading cálido y baja saturación
-
-## 🛠️ Mantenimiento
-
-### Actualizar Datos de Tours/Festividades
-
-Si los datos provienen de la API, simplemente ejecuta un nuevo build:
-
-```bash
+# Build de producción
 npm run build
+
+# Los archivos se generan en /dist
 ```
 
-Si modificas datos en `src/lib/api.ts` (fallback), edita los arrays y haz rebuild.
+### Plataformas recomendadas
 
-### Añadir Nuevas Páginas
+- **Vercel** (recomendado)
+- **Netlify**
+- **Cloudflare Pages**
+- **GitHub Pages**
 
-1. Crea un archivo `.astro` en `src/pages/`
-2. Usa `BaseLayout` y componentes existentes
-3. Añade SEO con el componente `<SEO>`
-4. Rebuild
+## Accesibilidad
 
-### Modificar Estilos
+- Contraste WCAG AA mínimo
+- Navegación por teclado completa
+- ARIA labels en componentes interactivos
+- Skip links para navegación
+- Focus visible en todos los elementos interactivos
+- Reducción de movimiento respetada (`prefers-reduced-motion`)
 
-- Colores: edita `tailwind.config.mjs`
-- Estilos globales: edita `src/styles/global.css`
-- Componentes: usa clases de Tailwind
+## Contribuciones
 
-## 📄 Licencia
+Las contribuciones son bienvenidas. Consulta [CONTRIBUTING.md](./CONTRIBUTING.md) para:
 
-Este proyecto es de código abierto. Siéntete libre de usarlo y adaptarlo para tu comunidad.
+- Guías de contribución técnica y de contenido
+- Estándares de código y estilo
+- Proceso de Pull Requests
+- Código de conducta
 
-## 🤝 Contribuciones
+## Licencia
 
-Contribuciones son bienvenidas. Por favor:
+Este proyecto es de código abierto bajo licencia MIT. Siéntete libre de usarlo y adaptarlo para tu comunidad.
 
-1. Fork el proyecto
-2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+## Contacto
 
-## 📧 Contacto
-
-Para consultas sobre el distrito María Parado de Bellido:
-
-- **Email**: <info@mariaparadodebellido.com>
-- **Teléfono**: +51 999 888 777
-- **Ubicación**: Plaza Principal, María Parado de Bellido, Cangallo, Ayacucho
+- **GitHub Issues**: Para reportes técnicos y sugerencias
+- **Sitio web**: [mariaparadodebellido.com](https://mariaparadodebellido.com)
 
 ---
 
-**Desarrollado con ❤️ para promover el turismo cultural en María Parado de Bellido, Ayacucho, Perú**
+**Proyecto comunitario desarrollado con cariño para promover el turismo y cultura de María Parado de Bellido, Cangallo, Ayacucho, Perú**
