@@ -21,8 +21,8 @@ const upcomingFestivities = festivities
   description="Descubre Pomabamba, corazón de María Parado de Bellido. Turismo vivencial, trekking andino y festividades auténticas a 3,236 msnm en Cangallo, Ayacucho."
   image="/images/hero-main.webp"
 >
-  <!-- Hero Section (altura = viewport - header) -->
-  <section class="relative h-[calc(100dvh-80px)] md:h-[calc(100dvh-92px)] min-h-[500px]">
+  <!-- Hero Section -->
+  <section class="relative h-dvh min-h-[600px] -mt-20 md:-mt-[92px] overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0">
       <img
@@ -34,20 +34,19 @@ const upcomingFestivities = festivities
     </div>
 
     <!-- Gradient Overlay -->
-    <div
-      class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10"
-    >
-    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 md:bg-none"></div>
+    <!-- Desktop: gradient from left to reveal right side of image -->
+    <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
 
     <!-- Weather Widget -->
-    <div class="absolute top-24 right-4 md:top-6 md:right-6 z-20">
+    <div class="absolute top-28 right-4 md:top-28 md:right-6 z-20">
       <WeatherWidget client:load />
     </div>
 
     <!-- Main Content -->
-    <div class="absolute inset-0 flex items-end z-10">
-      <div class="container-custom pb-20 md:pb-24">
-        <div class="max-w-2xl">
+    <div class="absolute inset-0 flex items-end md:items-center justify-start z-10 pt-20 md:pt-[92px]">
+      <div class="w-full px-4 md:px-8 lg:px-16 pb-20 md:pb-0">
+        <div class="max-w-2xl md:max-w-lg lg:max-w-xl">
           <!-- Location Tag (mobile only - on tablet/desktop it's shown next to logo) -->
           <div class="flex items-center gap-2 mb-4 md:hidden">
             <span class="w-2 h-2 bg-fucsia rounded-full animate-pulse"></span>

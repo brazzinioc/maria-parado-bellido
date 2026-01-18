@@ -191,7 +191,7 @@
   }
 
   body {
-    @apply bg-crema text-gray-800 font-body antialiased;
+    @apply bg-crema text-gray-800 font-body antialiased overflow-x-hidden;
   }
 
   h1,
