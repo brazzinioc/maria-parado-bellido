@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
+import PageHeader from "../components/PageHeader.astro";
 
 const dishes = [
   {
@@ -81,12 +81,11 @@ const dishes = [
   description="Descubre la gastronomía del distrito María Parado de Bellido: puca picante, pachamanca, cuy chactado y más platos tradicionales andinos preparados con ingredientes ancestrales."
   image="/images/hero-food.jpg"
 >
-  <Hero
+  <PageHeader
     title="Gastronomía Andina"
     subtitle="Sabores ancestrales de nuestra tierra"
-    image="/images/hero-food.jpg"
-    imageAlt="Gastronomía tradicional de María Parado de Bellido"
-    height="medium"
+    icon="🍽️"
+    variant="accent"
   />
 
   <!-- Intro -->
@@ -265,11 +264,11 @@ const dishes = [
         Prueba Nuestra Gastronomía
       </h2>
       <p class="text-lg mb-6 max-w-2xl mx-auto text-white/90">
-        Únete a un tour gastronómico y descubre los sabores auténticos de los
-        Andes.
+        Contáctanos y te ayudamos a planificar tu visita gastronómica por los
+        Andes ayacuchanos.
       </p>
-      <a href="/tours" class="btn-primary bg-white text-indigo hover:bg-crema">
-        Ver Tours Gastronómicos
+      <a href="/festivities" class="btn-primary bg-white text-indigo hover:bg-crema">
+        Ver Festividades
       </a>
     </div>
   </section>

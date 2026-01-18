@@ -4,8 +4,10 @@ interface Props {
   subtitle?: string;
   image: string;
   imageAlt: string;
-  height?: "small" | "medium" | "large";
-  overlay?: boolean;
+  height?: "small" | "medium" | "large" | "fullscreen";
+  variant?: "default" | "glassmorphism";
+  showWeatherSlot?: boolean;
+  showScrollIndicator?: boolean;
 }
 
 const {
@@ -14,66 +16,216 @@ const {
   image,
   imageAlt,
   height = "large",
-  overlay = true,
+  variant = "default",
+  showWeatherSlot = false,
+  showScrollIndicator = true,
 } = Astro.props;
 
 const heightClasses = {
   small: "h-64 md:h-80",
   medium: "h-96 md:h-[28rem]",
   large: "h-[32rem] md:h-[40rem] lg:h-[48rem]",
+  fullscreen: "h-screen",
 };
 ---
 
 <section
-  class={`relative w-full ${heightClasses[height]} overflow-hidden pattern-overlay`}
+  class={`relative w-full ${heightClasses[height]} overflow-hidden`}
+  data-hero
 >
-  <!-- Background Image -->
-  <div class="absolute inset-0">
+  <!-- Background Image with Parallax -->
+  <div class="absolute inset-0 hero-parallax">
     <img
       src={image}
       alt={imageAlt}
-      class="w-full h-full object-cover object-bottom"
+      class="w-full h-full object-cover object-center scale-105"
       loading="eager"
     />
-    {
-      overlay && (
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/65" />
-      )
-    }
   </div>
 
+  <!-- Modern Mesh Gradient Overlay -->
+  <div class="absolute inset-0 hero-overlay">
+    <!-- Base gradient layer -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70"></div>
+
+    <!-- Mesh gradient with Ayacucho colors (subtle) -->
+    <div class="absolute inset-0 opacity-40 mix-blend-overlay">
+      <div class="absolute top-0 left-0 w-2/3 h-2/3 bg-gradient-to-br from-fucsia/30 to-transparent blur-3xl hero-mesh-1"></div>
+      <div class="absolute bottom-0 right-0 w-2/3 h-2/3 bg-gradient-to-tl from-turquesa/25 to-transparent blur-3xl hero-mesh-2"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 bg-gradient-radial from-amarillo/15 to-transparent blur-2xl"></div>
+    </div>
+
+    <!-- Bottom gradient for text readability -->
+    <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+  </div>
+
+  <!-- Weather Widget Slot (optional) -->
+  {showWeatherSlot && (
+    <div class="absolute top-6 right-6 z-30">
+      <slot name="weather" />
+    </div>
+  )}
+
   <!-- Content -->
-  <div class="relative h-full flex items-center justify-center text-center">
+  <div class="relative h-full flex items-center justify-center text-center z-20">
     <div class="container-custom px-6">
-      <h1
-        class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-4 animate-fade-in drop-shadow-lg"
-      >
-        {title}
-      </h1>
-      {
-        subtitle && (
-          <p class="text-xl md:text-2xl lg:text-3xl text-white/95 font-light max-w-3xl mx-auto animate-slide-up drop-shadow-md">
+      <!-- Glassmorphism container (optional) -->
+      <div class={variant === 'glassmorphism'
+        ? 'bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl max-w-4xl mx-auto'
+        : ''}>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-white mb-6 hero-title">
+          {title}
+        </h1>
+
+        {subtitle && (
+          <p class="text-xl md:text-2xl lg:text-3xl text-white/90 font-light max-w-3xl mx-auto hero-subtitle">
             {subtitle}
           </p>
-        )
-      }
+        )}
+      </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <svg
-      class="w-6 h-6 text-white"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-    </svg>
-  </div>
+  <!-- Modern Scroll Indicator -->
+  {showScrollIndicator && (
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 scroll-indicator cursor-pointer">
+      <div class="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 group">
+        <span class="text-xs uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          Explorar
+        </span>
+        <div class="w-6 h-10 border-2 border-white/40 rounded-full p-1 group-hover:border-white/70 transition-colors duration-300">
+          <div class="w-1.5 h-1.5 bg-white rounded-full mx-auto scroll-dot"></div>
+        </div>
+      </div>
+    </div>
+  )}
 </section>
+
+<style>
+  /* Modern animation curves */
+  :root {
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Title animation */
+  .hero-title {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: heroReveal 1.2s var(--ease-out-expo) 0.2s forwards;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Subtitle animation with stagger */
+  .hero-subtitle {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroReveal 1.2s var(--ease-out-expo) 0.5s forwards;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes heroReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Scroll indicator animation (elegant pulse, not bounce) */
+  .scroll-dot {
+    animation: scrollPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(18px);
+      opacity: 0.2;
+    }
+  }
+
+  /* Mesh gradient subtle animation */
+  .hero-mesh-1 {
+    animation: meshFloat 25s ease-in-out infinite;
+  }
+
+  .hero-mesh-2 {
+    animation: meshFloat 25s ease-in-out infinite;
+    animation-delay: -12.5s;
+  }
+
+  @keyframes meshFloat {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(3%, 3%) scale(1.05);
+    }
+    66% {
+      transform: translate(-2%, 2%) scale(0.98);
+    }
+  }
+
+  /* Parallax layer */
+  .hero-parallax {
+    will-change: transform;
+    transition: transform 0.1s linear;
+  }
+
+  /* Radial gradient utility */
+  .bg-gradient-radial {
+    background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+  }
+
+  /* Glassmorphism backdrop support */
+  @supports (backdrop-filter: blur(12px)) {
+    [data-hero] .backdrop-blur-md {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  }
+</style>
+
+<script>
+  // Parallax effect on scroll
+  const hero = document.querySelector('[data-hero]');
+  const parallaxBg = hero?.querySelector('.hero-parallax');
+
+  if (parallaxBg && hero) {
+    let ticking = false;
+
+    const updateParallax = () => {
+      const scrolled = window.scrollY;
+      const heroHeight = (hero as HTMLElement).offsetHeight;
+
+      // Only apply parallax when hero is visible
+      if (scrolled < heroHeight) {
+        const rate = scrolled * 0.4;
+        (parallaxBg as HTMLElement).style.transform = `translate3d(0, ${rate}px, 0)`;
+      }
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // Scroll indicator click
+  const scrollIndicator = document.querySelector('.scroll-indicator');
+  scrollIndicator?.addEventListener('click', () => {
+    const heroHeight = hero?.getBoundingClientRect().height || 0;
+    window.scrollTo({
+      top: heroHeight,
+      behavior: 'smooth'
+    });
+  });
+</script>

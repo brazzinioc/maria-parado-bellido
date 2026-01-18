@@ -1,0 +1,337 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import BusinessCard from "../../components/BusinessCard.astro";
+import type { Business } from "../../types";
+
+// Negocios de ejemplo (fake data basada en servicios típicos del distrito)
+const businesses: Business[] = [
+  // Hospedajes
+  {
+    id: "1",
+    name: "Hospedaje Los Andes",
+    slug: "hospedaje-los-andes",
+    category: "hostal",
+    description: "Hospedaje familiar con habitaciones cómodas y agua caliente las 24 horas. Vista panorámica al valle del río Pampas. Desayuno incluido con productos locales.",
+    address: "Jr. María Parado de Bellido 120, Pomabamba",
+    phone: "066-123456",
+    whatsapp: "51966123456",
+    hours: "Recepción 24 horas",
+    priceRange: "economico",
+    services: ["Agua caliente", "WiFi", "Desayuno incluido", "Estacionamiento"],
+    isVerified: true
+  },
+  {
+    id: "2",
+    name: "Posada Rural Allcaqapata",
+    slug: "posada-rural-allcaqapata",
+    category: "hostal",
+    description: "Experiencia de turismo vivencial en casa tradicional andina. Habitaciones con decoración típica ayacuchana. Ideal para conectar con la naturaleza y la cultura local.",
+    address: "Sector Allcaqapata, a 15 min de la plaza",
+    phone: "066-234567",
+    whatsapp: "51966234567",
+    hours: "Check-in: 2PM - Check-out: 12PM",
+    priceRange: "moderado",
+    services: ["Turismo vivencial", "Fogata nocturna", "Guía local", "Comida típica"],
+    isVerified: true
+  },
+
+  // Restaurantes
+  {
+    id: "3",
+    name: "Restaurante Sabores de mi Tierra",
+    slug: "sabores-de-mi-tierra",
+    category: "restaurante",
+    description: "Cocina tradicional ayacuchana con ingredientes frescos de la zona. Especialidad en pachamanca, puca picante y patachi. Ambiente acogedor con vista a la plaza.",
+    address: "Plaza Principal de Pomabamba s/n",
+    phone: "066-345678",
+    whatsapp: "51966345678",
+    hours: "7:00 AM - 8:00 PM",
+    priceRange: "economico",
+    services: ["Desayunos", "Menú del día", "Platos a la carta", "Para llevar"],
+    isVerified: true
+  },
+  {
+    id: "4",
+    name: "Picantería Doña Juana",
+    slug: "picanteria-dona-juana",
+    category: "restaurante",
+    description: "La mejor chicharronería del distrito. Chicharrón dorado con mote, canchita y sarsa criolla. Solo fines de semana. Chicha de jora de la casa.",
+    address: "Jr. Libertad 45, Pomabamba",
+    phone: "066-456789",
+    hours: "Sábados y Domingos: 8:00 AM - 4:00 PM",
+    priceRange: "economico",
+    services: ["Chicharrones", "Caldos", "Chicha de jora"],
+    isVerified: false
+  },
+  {
+    id: "5",
+    name: "Recreo Campestre El Molle",
+    slug: "recreo-campestre-el-molle",
+    category: "restaurante",
+    description: "Restaurante campestre con amplios jardines y zona de juegos para niños. Pachamanca los domingos bajo pedido. Trucha frita del río Pampas.",
+    address: "Carretera a Urihuana, Km 2",
+    whatsapp: "51966567890",
+    hours: "Viernes a Domingo: 10:00 AM - 6:00 PM",
+    priceRange: "moderado",
+    services: ["Pachamanca", "Área de camping", "Juegos infantiles", "Estacionamiento amplio"],
+    isVerified: true
+  },
+
+  // Tiendas
+  {
+    id: "6",
+    name: "Bodega Central",
+    slug: "bodega-central",
+    category: "tienda",
+    description: "Tienda de abarrotes con productos de primera necesidad. Agente BCP y Yape disponible. Recargas de celular todas las operadoras.",
+    address: "Jr. María Parado de Bellido 85, Pomabamba",
+    phone: "066-567890",
+    hours: "6:00 AM - 9:00 PM",
+    priceRange: "economico",
+    services: ["Abarrotes", "Agente bancario", "Recargas", "Gas doméstico"],
+    isVerified: true
+  },
+  {
+    id: "7",
+    name: "Ferretería El Constructor",
+    slug: "ferreteria-el-constructor",
+    category: "tienda",
+    description: "Materiales de construcción, herramientas y artículos de ferretería en general. Cemento, fierro, calaminas y más.",
+    address: "Av. Los Libertadores 234, Pomabamba",
+    phone: "066-678901",
+    hours: "7:00 AM - 6:00 PM",
+    priceRange: "moderado",
+    services: ["Cemento", "Fierro", "Herramientas", "Pinturas"],
+    isVerified: false
+  },
+
+  // Transporte
+  {
+    id: "8",
+    name: "Transportes Cangallo Express",
+    slug: "transportes-cangallo-express",
+    category: "transporte",
+    description: "Servicio de combis y autos colectivos a Cangallo, Ayacucho y comunidades del distrito. Salidas diarias desde la plaza principal.",
+    address: "Terminal terrestre, Plaza Principal",
+    phone: "066-789012",
+    whatsapp: "51966789012",
+    hours: "Salidas: 5:00 AM, 7:00 AM, 2:00 PM",
+    priceRange: "economico",
+    services: ["Ruta a Cangallo", "Ruta a Ayacucho", "Encomiendas"],
+    isVerified: true
+  },
+  {
+    id: "9",
+    name: "Mototaxis Pomabamba",
+    slug: "mototaxis-pomabamba",
+    category: "transporte",
+    description: "Asociación de mototaxistas para traslados dentro del pueblo y comunidades cercanas. Servicio las 24 horas.",
+    address: "Paradero Plaza Principal",
+    whatsapp: "51966890123",
+    hours: "24 horas",
+    priceRange: "economico",
+    services: ["Traslados locales", "Tours cortos", "Servicio nocturno"],
+    isVerified: false
+  },
+
+  // Artesanía
+  {
+    id: "10",
+    name: "Artesanías Warmi Maki",
+    slug: "artesanias-warmi-maki",
+    category: "artesania",
+    description: "Textiles tradicionales hechos a mano por artesanas de la comunidad. Mantas, chumpis, llicllas y tejidos con tintes naturales. Técnicas ancestrales transmitidas por generaciones.",
+    address: "Jr. Artesanos 12, Pomabamba",
+    whatsapp: "51966901234",
+    hours: "9:00 AM - 5:00 PM (Lunes a Sábado)",
+    priceRange: "moderado",
+    services: ["Textiles", "Bordados", "Talleres demostrativos", "Envíos a Lima"],
+    isVerified: true
+  },
+  {
+    id: "11",
+    name: "Taller de Cerámica Awaq",
+    slug: "taller-ceramica-awaq",
+    category: "artesania",
+    description: "Cerámica decorativa y utilitaria con diseños inspirados en iconografía Wari y Chanca. Réplicas arqueológicas y piezas contemporáneas.",
+    address: "Sector Silverio Pata, Pomabamba",
+    phone: "066-012345",
+    hours: "Visitas con cita previa",
+    priceRange: "premium",
+    services: ["Cerámica decorativa", "Réplicas arqueológicas", "Talleres para visitantes"],
+    isVerified: true
+  },
+
+  // Servicios
+  {
+    id: "12",
+    name: "Farmacia San Francisco",
+    slug: "farmacia-san-francisco",
+    category: "servicio",
+    description: "Medicamentos genéricos y de marca. Atención de primeros auxilios. Inyectables y toma de presión arterial.",
+    address: "Jr. Lima 56, Pomabamba",
+    phone: "066-123789",
+    hours: "7:00 AM - 10:00 PM",
+    priceRange: "moderado",
+    services: ["Medicamentos", "Inyectables", "Primeros auxilios"],
+    isVerified: true
+  },
+  {
+    id: "13",
+    name: "Cabinas Internet Cyber Net",
+    slug: "cyber-net",
+    category: "servicio",
+    description: "Servicio de internet, impresiones, fotocopias y escaneo. Llamadas nacionales e internacionales. Zona WiFi para clientes.",
+    address: "Jr. María Parado de Bellido 98, Pomabamba",
+    phone: "066-234890",
+    hours: "8:00 AM - 10:00 PM",
+    priceRange: "economico",
+    services: ["Internet", "Impresiones", "Fotocopias", "Llamadas"],
+    isVerified: false
+  },
+  {
+    id: "14",
+    name: "Guía Turístico Don Cirilo",
+    slug: "guia-turistico-don-cirilo",
+    category: "servicio",
+    description: "Guía local con 20 años de experiencia. Conocedor de la historia, flora, fauna y sitios arqueológicos del distrito. Tours personalizados en español y quechua.",
+    address: "Consultar por WhatsApp",
+    whatsapp: "51966345901",
+    priceRange: "moderado",
+    services: ["Tours guiados", "Trekking", "Turismo vivencial", "Traducciones quechua"],
+    isVerified: true
+  }
+];
+
+// Agrupar por categoría
+const categories = [
+  { key: "hostal", label: "Hospedajes", icon: "🏨" },
+  { key: "restaurante", label: "Restaurantes", icon: "🍽️" },
+  { key: "tienda", label: "Tiendas", icon: "🛒" },
+  { key: "transporte", label: "Transporte", icon: "🚐" },
+  { key: "artesania", label: "Artesanía", icon: "🎨" },
+  { key: "servicio", label: "Servicios", icon: "⚙️" },
+] as const;
+
+const businessesByCategory = categories.map(cat => ({
+  ...cat,
+  items: businesses.filter(b => b.category === cat.key)
+}));
+---
+
+<BaseLayout
+  title="Directorio de Negocios | María Parado de Bellido"
+  description="Encuentra hospedajes, restaurantes, tiendas, transporte y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+>
+  <PageHeader
+    title="Directorio Local"
+    subtitle="Hospedajes, restaurantes, transporte y servicios para tu visita"
+    icon="📖"
+    variant="default"
+  />
+
+  <main class="py-16 bg-gradient-to-b from-crema to-white">
+    <div class="container-custom">
+
+      <!-- Introducción -->
+      <section class="max-w-4xl mx-auto text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-6">
+          Todo lo que necesitas para tu <span class="text-gradient">estadía</span>
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          Encuentra los mejores servicios locales para hacer de tu visita una experiencia cómoda y auténtica.
+          Todos los negocios son de emprendedores locales comprometidos con el desarrollo del distrito.
+        </p>
+      </section>
+
+      <!-- Navegación por categorías -->
+      <nav class="flex flex-wrap justify-center gap-3 mb-12">
+        {categories.map(cat => (
+          <a
+            href={`#${cat.key}`}
+            class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 hover:border-turquesa hover:shadow-md transition-all text-sm font-medium text-gray-700 hover:text-turquesa-dark"
+          >
+            <span>{cat.icon}</span>
+            {cat.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Negocios por categoría -->
+      {businessesByCategory.map(category => category.items.length > 0 && (
+        <section id={category.key} class="mb-16 scroll-mt-24">
+          <div class="flex items-center gap-3 mb-8">
+            <span class="text-4xl">{category.icon}</span>
+            <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800">
+              {category.label}
+            </h2>
+            <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              {category.items.length} {category.items.length === 1 ? 'negocio' : 'negocios'}
+            </span>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {category.items.map((business) => (
+              <BusinessCard business={business} />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <!-- Información para emprendedores -->
+      <section class="bg-gradient-to-br from-turquesa/10 via-azul/5 to-purpura/10 rounded-3xl p-8 md:p-12 mb-16">
+        <div class="max-w-3xl mx-auto text-center">
+          <span class="inline-block text-5xl mb-4">📢</span>
+          <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-4">
+            ¿Tienes un negocio en el distrito?
+          </h2>
+          <p class="text-gray-600 mb-6">
+            Si eres emprendedor local y deseas que tu negocio aparezca en este directorio,
+            comunícate con nosotros. Es completamente gratuito para los negocios del distrito.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a
+              href="https://wa.me/51966000000?text=Hola,%20quiero%20registrar%20mi%20negocio%20en%20el%20directorio"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-verde text-white font-semibold rounded-full hover:bg-verde-dark transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Registrar mi Negocio
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA para visitantes -->
+      <section class="bg-gradient-to-br from-naranja via-amarillo to-verde rounded-3xl p-8 md:p-12 text-center">
+        <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mb-4 drop-shadow-lg">
+          ¿Listo para conocer María Parado de Bellido?
+        </h2>
+        <p class="text-white/90 max-w-2xl mx-auto mb-8">
+          Contáctanos y te ayudamos a planificar tu visita para descubrir la riqueza cultural,
+          histórica y natural de nuestro hermoso distrito.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/places" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-naranja-dark font-semibold rounded-full hover:bg-azul hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Ver Lugares Turísticos
+          </a>
+          <a href="/festivities" class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            Conocer Festividades
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</BaseLayout>

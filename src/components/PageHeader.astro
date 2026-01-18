@@ -1,0 +1,116 @@
+---
+/**
+ * PageHeader - Componente para encabezados de páginas internas
+ * Reemplaza el Hero repetitivo con un header limpio y accesible
+ * Incluye breadcrumbs para navegación contextual
+ */
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  variant?: "default" | "gradient" | "accent";
+  icon?: string;
+}
+
+const {
+  title,
+  subtitle,
+  breadcrumbs = [{ label: "Inicio", href: "/" }],
+  variant = "default",
+  icon,
+} = Astro.props;
+
+// Añadir la página actual al breadcrumb
+const fullBreadcrumbs = [...breadcrumbs, { label: title }];
+
+const variantClasses = {
+  default: "bg-gradient-to-br from-crema via-white to-crema-warm",
+  gradient: "bg-gradient-to-br from-azul/5 via-purpura/5 to-fucsia/5",
+  accent: "bg-gradient-to-r from-fucsia/10 via-rojo/5 to-naranja/10",
+};
+---
+
+<header class={`relative py-12 md:py-16 lg:py-20 ${variantClasses[variant]} overflow-hidden`}>
+  <!-- Decorative pattern (subtle) -->
+  <div class="absolute inset-0 opacity-[0.03]">
+    <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <pattern id="page-header-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="1.5" fill="currentColor" class="text-fucsia" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#page-header-pattern)" />
+    </svg>
+  </div>
+
+  <div class="container-custom relative z-10">
+    <!-- Breadcrumbs -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex flex-wrap items-center gap-2 text-sm" itemscope itemtype="https://schema.org/BreadcrumbList">
+        {fullBreadcrumbs.map((crumb, index) => (
+          <li
+            class="flex items-center gap-2"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="https://schema.org/ListItem"
+          >
+            {index > 0 && (
+              <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+            {crumb.href ? (
+              <a
+                href={crumb.href}
+                class="text-gray-600 hover:text-fucsia transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-fucsia focus:ring-offset-2 rounded"
+                itemprop="item"
+              >
+                <span itemprop="name">{crumb.label}</span>
+              </a>
+            ) : (
+              <span class="text-gray-800 font-semibold" itemprop="name" aria-current="page">
+                {crumb.label}
+              </span>
+            )}
+            <meta itemprop="position" content={String(index + 1)} />
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <!-- Title Section -->
+    <div class="max-w-4xl">
+      <div class="flex items-start gap-4">
+        {icon && (
+          <span class="text-4xl md:text-5xl flex-shrink-0" role="img" aria-hidden="true">
+            {icon}
+          </span>
+        )}
+        <div>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-900 leading-tight">
+            {title}
+          </h1>
+
+          <!-- Decorative underline -->
+          <div class="mt-4 flex gap-1">
+            <div class="h-1 w-12 bg-gradient-to-r from-fucsia to-rojo rounded-full"></div>
+            <div class="h-1 w-6 bg-gradient-to-r from-naranja to-amarillo rounded-full"></div>
+            <div class="h-1 w-3 bg-turquesa rounded-full"></div>
+          </div>
+
+          {subtitle && (
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,336 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import CommunityEventCard from "../../components/CommunityEventCard.astro";
+import type { CommunityEvent } from "../../types";
+
+// Eventos comunales de ejemplo (fake data basada en actividades reales del distrito)
+const communityEvents: CommunityEvent[] = [
+  {
+    id: "1",
+    title: "Faena Comunal - Limpieza de Canales de Riego",
+    slug: "faena-limpieza-canales",
+    type: "faena",
+    description: "Trabajo comunitario para la limpieza y mantenimiento de los canales de riego que abastecen a las chacras de Pomabamba. Participación obligatoria de todos los comuneros empadronados.",
+    date: "2026-02-15",
+    time: "6:00 AM",
+    location: {
+      name: "Canal Principal - Sector Allcaqapata",
+      coordinates: { lat: -13.6014, lng: -74.2342 }
+    },
+    organizer: "Junta Directiva Comunal",
+    isRecurring: true,
+    recurrencePattern: "monthly"
+  },
+  {
+    id: "2",
+    title: "Pollada Pro-Fondos Escuela Inicial",
+    slug: "pollada-escuela-inicial",
+    type: "pollada",
+    description: "Gran pollada bailable para recaudar fondos destinados a la mejora de infraestructura de la Escuela Inicial N° 432. Incluye música en vivo con orquesta típica.",
+    date: "2026-02-22",
+    time: "12:00 PM",
+    location: {
+      name: "Plaza Principal de Pomabamba",
+      coordinates: { lat: -13.6014, lng: -74.2342 }
+    },
+    organizer: "APAFA - Escuela Inicial N° 432",
+    isRecurring: false
+  },
+  {
+    id: "3",
+    title: "Asamblea General Ordinaria - Comunidad de Pomabamba",
+    slug: "asamblea-general-febrero",
+    type: "asamblea",
+    description: "Asamblea mensual para tratar temas de interés comunal: distribución de agua, mantenimiento de caminos, preparativos para la fiesta patronal y elección de nuevos cargontes.",
+    date: "2026-02-28",
+    time: "10:00 AM",
+    location: {
+      name: "Salón Comunal de Pomabamba",
+      coordinates: { lat: -13.6014, lng: -74.2342 }
+    },
+    organizer: "Presidente Comunal",
+    isRecurring: true,
+    recurrencePattern: "monthly"
+  },
+  {
+    id: "4",
+    title: "Minka - Techado de Casa Comunal",
+    slug: "minka-techado-casa",
+    type: "minka",
+    description: "Trabajo colectivo tradicional (Minka) para el techado de la nueva casa comunal. Se solicita apoyo con materiales: ichu, palos, sogas. Se ofrecerá almuerzo y chicha de jora a los participantes.",
+    date: "2026-03-08",
+    time: "7:00 AM",
+    location: {
+      name: "Nueva Casa Comunal - Pomabamba",
+      coordinates: { lat: -13.6014, lng: -74.2342 }
+    },
+    organizer: "Comité de Obra",
+    isRecurring: false
+  },
+  {
+    id: "5",
+    title: "Reunión de Regantes - Sector Urihuana",
+    slug: "reunion-regantes-urihuana",
+    type: "reunion",
+    description: "Reunión de coordinación para establecer el rol de riego de la temporada. Todos los usuarios del canal deben asistir con sus documentos de empadronamiento actualizados.",
+    date: "2026-03-10",
+    time: "3:00 PM",
+    location: {
+      name: "Local Comunal Urihuana",
+      coordinates: { lat: -13.6100, lng: -74.2400 }
+    },
+    organizer: "Comité de Regantes",
+    isRecurring: true,
+    recurrencePattern: "monthly"
+  },
+  {
+    id: "6",
+    title: "Aniversario del Distrito - 195 Años",
+    slug: "aniversario-distrito-195",
+    type: "aniversario",
+    description: "Celebración del 195° Aniversario de creación política del distrito María Parado de Bellido. Programa incluye: izamiento de bandera, desfile cívico-escolar, presentación de danzas típicas (Chinlili, Chimaycha) y verbena popular.",
+    date: "2026-04-14",
+    time: "8:00 AM",
+    location: {
+      name: "Plaza Principal de Pomabamba",
+      coordinates: { lat: -13.6014, lng: -74.2342 }
+    },
+    organizer: "Municipalidad Distrital",
+    isRecurring: true,
+    recurrencePattern: "annual"
+  },
+  {
+    id: "7",
+    title: "Faena - Mantenimiento Camino a Allcaqapata",
+    slug: "faena-camino-allcaqapata",
+    type: "faena",
+    description: "Trabajo comunal para reparar el camino de herradura que conecta Pomabamba con el mirador de Allcaqapata. Traer herramientas: pico, lampa, barreta.",
+    date: "2026-03-15",
+    time: "6:30 AM",
+    location: {
+      name: "Tramo Pomabamba - Allcaqapata",
+      coordinates: { lat: -13.5950, lng: -74.2300 }
+    },
+    organizer: "Junta Directiva Comunal",
+    isRecurring: false
+  },
+  {
+    id: "8",
+    title: "Pollada Deportiva - Club Juventud Pomabamba",
+    slug: "pollada-club-juventud",
+    type: "pollada",
+    description: "Actividad pro-fondos para la compra de uniformes y equipamiento del club de fútbol Juventud Pomabamba. Incluye campeonato relámpago de fulbito.",
+    date: "2026-03-22",
+    time: "11:00 AM",
+    location: {
+      name: "Campo Deportivo de Pomabamba",
+      coordinates: { lat: -13.6020, lng: -74.2350 }
+    },
+    organizer: "Club Deportivo Juventud Pomabamba",
+    isRecurring: false
+  }
+];
+
+// Ordenar eventos por fecha
+const sortedEvents = communityEvents.sort((a, b) =>
+  new Date(a.date).getTime() - new Date(b.date).getTime()
+);
+
+// Filtrar eventos futuros y pasados
+const today = new Date();
+const upcomingEvents = sortedEvents.filter(e => new Date(e.date) >= today);
+const pastEvents = sortedEvents.filter(e => new Date(e.date) < today);
+---
+
+<BaseLayout
+  title="Comunidad | María Parado de Bellido"
+  description="Calendario de actividades comunales, faenas, asambleas y eventos en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+>
+  <PageHeader
+    title="Vida Comunal"
+    subtitle="Faenas, asambleas, minkas y actividades que fortalecen nuestra identidad"
+    icon="👥"
+    variant="gradient"
+  />
+
+  <main class="py-16 bg-gradient-to-b from-crema to-white">
+    <div class="container-custom">
+
+      <!-- Introducción -->
+      <section class="max-w-4xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-6">
+          El Espíritu del <span class="text-gradient">Ayni y la Minka</span>
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed mb-4">
+          En María Parado de Bellido, las tradiciones ancestrales de trabajo comunitario siguen vivas.
+          El <strong>Ayni</strong> (reciprocidad) y la <strong>Minka</strong> (trabajo colectivo) son pilares
+          fundamentales de nuestra organización social, heredados de nuestros antepasados desde tiempos
+          del Tahuantinsuyo.
+        </p>
+        <p class="text-gray-600">
+          Aquí encontrarás el calendario de actividades comunales donde puedes participar o conocer
+          más sobre nuestra forma de vida comunitaria.
+        </p>
+      </section>
+
+      <!-- Próximos Eventos -->
+      {upcomingEvents.length > 0 && (
+        <section class="mb-16">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-12 h-12 bg-verde/10 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-verde-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800">
+              Próximos Eventos
+            </h2>
+          </div>
+
+          <div class="grid gap-6">
+            {upcomingEvents.map((event) => (
+              <CommunityEventCard event={event} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Tipos de Actividades -->
+      <section class="mb-16 bg-white rounded-3xl shadow-lg p-8 md:p-12">
+        <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-8 text-center">
+          Tipos de Actividades Comunales
+        </h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-6 bg-verde/5 rounded-2xl border border-verde/20">
+            <span class="text-4xl mb-4 block">🛠️</span>
+            <h3 class="font-bold text-lg text-verde-dark mb-2">Faena Comunal</h3>
+            <p class="text-gray-600 text-sm">
+              Trabajo obligatorio para todos los comuneros empadronados. Incluye limpieza de canales,
+              mantenimiento de caminos y obras de beneficio común.
+            </p>
+          </div>
+
+          <div class="p-6 bg-terracota/5 rounded-2xl border border-terracota/20">
+            <span class="text-4xl mb-4 block">🤝</span>
+            <h3 class="font-bold text-lg text-terracota-dark mb-2">Minka</h3>
+            <p class="text-gray-600 text-sm">
+              Trabajo colectivo voluntario donde la comunidad ayuda a una familia o grupo.
+              Se retribuye con comida, chicha y reciprocidad futura.
+            </p>
+          </div>
+
+          <div class="p-6 bg-purpura/5 rounded-2xl border border-purpura/20">
+            <span class="text-4xl mb-4 block">🏛️</span>
+            <h3 class="font-bold text-lg text-purpura-dark mb-2">Asamblea</h3>
+            <p class="text-gray-600 text-sm">
+              Reunión general donde se toman decisiones importantes para la comunidad.
+              Participación con voz y voto de todos los comuneros.
+            </p>
+          </div>
+
+          <div class="p-6 bg-azul/5 rounded-2xl border border-azul/20">
+            <span class="text-4xl mb-4 block">👥</span>
+            <h3 class="font-bold text-lg text-azul-dark mb-2">Reunión</h3>
+            <p class="text-gray-600 text-sm">
+              Encuentros de coordinación entre sectores, comités o grupos específicos
+              para organizar actividades o resolver temas puntuales.
+            </p>
+          </div>
+
+          <div class="p-6 bg-naranja/5 rounded-2xl border border-naranja/20">
+            <span class="text-4xl mb-4 block">🍗</span>
+            <h3 class="font-bold text-lg text-naranja-dark mb-2">Pollada/Actividad</h3>
+            <p class="text-gray-600 text-sm">
+              Eventos sociales para recaudar fondos. Incluyen venta de comida,
+              música en vivo y espacios de confraternidad comunal.
+            </p>
+          </div>
+
+          <div class="p-6 bg-fucsia/5 rounded-2xl border border-fucsia/20">
+            <span class="text-4xl mb-4 block">🎉</span>
+            <h3 class="font-bold text-lg text-fucsia-dark mb-2">Aniversario</h3>
+            <p class="text-gray-600 text-sm">
+              Celebraciones especiales del distrito, comunidades, instituciones
+              o fechas históricas importantes para nuestra identidad.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Comunidades del Distrito -->
+      <section class="mb-16">
+        <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-8 text-center">
+          Nuestras Comunidades
+        </h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 bg-gradient-to-br from-verde to-turquesa rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span class="text-2xl">🏔️</span>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 mb-1">Pomabamba</h3>
+            <p class="text-sm text-gray-500">Capital del distrito</p>
+            <p class="text-xs text-gray-400 mt-2">3,236 msnm</p>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 bg-gradient-to-br from-naranja to-amarillo rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span class="text-2xl">🌾</span>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 mb-1">Urihuana</h3>
+            <p class="text-sm text-gray-500">Comunidad campesina</p>
+            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 bg-gradient-to-br from-azul to-purpura rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span class="text-2xl">💧</span>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 mb-1">Ñuñunhuaycco</h3>
+            <p class="text-sm text-gray-500">Comunidad campesina</p>
+            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+            <div class="w-16 h-16 bg-gradient-to-br from-fucsia to-rojo rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span class="text-2xl">🌻</span>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 mb-1">Huayllabamba</h3>
+            <p class="text-sm text-gray-500">Comunidad campesina</p>
+            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA para visitantes -->
+      <section class="bg-gradient-to-br from-azul via-purpura to-fucsia rounded-3xl p-8 md:p-12 text-white text-center">
+        <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4">
+          ¿Te gustaría participar en una Minka?
+        </h2>
+        <p class="text-white/90 max-w-2xl mx-auto mb-8">
+          Visita nuestro distrito y vive la experiencia del trabajo comunitario andino.
+          Es una oportunidad única de conectar con nuestra cultura ancestral y contribuir
+          al bienestar de la comunidad.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/places" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-azul-dark font-semibold rounded-full hover:bg-amarillo hover:text-gray-800 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Ver Lugares Turísticos
+          </a>
+          <a href="/festivities" class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            Conocer Festividades
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</BaseLayout>

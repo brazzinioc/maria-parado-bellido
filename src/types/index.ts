@@ -82,3 +82,37 @@ export interface SEOProps {
   modifiedTime?: string;
   canonical?: string;
 }
+
+// Tipos para Actividades Comunales
+export interface CommunityEvent {
+  id: string;
+  title: string;
+  slug: string;
+  type: 'faena' | 'pollada' | 'reunion' | 'asamblea' | 'minka' | 'aniversario' | 'otro';
+  description: string;
+  date: string;
+  time?: string;
+  location: Location;
+  organizer?: string;
+  isRecurring: boolean;
+  recurrencePattern?: 'weekly' | 'monthly' | 'annual';
+  images?: string[];
+}
+
+// Tipos para Directorio de Negocios
+export interface Business {
+  id: string;
+  name: string;
+  slug: string;
+  category: 'hostal' | 'restaurante' | 'tienda' | 'transporte' | 'artesania' | 'servicio';
+  description: string;
+  address: string;
+  location?: Location;
+  phone?: string;
+  whatsapp?: string;
+  hours?: string;
+  priceRange?: 'economico' | 'moderado' | 'premium';
+  images?: string[];
+  services?: string[];
+  isVerified: boolean;
+}

@@ -1,0 +1,111 @@
+---
+import type { TouristPlace } from "../types";
+
+interface Props {
+  place: TouristPlace;
+}
+
+const { place } = Astro.props;
+
+// Colores e iconos por categoría
+const categoryStyles: Record<TouristPlace["category"], { bg: string; text: string; icon: string; label: string }> = {
+  natural: { bg: "bg-verde/10", text: "text-verde-dark", icon: "🏔️", label: "Natural" },
+  cultural: { bg: "bg-fucsia/10", text: "text-fucsia-dark", icon: "🎭", label: "Cultural" },
+  historical: { bg: "bg-terracota/10", text: "text-terracota-dark", icon: "🏛️", label: "Histórico" },
+  archaeological: { bg: "bg-purpura/10", text: "text-purpura-dark", icon: "🏺", label: "Arqueológico" },
+};
+
+const { bg, text, icon, label } = categoryStyles[place.category];
+---
+
+<article class="card-modern bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 hover:border-verde/30 transition-all duration-300 group">
+  <!-- Image -->
+  <div class="h-52 relative overflow-hidden">
+    {place.images && place.images.length > 0 ? (
+      <img
+        src={place.images[0]}
+        alt={place.name}
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-verde/20 via-turquesa/10 to-azul/20 flex items-center justify-center">
+        <span class="text-7xl opacity-40">{icon}</span>
+      </div>
+    )}
+
+    <!-- Overlay gradient -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+    <!-- Category Badge -->
+    <div class="absolute top-3 left-3">
+      <span class={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold ${bg} ${text} backdrop-blur-sm bg-opacity-90`}>
+        <span>{icon}</span>
+        {label}
+      </span>
+    </div>
+
+    <!-- Title on image -->
+    <div class="absolute bottom-0 left-0 right-0 p-4">
+      <h3 class="font-heading font-bold text-xl text-white drop-shadow-lg group-hover:text-amarillo transition-colors">
+        {place.name}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-5">
+    <!-- Description -->
+    <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+      {place.description}
+    </p>
+
+    <!-- Meta Info -->
+    <div class="space-y-2 text-sm text-gray-500 mb-4">
+      {place.bestTimeToVisit && (
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amarillo-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span><strong>Mejor época:</strong> {place.bestTimeToVisit}</span>
+        </div>
+      )}
+
+      {place.howToGetThere && (
+        <div class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-turquesa-dark flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+          </svg>
+          <span class="line-clamp-2">{place.howToGetThere}</span>
+        </div>
+      )}
+
+      {place.entryFee !== undefined && place.entryFee > 0 && (
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-verde-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span><strong>Entrada:</strong> S/ {place.entryFee.toFixed(2)}</span>
+        </div>
+      )}
+
+      {place.entryFee === 0 && (
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-verde-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span class="text-verde-dark font-medium">Entrada libre</span>
+        </div>
+      )}
+    </div>
+
+    <!-- Location -->
+    <div class="flex items-center gap-2 text-sm text-gray-500 pt-3 border-t border-gray-100">
+      <svg class="w-4 h-4 text-rojo flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <span>{place.location.name}</span>
+    </div>
+  </div>
+</article>

@@ -1,56 +1,288 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
+import PageHeader from "../components/PageHeader.astro";
 ---
 
 <BaseLayout
-  title="Sobre Nosotros - Historia y Cultura"
-  description="Conoce la historia, geografía y cultura del distrito María Parado de Bellido en Cangallo, Ayacucho. Un pueblo andino rico en tradiciones a 3,236 msnm."
+  title="Nuestra Historia - María Parado de Bellido"
+  description="Conoce la historia milenaria de María Parado de Bellido: desde los antiguos Chancas hasta la heroína que nos da nombre. Un pueblo andino a 3,236 msnm con raíces profundas."
   image="/images/hero-about.webp"
 >
-  <Hero
+  <PageHeader
     title="Nuestra Historia"
-    subtitle="Un distrito con alma andina y corazón peruano"
-    image="/images/hero-about.webp"
-    imageAlt="Comunidad de María Parado de Bellido"
-    height="medium"
+    subtitle="Un pueblo con raíces Chancas y corazón independentista"
+    icon="🏛️"
+    variant="gradient"
   />
 
-  <!-- Historia Section -->
+  <!-- María Parado de Bellido Section -->
   <section class="container-custom py-16 md:py-20">
     <div class="max-w-4xl mx-auto">
-      <div class="reveal mb-12">
-        <h2 class="section-heading">
-          María Parado de Bellido: Heroína Nacional
-        </h2>
-        <p class="text-evocative mb-4">
-          Nuestro distrito lleva el nombre de una de las heroínas más valientes
-          de la independencia del Perú.
-          <strong>María Parado de Bellido</strong> (1761-1822), natural de Huamanga,
-          fue una patriota que sacrificó su vida por la libertad de nuestra nación.
-        </p>
-        <p class="text-evocative mb-4">
-          Condenada a muerte por negarse a revelar información sobre las fuerzas
-          independentistas, María Parado enfrentó el fusilamiento con valentía
-          inquebrantable, dejando un legado de coraje que inspira a cada
-          generación de peruanos.
-        </p>
-        <p class="text-evocative">
-          En honor a su memoria y sacrificio, nuestro distrito adoptó su nombre
-          mediante <strong>Ley N.° 14140</strong>, promulgada el <strong
-            >18 de junio de 1962</strong
-          >
-          e instalado el 4 de octubre del mismo año, convirtiéndose en un símbolo
-          viviente de la resistencia y el espíritu indomable del pueblo ayacuchano.
-        </p>
+      <div class="reveal mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-rojo/10 rounded-full flex items-center justify-center text-2xl">🦅</span>
+          <h2 class="section-heading mb-0">María Parado de Bellido: Heroína Nacional</h2>
+        </div>
+        <div class="bg-gradient-to-br from-rojo/5 via-transparent to-fucsia/5 rounded-2xl p-8 border-l-4 border-rojo">
+          <p class="text-evocative mb-4">
+            Nuestro distrito lleva el nombre de una de las heroínas más valientes de la independencia del Perú.
+            <strong class="text-rojo">María Parado de Bellido</strong> (1761-1822), natural de Huamanga,
+            fue una patriota que sacrificó su vida por la libertad de nuestra nación.
+          </p>
+          <p class="text-evocative mb-4">
+            Condenada a muerte por negarse a revelar información sobre las fuerzas independentistas,
+            María Parado enfrentó el fusilamiento con valentía inquebrantable el <strong>1 de mayo de 1822</strong>,
+            dejando un legado de coraje que inspira a cada generación de peruanos.
+          </p>
+          <p class="text-evocative">
+            En honor a su memoria y sacrificio, nuestro distrito adoptó su nombre mediante
+            <strong>Ley N.° 14140</strong>, promulgada el <strong>18 de junio de 1962</strong>
+            e instalado el 4 de octubre del mismo año, siendo el primer alcalde el señor
+            <strong>Paulino Olivares Salvatierra</strong>.
+          </p>
+        </div>
       </div>
 
-      <div class="reveal mb-12">
-        <h2 class="section-heading">Geografía y Territorio</h2>
+      <!-- Reseña Histórica Completa -->
+      <div class="reveal mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-purpura/10 rounded-full flex items-center justify-center text-2xl">🏺</span>
+          <h2 class="section-heading mb-0">Reseña Histórica</h2>
+        </div>
+
+        <div class="space-y-8">
+          <!-- Los Primeros Habitantes -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purpura">
+            <h3 class="font-heading font-bold text-xl text-purpura-dark mb-3">
+              Los Primeros Habitantes de Ayacucho y del Valle del Pampas
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Las investigaciones realizadas en <strong>Pikimachay</strong> demuestran la presencia de los primeros
+              pobladores de estas tierras alrededor de <strong>10 a 12 mil años A.C.</strong> Se descubrieron vestigios
+              de los primeros agricultores y pastores de camélidos del llamado período formativo hasta los inicios
+              de la era cristiana, donde se encuentran rastros de aldeas.
+            </p>
+            <p class="text-gray-700 mb-3">
+              Los antiguos pobladores de estas zonas alto andinas fueron los <strong>Wilcas</strong>, emigrantes de la
+              lejana cordillera de Vilcabamba, que atravesaron los ríos Apurímac y Mantaro y se asentaron en
+              <strong>Yanawilca</strong>, ocupando los territorios de Huancavelica y Ayacucho (Wilcas Waman).
+            </p>
+            <p class="text-gray-700 mb-3">
+              En los años 200 a 300 D.C. se inicia el período de los reinos locales, siendo el más representativo
+              el <strong>Reino Warpa</strong>, que logró un gran desarrollo tecnológico en agricultura, ganadería de
+              camélidos y textilería. Desarrollaron el control de aguas (infraestructura hidráulica) y uso de
+              tierras (terrazas agrícolas).
+            </p>
+            <p class="text-gray-700">
+              Hacia los años 600 y 700 D.C. se intensifican las relaciones culturales regionales con <strong>Nazca</strong>
+              y <strong>Tiahuanaco</strong>, formando el Gran Centro Imperial <strong>Wari</strong>. El Imperio Wari
+              (800 a 1200 D.C.) se desarrolló con mayor auge, hasta su caída con el sojuzgamiento de los Angaraes
+              y Tayacaxas en Huancavelica, los Huancas en el valle del Mantaro, y los <strong>Chancas</strong>
+              en el valle del Pampas.
+            </p>
+          </div>
+
+          <!-- La Historia Chanca -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-terracota">
+            <h3 class="font-heading font-bold text-xl text-terracota-dark mb-3">
+              Un Pueblo de Origen Chanca
+            </h3>
+            <p class="text-gray-700 mb-3">
+              <strong class="text-terracota">POMABAMBA</strong> es el pueblo más representativo del distrito de
+              María Parado de Bellido. Sus <strong>raíces Chancas</strong> son las más características, con origen
+              en las alturas de la <strong>laguna de Choclococha</strong>, donde nace el río Pampas.
+            </p>
+            <p class="text-gray-700 mb-3">
+              Desde los años <strong>1200 hasta 1400</strong>, los Chancas se extendieron desde Huancavelica hasta
+              los actuales territorios de Ayacucho y Apurímac (su idioma inicial fue Aymara). Desde el valle
+              del río Pampas, realizaron expediciones para conquistar el Cusco, cuando ésta era todavía un
+              reino regional.
+            </p>
+            <p class="text-gray-700">
+              Durante el reinado del <strong>Inca Wiracocha</strong>, los Chancas cercaron el Cusco para tomar la
+              ciudad, pero fracasaron. El príncipe <strong>Yupanqui</strong> derrotó a los ejércitos Chancas, y a
+              partir de allí el poder imperial cusqueño se restableció. Yupanqui se convertiría en el noveno
+              emperador Inca con el apelativo <strong>Pachacútec</strong>, gran conquistador y creador del
+              Imperio del Tahuantinsuyo.
+            </p>
+          </div>
+
+          <!-- Bajo el Tahuantinsuyo -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-amarillo">
+            <h3 class="font-heading font-bold text-xl text-amarillo-dark mb-3">
+              Bajo el Dominio del Tahuantinsuyo
+            </h3>
+            <p class="text-gray-700 mb-3">
+              A partir de la derrota Chanca, los pueblos fueron sometidos al poder cusqueño (incas, quechuas),
+              quienes se instalaron y construyeron el centro administrativo más importante de toda la región
+              central del imperio: <strong>Vilcashuamán</strong>.
+            </p>
+            <p class="text-gray-700 mb-3">
+              Durante casi cien años, los sacerdotes y nobles cusqueños administraban la ecología, planificaban
+              la producción y enseñaban las técnicas para la buena producción agropecuaria. Los pueblos Chancas
+              fueron trasladados en gran parte a otras zonas y reemplazados por <strong>mitimaes quechuas</strong>
+              para pacificar y asimilar al poder Inka toda la región.
+            </p>
+            <p class="text-gray-700 mb-3">
+              La nobleza cusqueña almacenaba en grandes <strong>tambos</strong> la producción agropecuaria excedente
+              de cada uno de los pueblos de todo el valle del río Pampas. Parte de estos productos alimenticios,
+              pieles, fibra y artesanías eran enviados hasta el Cusco para la nobleza real del imperio.
+            </p>
+            <p class="text-gray-700">
+              <strong>Huellas de esta época</strong> existen en la zona de Pomabamba: como en <strong>Moyu Moyu,
+              Laplarco, Tacsa Urcco</strong> y el cementerio en la misma plaza principal, que abarca desde el
+              actual Centro Educativo N° 38131 hasta la Avenida Los Héroes, donde aún existen muchos fósiles humanos.
+            </p>
+          </div>
+
+          <!-- El Virreynato -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-azul">
+            <h3 class="font-heading font-bold text-xl text-azul-dark mb-3">
+              El Virreynato: 300 Años de Dominio Colonial
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Alrededor del año 1530, el gran imperio del Tahuantinsuyo entró en crisis debido a las guerras
+              internas entre los ejércitos de <strong>Huáscar</strong> y <strong>Atahualpa</strong>, hijos del Inka
+              Huayna Cápac (nieto de Pachacútec), quienes se disputaban el trono.
+            </p>
+            <p class="text-gray-700 mb-3">
+              En 1531 se produce la llegada de los españoles por la costa norte de Tumbes. En <strong>1533</strong>
+              los españoles tomaron la ciudad de <strong>Vilcashuamán</strong> y comenzaron su presencia colonial
+              en estas tierras. Con los conquistadores europeos se inicia el más devastador proceso de mestizaje
+              que en 300 años transformó esta sociedad y su cultura de adaptación y dominio andino.
+            </p>
+            <p class="text-gray-700 mb-3">
+              A la par se producía la evangelización de los "indios" a la religión occidental cristiana y su
+              explotación para la extracción de riqueza minera que luego era enviada hacia Europa. Como
+              consecuencia de la explotación despiadada en las minas y las epidemias de enfermedades,
+              <strong>casi el 90% de la población nativa</strong> murió a lo largo de estos siglos de colonialismo.
+            </p>
+            <p class="text-gray-700 mb-3">
+              A partir de 1550 se crearon los corregimientos. Los ayllus del Valle del Pampas pertenecieron
+              al <strong>Corregimiento de Vilcashuamán</strong> y al <strong>Obispado de Ayacucho</strong>.
+              El pueblo de Pomabamba pudo haberse fundado en <strong>1651</strong>; los pobladores acudían a
+              la mita en las minas de Huancavelica y también a un obraje cerca de Cangallo.
+            </p>
+          </div>
+
+          <!-- Leyenda de San Francisco -->
+          <div class="bg-gradient-to-br from-azul/5 via-purpura/5 to-fucsia/5 rounded-xl p-6 border border-azul/20">
+            <h4 class="font-heading font-semibold text-lg text-azul-dark mb-3 flex items-center gap-2">
+              <span>⛪</span> La Leyenda del Traslado del Pueblo
+            </h4>
+            <p class="text-gray-700 mb-3">
+              Durante la Colonia, la población de Pomabamba vivía en el lugar denominado <strong>Laplarco y
+              Qeccacha</strong>, donde se construyó una iglesia católica cuyas huellas aún existen en el borde
+              de la carretera, en la chacra de los esposos Luis Ramos y Lucía Arcos.
+            </p>
+            <p class="text-gray-700">
+              Según una leyenda de esos tiempos, en los puquiales de la quebrada de <strong>Pumapuquio</strong>
+              (llamada así por la presencia de pumas) encontraron una imagen de <strong>San Francisco</strong>.
+              Cada noche aparecía en el lugar del actual templo; devolvían la imagen pero siempre aparecía en
+              el mismo sitio. Por esta razón, los pobladores indígenas, orientados por los sacerdotes españoles,
+              comenzaron a rendirle culto, construyeron un nuevo templo y el centro poblado fue trasladado al
+              lugar que hoy ocupa con el nombre de Pomabamba.
+            </p>
+          </div>
+
+          <!-- La Independencia -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-verde">
+            <h3 class="font-heading font-bold text-xl text-verde-dark mb-3">
+              Pomabamba en la Guerra de Independencia
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Durante la guerra de Independencia, el patriota <strong>Don Basilio Auqui Huaytalla</strong> derrotó
+              a las huestes del Ejército realista el <strong>28 de noviembre de 1821</strong>. En venganza de esta
+              derrota, el general <strong>Carratalá</strong> decretó el incendio de la Ciudad de Cangallo el
+              17 de diciembre de 1821, convirtiéndola en ruinas y cenizas.
+            </p>
+            <p class="text-gray-700 mb-3">
+              El Virrey La Serna ratificó este nefasto decreto y cambió el nombre de Cangallo a Vilcashuamán,
+              situando la capital en el Pueblo de <strong>Pomabamba</strong>.
+            </p>
+            <p class="text-gray-700">
+              El General <strong>San Martín</strong>, por decreto del 30 de noviembre de 1824, devolvió el nombre
+              y capital a la Provincia de Cangallo. Posteriormente, durante el Gobierno de <strong>Eduardo L. de
+              Romaña</strong>, se emitió un decreto el 21 de noviembre de 1902 elevando a la categoría de
+              <strong>"VILLA"</strong> al Pueblo de Pomabamba y declarándolo Capital de la Provincia de Cangallo.
+            </p>
+          </div>
+
+          <!-- Creación del Distrito -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-rojo">
+            <h3 class="font-heading font-bold text-xl text-rojo-dark mb-3">
+              Creación del Distrito de María Parado de Bellido
+            </h3>
+            <p class="text-gray-700 mb-3">
+              El actual Distrito de María Parado de Bellido fue creado el <strong>05 de febrero de 1962</strong>
+              en el Congreso de la República, mediante <strong>Ley N° 14140</strong> y promulgado el 18 de junio.
+              Fue inaugurado e instalado el <strong>04 de octubre del mismo año</strong>.
+            </p>
+            <p class="text-gray-700 mb-3">
+              El primer Alcalde fue el señor <strong>Paulino Olivares Salvatierra</strong> y el gobernador
+              <strong>Eustaquio Quicaño Tanta</strong>.
+            </p>
+            <p class="text-gray-700 mb-3">
+              Los pobladores lucharon más de 10 años para conseguir la distritalización, gracias a la habilidad
+              de sus hijos. Participaron en la construcción de carreteras a Cusco (hasta Pampa gratis) y a
+              Cangallo hasta Mollebamba, con una recompensa de solo 10 céntimos, dinero que también invirtieron
+              para comprar la campana actual. Otra parte del esfuerzo lo hicieron los residentes en Lima.
+            </p>
+            <p class="text-gray-700">
+              El Sr. Diputado <strong>Pedro C. Cárdenas Orosco</strong>, con influencia del Dr. Senador
+              <strong>Arcaparu</strong>, presentó el proyecto de distritalización, logrando el objetivo deseado
+              después de más de 10 años de gestiones.
+            </p>
+          </div>
+
+          <!-- Época contemporánea -->
+          <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-fucsia">
+            <h3 class="font-heading font-bold text-xl text-fucsia-dark mb-3">
+              Organización Tradicional y Época Contemporánea
+            </h3>
+            <p class="text-gray-700 mb-3">
+              Pomabamba tenía una organización con usos y costumbres bajo la disciplina de sus autoridades y
+              envarados. Existía la <strong>minka</strong> y el <strong>ayni</strong>, el respeto y el orden.
+            </p>
+            <p class="text-gray-700 mb-3">
+              Esta organización y convivencia se perdió a causa de los problemas políticos y sociales.
+              Durante los años <strong>1980 al 1995</strong>, la intensa actividad terrorista en la zona provocó
+              un fuerte movimiento migratorio hacia la capital y las ciudades de la costa, ocasionando el
+              abandono de las tierras y actividades desarrolladas en el distrito como: la agricultura, crianza
+              de animales, tejidos, etc.
+            </p>
+            <p class="text-gray-700">
+              Durante los años 2000 a 2004, muchas familias retornaron y comenzaron a recuperar y reconstruir
+              con gran esfuerzo las actividades de producción del distrito. Actualmente, los vecinos y
+              organizaciones políticas, sociales e institucionales vienen trabajando conjuntamente por el
+              desarrollo mediante reuniones, planificaciones concertadas a nivel multisectorial y mesas de
+              concertación con participación de autoridades locales, representantes de base e instituciones.
+            </p>
+          </div>
+
+          <!-- Fuente -->
+          <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <p class="text-sm text-gray-600 italic flex items-start gap-2">
+              <span class="text-gray-400">📚</span>
+              <span>
+                <strong>Fuente:</strong> Plan de Desarrollo Concertado del Distrito de María Parado de Bellido 2007-2022.
+                Municipalidad Distrital de María Parado de Bellido.
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Geografía -->
+      <div class="reveal mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-turquesa/10 rounded-full flex items-center justify-center text-2xl">🗺️</span>
+          <h2 class="section-heading mb-0">Geografía y Territorio</h2>
+        </div>
         <div class="bg-white p-8 rounded-xl shadow-md mb-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 class="font-heading font-semibold text-indigo mb-3">
+              <h3 class="font-heading font-semibold text-turquesa-dark text-lg mb-4">
                 Ubicación
               </h3>
               <ul class="space-y-2 text-gray-700">
@@ -58,156 +290,210 @@ import Hero from "../components/Hero.astro";
                 <li><strong>Provincia:</strong> Cangallo</li>
                 <li><strong>Capital distrital:</strong> Pomabamba</li>
                 <li><strong>Altitud:</strong> 3,236 msnm (capital)</li>
-                <li><strong>Superficie:</strong> 129 km² (12,913 hectáreas)</li>
+                <li><strong>Superficie:</strong> 129.13 km² (9,266.62 Has)</li>
+                <li><strong>Distancia a Ayacucho:</strong> 80-93 km (4 horas)</li>
                 <li>
                   <strong>Coordenadas:</strong>
-                  <a
-                    class="underline"
+                  <a class="text-turquesa underline hover:text-turquesa-dark"
                     href="https://maps.app.goo.gl/MJNp5zsYJbbQZGDr8"
-                    target="_blank"
-                    rel="noopener noreferrer">Ver en Google Maps</a
-                  >
+                    target="_blank" rel="noopener noreferrer">
+                    74°14'03'' O, 13°36'05'' S
+                  </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 class="font-heading font-semibold text-indigo mb-3">Clima</h3>
+              <h3 class="font-heading font-semibold text-turquesa-dark text-lg mb-4">Clima</h3>
               <ul class="space-y-2 text-gray-700">
                 <li><strong>Tipo:</strong> Sierra - Seco y frío</li>
-                <li><strong>Temperatura:</strong> -4°C a 24°C</li>
+                <li><strong>Temperatura:</strong> -4.4°C a 24.2°C</li>
                 <li><strong>Precipitación:</strong> 700-1,150 mm anuales</li>
+                <li><strong>Humedad:</strong> 46% - 70%</li>
                 <li><strong>Época lluviosa:</strong> Noviembre - Marzo</li>
                 <li><strong>Época seca:</strong> Abril - Octubre</li>
               </ul>
             </div>
           </div>
         </div>
-        <p class="text-evocative">
-          Nuestro territorio se extiende desde <strong
-            >2,500 hasta 4,800 msnm</strong
-          >, abarcando <strong>tres pisos ecológicos</strong>: la zona Quechua
-          (cultivos), Suni (ganadería) y Puna (pastos naturales). Estamos
-          bañados por los <strong>ríos Pampas, Macro y Pillpimayo</strong>, con
-          manantiales y puquiales en las zonas altas.
-        </p>
+        <div class="bg-gradient-to-r from-turquesa/10 to-verde/10 rounded-xl p-6">
+          <h3 class="font-heading font-semibold text-gray-800 text-lg mb-3">Tres Pisos Ecológicos</h3>
+          <p class="text-gray-700 mb-4">
+            Nuestro territorio se extiende desde <strong>2,500 hasta 4,800 msnm</strong>, abarcando:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white/80 rounded-lg p-4">
+              <h4 class="font-semibold text-verde-dark">Zona Quechua</h4>
+              <p class="text-sm text-gray-600">Cultivos de maíz, papa, trigo y frutales</p>
+            </div>
+            <div class="bg-white/80 rounded-lg p-4">
+              <h4 class="font-semibold text-amarillo-dark">Zona Suni</h4>
+              <p class="text-sm text-gray-600">Ganadería y cultivos de quinua, kiwicha</p>
+            </div>
+            <div class="bg-white/80 rounded-lg p-4">
+              <h4 class="font-semibold text-azul-dark">Zona Puna</h4>
+              <p class="text-sm text-gray-600">Pastos naturales y camélidos</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="reveal mb-12">
-        <h2 class="section-heading">Cultura y Tradiciones Comunales</h2>
-        <p class="text-evocative mb-6">
-          Mantenemos <strong>fuerte identidad cultural</strong> y sentido comunitario.
-          Somos <strong>3,047 habitantes</strong> (2005) con un <strong
-            >67% de población joven</strong
-          > (0-34 años) que preserva las tradiciones de nuestros ancestros Chancas.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div
-            class="bg-gradient-to-br from-terracota/10 to-transparent p-6 rounded-lg"
-          >
-            <h3 class="font-heading font-semibold text-terracota text-xl mb-3">
-              Ayni y Minka
-            </h3>
-            <p class="text-gray-700">
-              El <strong>ayni</strong> (reciprocidad andina) y la <strong
-                >minka</strong
-              > (trabajo comunitario) son prácticas vivas. El ayni es trabajo recíproco
-              entre familias; la minka es trabajo colectivo para el bien común. Estas
-              tradiciones fortalecen nuestra cohesión social y organización comunal.
+      <!-- Comunidades -->
+      <div class="reveal mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-naranja/10 rounded-full flex items-center justify-center text-2xl">🏘️</span>
+          <h2 class="section-heading mb-0">Nuestras Comunidades</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="font-heading font-bold text-lg text-naranja-dark mb-2">Pomabamba</h3>
+            <p class="text-sm text-gray-600 mb-2">Capital distrital • 2,822.19 Has • 3,170 msnm</p>
+            <p class="text-sm text-gray-700">
+              Anexos: Ccachccara, San Miguel de Acco, San Martín de Ccoriacc, Huascarpampa, Ccasanccay y Tucre
             </p>
           </div>
-
-          <div
-            class="bg-gradient-to-br from-indigo/10 to-transparent p-6 rounded-lg"
-          >
-            <h3 class="font-heading font-semibold text-indigo text-xl mb-3">
-              Festividades Religiosas
-            </h3>
-            <p class="text-gray-700">
-              Nuestras festividades religiosas se celebran con participación de
-              toda la población. Los mayordomos asumen con devoción la
-              organización de las fiestas patronales, manteniendo vivo el
-              espíritu comunitario que nos caracteriza.
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="font-heading font-bold text-lg text-verde-dark mb-2">Urihuana</h3>
+            <p class="text-sm text-gray-600 mb-2">963.62 Has • 3,170 msnm</p>
+            <p class="text-sm text-gray-700">
+              Barrios: Llullucha Pizara, Carapuma, Tancarpampa
             </p>
           </div>
-
-          <div
-            class="bg-gradient-to-br from-mostaza/10 to-transparent p-6 rounded-lg"
-          >
-            <h3 class="font-heading font-semibold text-mostaza text-xl mb-3">
-              Economía Agropecuaria
-            </h3>
-            <p class="text-gray-700">
-              El <strong>76% de nuestra población</strong> se dedica a agricultura
-              y ganadería. Cultivamos <strong
-                >papa, maíz, cebada, trigo, avena, quinua y kiwicha</strong
-              >. Criamos <strong
-                >ovinos (54%), vacunos (18.8%) y camélidos</strong
-              > de forma extensiva.
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="font-heading font-bold text-lg text-azul-dark mb-2">Santa Cruz de Ñuñunhuaycco</h3>
+            <p class="text-sm text-gray-600 mb-2">Centro Poblado Menor • 4,380.81 Has • 3,500 msnm</p>
+            <p class="text-sm text-gray-700">
+              Barrios: Mayocancha, Capillapata, Haciendapata, Calvario y Callpana
             </p>
           </div>
-
-          <div
-            class="bg-gradient-to-br from-tierra/10 to-transparent p-6 rounded-lg"
-          >
-            <h3 class="font-heading font-semibold text-tierra text-xl mb-3">
-              Flora y Fauna
-            </h3>
-            <p class="text-gray-700">
-              Contamos con bosques de <strong
-                >queñua, molle, tara, eucalipto</strong
-              > y plantas como <strong>cabuya y tuna</strong>. Fauna: <strong
-                >vizcacha, zorro andino, taruca</strong
-              > y aves alto andinas. El 72% de nuestro ambiente está conservado.
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="font-heading font-bold text-lg text-fucsia-dark mb-2">Huayllabamba</h3>
+            <p class="text-sm text-gray-600 mb-2">1,100 Has • 3,175 msnm</p>
+            <p class="text-sm text-gray-700">
+              Barrio: Roccray
             </p>
           </div>
         </div>
       </div>
 
+      <!-- Cultura y Tradiciones -->
+      <div class="reveal mb-12">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-fucsia/10 rounded-full flex items-center justify-center text-2xl">🎭</span>
+          <h2 class="section-heading mb-0">Cultura y Tradiciones</h2>
+        </div>
+        <p class="text-evocative mb-6">
+          Mantenemos <strong>fuerte identidad cultural</strong> y sentido comunitario. Somos
+          <strong class="text-fucsia">3,047 habitantes</strong> con un <strong>67% de población joven</strong>
+          (0-34 años) que preserva las tradiciones de nuestros ancestros Chancas.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gradient-to-br from-terracota/10 to-transparent p-6 rounded-xl">
+            <h3 class="font-heading font-semibold text-terracota text-xl mb-3">
+              🤝 Ayni y Minka
+            </h3>
+            <p class="text-gray-700">
+              El <strong>ayni</strong> (reciprocidad andina) y la <strong>minka</strong> (trabajo comunitario)
+              son prácticas vivas. El ayni es trabajo recíproco entre familias; la minka es trabajo
+              colectivo para el bien común. Estas tradiciones fortalecen nuestra cohesión social.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-fucsia/10 to-transparent p-6 rounded-xl">
+            <h3 class="font-heading font-semibold text-fucsia text-xl mb-3">
+              🎶 Folklore
+            </h3>
+            <p class="text-gray-700">
+              Nuestras expresiones artísticas incluyen el <strong>Chinlili, Chimaycha, Qacchwa</strong>,
+              el toril, las rejoneras y los wacqrapukus. Estas danzas y músicas se relacionan con las
+              actividades agrícolas y las fiestas religiosas.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-verde/10 to-transparent p-6 rounded-xl">
+            <h3 class="font-heading font-semibold text-verde text-xl mb-3">
+              🌾 Economía Agropecuaria
+            </h3>
+            <p class="text-gray-700">
+              El <strong>76%</strong> de nuestra población se dedica a agricultura y ganadería.
+              Cultivamos <strong>papa, maíz, cebada, trigo, quinua, kiwicha</strong> y frutales.
+              Criamos <strong>7,920 cabezas de ganado</strong> entre ovinos (54%), vacunos (18.8%) y camélidos.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-azul/10 to-transparent p-6 rounded-xl">
+            <h3 class="font-heading font-semibold text-azul text-xl mb-3">
+              🦙 Flora y Fauna
+            </h3>
+            <p class="text-gray-700">
+              Bosques de <strong>queñua, molle, tara, eucalipto</strong> y plantas como cabuya y tuna.
+              Fauna: <strong>vizcacha, zorro andino, taruca, puma</strong>, cuy silvestre y aves como
+              el cernícalo (killillin) y lechuzas. El 72% del ambiente está conservado.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Potencialidades -->
       <div class="reveal">
-        <h2 class="section-heading">Potencialidades y Desarrollo</h2>
-        <p class="text-evocative mb-4">
-          Somos un distrito con <strong>población joven y activa</strong> que enfrenta
-          desafíos de pobreza pero mantiene <strong
-            >disposición al progreso</strong
-          > y fe en el futuro. Nuestras principales potencialidades incluyen: tres
-          pisos ecológicos con alta biodiversidad, recursos agrícolas y forestales,
-          yacimientos minerales (yeso, mármol, agregados) y posición estratégica en
-          el eje <strong>Ayacucho-Cangallo-Sarhua-Huancasancos-Ica-Nazca</strong
-          >.
-        </p>
-        <p class="text-evocative mb-4">
-          Nuestra producción es mayormente de <strong>autoconsumo</strong>, con
-          parcelas familiares de 3-4 yugadas promedio. Criamos <strong
-            >7,920 cabezas de ganado</strong
-          > entre ovinos, vacunos, porcinos, equinos y camélidos. La lana de oveja
-          se usa para hilado y confección de textiles tradicionales.
-        </p>
-        <p class="text-evocative">
-          Trabajamos por convertirnos en <strong>proveedor regional</strong> de productos
-          agrícolas, ganaderos y plantas medicinales. El proyecto de <strong
-            >Represa de Pastocorralpata</strong
-          > es clave para nuestro desarrollo agrícola interprovincial.
-        </p>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-12 h-12 bg-amarillo/10 rounded-full flex items-center justify-center text-2xl">🌟</span>
+          <h2 class="section-heading mb-0">Potencialidades</h2>
+        </div>
+        <div class="bg-gradient-to-br from-amarillo/10 via-naranja/5 to-rojo/5 rounded-2xl p-8">
+          <p class="text-evocative mb-4">
+            Somos un distrito con <strong>población joven y activa</strong> que mantiene
+            <strong class="text-amarillo-dark">gran disposición al progreso</strong> y fe en el futuro.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Tres pisos ecológicos con alta biodiversidad</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Recursos agrícolas y forestales abundantes</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Yacimientos minerales (yeso, mármol, agregados)</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Atractivos turísticos arqueológicos y naturales</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Posición estratégica: eje Ayacucho-Cangallo-Sarhua-Ica</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-verde text-xl">✓</span>
+              <span>Proyecto Represa de Pastocorralpata para riego</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section
-    class="bg-gradient-to-r from-mostaza to-tierra text-white py-12 md:py-16 pattern-overlay"
-  >
+  <section class="bg-gradient-to-r from-rojo via-fucsia to-naranja text-white py-12 md:py-16 pattern-overlay">
     <div class="container-custom text-center reveal">
       <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4">
-        Ven y Vive Nuestra Cultura
+        Ven y Vive Nuestra Historia
       </h2>
       <p class="text-lg mb-6 max-w-2xl mx-auto text-white/90">
-        Te invitamos a conocer nuestras tradiciones, probar nuestra gastronomía
-        y compartir la calidez de nuestra gente.
+        Te invitamos a caminar por los senderos que recorrieron los Chancas, conocer nuestras
+        tradiciones y compartir la calidez de nuestra gente.
       </p>
-      <a href="/tours" class="btn-primary bg-white text-indigo hover:bg-crema">
-        Explora Nuestros Tours
-      </a>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/places" class="btn-primary bg-white text-rojo hover:bg-crema">
+          Ver Sitios Turísticos
+        </a>
+        <a href="/festivities" class="btn-secondary border-white text-white hover:bg-white hover:text-rojo">
+          Ver Festividades
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

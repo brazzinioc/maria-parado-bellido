@@ -299,3 +299,111 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ==========================================
+   MODERN ANIMATION SYSTEM (2024+)
+   ========================================== */
+
+/* Modern easing curves */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Radial gradient utility */
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+}
+
+/* Modern card hover effects */
+.card-modern {
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.card-modern:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 40px -15px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(233, 30, 140, 0.1);
+}
+
+/* Micro-interactions for buttons */
+.btn-micro {
+  transition: all 0.3s var(--ease-spring);
+}
+
+.btn-micro:hover {
+  transform: translateY(-2px);
+}
+
+.btn-micro:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Stagger animation for lists */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-item.active {
+  animation: staggerIn 0.6s var(--ease-out-expo) forwards;
+}
+
+.stagger-item:nth-child(1).active { animation-delay: 0.05s; }
+.stagger-item:nth-child(2).active { animation-delay: 0.1s; }
+.stagger-item:nth-child(3).active { animation-delay: 0.15s; }
+.stagger-item:nth-child(4).active { animation-delay: 0.2s; }
+.stagger-item:nth-child(5).active { animation-delay: 0.25s; }
+.stagger-item:nth-child(6).active { animation-delay: 0.3s; }
+
+@keyframes staggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Shine effect on hover */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.shine-effect:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
