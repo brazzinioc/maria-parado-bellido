@@ -2,6 +2,9 @@
 
 @import "tailwindcss";
 
+/* Plugin de tipografía para contenido largo */
+@plugin "@tailwindcss/typography";
+
 @theme {
   /* Colores inspirados en la cultura ayacuchana */
   /* Rojo intenso - Danzantes de tijera */
