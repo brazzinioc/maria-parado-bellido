@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { festivity } = Astro.props;
-const primaryImage = festivity.images[0] || '/images/placeholder-festivity.webp';
+const primaryImage = festivity.images[0] || '/images/festivities/default-photo.webp';
 
 // Format dates
 const startDate = new Date(festivity.start_date);

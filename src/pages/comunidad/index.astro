@@ -3,9 +3,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import CommunityEventCard from "../../components/CommunityEventCard.astro";
 import type { CommunityEvent } from "../../types";
+import { fetchEvents } from "../../lib/api";
 
-// Eventos comunales de ejemplo (fake data basada en actividades reales del distrito)
-const communityEvents: CommunityEvent[] = [
+// Fallback usado solo si el CMS no devuelve eventos publicados
+const fallbackEvents: CommunityEvent[] = [
   {
     id: "1",
     title: "Faena Comunal - Limpieza de Canales de Riego",
@@ -132,8 +133,12 @@ const communityEvents: CommunityEvent[] = [
   }
 ];
 
+// Contenido desde el CMS; si no hay eventos publicados, usa el fallback
+const dbEvents = await fetchEvents();
+const communityEvents = dbEvents.length ? dbEvents : fallbackEvents;
+
 // Ordenar eventos por fecha
-const sortedEvents = communityEvents.sort((a, b) =>
+const sortedEvents = [...communityEvents].sort((a, b) =>
   new Date(a.date).getTime() - new Date(b.date).getTime()
 );
 

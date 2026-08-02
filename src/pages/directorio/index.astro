@@ -3,9 +3,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import BusinessCard from "../../components/BusinessCard.astro";
 import type { Business } from "../../types";
+import { fetchBusinesses } from "../../lib/api";
 
-// Negocios de ejemplo (fake data basada en servicios típicos del distrito)
-const businesses: Business[] = [
+// Fallback usado solo si el CMS no devuelve negocios publicados
+const fallbackBusinesses: Business[] = [
   // Hospedajes
   {
     id: "1",
@@ -203,6 +204,10 @@ const businesses: Business[] = [
     isVerified: true
   }
 ];
+
+// Contenido desde el CMS; si no hay negocios publicados, usa el fallback
+const dbBusinesses = await fetchBusinesses();
+const businesses = dbBusinesses.length ? dbBusinesses : fallbackBusinesses;
 
 // Agrupar por categoría
 const categories = [

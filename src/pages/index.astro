@@ -3,13 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import FestivityCard from "../components/FestivityCard.astro";
 import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
-import { fetchFestivities } from "../lib/api";
+import { fetchFestivities, fetchHeroSlides } from "../lib/api";
 
 // Fetch data at build time
 const festivities = await fetchFestivities();
 
-// Hero slider images
-const heroSlides = [
+// Hero slider images (fallback si el CMS no devuelve slides publicados)
+const fallbackHeroSlides = [
   {
     image: "/images/hero_1.webp",
     alt: "Vista panorámica de Pomabamba con campos de cultivo andinos"
@@ -31,6 +31,10 @@ const heroSlides = [
     alt: "Vida comunitaria en los Andes de Ayacucho"
   }
 ];
+
+// Slides desde el CMS; si no hay publicados, usa el fallback
+const dbHeroSlides = await fetchHeroSlides();
+const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
 
 // Get featured content
 const upcomingFestivities = festivities

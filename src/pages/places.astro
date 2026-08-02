@@ -3,9 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PlaceCard from "../components/PlaceCard.astro";
 import type { TouristPlace } from "../types";
+import { fetchPlaces } from "../lib/api";
 
-// Lugares turísticos del distrito basados en datos reales
-const touristPlaces: TouristPlace[] = [
+// Fallback usado solo si el CMS no devuelve lugares publicados
+const fallbackPlaces: TouristPlace[] = [
   {
     id: "allcaqapata",
     name: "Allcaqapata",
@@ -137,6 +138,10 @@ const touristPlaces: TouristPlace[] = [
     currency: "PEN"
   }
 ];
+
+// Contenido desde el CMS; si no hay lugares publicados, usa el fallback
+const dbPlaces = await fetchPlaces();
+const touristPlaces = dbPlaces.length ? dbPlaces : fallbackPlaces;
 
 // Agrupar por categoría
 const naturalPlaces = touristPlaces.filter(p => p.category === "natural");
