@@ -5,149 +5,16 @@ import PlaceCard from "../components/PlaceCard.astro";
 import type { TouristPlace } from "../types";
 import { fetchPlaces } from "../lib/api";
 
-// Fallback usado solo si el CMS no devuelve lugares publicados
-const fallbackPlaces: TouristPlace[] = [
-  {
-    id: "allcaqapata",
-    name: "Allcaqapata",
-    slug: "allcaqapata",
-    description: "Sitio arqueológico con vestigios preincaicos ubicado en las alturas del distrito. Este lugar sagrado fue utilizado por los antiguos Chancas como punto de observación y ceremonias. Desde aquí se aprecia una vista panorámica del valle del río Pampas y las comunidades circundantes.",
-    category: "archaeological",
-    location: { name: "Alturas de Pomabamba", lat: -13.59, lng: -74.24 },
-    images: [],
-    howToGetThere: "A 45 minutos caminando desde la plaza de Pomabamba, siguiendo el sendero hacia las alturas. Se recomienda ir con guía local.",
-    bestTimeToVisit: "Abril a Octubre (época seca)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "tururumi",
-    name: "Tururumi",
-    slug: "tururumi",
-    description: "Formación rocosa natural que domina el paisaje andino. Según la tradición oral, este lugar era usado por los antiguos pobladores como punto de vigía. Las rocas tienen formas peculiares que la imaginación local ha asociado con figuras de animales y guardianes ancestrales.",
-    category: "natural",
-    location: { name: "Sector Tururumi, Pomabamba", lat: -13.58, lng: -74.23 },
-    images: [],
-    howToGetThere: "A 1 hora de caminata desde Pomabamba por sendero de herradura. Terreno moderadamente empinado.",
-    bestTimeToVisit: "Mayo a Septiembre",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "killillin-kuchu",
-    name: "Killillin Kuchu",
-    slug: "killillin-kuchu",
-    description: "Rincón natural conocido por ser hábitat de aves alto andinas, especialmente el cernícalo (killillin en quechua). Este refugio de vida silvestre ofrece la oportunidad de observar especies como lechuzas, perdices y diversas aves de la puna en su hábitat natural.",
-    category: "natural",
-    location: { name: "Zona alta de María Parado de Bellido", lat: -13.57, lng: -74.25 },
-    images: [],
-    howToGetThere: "Acceso por camino de herradura desde Ñuñunhuaycco, aproximadamente 1.5 horas de caminata.",
-    bestTimeToVisit: "Abril a Noviembre (mejor avistamiento de aves)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "muyumuyu",
-    name: "Muyumuyu",
-    slug: "muyumuyu",
-    description: "Sitio con vestigios arqueológicos que evidencian la presencia de asentamientos Chancas en la zona. Se pueden observar restos de muros de piedra y terrazas agrícolas ancestrales. El nombre en quechua hace referencia a su forma circular característica.",
-    category: "archaeological",
-    location: { name: "Sector Muyumuyu", lat: -13.60, lng: -74.22 },
-    images: [],
-    howToGetThere: "A 30 minutos en vehículo desde Pomabamba, luego 20 minutos de caminata.",
-    bestTimeToVisit: "Todo el año, preferible época seca",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "kichkapata",
-    name: "Kichkapata",
-    slug: "kichkapata",
-    description: "Zona de espinos y vegetación nativa que representa el ecosistema típico de la región Quechua. Aquí se encuentran especies como la tara, el molle y la tuna. Es un lugar ideal para conocer la flora medicinal que los pobladores han usado por generaciones.",
-    category: "natural",
-    location: { name: "Ladera este de Pomabamba", lat: -13.61, lng: -74.21 },
-    images: [],
-    howToGetThere: "A 25 minutos caminando desde el centro de Pomabamba.",
-    bestTimeToVisit: "Febrero a Abril (época de floración)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "silverio-pata",
-    name: "Silverio Pata",
-    slug: "silverio-pata",
-    description: "Mirador natural que ofrece vistas espectaculares del valle y los nevados circundantes. Es un punto popular para observar el amanecer sobre los Andes y apreciar la extensión del territorio que abarca los tres pisos ecológicos del distrito.",
-    category: "natural",
-    location: { name: "Alturas de Pomabamba", lat: -13.58, lng: -74.26 },
-    images: [],
-    howToGetThere: "Sendero de 1.5 horas desde la plaza principal. Se recomienda salir temprano para ver el amanecer.",
-    bestTimeToVisit: "Mayo a Octubre (cielos despejados)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "laplarco",
-    name: "Laplarco y Qeccacha",
-    slug: "laplarco-qeccacha",
-    description: "Sitio histórico donde se ubicó el antiguo asentamiento colonial de Pomabamba. Aquí existió una iglesia católica de la época virreinal, de la cual aún quedan vestigios. Según las crónicas, la población fue trasladada al actual emplazamiento tras el hallazgo milagroso de la imagen de San Francisco.",
-    category: "historical",
-    location: { name: "Laplarco, borde de carretera", lat: -13.59, lng: -74.23 },
-    images: [],
-    howToGetThere: "A 15 minutos en vehículo desde Pomabamba, visible desde la carretera principal.",
-    bestTimeToVisit: "Todo el año",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "rio-pampas",
-    name: "Río Pampas",
-    slug: "rio-pampas",
-    description: "El majestuoso río Pampas marca el límite sur del distrito y es uno de los principales afluentes del Apurímac. Sus aguas cristalinas descienden desde la laguna de Choclococha en Huancavelica. Es ideal para turismo de aventura, pesca y contemplación de la naturaleza.",
-    category: "natural",
-    location: { name: "Límite sur del distrito", lat: -13.65, lng: -74.20 },
-    images: [],
-    howToGetThere: "Acceso por camino de herradura desde Pomabamba, aproximadamente 2 horas de caminata hacia el sur.",
-    bestTimeToVisit: "Abril a Noviembre (nivel de agua moderado)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "templo-san-francisco",
-    name: "Templo de San Francisco de Asís",
-    slug: "templo-san-francisco",
-    description: "Iglesia principal de Pomabamba, construida en honor al patrón del pueblo. Según la leyenda local, la imagen de San Francisco fue encontrada milagrosamente en los puquiales de Pumapuquio y aparecía cada noche en este lugar, lo que motivó la construcción del templo y el traslado del pueblo.",
-    category: "cultural",
-    location: { name: "Plaza Principal de Pomabamba", lat: -13.6014, lng: -74.2342 },
-    images: [],
-    howToGetThere: "En la plaza principal de Pomabamba, centro del distrito.",
-    bestTimeToVisit: "Todo el año. Especialmente durante la Fiesta Patronal (4 de Octubre)",
-    entryFee: 0,
-    currency: "PEN"
-  },
-  {
-    id: "tacsaorcco",
-    name: "Tacsaorcco",
-    slug: "tacsaorcco",
-    description: "Cerro emblemático que domina el paisaje del distrito. En sus laderas se pueden encontrar restos de andenes preincaicos y es hogar de fauna silvestre como vizcachas y zorros andinos. La cima ofrece una vista de 360° del territorio distrital.",
-    category: "natural",
-    location: { name: "Cerro Tacsaorcco", lat: -13.56, lng: -74.24 },
-    images: [],
-    howToGetThere: "Ascenso de 2-3 horas desde Pomabamba. Se recomienda guía local y buena condición física.",
-    bestTimeToVisit: "Mayo a Septiembre",
-    entryFee: 0,
-    currency: "PEN"
-  }
-];
-
-// Contenido desde el CMS; si no hay lugares publicados, usa el fallback
-const dbPlaces = await fetchPlaces();
-const touristPlaces = dbPlaces.length ? dbPlaces : fallbackPlaces;
+// Contenido 100% desde el CMS: si no hay lugares publicados, la pagina queda vacia
+const touristPlaces: TouristPlace[] = await fetchPlaces();
 
 // Agrupar por categoría
 const naturalPlaces = touristPlaces.filter(p => p.category === "natural");
 const archaeologicalPlaces = touristPlaces.filter(p => p.category === "archaeological");
 const historicalPlaces = touristPlaces.filter(p => p.category === "historical");
 const culturalPlaces = touristPlaces.filter(p => p.category === "cultural");
+const historicalAndCulturalPlaces = [...historicalPlaces, ...culturalPlaces];
+const hasPlaces = touristPlaces.length > 0;
 
 // SEO Keywords para sitios turísticos
 const placesKeywords = [
@@ -175,23 +42,25 @@ const placeSchemas = touristPlaces.map((place) => ({
   data: place,
 }));
 
-// ItemList schema para la lista de lugares
-const placesStructuredData = [
-  {
-    type: "itemList" as const,
-    data: {
-      name: "Sitios Turísticos de María Parado de Bellido",
-      description: "Guía completa de atractivos turísticos del distrito María Parado de Bellido: sitios arqueológicos, paisajes naturales, lugares históricos y culturales en Ayacucho, Perú.",
-      items: touristPlaces.map((p) => ({
-        name: p.name,
-        description: p.description,
-        url: `/places#${p.slug}`,
-        image: p.images?.[0],
-      })),
-    },
-  },
-  ...placeSchemas,
-];
+// ItemList schema para la lista de lugares (solo si hay lugares publicados)
+const placesStructuredData = hasPlaces
+  ? [
+      {
+        type: "itemList" as const,
+        data: {
+          name: "Sitios Turísticos de María Parado de Bellido",
+          description: "Guía completa de atractivos turísticos del distrito María Parado de Bellido: sitios arqueológicos, paisajes naturales, lugares históricos y culturales en Ayacucho, Perú.",
+          items: touristPlaces.map((p) => ({
+            name: p.name,
+            description: p.description,
+            url: `/places#${p.slug}`,
+            image: p.images?.[0],
+          })),
+        },
+      },
+      ...placeSchemas,
+    ]
+  : [];
 ---
 
 <BaseLayout
@@ -221,71 +90,93 @@ const placesStructuredData = [
     </div>
   </section>
 
-  <!-- Natural Places -->
-  <section class="relative py-12 md:py-16 bg-gradient-to-b from-verde/5 to-transparent">
-    <div class="container-custom">
-      <div class="text-center mb-10 reveal">
-        <span class="inline-flex items-center gap-2 px-4 py-2 bg-verde/10 text-verde-dark rounded-full text-sm font-semibold mb-4">
-          <span>🏔️</span> Naturaleza
-        </span>
-        <h2 class="section-heading">Paisajes Naturales</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          Miradores, formaciones rocosas y ecosistemas únicos entre los 2,500 y 4,800 msnm
+  <!-- Sin lugares publicados en el CMS -->
+  {!hasPlaces && (
+    <section class="container-custom pb-16">
+      <div class="max-w-2xl mx-auto text-center bg-crema border border-tierra/20 rounded-3xl p-10 reveal">
+        <span class="text-5xl block mb-4">🧭</span>
+        <h2 class="font-heading font-bold text-2xl text-gray-800 mb-3">
+          Aún no hay sitios publicados
+        </h2>
+        <p class="text-gray-600">
+          Estamos preparando la información de los atractivos del distrito. Vuelve pronto
+          para descubrirlos.
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {naturalPlaces.map((place) => (
-          <div class="reveal">
-            <PlaceCard place={place} />
-          </div>
-        ))}
+    </section>
+  )}
+
+  <!-- Natural Places -->
+  {naturalPlaces.length > 0 && (
+    <section class="relative py-12 md:py-16 bg-gradient-to-b from-verde/5 to-transparent">
+      <div class="container-custom">
+        <div class="text-center mb-10 reveal">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-verde/10 text-verde-dark rounded-full text-sm font-semibold mb-4">
+            <span>🏔️</span> Naturaleza
+          </span>
+          <h2 class="section-heading">Paisajes Naturales</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Miradores, formaciones rocosas y ecosistemas únicos entre los 2,500 y 4,800 msnm
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {naturalPlaces.map((place) => (
+            <div class="reveal">
+              <PlaceCard place={place} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <!-- Archaeological Places -->
-  <section class="relative py-12 md:py-16">
-    <div class="container-custom">
-      <div class="text-center mb-10 reveal">
-        <span class="inline-flex items-center gap-2 px-4 py-2 bg-purpura/10 text-purpura-dark rounded-full text-sm font-semibold mb-4">
-          <span>🏺</span> Arqueología
-        </span>
-        <h2 class="section-heading">Sitios Arqueológicos</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          Vestigios de la cultura Chanca que dominó estos territorios entre los años 1200 y 1400 d.C.
-        </p>
+  {archaeologicalPlaces.length > 0 && (
+    <section class="relative py-12 md:py-16">
+      <div class="container-custom">
+        <div class="text-center mb-10 reveal">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-purpura/10 text-purpura-dark rounded-full text-sm font-semibold mb-4">
+            <span>🏺</span> Arqueología
+          </span>
+          <h2 class="section-heading">Sitios Arqueológicos</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Vestigios de la cultura Chanca que dominó estos territorios entre los años 1200 y 1400 d.C.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {archaeologicalPlaces.map((place) => (
+            <div class="reveal">
+              <PlaceCard place={place} />
+            </div>
+          ))}
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {archaeologicalPlaces.map((place) => (
-          <div class="reveal">
-            <PlaceCard place={place} />
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <!-- Historical & Cultural Places -->
-  <section class="relative py-12 md:py-16 bg-gradient-to-b from-terracota/5 to-transparent">
-    <div class="container-custom">
-      <div class="text-center mb-10 reveal">
-        <span class="inline-flex items-center gap-2 px-4 py-2 bg-terracota/10 text-terracota-dark rounded-full text-sm font-semibold mb-4">
-          <span>🏛️</span> Historia y Cultura
-        </span>
-        <h2 class="section-heading">Lugares Históricos y Culturales</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          Testimonios de la época colonial y la fe que forjó la identidad del pueblo
-        </p>
+  {historicalAndCulturalPlaces.length > 0 && (
+    <section class="relative py-12 md:py-16 bg-gradient-to-b from-terracota/5 to-transparent">
+      <div class="container-custom">
+        <div class="text-center mb-10 reveal">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-terracota/10 text-terracota-dark rounded-full text-sm font-semibold mb-4">
+            <span>🏛️</span> Historia y Cultura
+          </span>
+          <h2 class="section-heading">Lugares Históricos y Culturales</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Testimonios de la época colonial y la fe que forjó la identidad del pueblo
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {historicalAndCulturalPlaces.map((place) => (
+            <div class="reveal">
+              <PlaceCard place={place} />
+            </div>
+          ))}
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {[...historicalPlaces, ...culturalPlaces].map((place) => (
-          <div class="reveal">
-            <PlaceCard place={place} />
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <!-- Info Section -->
   <section class="container-custom py-12 md:py-16">
