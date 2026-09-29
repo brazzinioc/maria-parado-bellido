@@ -1,0 +1,62 @@
+---
+/**
+ * PageHero - Encabezado fotográfico para páginas internas.
+ * Incluye breadcrumbs visibles (el schema BreadcrumbList lo genera BaseLayout).
+ */
+interface Crumb {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+  image: string;
+  imageAlt?: string;
+  breadcrumbs?: Crumb[];
+  size?: "md" | "lg";
+}
+
+const { title, eyebrow, intro, image, imageAlt = "", breadcrumbs = [], size = "md" } = Astro.props;
+---
+
+<header
+  class:list={[
+    "relative flex items-end overflow-hidden bg-ink",
+    size === "lg" ? "min-h-[70vh]" : "min-h-[52vh]",
+  ]}
+>
+  <img
+    src={image}
+    alt={imageAlt}
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 h-full w-full object-cover"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/10" aria-hidden="true"></div>
+
+  <div class="container-custom relative w-full pb-10 md:pb-14 pt-24">
+    {breadcrumbs.length > 0 && (
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex flex-wrap items-center gap-2 text-sm text-white/75">
+          {breadcrumbs.map((crumb, i) => (
+            <li class="flex items-center gap-2">
+              {i > 0 && <span aria-hidden="true">/</span>}
+              {i < breadcrumbs.length - 1 ? (
+                <a href={crumb.url} class="hover:text-white transition-colors">{crumb.name}</a>
+              ) : (
+                <span class="text-white" aria-current="page">{crumb.name}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <div class="max-w-3xl">
+      {eyebrow && <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent mb-3">{eyebrow}</p>}
+      <h1 class="font-heading font-semibold !text-white text-4xl md:text-6xl leading-[1.05]">{title}</h1>
+      {intro && <p class="mt-4 text-lg md:text-xl text-white/85 max-w-2xl">{intro}</p>}
+    </div>
+  </div>
+</header>

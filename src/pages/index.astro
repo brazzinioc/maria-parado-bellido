@@ -1,427 +1,374 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import FestivityCard from "../components/FestivityCard.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import PhotoCard from "../components/PhotoCard.astro";
 import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
-import { fetchFestivities, fetchHeroSlides } from "../lib/api";
-
-// Fetch data at build time
-const festivities = await fetchFestivities();
+import InteractiveMap from "../components/InteractiveMap";
+import { fetchFestivities, fetchHeroSlides, fetchPlaces, fetchDishes } from "../lib/api";
+import { getExperiences, getGallery } from "../lib/content";
+import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
 
 // Hero slider images (fallback si el CMS no devuelve slides publicados)
 const fallbackHeroSlides = [
-  {
-    image: "/images/hero_1.webp",
-    alt: "Vista panorámica de Pomabamba con campos de cultivo andinos"
-  },
-  {
-    image: "/images/hero_2.webp",
-    alt: "Cordillera andina y paisajes de María Parado de Bellido"
-  },
-  {
-    image: "/images/hero_3.webp",
-    alt: "Tradiciones y cultura viva en Pomabamba"
-  },
-  {
-    image: "/images/hero_4.webp",
-    alt: "Naturaleza y ecosistemas del distrito"
-  },
-  {
-    image: "/images/hero_5.webp",
-    alt: "Vida comunitaria en los Andes de Ayacucho"
-  }
+  { image: "/images/hero_1.webp", alt: "Vista panorámica de Pomabamba con campos de cultivo andinos" },
+  { image: "/images/hero_2.webp", alt: "Cordillera andina y paisajes de María Parado de Bellido" },
+  { image: "/images/hero_3.webp", alt: "Tradiciones y cultura viva en Pomabamba" },
+  { image: "/images/hero_4.webp", alt: "Naturaleza y ecosistemas del distrito" },
+  { image: "/images/hero_5.webp", alt: "Vida comunitaria en los Andes de Ayacucho" },
 ];
 
-// Slides desde el CMS; si no hay publicados, usa el fallback
-const dbHeroSlides = await fetchHeroSlides();
+const [dbHeroSlides, festivities, places, dishes, experiences, gallery] = await Promise.all([
+  fetchHeroSlides(),
+  fetchFestivities(),
+  fetchPlaces(),
+  fetchDishes(),
+  getExperiences(),
+  getGallery(),
+]);
+
 const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
 
-// Get featured content
-const upcomingFestivities = festivities
-  .sort(
-    (a, b) =>
-      new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
-  )
+const upcomingFestivities = [...festivities]
+  .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
   .slice(0, 3);
+
+const featuredPlaces = places.slice(0, 5);
+const mapPlaces = places.filter(hasCoordinates);
+const mapMarkers = mapPlaces.map((p) => ({
+  id: p.id,
+  title: p.name,
+  type: "place" as const,
+  slug: p.slug,
+  image: p.images?.[0],
+  name: p.location.name,
+  lat: p.location.lat,
+  lng: p.location.lng,
+}));
+
+const dishPhotos = dishes.filter((d) => d.image).slice(0, 3);
+const galleryItems = gallery.slice(0, 6);
+
+const formatDay = (date: string) =>
+  new Date(date).toLocaleDateString("es-PE", { day: "2-digit", month: "short", timeZone: "UTC" }).replace(".", "");
+
+const heroStats = [
+  { value: "3,236", label: "msnm" },
+  { value: "3", label: "ecosistemas" },
+  { value: "3 h", label: "desde Ayacucho" },
+];
 
 // SEO Keywords específicos para Home
 const homeKeywords = [
   "turismo vivencial Ayacucho",
+  "trekking Ayacucho",
+  "cicloturismo Ayacucho",
   "Pomabamba turismo",
   "qué hacer en Cangallo",
-  "pueblos andinos Perú",
   "destinos turísticos Ayacucho",
   "turismo rural comunitario",
-  "viajes a los Andes peruanos",
-  "ecoturismo Ayacucho",
-  "3236 msnm",
   "cultura Chanca",
 ];
 
-// Structured Data para la página principal
 const homeStructuredData = [
   {
     type: "touristDestination" as const,
     data: {
-      description: "Pomabamba, capital del distrito María Parado de Bellido, es un destino turístico andino a 3,236 msnm. Ofrece turismo vivencial, festividades tradicionales, gastronomía local y paisajes impresionantes en la provincia de Cangallo, Ayacucho.",
-      image: "/images/hero-main.webp",
-      attractions: [
-        { name: "Allcaqapata", description: "Mirador natural con vistas panorámicas de los Andes" },
-        { name: "Tururumi", description: "Formación rocosa de importancia arqueológica" },
-        { name: "Festividades Patronales", description: "Celebraciones tradicionales con danzas y música andina" },
-      ],
+      description:
+        "Pomabamba, capital del distrito María Parado de Bellido, es un destino andino a 3,236 msnm en Cangallo, Ayacucho: trekking, cicloturismo, turismo vivencial, festividades tradicionales y gastronomía local.",
+      image: "/images/hero_1.webp",
+      attractions: places.slice(0, 6).map((p) => ({ name: p.name, description: p.description })),
     },
   },
 ];
 ---
 
 <BaseLayout
-  title="Pomabamba: Turismo Vivencial en los Andes de Ayacucho"
-  description="Descubre Pomabamba, corazón de María Parado de Bellido. Turismo vivencial, trekking andino y festividades auténticas a 3,236 msnm en Cangallo, Ayacucho."
-  image="/images/hero-main.webp"
+  title="María Parado de Bellido: trekking, cultura y turismo vivencial en Ayacucho"
+  description="Descubre Pomabamba y María Parado de Bellido: trekking, cicloturismo, turismo vivencial, fiestas y gastronomía a 3,236 msnm en Cangallo, Ayacucho."
+  image="/images/hero_1.webp"
   keywords={homeKeywords}
   structuredData={homeStructuredData}
 >
-  <!-- Hero Section -->
-  <section class="relative h-dvh min-h-[600px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
-    <!-- Background Slider -->
-    <HeroSlider client:load slides={heroSlides} autoPlayInterval={5500} />
+  <!-- 1. Hero cinematográfico -->
+  <section class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
+    <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/20" aria-hidden="true"></div>
 
-    <!-- Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 md:bg-none"></div>
-    <!-- Desktop: gradient from left to reveal right side of image -->
-    <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-
-    <!-- Main Content -->
-    <div class="absolute inset-0 flex items-end md:items-center justify-start z-10 pt-20 md:pt-[92px]">
-      <div class="w-full px-4 md:px-8 lg:px-16 pb-20 md:pb-0">
-        <div class="max-w-2xl md:max-w-lg lg:max-w-xl">
-          <!-- Location Tag (mobile only - on tablet/desktop it's shown next to logo) -->
-          <div class="flex items-center gap-2 mb-4 md:hidden">
-            <span class="w-2 h-2 bg-fucsia rounded-full animate-pulse"></span>
-            <span class="text-sm text-white/90 font-medium"
-              >Cangallo, Ayacucho — Perú</span
-            >
-          </div>
-
-          <!-- Headline -->
-          <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-4 leading-tight drop-shadow-lg"
-          >
+    <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
+      <div class="container-custom w-full pb-10 md:pb-16">
+        <div class="max-w-3xl">
+          <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-accent mb-4">
+            María Parado de Bellido
+          </p>
+          <h1 class="font-heading font-semibold !text-white text-5xl md:text-7xl leading-[1.02] mb-5">
             Donde los Andes guardan sus secretos
           </h1>
-
-          <!-- Subtext -->
-          <p
-            class="text-lg md:text-xl text-white/90 mb-6 leading-relaxed max-w-xl drop-shadow"
-          >
-            Un pueblo ancestral a 3,236 metros. Tradiciones vivas, paisajes
-            imponentes y la calidez de nuestra gente te esperan.
+          <p class="text-lg md:text-xl text-white/90 mb-8">
+            Naturaleza · Cultura · Aventura
           </p>
-
-          <!-- CTAs -->
-          <div class="flex flex-wrap gap-4">
-            <a
-              href="/places"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-fucsia text-white font-semibold rounded-full hover:bg-rojo transition-all duration-300 shadow-lg"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                ></path>
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              Explorar
+          <div class="flex flex-wrap gap-3">
+            <a href="/lugares" class="btn-primary">
+              Explorar destinos
             </a>
-            <a
-              href="/about"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-white text-fucsia font-semibold rounded-full hover:bg-crema transition-all duration-300 shadow-lg"
-            >
-              Nuestra Historia
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-              </svg>
+            <a href="/planifica-tu-visita" class="btn-ghost-light">
+              Planifica tu visita
             </a>
           </div>
+        </div>
 
-          <!-- Stats -->
-          <div class="flex flex-wrap gap-6 mt-6 text-white/80 text-sm">
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-white text-lg">3,236</span>
-              <span>msnm</span>
+        <!-- Indicadores -->
+        <div class="mt-10 md:mt-14 pt-6 border-t border-white/20 flex flex-wrap items-center gap-x-10 gap-y-4">
+          {heroStats.map((stat) => (
+            <div class="text-white">
+              <span class="font-heading text-2xl md:text-3xl font-semibold">{stat.value}</span>
+              <span class="ml-1.5 text-sm text-white/75">{stat.label}</span>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-white text-lg">3</span>
-              <span>ecosistemas</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-white text-lg">3hrs</span>
-              <span>desde Ayacucho</span>
-            </div>
-          </div>
-
-          <!-- Weather (inline, styled distinctively) -->
-          <div class="mt-4">
+          ))}
+          <div class="md:ml-auto">
             <WeatherStat client:load />
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-      <a
-        href="#about"
-        class="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors"
-        aria-label="Desplazar hacia abajo"
-      >
-        <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
-          <div class="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></div>
-        </div>
-      </a>
+  <!-- 2. Experiencias -->
+  <section class="py-20 md:py-28">
+    <div class="container-custom">
+      <SectionHeading
+        eyebrow="Experiencias"
+        title="Vive los Andes de María Parado de Bellido"
+        intro="Camina sus senderos, recórrelo en bicicleta o comparte la vida de sus comunidades."
+      />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        {experiences.map((exp) => (
+          <PhotoCard
+            href={`/experiencias/${exp.slug}`}
+            image={exp.image}
+            alt={exp.imageAlt}
+            title={exp.title}
+            subtitle={exp.tagline}
+            cta="Descubrir"
+          />
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- About Section - Concise -->
-  <section id="about" class="py-16 md:py-24 bg-gradient-to-b from-white to-crema">
-    <div class="container-custom">
-      <div class="max-w-3xl mx-auto text-center">
-        <span
-          class="inline-block px-4 py-1.5 bg-fucsia/10 text-fucsia text-sm font-medium rounded-full mb-6"
+  <!-- 3. Destinos -->
+  {featuredPlaces.length > 0 && (
+    <section class="py-20 md:py-28 bg-white">
+      <div class="container-custom">
+        <SectionHeading
+          eyebrow="Destinos"
+          title="Lugares que tienes que conocer"
+          align="left"
         >
-          Distrito María Parado de Bellido
-        </span>
-        <h2
-          class="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-6"
-        >
-          Un pueblo andino con raíces Chancas
-        </h2>
-        <p class="text-lg text-gray-600 leading-relaxed mb-8">
-          En el corazón de Cangallo, donde el espíritu de la heroína <strong
-            class="text-fucsia">María Parado de Bellido</strong
-          >
-          aún vive en cada sendero. En nuestras <strong
-            >fiestas patronales</strong
-          >, el <strong>ayni</strong> y la <strong>minka</strong>
-          cobran vida cuando la comunidad se une y los cargontes retribuyen con comida,
-          chicha y música.
+          <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
+        </SectionHeading>
+        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-5 md:gap-6 md:h-[640px]">
+          {featuredPlaces.map((place, i) => (
+            <PhotoCard
+              href={`/lugares/${place.slug}`}
+              image={placeCoverImage(place)}
+              alt={place.name}
+              title={place.name}
+              subtitle={placeCategoryLabel(place.category)}
+              meta={place.location.name || "Pomabamba"}
+              size="fill"
+              class={i === 0 ? "md:col-span-2 md:row-span-2" : ""}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 4. Storytelling -->
+  <section class="py-20 md:py-28">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="relative aspect-[4/5] lg:aspect-[5/6] rounded-2xl overflow-hidden">
+        <img
+          src="/images/hero_3.webp"
+          alt="Tradiciones y cultura viva en Pomabamba"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+      <div class="max-w-xl">
+        <span class="eyebrow">Nuestra identidad</span>
+        <h2 class="section-heading">Más que visitar, es vivir</h2>
+        <p class="text-lg leading-relaxed mb-5">
+          En María Parado de Bellido, cada camino conecta con una historia, cada comunidad conserva sus
+          tradiciones y cada paisaje cuenta parte de nuestra identidad.
         </p>
-        <a
-          href="/about"
-          class="inline-flex items-center gap-2 text-fucsia font-semibold hover:text-rojo transition-colors group"
-        >
+        <p class="leading-relaxed mb-8">
+          Somos herederos de la cultura Chanca y del espíritu de la heroína que da nombre al distrito. Aquí el
+          <strong class="text-ink">ayni</strong> y la <strong class="text-ink">minka</strong> siguen uniendo a la
+          comunidad en el trabajo y en la fiesta.
+        </p>
+        <a href="/historia" class="link-arrow">
           Conoce nuestra historia
-          <svg
-            class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-          </svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Festivities Section -->
-  <section class="py-16 md:py-24 bg-white">
-    <div class="container-custom">
-      <div
-        class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12"
-      >
-        <div>
-          <span
-            class="inline-block px-4 py-1.5 bg-naranja/10 text-naranja-dark text-sm font-medium rounded-full mb-4"
-          >
-            Calendario
-          </span>
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900">
-            Próximas Festividades
-          </h2>
+  <!-- 5. Festividades -->
+  {upcomingFestivities.length > 0 && (
+    <section class="py-20 md:py-28 bg-white">
+      <div class="container-custom">
+        <SectionHeading eyebrow="Calendario festivo" title="Vive nuestras fiestas" align="left">
+          <a slot="actions" href="/festividades" class="btn-secondary">Ver calendario completo</a>
+        </SectionHeading>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          {upcomingFestivities.map((fest) => (
+            <PhotoCard
+              href={`/festividades/${fest.slug}`}
+              image={fest.images?.[0] || "/images/hero-festivities.webp"}
+              alt={fest.name}
+              title={fest.name}
+              badge={formatDay(fest.start_date)}
+              meta={fest.place?.name}
+              cta="Ver programa"
+            />
+          ))}
         </div>
-        <a
-          href="/festivities"
-          class="inline-flex items-center gap-2 text-naranja-dark font-semibold hover:text-naranja transition-colors group"
-        >
-          Ver calendario completo
-          <svg
-            class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-          </svg>
-        </a>
       </div>
+    </section>
+  )}
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {
-          upcomingFestivities.map((festivity) => (
-            <div class="reveal">
-              <FestivityCard festivity={festivity} />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Links Section -->
-  <section class="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-crema">
-    <div class="container-custom">
-      <div class="text-center mb-12">
-        <h2
-          class="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4"
-        >
-          Explora más
-        </h2>
-        <p class="text-gray-600 max-w-xl mx-auto">
-          Descubre todo lo que nuestro distrito tiene para ofrecerte.
+  <!-- 6. Gastronomía -->
+  <section class="py-20 md:py-28">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <div class="lg:col-span-5 lg:order-2">
+        <span class="eyebrow">Gastronomía</span>
+        <h2 class="section-heading">Sabores de nuestra tierra</h2>
+        <p class="text-lg leading-relaxed mb-8">
+          Sabores que forman parte de nuestra historia y que todavía se preparan en nuestras comunidades:
+          pachamanca, puca picante y productos de la chacra.
         </p>
+        <a href="/gastronomia" class="btn-primary">Descubre nuestra gastronomía</a>
       </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <a
-          href="/places"
-          class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-turquesa/30"
-        >
-          <div
-            class="w-12 h-12 bg-turquesa/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-          >
-            <span class="text-2xl" aria-hidden="true">🗺️</span>
-          </div>
-          <h3
-            class="font-heading font-bold text-lg text-gray-900 mb-2 group-hover:text-turquesa transition-colors"
-          >
-            Sitios Turísticos
-          </h3>
-          <p class="text-sm text-gray-600">
-            Allcaqapata, Tururumi y más lugares para explorar.
-          </p>
-        </a>
-
-        <a
-          href="/food"
-          class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-amarillo/30"
-        >
-          <div
-            class="w-12 h-12 bg-amarillo/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-          >
-            <span class="text-2xl" aria-hidden="true">🍽️</span>
-          </div>
-          <h3
-            class="font-heading font-bold text-lg text-gray-900 mb-2 group-hover:text-amarillo-dark transition-colors"
-          >
-            Gastronomía
-          </h3>
-          <p class="text-sm text-gray-600">
-            Pachamanca, puca picante y sabores tradicionales.
-          </p>
-        </a>
-
-        <a
-          href="/comunidad"
-          class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-azul/30"
-        >
-          <div
-            class="w-12 h-12 bg-azul/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-          >
-            <span class="text-2xl" aria-hidden="true">👥</span>
-          </div>
-          <h3
-            class="font-heading font-bold text-lg text-gray-900 mb-2 group-hover:text-azul transition-colors"
-          >
-            Comunidad
-          </h3>
-          <p class="text-sm text-gray-600">
-            Faenas, asambleas y vida comunal activa.
-          </p>
-        </a>
-
-        <a
-          href="/directorio"
-          class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-purpura/30"
-        >
-          <div
-            class="w-12 h-12 bg-purpura/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
-          >
-            <span class="text-2xl" aria-hidden="true">📖</span>
-          </div>
-          <h3
-            class="font-heading font-bold text-lg text-gray-900 mb-2 group-hover:text-purpura transition-colors"
-          >
-            Directorio
-          </h3>
-          <p class="text-sm text-gray-600">
-            Hospedajes, restaurantes y servicios locales.
-          </p>
-        </a>
+      <div class="lg:col-span-7 lg:order-1 grid grid-cols-2 gap-4 md:gap-5">
+        {dishPhotos.length >= 3 ? (
+          dishPhotos.map((dish, i) => (
+            <figure class:list={["relative overflow-hidden rounded-2xl", i === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"]}>
+              <img src={dish.image} alt={dish.name} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+              <figcaption class="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink">
+                {dish.name}
+              </figcaption>
+            </figure>
+          ))
+        ) : (
+          <figure class="col-span-2 relative aspect-[16/10] overflow-hidden rounded-2xl">
+            <img src={dishPhotos[0]?.image || "/images/default-photo.webp"} alt={dishPhotos[0]?.name || "Gastronomía tradicional"} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+          </figure>
+        )}
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section
-    class="py-16 md:py-24 bg-gradient-to-br from-fucsia via-rojo to-naranja text-white"
-  >
-    <div class="container-custom text-center">
-      <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6 max-w-3xl mx-auto"
-      >
-        ¿Listo para vivir los Andes?
-      </h2>
-      <p class="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto">
-        A solo 3 horas de Ayacucho, un pueblo entero está listo para recibirte.
-        Quien viene a Pomabamba, siempre vuelve.
+  <!-- 7. Comunidad -->
+  <section class="relative py-20 md:py-28 bg-secondary text-white overflow-hidden">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="max-w-xl">
+        <span class="eyebrow !text-accent">Comunidad</span>
+        <h2 class="section-heading !text-white">Conoce nuestra gente</h2>
+        <p class="text-lg leading-relaxed text-white/85 mb-8">
+          Faenas comunales, trabajo en la chacra, artesanía y fiestas: la vida diaria de nuestras comunidades es
+          el corazón de la experiencia. Visítanos con respeto y comparte con nosotros.
+        </p>
+        <a href="/comunidad" class="btn-ghost-light">Vida comunal y eventos</a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
+          <img src="/images/hero_5.webp" alt="Vida comunitaria en los Andes de Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="relative aspect-[3/4] overflow-hidden rounded-2xl mt-10">
+          <img src="/images/hero-about.webp" alt="Pobladores de María Parado de Bellido" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Mapa -->
+  {mapPlaces.length > 0 && (
+    <section class="py-20 md:py-28 bg-white">
+      <div class="container-custom">
+        <SectionHeading
+          eyebrow="Guía del territorio"
+          title="Explora María Parado de Bellido"
+          intro="Ubica cada destino y planifica tu recorrido."
+        />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <InteractiveMap
+            client:visible
+            markers={mapMarkers}
+            center={[mapPlaces[0].location.lat, mapPlaces[0].location.lng]}
+            zoom={12}
+            className="lg:col-span-2 h-[420px] md:h-[520px]"
+          />
+          <ul class="space-y-3 lg:max-h-[520px] lg:overflow-y-auto">
+            {mapPlaces.map((place) => (
+              <li>
+                <a href={`/lugares/${place.slug}`} class="group flex items-center gap-4 rounded-2xl border border-line p-3 hover:border-primary/40 transition-colors">
+                  <img src={placeCoverImage(place)} alt="" loading="lazy" class="h-16 w-16 rounded-xl object-cover" />
+                  <div>
+                    <p class="font-semibold text-ink group-hover:text-primary">{place.name}</p>
+                    <p class="text-sm">{placeCategoryLabel(place.category)}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 9. Galería -->
+  {galleryItems.length > 0 && (
+    <section class="py-20 md:py-28">
+      <div class="container-custom">
+        <SectionHeading eyebrow="Galería" title="Momentos de María Parado de Bellido" />
+        <div class="grid grid-cols-2 md:grid-cols-4 auto-rows-[160px] md:auto-rows-[220px] gap-3 md:gap-4">
+          {galleryItems.map((item, i) => (
+            <figure
+              class:list={[
+                "group relative overflow-hidden rounded-2xl",
+                i === 0 && "col-span-2 row-span-2",
+                i === 3 && "md:row-span-2",
+              ]}
+            >
+              <img src={item.image} alt={item.alt} loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              {item.caption && (
+                <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-3 pt-8 text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  {item.caption}
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 10. CTA final -->
+  <section class="relative py-28 md:py-36 overflow-hidden">
+    <img src="/images/hero_1.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
+    <div class="container-custom relative text-center">
+      <span class="eyebrow !text-accent">Tu próxima aventura</span>
+      <h2 class="section-heading !text-white max-w-3xl mx-auto">¿Listo para descubrir los Andes?</h2>
+      <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
+        A solo unas horas de Ayacucho comienza una experiencia diferente. Quien viene a Pomabamba, siempre vuelve.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/places"
-          class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-rojo font-bold rounded-full hover:bg-crema transition-colors shadow-lg focus-ring"
-        >
-          Explorar Lugares
-        </a>
-        <a
-          href="/about"
-          class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30 focus-ring"
-        >
-          Conocer más
-        </a>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/lugares" class="btn-primary">Explorar destinos</a>
+        <a href="/planifica-tu-visita" class="btn-ghost-light">Planificar mi visita</a>
       </div>
     </div>
   </section>

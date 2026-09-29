@@ -56,31 +56,30 @@ function isGroupActive(paths: string[]): boolean {
 
 // Navigation groups
 const navGroups = {
-  descubrir: {
-    label: "Descubrir",
-    paths: ["/about", "/places"],
+  experiencias: {
+    label: "Experiencias",
+    paths: ["/experiencias"],
     items: [
-      { href: "/about", label: "Nuestra Historia", icon: "🏛️", description: "Conoce nuestras raíces Chancas" },
-      { href: "/places", label: "Sitios Turísticos", icon: "🗺️", description: "Lugares que debes visitar" },
+      { href: "/experiencias/trekking", label: "Trekking", icon: "🥾", description: "Senderos y paisajes andinos" },
+      { href: "/experiencias/cicloturismo", label: "Cicloturismo", icon: "🚵", description: "Rutas de altura en bicicleta" },
+      { href: "/experiencias/turismo-vivencial", label: "Turismo vivencial", icon: "🌾", description: "Vive con nuestras comunidades" },
     ]
   },
-  visitar: {
-    label: "Visitar",
-    paths: ["/festivities", "/food"],
+  cultura: {
+    label: "Cultura",
+    paths: ["/historia", "/festividades", "/gastronomia", "/comunidad"],
     items: [
-      { href: "/festivities", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
-      { href: "/food", label: "Gastronomía", icon: "🍽️", description: "Sabores tradicionales" },
-    ]
-  },
-  informacion: {
-    label: "Información",
-    paths: ["/comunidad", "/directorio"],
-    items: [
+      { href: "/historia", label: "Nuestra historia", icon: "🏛️", description: "Raíces Chancas y memoria viva" },
+      { href: "/festividades", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
+      { href: "/gastronomia", label: "Gastronomía", icon: "🍲", description: "Sabores de nuestra tierra" },
       { href: "/comunidad", label: "Comunidad", icon: "👥", description: "Vida comunal y eventos" },
-      { href: "/directorio", label: "Directorio", icon: "📖", description: "Negocios y servicios" },
     ]
   }
 };
+
+const navLinkBase = "px-4 py-2 rounded-full font-medium text-sm transition-colors duration-200 focus-ring";
+const navLinkActive = "text-primary bg-primary-soft";
+const navLinkIdle = "text-ink hover:text-primary";
 ---
 
 <!doctype html>
@@ -132,7 +131,7 @@ const navGroups = {
     </a>
 
     <!-- Header -->
-    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-line">
       <nav class="container-custom py-3" aria-label="Navegación principal">
         <div class="flex items-center justify-between">
           <!-- Logo -->
@@ -151,10 +150,10 @@ const navGroups = {
               aria-hidden="true"
             />
             <div class="flex flex-col">
-              <span class="font-heading font-bold text-gray-800 text-sm md:text-base leading-tight group-hover:text-fucsia transition-colors">
+              <span class="font-heading font-semibold text-ink text-base md:text-lg leading-tight group-hover:text-primary transition-colors">
                 María Parado de Bellido
               </span>
-              <span class="text-[10px] md:text-xs text-gray-500 font-medium hidden sm:block">
+              <span class="text-[10px] md:text-xs text-ink-soft font-medium hidden sm:block">
                 Cangallo, Ayacucho - Perú
               </span>
             </div>
@@ -162,25 +161,18 @@ const navGroups = {
 
           <!-- Desktop Navigation - Mega Menu -->
           <div class="hidden lg:flex items-center gap-1">
-            <!-- Inicio Link -->
             <a
-              href="/"
-              class={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-ring ${
-                isActivePath("/") && currentPath === "/"
-                  ? "text-fucsia bg-fucsia/5"
-                  : "text-gray-700 hover:text-fucsia hover:bg-gray-50"
-              }`}
+              href="/lugares"
+              class={`${navLinkBase} ${isActivePath("/lugares") ? navLinkActive : navLinkIdle}`}
             >
-              Inicio
+              Destinos
             </a>
 
             {Object.entries(navGroups).map(([key, group]) => (
               <div class="relative nav-dropdown-container" data-dropdown={key}>
                 <button
-                  class={`nav-dropdown-trigger px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center gap-1.5 focus-ring ${
-                    isGroupActive(group.paths)
-                      ? "text-fucsia bg-fucsia/5"
-                      : "text-gray-700 hover:text-fucsia hover:bg-gray-50"
+                  class={`nav-dropdown-trigger ${navLinkBase} flex items-center gap-1.5 ${
+                    isGroupActive(group.paths) ? navLinkActive : navLinkIdle
                   }`}
                   aria-expanded="false"
                   aria-haspopup="true"
@@ -193,7 +185,7 @@ const navGroups = {
 
                 <!-- Dropdown Menu -->
                 <div
-                  class="nav-dropdown absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
+                  class="nav-dropdown absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-line opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
                   role="menu"
                 >
                   <div class="p-2">
@@ -202,15 +194,15 @@ const navGroups = {
                         href={item.href}
                         class={`flex items-start gap-3 px-3 py-3 rounded-lg transition-all duration-200 focus-ring group/item ${
                           isActivePath(item.href)
-                            ? "bg-fucsia/10 text-fucsia"
-                            : "hover:bg-gray-50 text-gray-700 hover:text-fucsia"
+                            ? "bg-primary-soft text-primary"
+                            : "hover:bg-sand text-ink hover:text-primary"
                         }`}
                         role="menuitem"
                       >
                         <span class="text-xl flex-shrink-0 mt-0.5" aria-hidden="true">{item.icon}</span>
                         <div>
                           <div class="font-semibold text-sm">{item.label}</div>
-                          <div class="text-xs text-gray-500 group-hover/item:text-gray-600 mt-0.5">{item.description}</div>
+                          <div class="text-xs text-ink-soft mt-0.5">{item.description}</div>
                         </div>
                       </a>
                     ))}
@@ -218,12 +210,16 @@ const navGroups = {
                 </div>
               </div>
             ))}
+
+            <a href="/planifica-tu-visita" class="btn-primary ml-3 !py-2.5">
+              Planifica tu visita
+            </a>
           </div>
 
           <!-- Mobile menu button -->
           <button
             id="mobile-menu-button"
-            class="lg:hidden p-2 text-gray-600 hover:text-fucsia hover:bg-fucsia/5 rounded-lg transition-all duration-200 focus-ring"
+            class="lg:hidden p-2 text-ink hover:text-primary hover:bg-primary-soft rounded-full transition-all duration-200 focus-ring"
             aria-label="Abrir menú de navegación"
             aria-expanded="false"
             aria-controls="mobile-menu"
@@ -260,7 +256,7 @@ const navGroups = {
         <!-- Mobile Navigation -->
         <div
           id="mobile-menu"
-          class="hidden lg:hidden mt-4 pb-4 border-t border-gray-100 pt-4"
+          class="hidden lg:hidden mt-4 pb-4 border-t border-line pt-4"
           role="navigation"
           aria-label="Menú móvil"
         >
@@ -271,21 +267,35 @@ const navGroups = {
                 href="/"
                 class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
                   currentPath === "/"
-                    ? "bg-fucsia/10 text-fucsia"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-fucsia active:bg-gray-100"
+                    ? "bg-primary-soft text-primary"
+                    : "text-ink hover:bg-sand hover:text-primary"
                 }`}
               >
                 <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">🏠</span>
                 <span>Inicio</span>
                 {currentPath === "/" && (
-                  <span class="ml-auto w-2 h-2 bg-fucsia rounded-full" aria-hidden="true"></span>
+                  <span class="ml-auto w-2 h-2 bg-primary rounded-full" aria-hidden="true"></span>
                 )}
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="/lugares"
+                class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
+                  isActivePath("/lugares")
+                    ? "bg-primary-soft text-primary"
+                    : "text-ink hover:bg-sand hover:text-primary"
+                }`}
+              >
+                <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">📍</span>
+                <span>Destinos</span>
               </a>
             </li>
 
             {Object.entries(navGroups).map(([key, group]) => (
               <li>
-                <div class="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                <div class="px-3 py-2 text-xs font-semibold text-ink-soft uppercase tracking-[0.18em]">
                   {group.label}
                 </div>
                 <ul class="space-y-1">
@@ -295,14 +305,14 @@ const navGroups = {
                         href={item.href}
                         class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
                           isActivePath(item.href)
-                            ? "bg-fucsia/10 text-fucsia"
-                            : "text-gray-700 hover:bg-gray-50 hover:text-fucsia active:bg-gray-100"
+                            ? "bg-primary-soft text-primary"
+                            : "text-ink hover:bg-sand hover:text-primary"
                         }`}
                       >
                         <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">{item.icon}</span>
                         <span>{item.label}</span>
                         {isActivePath(item.href) && (
-                          <span class="ml-auto w-2 h-2 bg-fucsia rounded-full" aria-hidden="true"></span>
+                          <span class="ml-auto w-2 h-2 bg-primary rounded-full" aria-hidden="true"></span>
                         )}
                       </a>
                     </li>
@@ -310,6 +320,10 @@ const navGroups = {
                 </ul>
               </li>
             ))}
+
+            <li class="pt-3">
+              <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -328,7 +342,7 @@ const navGroups = {
 
     <!-- Footer -->
     <footer
-      class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-0 overflow-hidden"
+      class="relative bg-ink text-white mt-0 overflow-hidden"
     >
       <!-- Subtle pattern -->
       <div class="absolute inset-0 opacity-5">
@@ -357,43 +371,45 @@ const navGroups = {
                 aria-hidden="true"
               />
               <div>
-                <h3 class="font-heading font-bold text-lg text-white">
+                <h3 class="font-heading font-semibold text-lg !text-white">
                   María Parado de Bellido
                 </h3>
-                <p class="text-xs text-gray-400">Cangallo, Ayacucho - Perú</p>
+                <p class="text-xs text-white/60">Cangallo, Ayacucho - Perú</p>
               </div>
             </div>
-            <p class="text-sm text-gray-400 leading-relaxed">
+            <p class="text-sm text-white/65 leading-relaxed">
               Descubre la magia de los Andes en nuestro distrito, donde la tradición
               y la naturaleza se encuentran a 3,236 msnm.
             </p>
           </div>
 
-          <!-- Explore -->
+          <!-- Descubre -->
           <div>
-            <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Explorar</h4>
+            <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Descubre</h4>
             <ul class="space-y-2">
-              <li><a href="/about" class="text-gray-400 hover:text-fucsia transition-colors text-sm focus-ring rounded">Nuestra Historia</a></li>
-              <li><a href="/places" class="text-gray-400 hover:text-turquesa transition-colors text-sm focus-ring rounded">Sitios Turísticos</a></li>
-              <li><a href="/festivities" class="text-gray-400 hover:text-naranja transition-colors text-sm focus-ring rounded">Festividades</a></li>
+              <li><a href="/lugares" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Destinos</a></li>
+              <li><a href="/experiencias" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Experiencias</a></li>
+              <li><a href="/historia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Nuestra historia</a></li>
+              <li><a href="/festividades" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Festividades</a></li>
+              <li><a href="/gastronomia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Gastronomía</a></li>
             </ul>
           </div>
 
-          <!-- Information -->
+          <!-- Tu visita -->
           <div>
-            <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Información</h4>
+            <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Tu visita</h4>
             <ul class="space-y-2">
-              <li><a href="/food" class="text-gray-400 hover:text-amarillo transition-colors text-sm focus-ring rounded">Gastronomía</a></li>
-              <li><a href="/comunidad" class="text-gray-400 hover:text-azul transition-colors text-sm focus-ring rounded">Comunidad</a></li>
-              <li><a href="/directorio" class="text-gray-400 hover:text-purpura transition-colors text-sm focus-ring rounded">Directorio</a></li>
-              <li><a href="/privacy" class="text-gray-400 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
+              <li><a href="/planifica-tu-visita" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Planifica tu visita</a></li>
+              <li><a href="/directorio" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Servicios y directorio</a></li>
+              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Comunidad</a></li>
+              <li><a href="/privacidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
             </ul>
           </div>
 
           <!-- Contact -->
           <div>
-            <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Contacto</h4>
-            <address class="not-italic space-y-2 text-sm text-gray-400">
+            <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Contacto</h4>
+            <address class="not-italic space-y-2 text-sm text-white/65">
               <p>Plaza Principal</p>
               <p>María Parado de Bellido</p>
               <p>Cangallo, Ayacucho - Perú</p>
@@ -402,7 +418,7 @@ const navGroups = {
               <!-- Facebook -->
               <a
                 href="#"
-                class="w-10 h-10 bg-gray-800 hover:bg-[#1877F2] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
+                class="w-10 h-10 bg-white/10 hover:bg-[#1877F2] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
                 aria-label="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -414,7 +430,7 @@ const navGroups = {
               <!-- Instagram -->
               <a
                 href="#"
-                class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
+                class="w-10 h-10 bg-white/10 hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -426,7 +442,7 @@ const navGroups = {
               <!-- TikTok -->
               <a
                 href="#"
-                class="w-10 h-10 bg-gray-800 hover:bg-black rounded-lg flex items-center justify-center transition-all duration-200 focus-ring group"
+                class="w-10 h-10 bg-white/10 hover:bg-black rounded-lg flex items-center justify-center transition-all duration-200 focus-ring group"
                 aria-label="TikTok"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -438,7 +454,7 @@ const navGroups = {
               <!-- YouTube -->
               <a
                 href="#"
-                class="w-10 h-10 bg-gray-800 hover:bg-[#FF0000] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
+                class="w-10 h-10 bg-white/10 hover:bg-[#FF0000] rounded-lg flex items-center justify-center transition-all duration-200 focus-ring"
                 aria-label="YouTube"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -452,18 +468,18 @@ const navGroups = {
         </div>
 
         <!-- Bottom bar -->
-        <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
-          <p class="text-gray-500 text-center sm:text-left">
+        <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
+          <p class="text-white/50 text-center sm:text-left">
             © {new Date().getFullYear()} Distrito María Parado de Bellido, Cangallo, Ayacucho
           </p>
-          <p class="text-gray-600 text-xs flex items-center gap-2">
+          <p class="text-white/50 text-xs flex items-center gap-2">
             <span>Hecho con ❤️ para nuestra comunidad</span>
             <span class="sm:hidden">·</span>
             <a
               href={import.meta.env.PUBLIC_FEEDBACK_URL || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              class="sm:hidden text-fucsia hover:text-fucsia-light transition-colors"
+              class="sm:hidden text-accent hover:text-white transition-colors"
             >
               Tu Opinión
             </a>

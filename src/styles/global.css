@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Pacifico&family=Lora:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
@@ -6,6 +6,28 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
+  /* ==========================================
+     SISTEMA VISUAL: tokens semánticos
+     Terracota = calidez, tierra, hospitalidad (acción principal)
+     Verde puna = naturaleza, calma, confianza (apoyo)
+     Maíz = sol andino, fiesta (acento puntual, nunca texto sobre blanco)
+     Neutros cálidos para que la fotografía sea la protagonista.
+     Todos los pares texto/fondo cumplen WCAG AA.
+     ========================================== */
+  --color-primary: #b5452a;
+  --color-primary-dark: #963722;
+  --color-primary-soft: #f7e6de;
+  --color-secondary: #2f5d46;
+  --color-secondary-dark: #234635;
+  --color-secondary-soft: #e4eee7;
+  --color-accent: #e0a526;
+  --color-accent-soft: #fbf0d6;
+  --color-ink: #2b211c;
+  --color-ink-soft: #5e5049;
+  --color-sand: #faf6f0;
+  --color-sand-200: #f1e9de;
+  --color-line: #e7dccf;
+
   /* Colores inspirados en la cultura ayacuchana */
   /* Rojo intenso - Danzantes de tijera */
   --color-rojo: #d42c2a;
@@ -98,9 +120,10 @@
   --color-transparent: transparent;
 
   /* Fuentes */
-  --font-heading: Montserrat, Lora, serif;
-  --font-body: Poppins, Inter, sans-serif;
-  --font-decorative: Pacifico, cursive;
+  /* Dos familias: serif cálida para titulares, sans legible para texto */
+  --font-heading: Fraunces, Georgia, serif;
+  --font-body: Inter, system-ui, sans-serif;
+  --font-decorative: Fraunces, Georgia, serif;
 
   /* Animaciones personalizadas */
   --animate-fade-in: fadeIn 0.8s ease-in-out;
@@ -195,7 +218,7 @@
   }
 
   body {
-    @apply bg-crema text-gray-800 font-body antialiased;
+    @apply bg-sand text-ink-soft font-body antialiased;
     overflow-x: clip;
   }
 
@@ -205,7 +228,7 @@
   h4,
   h5,
   h6 {
-    @apply font-heading;
+    @apply font-heading text-ink;
   }
 }
 
@@ -214,66 +237,68 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* Botones: sólidos y sobrios, sin degradados ni escalados */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
-    transition-all duration-300 bg-gradient-to-r from-rojo via-fucsia to-naranja
-    text-white hover:shadow-2xl hover:scale-105 hover:-translate-y-1
-    focus:outline-none focus:ring-4 focus:ring-fucsia/50 focus:ring-offset-2
-    transform active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+    font-semibold text-sm bg-primary text-white transition-colors duration-200
+    hover:bg-primary-dark focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
-    transition-all duration-300 border-2 border-turquesa text-turquesa-dark
-    hover:bg-gradient-to-r hover:from-turquesa hover:to-azul hover:text-white
-    hover:shadow-xl hover:scale-105 hover:border-transparent
-    focus:outline-none focus:ring-4 focus:ring-turquesa/50 focus:ring-offset-2
-    transform active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+    font-semibold text-sm border border-ink/15 bg-white text-ink transition-colors duration-200
+    hover:border-ink/40 focus:outline-none focus-visible:ring-4 focus-visible:ring-ink/20;
+  }
+
+  /* Variante para fondos fotográficos u oscuros */
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+    font-semibold text-sm border border-white/60 text-white backdrop-blur-sm bg-white/10
+    transition-colors duration-200 hover:bg-white hover:text-ink
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40;
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
-    transition-all duration-300 bg-gradient-to-r from-amarillo via-naranja to-rojo
-    text-white hover:shadow-2xl hover:scale-105 hover:-translate-y-1
-    focus:outline-none focus:ring-4 focus:ring-amarillo/50 focus:ring-offset-2
-    transform active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+    font-semibold text-sm bg-secondary text-white transition-colors duration-200
+    hover:bg-secondary-dark focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
+  }
+
+  /* Enlace de acción con flecha ("Explorar →") */
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 font-semibold text-sm text-primary
+    hover:text-primary-dark transition-colors;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-lg overflow-hidden
-    transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:rotate-1
-    border-t-4 border-transparent hover:border-fucsia;
+    @apply bg-white rounded-2xl overflow-hidden border border-line
+    transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)];
   }
 
   .card-colorful {
-    @apply bg-gradient-to-br from-white via-crema-warm to-white rounded-2xl shadow-xl
-    overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3
-    border-4 border-transparent hover:border-fucsia
-    relative;
+    @apply bg-white rounded-2xl overflow-hidden border border-line relative
+    transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)];
+  }
+
+  /* Antetítulo: mayúsculas pequeñas con tracking */
+  .eyebrow {
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.18em] text-primary mb-3;
   }
 
   .section-heading {
-    @apply text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold
-    bg-gradient-to-r from-rojo via-fucsia to-azul bg-clip-text text-transparent
-    mb-6 drop-shadow-sm;
+    @apply text-3xl md:text-5xl font-heading font-semibold text-ink mb-5 leading-[1.1];
   }
 
   .section-heading-alt {
-    @apply text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold
-    text-indigo-dark mb-6 relative inline-block
-    after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0
-    after:h-2 after:bg-gradient-to-r after:from-amarillo after:via-naranja after:to-rojo
-    after:rounded-full after:transform after:scale-x-0 hover:after:scale-x-100
-    after:transition-transform after:duration-500;
+    @apply text-3xl md:text-5xl font-heading font-semibold text-ink mb-5 leading-[1.1];
   }
 
   .text-evocative {
-    @apply text-lg md:text-xl leading-relaxed text-gray-700 font-body;
+    @apply text-lg md:text-xl leading-relaxed text-ink-soft font-body;
   }
 
   .decorative-border {
-    @apply border-4 border-transparent bg-origin-border
-    bg-gradient-to-r from-rojo via-fucsia via-amarillo via-verde to-turquesa;
+    @apply border-t-4 border-primary;
   }
 }
 
@@ -328,10 +353,10 @@
 }
 
 .card-modern:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-4px);
   box-shadow:
     0 20px 40px -15px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(233, 30, 140, 0.1);
+    0 0 0 1px rgba(181, 69, 42, 0.1);
 }
 
 /* Micro-interactions for buttons */

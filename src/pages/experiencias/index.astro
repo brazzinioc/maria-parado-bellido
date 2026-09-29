@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import { getExperiences } from "../../lib/content";
+
+const experiences = await getExperiences();
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Experiencias", url: "/experiencias" },
+];
+
+const structuredData = [
+  {
+    type: "itemList" as const,
+    data: {
+      name: "Experiencias en María Parado de Bellido",
+      description: "Trekking, cicloturismo y turismo vivencial en Pomabamba, Cangallo (Ayacucho).",
+      items: experiences.map((e) => ({
+        name: e.title,
+        description: e.summary,
+        url: `/experiencias/${e.slug}`,
+        image: e.image,
+      })),
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="Experiencias: trekking, cicloturismo y turismo vivencial en Ayacucho"
+  description="Vive los Andes de María Parado de Bellido: rutas de trekking, cicloturismo de altura y turismo vivencial con comunidades de Cangallo, Ayacucho."
+  image={experiences[0]?.image}
+  keywords={experiences.flatMap((e) => e.seo.keywords)}
+  breadcrumbs={breadcrumbs}
+  structuredData={structuredData}
+>
+  <PageHero
+    eyebrow="Experiencias"
+    title="Vive los Andes"
+    intro="Tres formas de descubrir María Parado de Bellido: a pie, sobre dos ruedas o compartiendo la vida de sus comunidades."
+    image="/images/hero_2.webp"
+    breadcrumbs={breadcrumbs}
+  />
+
+  <section class="py-20 md:py-28">
+    <div class="container-custom space-y-20 md:space-y-28">
+      {experiences.map((exp, i) => (
+        <article class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <a
+            href={`/experiencias/${exp.slug}`}
+            class:list={["group relative block aspect-[4/3] overflow-hidden rounded-2xl", i % 2 === 1 && "lg:order-2"]}
+          >
+            <img src={exp.image} alt={exp.imageAlt} loading={i === 0 ? "eager" : "lazy"} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          </a>
+          <div class="max-w-xl">
+            <span class="eyebrow">{exp.eyebrow}</span>
+            <h2 class="section-heading">{exp.title}</h2>
+            <p class="text-lg leading-relaxed mb-6">{exp.summary}</p>
+            <dl class="grid grid-cols-2 gap-4 mb-8">
+              {exp.stats.slice(0, 2).map((stat) => (
+                <div class="rounded-2xl bg-white border border-line p-4">
+                  <dt class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft">{stat.label}</dt>
+                  <dd class="mt-1 font-semibold text-ink">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <a href={`/experiencias/${exp.slug}`} class="btn-primary">Descubrir {exp.title.toLowerCase()}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

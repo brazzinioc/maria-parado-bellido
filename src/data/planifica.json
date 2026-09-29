@@ -1,0 +1,88 @@
+{
+  "_nota": "Contenido de respaldo para 'Planifica tu visita'. Preparado para migrar al CMS (tabla t_visit_info). Verificar rutas, tiempos y datos antes de producción.",
+  "intro": "Todo lo que necesitas para llegar a Pomabamba y disfrutar tu visita a María Parado de Bellido.",
+  "highlights": [
+    { "label": "Altitud", "value": "3,236 msnm" },
+    { "label": "Desde Ayacucho", "value": "≈ 3 horas" },
+    { "label": "Temperatura", "value": "2 °C – 22 °C" },
+    { "label": "Temporada seca", "value": "Mayo – septiembre" }
+  ],
+  "routes": [
+    {
+      "title": "Desde Lima",
+      "steps": [
+        "Vuela a Ayacucho (≈ 1 h) o viaja en bus (≈ 9–10 h).",
+        "En Ayacucho, continúa por tierra hacia Cangallo.",
+        "Desde Cangallo, sigue hacia Pomabamba, capital del distrito."
+      ]
+    },
+    {
+      "title": "Desde Ayacucho",
+      "steps": [
+        "Toma un auto colectivo o combi con destino a Cangallo.",
+        "En Cangallo, conecta con transporte local hacia Pomabamba.",
+        "El viaje completo toma alrededor de 3 horas."
+      ]
+    },
+    {
+      "title": "En vehículo propio",
+      "steps": [
+        "Sal de Ayacucho por la vía hacia Cangallo.",
+        "La carretera es asfaltada en gran parte; los últimos tramos pueden ser afirmados.",
+        "En temporada de lluvias (diciembre–marzo) consulta el estado de la vía antes de salir."
+      ]
+    }
+  ],
+  "seasons": [
+    {
+      "name": "Temporada seca",
+      "months": "Mayo – septiembre",
+      "description": "Cielos despejados y días soleados. Ideal para trekking y cicloturismo. Las noches son frías."
+    },
+    {
+      "name": "Temporada de lluvias",
+      "months": "Diciembre – marzo",
+      "description": "Paisajes muy verdes y campos en plena siembra. Lluvias por la tarde; algunos caminos pueden complicarse."
+    },
+    {
+      "name": "Transición",
+      "months": "Abril y octubre – noviembre",
+      "description": "Clima variable. Buena época para turismo vivencial y fiestas."
+    }
+  ],
+  "packing": [
+    "Ropa en capas y una casaca abrigadora para la noche",
+    "Protector solar, lentes de sol y sombrero",
+    "Calzado cómodo para caminar",
+    "Poncho o casaca impermeable en temporada de lluvias",
+    "Efectivo: no hay cajeros automáticos en el distrito",
+    "Botella reutilizable para el agua"
+  ],
+  "faqs": [
+    {
+      "question": "¿Cuánto tiempo toma llegar desde Ayacucho?",
+      "answer": "Alrededor de 3 horas por tierra, pasando por Cangallo."
+    },
+    {
+      "question": "¿Cómo evito el mal de altura?",
+      "answer": "Pomabamba está a 3,236 msnm. Descansa el primer día, hidrátate bien y evita comidas pesadas. El mate de coca o de muña ayuda."
+    },
+    {
+      "question": "¿Hay dónde alojarse?",
+      "answer": "Sí. Hay hospedajes sencillos y casas de familia que reciben visitantes. Consulta el directorio de servicios."
+    },
+    {
+      "question": "¿Necesito un guía?",
+      "answer": "Para recorrer el pueblo no es necesario. Para rutas de trekking largas o de altura, recomendamos ir con un guía local."
+    },
+    {
+      "question": "¿Cuándo es la mejor época para visitar?",
+      "answer": "De mayo a septiembre para actividades al aire libre. Si quieres vivir una fiesta patronal, revisa el calendario de festividades."
+    }
+  ],
+  "contact": {
+    "title": "¿Tienes dudas? Escríbenos",
+    "description": "Te ayudamos a organizar tu visita: transporte, alojamiento, guías y fechas de fiestas.",
+    "whatsappMessage": "Hola, quiero planificar una visita a María Parado de Bellido"
+  }
+}

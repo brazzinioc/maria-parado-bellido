@@ -28,7 +28,7 @@ const festivitiesKeywords = [
 // Breadcrumbs
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Festividades", url: "/festivities" },
+  { name: "Festividades", url: "/festividades" },
 ];
 
 // Generar Event schema para cada festividad
@@ -47,7 +47,7 @@ const festivitiesStructuredData = [
       items: sortedFestivities.map((f) => ({
         name: f.name,
         description: f.description,
-        url: `/festivities/${f.slug}`,
+        url: `/festividades/${f.slug}`,
         image: f.images?.[0],
       })),
     },
@@ -147,7 +147,7 @@ const festivitiesStructuredData = [
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="/places"
+          href="/lugares"
           class="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
                  bg-gray-900 text-white border-2 border-gray-900
                  hover:bg-transparent hover:text-gray-900
@@ -157,7 +157,7 @@ const festivitiesStructuredData = [
           Explorar Sitios Turísticos
         </a>
         <a
-          href="/about"
+          href="/historia"
           class="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
                  bg-transparent text-gray-900 border-2 border-gray-900
                  hover:bg-gray-900 hover:text-white

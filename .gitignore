@@ -33,6 +33,7 @@ pnpm-debug.log*
 
 # Data
 data/
+!src/data/
 scripts/
 docs/
 photos/

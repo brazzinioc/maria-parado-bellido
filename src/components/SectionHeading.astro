@@ -1,0 +1,50 @@
+---
+/**
+ * SectionHeading - Antetítulo + título + introducción opcional.
+ * El slot "actions" permite añadir un enlace o botón al lado del título.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  align?: "center" | "left";
+  tone?: "light" | "dark";
+  as?: "h1" | "h2";
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  intro,
+  align = "center",
+  tone = "light",
+  as: Tag = "h2",
+  class: className = "",
+} = Astro.props;
+
+const hasActions = Astro.slots.has("actions");
+const isCenter = align === "center" && !hasActions;
+---
+
+<div
+  class:list={[
+    "mb-10 md:mb-14",
+    hasActions && "flex flex-col md:flex-row md:items-end md:justify-between gap-6",
+    isCenter && "text-center",
+    className,
+  ]}
+>
+  <div class:list={[isCenter ? "max-w-2xl mx-auto" : "max-w-2xl"]}>
+    {eyebrow && (
+      <span class:list={["eyebrow", tone === "dark" && "!text-accent"]}>{eyebrow}</span>
+    )}
+    <Tag class:list={["section-heading", tone === "dark" && "!text-white"]}>{title}</Tag>
+    {intro && (
+      <p class:list={["text-lg leading-relaxed", tone === "dark" ? "text-white/80" : "text-ink-soft"]}>
+        {intro}
+      </p>
+    )}
+  </div>
+  {hasActions && <div class="shrink-0"><slot name="actions" /></div>}
+</div>

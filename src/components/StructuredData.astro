@@ -11,7 +11,9 @@ type SchemaType =
   | "article"
   | "localBusiness"
   | "itemList"
-  | "touristDestination";
+  | "touristDestination"
+  | "experience"
+  | "faq";
 
 interface Props {
   type: SchemaType;
@@ -181,10 +183,10 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": "TouristAttraction",
-        "@id": `${baseUrl}/places/${data.slug || ""}#place`,
+        "@id": `${baseUrl}/lugares/${data.slug || ""}#place`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/places/${data.slug || ""}`,
+        url: `${baseUrl}/lugares/${data.slug || ""}`,
         image:
           data.images?.map((img: string) =>
             img.startsWith("http") ? img : `${baseUrl}${img}`,
@@ -219,10 +221,10 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": "Event",
-        "@id": `${baseUrl}/festivities/${data.slug || ""}#event`,
+        "@id": `${baseUrl}/festividades/${data.slug || ""}#event`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/festivities/${data.slug || ""}`,
+        url: `${baseUrl}/festividades/${data.slug || ""}`,
         startDate: data.start_date,
         endDate: data.end_date,
         image:
@@ -311,6 +313,50 @@ const generateSchema = () => {
               "@type": "Organization",
               name: "María Parado de Bellido Turismo",
             },
+      };
+
+    case "experience":
+      return {
+        "@context": "https://schema.org",
+        "@type": "TouristTrip",
+        "@id": `${baseUrl}/experiencias/${data.slug || ""}#trip`,
+        name: data.title,
+        description: data.summary,
+        url: `${baseUrl}/experiencias/${data.slug || ""}`,
+        image: data.image
+          ? [data.image.startsWith("http") ? data.image : `${baseUrl}${data.image}`]
+          : [],
+        touristType: data.title,
+        inLanguage: "es",
+        provider: {
+          "@type": "Organization",
+          name: "Comunidad de María Parado de Bellido",
+        },
+        ...(data.places?.length > 0 && {
+          itinerary: {
+            "@type": "ItemList",
+            itemListElement: data.places.map((p: any, index: number) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: {
+                "@type": "TouristAttraction",
+                name: p.name,
+                url: `${baseUrl}/lugares/${p.slug}`,
+              },
+            })),
+          },
+        }),
+      };
+
+    case "faq":
+      return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: (data.faqs || []).map((f: any) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: { "@type": "Answer", text: f.answer },
+        })),
       };
 
     case "localBusiness":
