@@ -140,21 +140,12 @@ const navLinkIdle = "text-ink hover:text-primary";
             class="flex items-center gap-2 md:gap-3 group transition-all duration-300 focus-ring rounded-lg"
             aria-label="Ir a la página principal de María Parado de Bellido"
           >
-            <img
-              src="/images/Maria_Parado_de_Bellido_Pomabamba.png"
-              alt=""
-              class="w-14 h-14 md:w-[68px] md:h-[68px] object-contain group-hover:scale-105 transition-transform duration-300"
-              width="68"
-              height="68"
-              loading="eager"
-              aria-hidden="true"
-            />
-            <div class="flex flex-col">
-              <span class="font-heading font-semibold text-ink text-base md:text-lg leading-tight group-hover:text-primary transition-colors">
+            <div class="flex flex-col justify-center h-14 md:h-[68px]">
+              <span class="font-heading font-semibold text-ink text-lg md:text-2xl leading-none group-hover:text-primary transition-colors">
                 María Parado de Bellido
               </span>
-              <span class="text-[10px] md:text-xs text-ink-soft font-medium hidden sm:block">
-                Cangallo, Ayacucho - Perú
+              <span class="mt-1.5 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-soft">
+                Pomabamba · Ayacucho
               </span>
             </div>
           </a>
@@ -210,6 +201,13 @@ const navLinkIdle = "text-ink hover:text-primary";
                 </div>
               </div>
             ))}
+
+            <a
+              href="/directorio"
+              class={`${navLinkBase} ${isActivePath("/directorio") ? navLinkActive : navLinkIdle}`}
+            >
+              Directorio
+            </a>
 
             <a href="/planifica-tu-visita" class="btn-primary ml-3 !py-2.5">
               Planifica tu visita
@@ -321,6 +319,20 @@ const navLinkIdle = "text-ink hover:text-primary";
               </li>
             ))}
 
+            <li>
+              <a
+                href="/directorio"
+                class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
+                  isActivePath("/directorio")
+                    ? "bg-primary-soft text-primary"
+                    : "text-ink hover:bg-sand hover:text-primary"
+                }`}
+              >
+                <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">📖</span>
+                <span>Directorio</span>
+              </a>
+            </li>
+
             <li class="pt-3">
               <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
             </li>
@@ -360,22 +372,11 @@ const navLinkIdle = "text-ink hover:text-primary";
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-10">
           <!-- Brand -->
           <div class="lg:col-span-1">
-            <div class="flex items-center gap-3 mb-4">
-              <img
-                src="/images/Maria_Parado_de_Bellido_Pomabamba.png"
-                alt=""
-                class="w-14 h-14 object-contain"
-                width="56"
-                height="56"
-                loading="lazy"
-                aria-hidden="true"
-              />
-              <div>
-                <h3 class="font-heading font-semibold text-lg !text-white">
-                  María Parado de Bellido
-                </h3>
-                <p class="text-xs text-white/60">Cangallo, Ayacucho - Perú</p>
-              </div>
+            <div class="mb-4">
+              <h3 class="font-heading font-semibold text-2xl !text-white leading-none">
+                María Parado de Bellido
+              </h3>
+              <p class="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Pomabamba · Cangallo · Ayacucho</p>
             </div>
             <p class="text-sm text-white/65 leading-relaxed">
               Descubre la magia de los Andes en nuestro distrito, donde la tradición

@@ -15,12 +15,12 @@ const year = eventDate.getFullYear();
 
 // Colores por tipo de evento
 const typeColors: Record<CommunityEvent["type"], { bg: string; text: string; icon: string }> = {
-  faena: { bg: "bg-verde/10", text: "text-verde-dark", icon: "🛠️" },
-  pollada: { bg: "bg-naranja/10", text: "text-naranja-dark", icon: "🍗" },
-  reunion: { bg: "bg-azul/10", text: "text-azul-dark", icon: "👥" },
-  asamblea: { bg: "bg-purpura/10", text: "text-purpura-dark", icon: "🏛️" },
-  minka: { bg: "bg-terracota/10", text: "text-terracota-dark", icon: "🤝" },
-  aniversario: { bg: "bg-fucsia/10", text: "text-fucsia-dark", icon: "🎉" },
+  faena: { bg: "bg-sand", text: "text-ink", icon: "🛠️" },
+  pollada: { bg: "bg-sand", text: "text-ink", icon: "🍗" },
+  reunion: { bg: "bg-sand", text: "text-ink", icon: "👥" },
+  asamblea: { bg: "bg-sand", text: "text-ink", icon: "🏛️" },
+  minka: { bg: "bg-sand", text: "text-ink", icon: "🤝" },
+  aniversario: { bg: "bg-sand", text: "text-ink", icon: "🎉" },
   otro: { bg: "bg-gray-100", text: "text-gray-700", icon: "📌" },
 };
 
@@ -37,11 +37,11 @@ const typeLabels: Record<CommunityEvent["type"], string> = {
 const { bg, text, icon } = typeColors[event.type];
 ---
 
-<article class="card-modern bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 hover:border-fucsia/30 transition-all duration-300">
+<article class="bg-white rounded-2xl overflow-hidden border border-line">
   <div class="flex flex-col md:flex-row">
     <!-- Date Badge -->
-    <div class="md:w-28 flex-shrink-0 bg-gradient-to-br from-azul to-purpura p-4 flex flex-col items-center justify-center text-white">
-      <span class="text-3xl font-bold">{day}</span>
+    <div class="md:w-28 flex-shrink-0 bg-primary-soft p-4 flex flex-col items-center justify-center text-primary-dark">
+      <span class="font-heading text-4xl font-semibold">{day}</span>
       <span class="text-sm uppercase tracking-wide">{month}</span>
       <span class="text-xs opacity-80">{year}</span>
     </div>
@@ -65,7 +65,7 @@ const { bg, text, icon } = typeColors[event.type];
       </div>
 
       <!-- Title -->
-      <h3 class="font-heading font-bold text-xl text-gray-800 mb-2 group-hover:text-fucsia transition-colors">
+      <h3 class="font-heading font-semibold text-2xl text-ink mb-2">
         {event.title}
       </h3>
 

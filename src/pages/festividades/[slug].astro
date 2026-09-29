@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
 import { fetchFestivities } from "../../lib/api";
 import type { Festivity } from "../../types";
 
@@ -33,6 +34,17 @@ function formatDate(dateStr: string): string {
   });
 }
 
+// Fechas del programa: el CMS puede enviar ISO ("2026-08-11T07:00:00Z") o texto libre.
+function formatScheduleDate(value: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  const day = d.toLocaleDateString("es-PE", { day: "numeric", month: "long", timeZone: "UTC" });
+  if (!value.includes("T")) return day;
+  const time = d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
+  return `${day} · ${time}`;
+}
+
 const dateRange =
   festivity.start_date === festivity.end_date
     ? formatDate(festivity.start_date)
@@ -47,15 +59,6 @@ function initials(name: string): string {
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[words.length - 1][0]).toUpperCase();
 }
-
-// Paleta rotativa (colores del sitio) para avatares y nodos del timeline
-const gradients = [
-  "from-fucsia to-rojo",
-  "from-turquesa to-azul",
-  "from-naranja to-amarillo",
-  "from-verde to-turquesa",
-  "from-purpura to-fucsia",
-];
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
@@ -72,7 +75,7 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title={festivity.name}
+  title={`${festivity.name}: fiesta en Pomabamba, Ayacucho`}
   description={festivity.description.slice(0, 160)}
   image={coverImage ?? "/images/hero-festivities.webp"}
   article={true}
@@ -80,139 +83,100 @@ const structuredData = [
   breadcrumbs={breadcrumbs}
   structuredData={structuredData}
 >
-  <!-- Hero -->
-  <section class="relative bg-gradient-to-br from-indigo to-indigo-dark text-white pattern-overlay">
-    {coverImage && (
-      <div class="absolute inset-0 opacity-25">
-        <img src={coverImage} alt={festivity.name} class="w-full h-full object-cover" />
+  <PageHero
+    eyebrow="Festividad"
+    title={festivity.name}
+    intro={festivity.place?.name ? `${dateRange} · ${festivity.place.name}` : dateRange}
+    image={coverImage ?? "/images/hero-festivities.webp"}
+    imageAlt={festivity.name}
+    breadcrumbs={breadcrumbs}
+    size="lg"
+  />
+
+  <section class="py-16 md:py-24">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <span class="eyebrow">Sobre la festividad</span>
+        <p class="text-lg leading-relaxed whitespace-pre-line">{festivity.description}</p>
       </div>
-    )}
-    <div class="container-custom relative py-16 md:py-24">
-      <a href="/festividades" class="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
-        <span aria-hidden="true">←</span> Volver a Festividades
-      </a>
-      <p class="text-white/80 font-semibold mb-2">🎉 Festividad</p>
-      <h1 class="text-3xl md:text-5xl font-heading font-bold mb-4">{festivity.name}</h1>
-      <div class="flex flex-wrap gap-4 text-white/90">
-        <span class="inline-flex items-center gap-2">📅 {dateRange}</span>
-        {festivity.place?.name && (
-          <span class="inline-flex items-center gap-2">📍 {festivity.place.name}</span>
-        )}
-      </div>
+      <aside class="lg:col-span-5">
+        <dl class="rounded-2xl bg-white border border-line divide-y divide-line">
+          <div class="px-6 py-4">
+            <dt class="text-sm">Fecha</dt>
+            <dd class="mt-1 font-semibold text-ink">{dateRange}</dd>
+          </div>
+          {festivity.place?.name && (
+            <div class="px-6 py-4">
+              <dt class="text-sm">Lugar</dt>
+              <dd class="mt-1 font-semibold text-ink">{festivity.place.name}</dd>
+            </div>
+          )}
+          <div class="px-6 py-5">
+            <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+          </div>
+        </dl>
+      </aside>
     </div>
   </section>
 
-  <section class="container-custom py-12 md:py-16 space-y-14 md:space-y-20">
-    <!-- Sobre la festividad -->
-    <div class="reveal max-w-3xl">
-      <h2 class="text-2xl md:text-3xl font-heading font-bold text-indigo-dark mb-4">
-        Sobre la festividad
-      </h2>
-      <p class="text-lg leading-relaxed text-gray-700 whitespace-pre-line">
-        {festivity.description}
-      </p>
-    </div>
-
-    <!-- Cargontes: grid de tarjetas con avatares de colores -->
-    {festivity.cargontes && festivity.cargontes.length > 0 && (
-      <div class="reveal">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-indigo-dark mb-2 flex items-center gap-3">
-          <span aria-hidden="true">👥</span> Cargontes
-        </h2>
-        <p class="text-gray-500 mb-8 max-w-2xl">
-          Las familias que con devoción y esfuerzo organizan y financian la festividad.
-        </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {festivity.cargontes.map((cargonte, i) => (
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <div
-                class={`w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} text-white flex items-center justify-center text-lg font-bold leading-none shadow-md mb-4`}
-              >
-                {initials(cargonte.name)}
-              </div>
-              <p class="font-heading font-bold text-gray-800 leading-tight">{cargonte.name}</p>
-              <p class="text-sm font-semibold text-fucsia mt-1">{cargonte.role}</p>
-              {cargonte.notes && (
-                <p class="text-sm text-gray-500 mt-3 leading-relaxed">{cargonte.notes}</p>
+  {festivity.schedule && festivity.schedule.length > 0 && (
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container-custom max-w-4xl">
+        <span class="eyebrow">Programación</span>
+        <h2 class="section-heading mb-10">Programa de la fiesta</h2>
+        <ol class="relative border-l border-line ml-3 space-y-8">
+          {festivity.schedule.map((item) => (
+            <li class="relative pl-8">
+              <span class="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full bg-primary ring-4 ring-white" aria-hidden="true"></span>
+              {item.date && (
+                <p class="text-xs font-semibold uppercase tracking-[0.15em] text-primary mb-1">{formatScheduleDate(item.date)}</p>
               )}
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-    <!-- Programación: timeline numerado -->
-    {festivity.schedule && festivity.schedule.length > 0 && (
-      <div class="reveal">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-indigo-dark mb-8 flex items-center gap-3">
-          <span aria-hidden="true">🗓️</span> Programación
-        </h2>
-        <ol>
-          {festivity.schedule.map((item, i) => (
-            <li class="flex gap-4 md:gap-5">
-              <!-- Nodo + linea conectora -->
-              <div class="flex flex-col items-center flex-shrink-0">
-                <div
-                  class={`w-11 h-11 flex-shrink-0 rounded-full bg-gradient-to-br ${gradients[i % gradients.length]} text-white flex items-center justify-center font-bold leading-none shadow-md`}
-                >
-                  {i + 1}
-                </div>
-                {i < festivity.schedule.length - 1 && (
-                  <div class="w-1 flex-1 bg-gradient-to-b from-naranja/40 to-naranja/5 rounded-full my-1"></div>
-                )}
-              </div>
-              <!-- Tarjeta -->
-              <div class="flex-1 min-w-0 bg-white rounded-2xl shadow-md p-5 md:p-6 mb-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-                {item.date && (
-                  <span class="inline-block text-xs font-bold uppercase tracking-wide text-naranja-dark bg-naranja/10 px-3 py-1 rounded-full mb-3">
-                    {item.date}
-                  </span>
-                )}
-                <p class="text-lg font-semibold text-gray-800 leading-snug">{item.activity}</p>
-                {item.location && (
-                  <p class="text-sm text-gray-500 mt-2 inline-flex items-center gap-1.5">
-                    <span aria-hidden="true">📍</span> {item.location}
-                  </p>
-                )}
-              </div>
+              <p class="text-lg font-semibold text-ink leading-snug">{item.activity}</p>
+              {item.location && <p class="mt-1 text-sm">{item.location}</p>}
             </li>
           ))}
         </ol>
       </div>
-    )}
-  </section>
+    </section>
+  )}
 
-  <!-- CTA (mismo patron que el resto del sitio: seccion full-width con degradado) -->
-  <section class="bg-gradient-to-r from-naranja via-amarillo to-naranja-light text-white py-12 md:py-16 pattern-overlay">
-    <div class="container-custom text-center reveal">
-      <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4 text-gray-900">
-        ¿Quieres vivir esta festividad?
-      </h2>
-      <p class="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
-        Contáctanos para conocer las fechas exactas, cómo llegar y participar de cerca en
-        nuestras celebraciones y actividades comunales.
+  {festivity.cargontes && festivity.cargontes.length > 0 && (
+    <section class="py-16 md:py-24">
+      <div class="container-custom">
+        <span class="eyebrow">Cargontes</span>
+        <h2 class="section-heading">Quienes hacen posible la fiesta</h2>
+        <p class="text-lg mb-10 max-w-2xl">
+          Las familias que con devoción y esfuerzo organizan y financian la festividad.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {festivity.cargontes.map((cargonte) => (
+            <div class="rounded-2xl bg-white border border-line p-6 flex gap-4">
+              <div class="h-12 w-12 flex-shrink-0 rounded-full bg-primary-soft text-primary-dark flex items-center justify-center font-semibold">
+                {initials(cargonte.name)}
+              </div>
+              <div class="min-w-0">
+                <p class="font-semibold text-ink leading-tight">{cargonte.name}</p>
+                <p class="text-sm font-semibold text-secondary mt-1">{cargonte.role}</p>
+                {cargonte.notes && <p class="text-sm mt-2 leading-relaxed">{cargonte.notes}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="relative py-24 md:py-32 overflow-hidden">
+    <img src={coverImage ?? "/images/hero-festivities.webp"} alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
+    <div class="container-custom relative text-center">
+      <h2 class="section-heading !text-white">¿Quieres vivir esta festividad?</h2>
+      <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
+        Te ayudamos con las fechas exactas, cómo llegar y cómo participar de cerca en nuestras celebraciones.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/comunidad"
-          class="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
-                 bg-gray-900 text-white border-2 border-gray-900
-                 hover:bg-transparent hover:text-gray-900
-                 transition-all duration-300 transform hover:scale-105
-                 focus:outline-none focus:ring-4 focus:ring-gray-900/50 focus:ring-offset-2 focus:ring-offset-amarillo"
-        >
-          Ver actividades comunales
-        </a>
-        <a
-          href="/festividades"
-          class="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold
-                 bg-transparent text-gray-900 border-2 border-gray-900
-                 hover:bg-gray-900 hover:text-white
-                 transition-all duration-300 transform hover:scale-105
-                 focus:outline-none focus:ring-4 focus:ring-gray-900/50 focus:ring-offset-2 focus:ring-offset-amarillo"
-        >
-          Ver todas las festividades
-        </a>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/planifica-tu-visita" class="btn-primary">Planifica tu visita</a>
+        <a href="/festividades" class="btn-ghost-light">Ver todas las festividades</a>
       </div>
     </div>
   </section>

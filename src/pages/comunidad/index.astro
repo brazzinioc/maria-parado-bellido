@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PageHeader from "../../components/PageHeader.astro";
+import PageHero from "../../components/PageHero.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
 import CommunityEventCard from "../../components/CommunityEventCard.astro";
 import type { CommunityEvent } from "../../types";
 import { fetchEvents } from "../../lib/api";
@@ -146,196 +147,121 @@ const sortedEvents = [...communityEvents].sort((a, b) =>
 const today = new Date();
 const upcomingEvents = sortedEvents.filter(e => new Date(e.date) >= today);
 const pastEvents = sortedEvents.filter(e => new Date(e.date) < today);
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Comunidad", url: "/comunidad" },
+];
+
+const activityTypes = [
+  { title: "Faena comunal", text: "Trabajo obligatorio para todos los comuneros empadronados. Incluye limpieza de canales, mantenimiento de caminos y obras de beneficio común." },
+  { title: "Minka y ayni", text: "Trabajo colectivo voluntario que pervive principalmente en las fiestas patronales. Los cargontes retribuyen a los participantes con comida, chicha de jora y música." },
+  { title: "Asamblea", text: "Reunión general donde se toman decisiones importantes para la comunidad. Participación con voz y voto de todos los comuneros." },
+  { title: "Reunión", text: "Encuentros de coordinación entre sectores, comités o grupos específicos para organizar actividades o resolver temas puntuales." },
+  { title: "Pollada / actividad", text: "Eventos sociales para recaudar fondos. Incluyen venta de comida, música en vivo y espacios de confraternidad comunal." },
+  { title: "Aniversario", text: "Celebraciones especiales del distrito, comunidades, instituciones o fechas históricas importantes para nuestra identidad." },
+];
+
+const communities = [
+  { name: "Pomabamba", detail: "Capital del distrito · 3,236 msnm" },
+  { name: "Urihuana", detail: "Comunidad campesina · Zona Quechua" },
+  { name: "Ñuñunhuaycco", detail: "Comunidad campesina · Zona Quechua" },
+  { name: "Huayllabamba", detail: "Comunidad campesina · Zona Quechua" },
+];
 ---
 
 <BaseLayout
-  title="Comunidad | María Parado de Bellido"
+  title="Vida comunal en María Parado de Bellido: faenas, minkas y eventos"
   description="Calendario de actividades comunales, faenas, asambleas y eventos en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+  image="/images/hero_5.webp"
+  breadcrumbs={breadcrumbs}
 >
-  <PageHeader
-    title="Vida Comunal"
-    subtitle="Faenas, asambleas, minkas y actividades que fortalecen nuestra identidad"
-    icon="👥"
-    variant="gradient"
+  <PageHero
+    eyebrow="Comunidad"
+    title="Vida comunal"
+    intro="Faenas, asambleas, minkas y actividades que fortalecen nuestra identidad."
+    image="/images/hero_5.webp"
+    imageAlt="Vida comunitaria en los Andes de Ayacucho"
+    breadcrumbs={breadcrumbs}
   />
 
-  <main class="py-16 bg-gradient-to-b from-crema to-white">
-    <div class="container-custom">
-
-      <!-- Introducción -->
-      <section class="max-w-4xl mx-auto text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-6">
-          Tradiciones que <span class="text-gradient">Perviven en Nuestras Fiestas</span>
-        </h2>
-        <p class="text-lg text-gray-600 leading-relaxed mb-4">
-          El <strong>Ayni</strong> (reciprocidad) y la <strong>Minka</strong> (trabajo colectivo),
+  <section class="py-20 md:py-24">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5">
+        <span class="eyebrow">Ayni y minka</span>
+        <h2 class="section-heading">Tradiciones que perviven en nuestras fiestas</h2>
+      </div>
+      <div class="lg:col-span-7 space-y-5 text-lg leading-relaxed">
+        <p>
+          El <strong class="text-ink">ayni</strong> (reciprocidad) y la <strong class="text-ink">minka</strong> (trabajo colectivo),
           tradiciones heredadas de nuestros antepasados, cobran vida especialmente durante las
-          <strong>fiestas patronales y costumbristas</strong>. En estas celebraciones, la comunidad
-          participa voluntariamente y los <strong>cargontes</strong> retribuyen con comida, chicha de jora y música.
+          <strong class="text-ink">fiestas patronales y costumbristas</strong>. En estas celebraciones, la comunidad
+          participa voluntariamente y los <strong class="text-ink">cargontes</strong> retribuyen con comida, chicha de jora y música.
         </p>
-        <p class="text-gray-600">
+        <p>
           Aquí encontrarás el calendario de actividades comunales donde puedes participar o conocer
           más sobre nuestra forma de vida comunitaria.
         </p>
-      </section>
-
-      <!-- Próximos Eventos -->
-      {upcomingEvents.length > 0 && (
-        <section class="mb-16">
-          <div class="flex items-center gap-3 mb-8">
-            <div class="w-12 h-12 bg-verde/10 rounded-xl flex items-center justify-center">
-              <svg class="w-6 h-6 text-verde-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800">
-              Próximos Eventos
-            </h2>
-          </div>
-
-          <div class="grid gap-6">
-            {upcomingEvents.map((event) => (
-              <CommunityEventCard event={event} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <!-- Tipos de Actividades -->
-      <section class="mb-16 bg-white rounded-3xl shadow-lg p-8 md:p-12">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-8 text-center">
-          Tipos de Actividades Comunales
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="p-6 bg-verde/5 rounded-2xl border border-verde/20">
-            <span class="text-4xl mb-4 block">🛠️</span>
-            <h3 class="font-bold text-lg text-verde-dark mb-2">Faena Comunal</h3>
-            <p class="text-gray-600 text-sm">
-              Trabajo obligatorio para todos los comuneros empadronados. Incluye limpieza de canales,
-              mantenimiento de caminos y obras de beneficio común.
-            </p>
-          </div>
-
-          <div class="p-6 bg-terracota/5 rounded-2xl border border-terracota/20">
-            <span class="text-4xl mb-4 block">🤝</span>
-            <h3 class="font-bold text-lg text-terracota-dark mb-2">Minka y Ayni</h3>
-            <p class="text-gray-600 text-sm">
-              Trabajo colectivo voluntario que pervive principalmente en las fiestas patronales.
-              Los cargontes retribuyen a los participantes con comida, chicha de jora y música.
-            </p>
-          </div>
-
-          <div class="p-6 bg-purpura/5 rounded-2xl border border-purpura/20">
-            <span class="text-4xl mb-4 block">🏛️</span>
-            <h3 class="font-bold text-lg text-purpura-dark mb-2">Asamblea</h3>
-            <p class="text-gray-600 text-sm">
-              Reunión general donde se toman decisiones importantes para la comunidad.
-              Participación con voz y voto de todos los comuneros.
-            </p>
-          </div>
-
-          <div class="p-6 bg-azul/5 rounded-2xl border border-azul/20">
-            <span class="text-4xl mb-4 block">👥</span>
-            <h3 class="font-bold text-lg text-azul-dark mb-2">Reunión</h3>
-            <p class="text-gray-600 text-sm">
-              Encuentros de coordinación entre sectores, comités o grupos específicos
-              para organizar actividades o resolver temas puntuales.
-            </p>
-          </div>
-
-          <div class="p-6 bg-naranja/5 rounded-2xl border border-naranja/20">
-            <span class="text-4xl mb-4 block">🍗</span>
-            <h3 class="font-bold text-lg text-naranja-dark mb-2">Pollada/Actividad</h3>
-            <p class="text-gray-600 text-sm">
-              Eventos sociales para recaudar fondos. Incluyen venta de comida,
-              música en vivo y espacios de confraternidad comunal.
-            </p>
-          </div>
-
-          <div class="p-6 bg-fucsia/5 rounded-2xl border border-fucsia/20">
-            <span class="text-4xl mb-4 block">🎉</span>
-            <h3 class="font-bold text-lg text-fucsia-dark mb-2">Aniversario</h3>
-            <p class="text-gray-600 text-sm">
-              Celebraciones especiales del distrito, comunidades, instituciones
-              o fechas históricas importantes para nuestra identidad.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Comunidades del Distrito -->
-      <section class="mb-16">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-8 text-center">
-          Nuestras Comunidades
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
-            <div class="w-16 h-16 bg-gradient-to-br from-verde to-turquesa rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span class="text-2xl">🏔️</span>
-            </div>
-            <h3 class="font-bold text-lg text-gray-800 mb-1">Pomabamba</h3>
-            <p class="text-sm text-gray-500">Capital del distrito</p>
-            <p class="text-xs text-gray-400 mt-2">3,236 msnm</p>
-          </div>
-
-          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
-            <div class="w-16 h-16 bg-gradient-to-br from-naranja to-amarillo rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span class="text-2xl">🌾</span>
-            </div>
-            <h3 class="font-bold text-lg text-gray-800 mb-1">Urihuana</h3>
-            <p class="text-sm text-gray-500">Comunidad campesina</p>
-            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
-          </div>
-
-          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
-            <div class="w-16 h-16 bg-gradient-to-br from-azul to-purpura rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span class="text-2xl">💧</span>
-            </div>
-            <h3 class="font-bold text-lg text-gray-800 mb-1">Ñuñunhuaycco</h3>
-            <p class="text-sm text-gray-500">Comunidad campesina</p>
-            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
-          </div>
-
-          <div class="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
-            <div class="w-16 h-16 bg-gradient-to-br from-fucsia to-rojo rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span class="text-2xl">🌻</span>
-            </div>
-            <h3 class="font-bold text-lg text-gray-800 mb-1">Huayllabamba</h3>
-            <p class="text-sm text-gray-500">Comunidad campesina</p>
-            <p class="text-xs text-gray-400 mt-2">Zona Quechua</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA para visitantes -->
-      <section class="bg-gradient-to-br from-azul via-purpura to-fucsia rounded-3xl p-8 md:p-12 text-white text-center">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4">
-          ¿Te gustaría participar en una Minka?
-        </h2>
-        <p class="text-white/90 max-w-2xl mx-auto mb-8">
-          Visita nuestro distrito y vive la experiencia del trabajo comunitario andino.
-          Es una oportunidad única de conectar con nuestra cultura ancestral y contribuir
-          al bienestar de la comunidad.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/lugares" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-azul-dark font-semibold rounded-full hover:bg-amarillo hover:text-gray-800 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Ver Lugares Turísticos
-          </a>
-          <a href="/festividades" class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-            Conocer Festividades
-          </a>
-        </div>
-      </section>
-
+      </div>
     </div>
-  </main>
+  </section>
+
+  {upcomingEvents.length > 0 && (
+    <section class="py-20 md:py-24 bg-white">
+      <div class="container-custom">
+        <SectionHeading eyebrow="Calendario" title="Próximos eventos" align="left" />
+        <div class="grid gap-6">
+          {upcomingEvents.map((event) => (
+            <CommunityEventCard event={event} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="py-20 md:py-24">
+    <div class="container-custom">
+      <SectionHeading eyebrow="Organización" title="Tipos de actividades comunales" align="left" />
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {activityTypes.map((item) => (
+          <article class="rounded-2xl bg-white border border-line p-6 md:p-8">
+            <h3 class="font-heading text-2xl font-semibold mb-3">{item.title}</h3>
+            <p class="leading-relaxed">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-24 bg-white">
+    <div class="container-custom">
+      <SectionHeading eyebrow="Territorio" title="Nuestras comunidades" align="left">
+        <a slot="actions" href="/historia#comunidades" class="btn-secondary">Conoce más</a>
+      </SectionHeading>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {communities.map((c) => (
+          <li class="rounded-2xl bg-secondary-soft p-6">
+            <h3 class="font-heading text-2xl font-semibold text-secondary-dark">{c.name}</h3>
+            <p class="mt-2 text-sm">{c.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="relative py-24 md:py-32 overflow-hidden">
+    <img src="/images/hero_1.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
+    <div class="container-custom relative text-center">
+      <h2 class="section-heading !text-white">¿Te gustaría participar en una minka?</h2>
+      <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
+        Visita nuestro distrito y vive la experiencia del trabajo comunitario andino. Es una oportunidad única
+        de conectar con nuestra cultura ancestral y contribuir al bienestar de la comunidad.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/experiencias/turismo-vivencial" class="btn-primary">Turismo vivencial</a>
+        <a href="/festividades" class="btn-ghost-light">Conocer festividades</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHeader from "../components/PageHeader.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import { fetchDishes } from "../lib/api";
 
 // Fallback usado solo si el CMS no devuelve platos publicados
@@ -17,7 +18,7 @@ const fallbackDishes = [
       "Achiote",
       "Especias",
     ],
-    image: "/images/food/puca-picante.webp",
+    image: "/images/default-photo.webp",
   },
   {
     name: "Caldo de Mondongo",
@@ -31,7 +32,7 @@ const fallbackDishes = [
       "Orégano",
       "Ají",
     ],
-    image: "/images/food/caldo-mondongo.webp",
+    image: "/images/default-photo.webp",
   },
   {
     name: "Pachamanca",
@@ -45,14 +46,14 @@ const fallbackDishes = [
       "Humitas",
       "Hierbas aromáticas",
     ],
-    image: "/images/food/pachamanca.webp",
+    image: "/images/default-photo.webp",
   },
   {
     name: "Cuy Chactado",
     description:
       "Cuy (Cavia porcellus) prensado y frito hasta quedar crocante. Plato de origen prehispánico, considerado especial y festivo. Se sirve con papa dorada, salsa de maní y ají. Rico en proteínas y bajo en grasas.",
     ingredients: ["Cuy", "Ajo", "Comino", "Ají", "Papa", "Salsa de maní"],
-    image: "/images/food/cuy-chactado.webp",
+    image: "/images/default-photo.webp",
   },
   {
     name: "Kapchi de Habas",
@@ -66,216 +67,148 @@ const fallbackDishes = [
       "Huevo",
       "Hierbabuena",
     ],
-    image: "/images/food/kapchi-habas.webp",
+    image: "/images/default-photo.webp",
   },
   {
     name: "Chicha de Jora",
     description:
       "Bebida ceremonial y nutritiva elaborada con maíz germinado (jora), hervido con especias. De origen prehispánico, se consume en festividades y celebraciones. Simboliza la hospitalidad andina y la conexión con la Pachamama.",
     ingredients: ["Maíz jora", "Azúcar", "Clavo de olor", "Canela", "Limón"],
-    image: "/images/food/chicha-jora.webp",
+    image: "/images/default-photo.webp",
   },
 ];
 
 // Contenido desde el CMS; si no hay platos publicados, usa el fallback
 const dbDishes = await fetchDishes();
 const dishes = dbDishes.length ? dbDishes : fallbackDishes;
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Gastronomía", url: "/gastronomia" },
+];
+
+const zones = [
+  { name: "Zona Quechua", text: "Papa, maíz, cebada, trigo, hortalizas, tuna, durazno, níspero. Clima templado y seco ideal para cultivos alimenticios." },
+  { name: "Zona Suni", text: "Quinua, kiwicha, papa, olluco, oca, mashua. Ganadería extensiva de ovinos, vacunos y camélidos." },
+  { name: "Zona Puna (Jalca)", text: "Pastos naturales y bofedales. Crianza de 4,278 ovinos, 1,490 vacunos y 90 camélidos. Lana para textiles." },
+];
+
+const dishesStructuredData = [
+  {
+    type: "itemList" as const,
+    data: {
+      name: "Platos tradicionales de María Parado de Bellido",
+      description: "Gastronomía andina tradicional de Pomabamba, Cangallo (Ayacucho).",
+      items: dishes.map((d) => ({ name: d.name, description: d.description, url: "/gastronomia", image: d.image })),
+    },
+  },
+];
 ---
 
 <BaseLayout
-  title="Gastronomía Andina Tradicional"
+  title="Gastronomía andina tradicional de Pomabamba, Ayacucho"
   description="Descubre la gastronomía del distrito María Parado de Bellido: puca picante, pachamanca, cuy chactado y más platos tradicionales andinos preparados con ingredientes ancestrales."
-  image="/images/hero-food.jpg"
+  image={dishes[0]?.image || "/images/hero_3.webp"}
+  keywords={["gastronomía Ayacucho", "puca picante", "pachamanca", "comida típica Cangallo", "platos andinos"]}
+  breadcrumbs={breadcrumbs}
+  structuredData={dishesStructuredData}
 >
-  <PageHeader
-    title="Gastronomía Andina"
-    subtitle="Sabores ancestrales de nuestra tierra"
-    icon="🍽️"
-    variant="accent"
+  <PageHero
+    eyebrow="Gastronomía"
+    title="Sabores de nuestra tierra"
+    intro="Recetas que se preparan en fogón de leña con productos de nuestros tres pisos ecológicos."
+    image={dishes.find((d) => d.image && !d.image.includes("default-photo"))?.image || "/images/hero_3.webp"}
+    breadcrumbs={breadcrumbs}
   />
 
   <!-- Intro -->
-  <section class="container-custom py-16 md:py-20">
-    <div class="max-w-4xl mx-auto text-center reveal">
-      <h2 class="section-heading">Sabores de Nuestro Territorio</h2>
-      <p class="text-evocative mb-4">
-        Nuestra gastronomía se basa en productos que cultivamos y criamos en
-        nuestros <strong>tres pisos ecológicos</strong>. En la zona <strong
-          >Quechua</strong
-        > producimos maíz, papa, cebada, trigo y hortalizas. En la <strong
-          >Suni</strong
-        > cultivamos quinua, kiwicha y tuberóculos. En la <strong>Puna</strong> criamos
-        ganado ovino, vacuno y camélidos en pastos naturales y bofedales.
-      </p>
-      <p class="text-evocative">
-        El <strong>76% de nuestra población</strong> se dedica a la agricultura y
-        ganadería. Cultivamos <strong
-          >papa, maíz, cebada, avena, trigo, quinua</strong
-        > y criamos <strong>7,920 cabezas de ganado</strong>. Durante las
-        <strong>fiestas patronales</strong>, los platos se preparan en fogón de leña
-        con recetas ancestrales, reuniendo a la comunidad en torno a la mesa.
-      </p>
-    </div>
-  </section>
-
-  <!-- Dishes Grid -->
-  <section class="bg-white py-16 md:py-20">
-    <div class="container-custom">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-        {
-          dishes.map((dish, index) => (
-            <article
-              class={`reveal ${index % 2 === 0 ? "" : "lg:translate-y-12"}`}
-            >
-              <div class="card overflow-hidden">
-                <div class="relative h-64 md:h-80 overflow-hidden">
-                  <img
-                    src={dish.image}
-                    alt={dish.name}
-                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="p-6 md:p-8">
-                  <h3 class="text-2xl font-heading font-bold text-indigo mb-3">
-                    {dish.name}
-                  </h3>
-                  <p class="text-gray-700 mb-4 leading-relaxed">
-                    {dish.description}
-                  </p>
-                  <div>
-                    <h4 class="text-sm font-semibold text-mostaza uppercase tracking-wide mb-2">
-                      Ingredientes principales:
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      {dish.ingredients.map((ingredient) => (
-                        <span class="bg-crema text-tierra text-xs px-3 py-1 rounded-full">
-                          {ingredient}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))
-        }
+  <section class="py-20 md:py-24">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5">
+        <span class="eyebrow">De la chacra a la mesa</span>
+        <h2 class="section-heading">Una cocina que nace del territorio</h2>
       </div>
-    </div>
-  </section>
-
-  <!-- Ingredients Section -->
-  <section class="container-custom py-16 md:py-20">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-12 reveal">
-        <h2 class="section-heading">
-          Productos de Nuestros Tres Pisos Ecológicos
-        </h2>
-        <p class="text-lg text-gray-600">
-          Cultivamos y criamos en 12,913 hectáreas entre 2,500 y 4,800 msnm.
+      <div class="lg:col-span-7 space-y-5 text-lg leading-relaxed">
+        <p>
+          Nuestra gastronomía se basa en productos que cultivamos y criamos en nuestros
+          <strong class="text-ink">tres pisos ecológicos</strong>: maíz, papa y trigo en la zona Quechua; quinua y
+          kiwicha en la Suni; y ganado ovino, vacuno y camélidos en la Puna.
+        </p>
+        <p>
+          Durante las <strong class="text-ink">fiestas patronales</strong>, los platos se preparan en fogón de leña
+          con recetas ancestrales, reuniendo a la comunidad en torno a la mesa.
         </p>
       </div>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center reveal">
-          <div
-            class="w-20 h-20 bg-gradient-to-br from-tierra to-tierra-dark rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="font-heading font-semibold text-xl text-indigo mb-2">
-            Zona Quechua
-          </h3>
-          <p class="text-sm text-gray-600">
-            Papa, maíz, cebada, trigo, hortalizas, tuna, durazno, níspero. Clima
-            templado y seco ideal para cultivos alimenticios.
-          </p>
-        </div>
+  <!-- Platos -->
+  <section class="py-20 md:py-24 bg-white">
+    <div class="container-custom">
+      <SectionHeading eyebrow="Platos típicos" title="Lo que tienes que probar" />
+      <div class="space-y-16 md:space-y-24">
+        {dishes.map((dish, index) => (
+          <article class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+            <div class:list={["relative aspect-[4/3] overflow-hidden rounded-2xl bg-sand", index % 2 === 1 && "lg:order-2"]}>
+              <img
+                src={dish.image || "/images/default-photo.webp"}
+                alt={dish.name}
+                loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            <div>
+              <h3 class="font-heading text-3xl md:text-4xl font-semibold mb-4">{dish.name}</h3>
+              <p class="text-lg leading-relaxed mb-6">{dish.description}</p>
+              {dish.ingredients.length > 0 && (
+                <>
+                  <p class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft mb-3">Ingredientes principales</p>
+                  <ul class="flex flex-wrap gap-2">
+                    {dish.ingredients.map((ingredient) => (
+                      <li class="rounded-full bg-accent-soft px-3 py-1 text-sm font-medium text-ink">{ingredient}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-        <div class="text-center reveal">
-          <div
-            class="w-20 h-20 bg-gradient-to-br from-mostaza to-mostaza-dark rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              ></path>
-            </svg>
+  <!-- Productos por piso ecológico -->
+  <section class="py-20 md:py-24">
+    <div class="container-custom">
+      <SectionHeading
+        eyebrow="Productos"
+        title="Nuestros tres pisos ecológicos"
+        intro="Cultivamos y criamos en 12,913 hectáreas entre 2,500 y 4,800 msnm. El 76% de nuestra población se dedica a la agricultura y ganadería."
+      />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {zones.map((zone) => (
+          <div class="rounded-2xl bg-secondary-soft p-6 md:p-8">
+            <h3 class="font-heading text-2xl font-semibold text-secondary-dark mb-3">{zone.name}</h3>
+            <p class="leading-relaxed">{zone.text}</p>
           </div>
-          <h3 class="font-heading font-semibold text-xl text-indigo mb-2">
-            Zona Suni
-          </h3>
-          <p class="text-sm text-gray-600">
-            Quinua, kiwicha, papa, olluco, oca, mashua. Ganadería extensiva de
-            ovinos, vacunos y camélidos.
-          </p>
-        </div>
-
-        <div class="text-center reveal">
-          <div
-            class="w-20 h-20 bg-gradient-to-br from-terracota to-terracota-dark rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="font-heading font-semibold text-xl text-indigo mb-2">
-            Zona Puna (Jalca)
-          </h3>
-          <p class="text-sm text-gray-600">
-            Pastos naturales y bofedales. Crianza de 4,278 ovinos, 1,490 vacunos
-            y 90 camélidos. Lana para textiles.
-          </p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section
-    class="bg-gradient-to-r from-terracota to-indigo text-white py-12 md:py-16 pattern-overlay"
-  >
-    <div class="container-custom text-center reveal">
-      <h2 class="text-2xl md:text-3xl font-heading font-bold mb-4">
-        Prueba Nuestra Gastronomía
-      </h2>
-      <p class="text-lg mb-6 max-w-2xl mx-auto text-white/90">
-        Contáctanos y te ayudamos a planificar tu visita gastronómica por los
-        Andes ayacuchanos.
-      </p>
-      <a href="/festividades" class="btn-primary bg-white text-indigo hover:bg-crema">
-        Ver Festividades
-      </a>
+  <section class="pb-20 md:pb-28">
+    <div class="container-custom">
+      <div class="rounded-3xl bg-secondary text-white p-8 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2">
+          <h2 class="font-heading text-3xl md:text-4xl font-semibold !text-white mb-3">Prueba nuestra gastronomía</h2>
+          <p class="text-white/85 text-lg">La mejor forma de probarla es en una fiesta patronal o en casa de una familia local.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row md:flex-col gap-3 md:items-end">
+          <a href="/festividades" class="btn-ghost-light">Ver festividades</a>
+          <a href="/experiencias/turismo-vivencial" class="btn-ghost-light">Turismo vivencial</a>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
