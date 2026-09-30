@@ -21,6 +21,7 @@ export interface Experience {
   description: string[];
   image: string;
   imageAlt: string;
+  imagePosition?: string;
   stats: ExperienceStat[];
   highlights: string[];
   tips: string[];

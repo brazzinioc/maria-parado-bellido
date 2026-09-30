@@ -14,11 +14,21 @@ interface Props {
   intro?: string;
   image: string;
   imageAlt?: string;
+  imagePosition?: string;
   breadcrumbs?: Crumb[];
   size?: "md" | "lg";
 }
 
-const { title, eyebrow, intro, image, imageAlt = "", breadcrumbs = [], size = "md" } = Astro.props;
+const {
+  title,
+  eyebrow,
+  intro,
+  image,
+  imageAlt = "",
+  imagePosition = "center",
+  breadcrumbs = [],
+  size = "md",
+} = Astro.props;
 ---
 
 <header
@@ -33,6 +43,7 @@ const { title, eyebrow, intro, image, imageAlt = "", breadcrumbs = [], size = "m
     loading="eager"
     fetchpriority="high"
     class="absolute inset-0 h-full w-full object-cover"
+    style={`object-position: ${imagePosition}`}
   />
   <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/10" aria-hidden="true"></div>
 

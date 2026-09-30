@@ -38,6 +38,9 @@ scripts/
 docs/
 photos/
 
+# Video fuente sin procesar (no se sirve en el sitio)
+raw-media/
+
 # IA
 .claude/
 CLAUDE.md

@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import SEO from "../components/SEO.astro";
 import StructuredData from "../components/StructuredData.astro";
 import WhatsAppCTA from "../components/WhatsAppCTA.astro";
@@ -120,8 +121,11 @@ const navLinkIdle = "text-ink hover:text-primary";
 
     <!-- Google Analytics -->
     <GoogleAnalytics />
+
+    <!-- Transiciones de vista entre páginas (fade por defecto en todo el sitio) -->
+    <ClientRouter />
   </head>
-  <body class="antialiased">
+  <body class:list={["antialiased", currentPath === "/" && "home-hero-pending"]}>
     <!-- Skip Link for Accessibility -->
     <a
       href="#main-content"
@@ -491,6 +495,17 @@ const navLinkIdle = "text-ink hover:text-primary";
 
     <!-- Scripts -->
     <script>
+      // Con ClientRouter activo, la navegación es SPA y el <header>/<footer>
+      // (markup idéntico en todas las páginas) se reutiliza entre
+      // transiciones en vez de recrearse. Por eso el menú y los dropdowns
+      // se enganchan una sola vez (guard en body.dataset), mientras que el
+      // scroll-reveal sí debe reprocesarse en cada página porque su
+      // contenido cambia. Todo se dispara desde "astro:page-load", que
+      // Astro emite tanto en la carga inicial como tras cada transición.
+      function initHeaderInteractions() {
+      if (document.body.dataset.headerInit) return;
+      document.body.dataset.headerInit = "true";
+
       // Mobile menu toggle
       const mobileButton = document.getElementById("mobile-menu-button");
       const mobileMenu = document.getElementById("mobile-menu");
@@ -572,24 +587,55 @@ const navLinkIdle = "text-ink hover:text-primary";
           }
         });
       });
+      }
 
-      // Scroll reveal animation
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      };
+      function initRevealAnimations() {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      }, observerOptions);
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        }, observerOptions);
 
-      document
-        .querySelectorAll(".reveal")
-        .forEach((el) => observer.observe(el));
+        document
+          .querySelectorAll(".reveal:not(.active)")
+          .forEach((el) => observer.observe(el));
+      }
+
+      // Difiere los widgets flotantes (Tu Opinión, WhatsApp) mientras se ve
+      // el hero cinematográfico de la home, para no competir con su CTA
+      // principal. Se revelan apenas el hero sale del viewport y quedan
+      // visibles el resto de la sesión en esa página (sin volver a
+      // esconderse si el usuario sube el scroll otra vez).
+      function initHomeHeroWidgets() {
+        document.body.classList.remove("home-hero-pending");
+        const hero = document.getElementById("home-hero");
+        if (!hero) return;
+
+        document.body.classList.add("home-hero-pending");
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) {
+              document.body.classList.remove("home-hero-pending");
+              observer.disconnect();
+            }
+          },
+          { threshold: 0 }
+        );
+        observer.observe(hero);
+      }
+
+      document.addEventListener("astro:page-load", () => {
+        initHeaderInteractions();
+        initRevealAnimations();
+        initHomeHeroWidgets();
+      });
     </script>
 
     <style>

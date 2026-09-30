@@ -46,6 +46,13 @@ const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL || "#";
     bottom: 6.5rem; /* Espacio suficiente sobre WhatsApp (3.25rem btn + 1.5rem margen + 1.75rem gap) */
     right: 1.5rem;
     z-index: 998; /* Justo debajo de WhatsApp (999) pero por encima del contenido */
+    transition: opacity 0.3s ease;
+  }
+
+  /* Diferido en la home: se revela apenas el hero cinematográfico sale del viewport (ver BaseLayout.astro) */
+  :global(body.home-hero-pending) .feedback-widget-container {
+    opacity: 0;
+    pointer-events: none;
   }
 
   @media (min-width: 640px) {

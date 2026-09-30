@@ -106,15 +106,15 @@ export default function WeatherStat() {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm rounded-full border border-white/20">
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full border border-line shadow-sm">
       <span className="text-base" role="img" aria-label={weather.description}>
         {weather.icon}
       </span>
-      <span className="font-bold text-amarillo text-lg drop-shadow">
+      <span className="font-bold text-naranja text-lg">
         {weather.temperature}°
       </span>
-      <span className="text-white/70 text-sm hidden sm:inline">
-        {weather.description}
+      <span className="text-ink-soft text-sm hidden sm:inline">
+        Ahora · {weather.description}
       </span>
     </div>
   );

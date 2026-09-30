@@ -5,21 +5,25 @@ import PhotoCard from "../components/PhotoCard.astro";
 import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
 import InteractiveMap from "../components/InteractiveMap";
-import { fetchFestivities, fetchHeroSlides, fetchPlaces, fetchDishes } from "../lib/api";
+import { fetchFestivities, fetchPlaces, fetchDishes } from "../lib/api";
 import { getExperiences, getGallery } from "../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
 
-// Hero slider images (fallback si el CMS no devuelve slides publicados)
-const fallbackHeroSlides = [
-  { image: "/images/hero_1.webp", alt: "Vista panorámica de Pomabamba con campos de cultivo andinos" },
-  { image: "/images/hero_2.webp", alt: "Cordillera andina y paisajes de María Parado de Bellido" },
-  { image: "/images/hero_3.webp", alt: "Tradiciones y cultura viva en Pomabamba" },
-  { image: "/images/hero_4.webp", alt: "Naturaleza y ecosistemas del distrito" },
-  { image: "/images/hero_5.webp", alt: "Vida comunitaria en los Andes de Ayacucho" },
-];
+// --- Hero anterior (CMS + fallback de imágenes) ---
+// Deshabilitado: el hero ahora es estático (ver heroSlides más abajo).
+// Se deja comentado por si se vuelve a usar más adelante.
+// import { fetchHeroSlides } from "../lib/api";
+// const fallbackHeroSlides = [
+//   { image: "/images/hero_1.webp", alt: "Vista panorámica de Pomabamba con campos de cultivo andinos" },
+//   { image: "/images/hero_2.webp", alt: "Cordillera andina y paisajes de María Parado de Bellido" },
+//   { image: "/images/hero_3.webp", alt: "Tradiciones y cultura viva en Pomabamba" },
+//   { image: "/images/hero_4.webp", alt: "Naturaleza y ecosistemas del distrito" },
+//   { image: "/images/hero_5.webp", alt: "Vida comunitaria en los Andes de Ayacucho" },
+// ];
+// const dbHeroSlides = await fetchHeroSlides();
+// const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
 
-const [dbHeroSlides, festivities, places, dishes, experiences, gallery] = await Promise.all([
-  fetchHeroSlides(),
+const [festivities, places, dishes, experiences, gallery] = await Promise.all([
   fetchFestivities(),
   fetchPlaces(),
   fetchDishes(),
@@ -27,7 +31,24 @@ const [dbHeroSlides, festivities, places, dishes, experiences, gallery] = await 
   getGallery(),
 ]);
 
-const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
+// Hero estático: video de dron (DJI Neo 2) a 0.5x de velocidad.
+// Clip completo (55s originales -> ~110s a 0.5x).
+// `image` funciona como poster/fallback: es lo que se pinta de inmediato
+// y lo que ven quienes tienen prefers-reduced-motion, conexión lenta/con
+// ahorro de datos, o si el video falla. `webm` es una fuente más liviana
+// que el navegador prueba antes que el mp4. Las variantes `mobile*` son
+// versiones a menor resolución (960x540) para viewports angostos.
+const heroSlides = [
+  {
+    type: "video" as const,
+    image: "/images/hero-dron-pomabamba-ayacucho.webp",
+    video: "/videos/vuelo-dron-pomabamba-ayacucho.mp4",
+    webm: "/videos/vuelo-dron-pomabamba-ayacucho.webm",
+    mobileVideo: "/videos/vuelo-dron-pomabamba-ayacucho-mobile.mp4",
+    mobileWebm: "/videos/vuelo-dron-pomabamba-ayacucho-mobile.webm",
+    alt: "Vuelo de dron sobre Pomabamba, María Parado de Bellido",
+  },
+];
 
 const upcomingFestivities = [...festivities]
   .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
@@ -91,13 +112,13 @@ const homeStructuredData = [
   structuredData={homeStructuredData}
 >
   <!-- 1. Hero cinematográfico -->
-  <section class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
+  <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
     <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/20" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/65 to-ink/30" aria-hidden="true"></div>
 
     <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
       <div class="container-custom w-full pb-10 md:pb-16">
-        <div class="max-w-3xl">
+        <div class="max-w-3xl [text-shadow:0_2px_16px_rgba(0,0,0,0.55)]">
           <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-accent mb-4">
             María Parado de Bellido
           </p>
@@ -116,19 +137,23 @@ const homeStructuredData = [
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Indicadores -->
-        <div class="mt-10 md:mt-14 pt-6 border-t border-white/20 flex flex-wrap items-center gap-x-10 gap-y-4">
-          {heroStats.map((stat) => (
-            <div class="text-white">
-              <span class="font-heading text-2xl md:text-3xl font-semibold">{stat.value}</span>
-              <span class="ml-1.5 text-sm text-white/75">{stat.label}</span>
-            </div>
-          ))}
-          <div class="md:ml-auto">
-            <WeatherStat client:load />
-          </div>
+  <!-- 1b. Franja de indicadores (separada del hero a propósito: mantiene -->
+  <!-- el hero enfocado en la foto/video + mensaje + CTA, sin competir con -->
+  <!-- datos secundarios) -->
+  <section class="bg-crema border-b border-line">
+    <div class="container-custom py-5 flex flex-wrap items-center gap-x-10 gap-y-3">
+      {heroStats.map((stat) => (
+        <div class="text-ink">
+          <span class="font-heading text-xl md:text-2xl font-semibold">{stat.value}</span>
+          <span class="ml-1.5 text-sm text-ink-soft">{stat.label}</span>
         </div>
+      ))}
+      <div class="sm:ml-auto">
+        <WeatherStat client:load />
       </div>
     </div>
   </section>

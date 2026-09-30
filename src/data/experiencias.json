@@ -11,8 +11,9 @@
         "Caminar es la mejor forma de conocer María Parado de Bellido. Los senderos que usan a diario las familias del distrito conectan Pomabamba con miradores naturales, formaciones rocosas y restos arqueológicos de la cultura Chanca.",
         "Hay rutas para todos los niveles: paseos de medio día alrededor del pueblo y travesías más exigentes que suben por la puna. En cada tramo el paisaje cambia, y con él la flora, la fauna y las historias que cuentan los comuneros."
       ],
-      "image": "/images/hero_2.webp",
-      "imageAlt": "Cordillera andina y senderos de María Parado de Bellido",
+      "image": "/images/experiencias/trekking-ayacucho-pomabamba.webp",
+      "imageAlt": "Cordillera andina y senderos de Pomabamba, Ayacucho",
+      "imagePosition": "center 68%",
       "stats": [
         { "label": "Dificultad", "value": "Fácil a exigente" },
         { "label": "Duración", "value": "2 h a día completo" },
@@ -46,8 +47,9 @@
         "Las trochas y caminos rurales del distrito son un terreno ideal para la bicicleta de montaña. Se pedalea entre chacras, pueblos y quebradas, con el valle siempre de fondo.",
         "Las rutas combinan subidas exigentes por la altitud con descensos largos y panorámicos. Es una forma distinta de recorrer el territorio y de detenerse a conversar con la gente en cada pueblo."
       ],
-      "image": "/images/hero_4.webp",
-      "imageAlt": "Caminos rurales y naturaleza del distrito",
+      "image": "/images/experiencias/cicloturismo-ayacucho-pomabamba.webp",
+      "imageAlt": "Bicicleta de montaña en una calle empedrada de Pomabamba, Ayacucho",
+      "imagePosition": "center 40%",
       "stats": [
         { "label": "Dificultad", "value": "Moderada a exigente" },
         { "label": "Duración", "value": "3 h a día completo" },
@@ -81,8 +83,9 @@
         "En María Parado de Bellido la comunidad sigue organizándose con el ayni y la minka: el trabajo compartido que sostiene la vida en los Andes. El turismo vivencial te invita a ser parte de esa vida, no a mirarla desde fuera.",
         "Puedes acompañar a una familia en la chacra, aprender a preparar platos tradicionales, participar en una faena o vivir de cerca una fiesta patronal con sus cargontes, danzas y música."
       ],
-      "image": "/images/hero_5.webp",
-      "imageAlt": "Vida comunitaria en los Andes de Ayacucho",
+      "image": "/images/experiencias/turismo-vivencial-ayacucho-pomabamba.webp",
+      "imageAlt": "Niños en concurso de carnavales de Pomabamba, Ayacucho",
+      "imagePosition": "center 22%",
       "stats": [
         { "label": "Para quién", "value": "Todas las edades" },
         { "label": "Duración", "value": "1 a 3 días" },
