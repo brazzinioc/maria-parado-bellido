@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PageHeader from "../../components/PageHeader.astro";
+import PageHero from "../../components/PageHero.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
 import BusinessCard from "../../components/BusinessCard.astro";
 import type { Business } from "../../types";
 import { fetchBusinesses } from "../../lib/api";
@@ -267,123 +268,86 @@ const directorioStructuredData = [
   },
   ...businessSchemas,
 ];
+
+const whatsappNumber = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || "+51999888777").replace(/\D/g, "");
+const registerUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, quiero registrar mi negocio en el directorio")}`;
 ---
 
 <BaseLayout
-  title="Directorio de Negocios | María Parado de Bellido"
+  title="Directorio de servicios en Pomabamba: hospedaje, comida y transporte"
   description="Encuentra hospedajes, restaurantes, tiendas, transporte y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+  image="/images/hero_1.webp"
   keywords={directorioKeywords}
   breadcrumbs={breadcrumbs}
   structuredData={directorioStructuredData}
 >
-  <PageHeader
-    title="Directorio Local"
-    subtitle="Hospedajes, restaurantes, transporte y servicios para tu visita"
-    icon="📖"
-    variant="default"
+  <PageHero
+    eyebrow="Directorio"
+    title="Todo para tu estadía"
+    intro="Hospedajes, restaurantes, transporte y servicios de emprendedores locales comprometidos con el desarrollo del distrito."
+    image="/images/hero_1.webp"
+    imageAlt="Vista panorámica de Pomabamba"
+    breadcrumbs={breadcrumbs}
   />
 
-  <main class="py-16 bg-gradient-to-b from-crema to-white">
-    <div class="container-custom">
-
-      <!-- Introducción -->
-      <section class="max-w-4xl mx-auto text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-6">
-          Todo lo que necesitas para tu <span class="text-gradient">estadía</span>
-        </h2>
-        <p class="text-lg text-gray-600 leading-relaxed">
-          Encuentra los mejores servicios locales para hacer de tu visita una experiencia cómoda y auténtica.
-          Todos los negocios son de emprendedores locales comprometidos con el desarrollo del distrito.
-        </p>
-      </section>
-
-      <!-- Navegación por categorías -->
-      <nav class="flex flex-wrap justify-center gap-3 mb-12">
-        {categories.map(cat => (
-          <a
-            href={`#${cat.key}`}
-            class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 hover:border-turquesa hover:shadow-md transition-all text-sm font-medium text-gray-700 hover:text-turquesa-dark"
-          >
-            <span>{cat.icon}</span>
-            {cat.label}
+  <nav aria-label="Categorías" class="sticky top-[80px] md:top-[92px] z-40 bg-sand/95 backdrop-blur border-b border-line">
+    <ul class="container-custom flex gap-2 overflow-x-auto py-3 text-sm">
+      {businessesByCategory.filter((c) => c.items.length > 0).map((cat) => (
+        <li>
+          <a href={`#${cat.key}`} class="block whitespace-nowrap rounded-full border border-line bg-white px-4 py-1.5 font-medium text-ink hover:border-primary hover:text-primary transition-colors">
+            {cat.label} <span class="text-ink-soft">({cat.items.length})</span>
           </a>
-        ))}
-      </nav>
-
-      <!-- Negocios por categoría -->
-      {businessesByCategory.map(category => category.items.length > 0 && (
-        <section id={category.key} class="mb-16 scroll-mt-24">
-          <div class="flex items-center gap-3 mb-8">
-            <span class="text-4xl">{category.icon}</span>
-            <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800">
-              {category.label}
-            </h2>
-            <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-              {category.items.length} {category.items.length === 1 ? 'negocio' : 'negocios'}
-            </span>
-          </div>
-
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {category.items.map((business) => (
-              <BusinessCard business={business} />
-            ))}
-          </div>
-        </section>
+        </li>
       ))}
+    </ul>
+  </nav>
 
-      <!-- Información para emprendedores -->
-      <section class="bg-gradient-to-br from-turquesa/10 via-azul/5 to-purpura/10 rounded-3xl p-8 md:p-12 mb-16">
-        <div class="max-w-3xl mx-auto text-center">
-          <span class="inline-block text-5xl mb-4">📢</span>
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-800 mb-4">
-            ¿Tienes un negocio en el distrito?
-          </h2>
-          <p class="text-gray-600 mb-6">
-            Si eres emprendedor local y deseas que tu negocio aparezca en este directorio,
-            comunícate con nosotros. Es completamente gratuito para los negocios del distrito.
+  {businessesByCategory.map((category, i) => category.items.length > 0 && (
+    <section id={category.key} class:list={["py-16 md:py-20 scroll-mt-40", i % 2 === 1 && "bg-white"]}>
+      <div class="container-custom">
+        <div class="flex items-baseline gap-3 mb-8">
+          <h2 class="section-heading mb-0">{category.label}</h2>
+          <span class="text-sm">
+            {category.items.length} {category.items.length === 1 ? "negocio" : "negocios"}
+          </span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {category.items.map((business) => (
+            <BusinessCard business={business} />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="py-16 md:py-20">
+    <div class="container-custom">
+      <div class="rounded-3xl bg-secondary text-white p-8 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2">
+          <h2 class="font-heading text-3xl md:text-4xl font-semibold !text-white mb-3">¿Tienes un negocio en el distrito?</h2>
+          <p class="text-white/85 text-lg">
+            Si eres emprendedor local y deseas que tu negocio aparezca en este directorio, comunícate con
+            nosotros. Es completamente gratuito para los negocios del distrito.
           </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a
-              href="https://wa.me/51966000000?text=Hola,%20quiero%20registrar%20mi%20negocio%20en%20el%20directorio"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-verde text-white font-semibold rounded-full hover:bg-verde-dark transition-colors"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Registrar mi Negocio
-            </a>
-          </div>
         </div>
-      </section>
-
-      <!-- CTA para visitantes -->
-      <section class="bg-gradient-to-br from-naranja via-amarillo to-verde rounded-3xl p-8 md:p-12 text-center">
-        <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mb-4 drop-shadow-lg">
-          ¿Listo para conocer María Parado de Bellido?
-        </h2>
-        <p class="text-white/90 max-w-2xl mx-auto mb-8">
-          Contáctanos y te ayudamos a planificar tu visita para descubrir la riqueza cultural,
-          histórica y natural de nuestro hermoso distrito.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/places" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-naranja-dark font-semibold rounded-full hover:bg-azul hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Ver Lugares Turísticos
-          </a>
-          <a href="/festivities" class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-colors backdrop-blur-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-            Conocer Festividades
-          </a>
+        <div class="flex md:justify-end">
+          <a href={registerUrl} target="_blank" rel="noopener noreferrer" class="btn-ghost-light">Registrar mi negocio</a>
         </div>
-      </section>
-
+      </div>
     </div>
-  </main>
+  </section>
+
+  <section class="pb-20 md:pb-28">
+    <div class="container-custom">
+      <SectionHeading
+        eyebrow="Tu visita"
+        title="¿Listo para conocer María Parado de Bellido?"
+        intro="Te ayudamos a planificar tu visita para descubrir la riqueza cultural, histórica y natural del distrito."
+      />
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/planifica-tu-visita" class="btn-primary">Planifica tu visita</a>
+        <a href="/lugares" class="btn-secondary">Explorar destinos</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

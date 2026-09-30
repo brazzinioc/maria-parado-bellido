@@ -33,9 +33,13 @@ pnpm-debug.log*
 
 # Data
 data/
+!src/data/
 scripts/
 docs/
 photos/
+
+# Video fuente sin procesar (no se sirve en el sitio)
+raw-media/
 
 # IA
 .claude/

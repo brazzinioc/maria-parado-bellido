@@ -1,0 +1,183 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import { fetchFestivities } from "../../lib/api";
+import type { Festivity } from "../../types";
+
+// Genera una pagina estatica por cada festividad publicada en el CMS
+export async function getStaticPaths() {
+  const festivities = await fetchFestivities();
+  return festivities.map((festivity) => ({
+    params: { slug: festivity.slug },
+    props: { festivity },
+  }));
+}
+
+interface Props {
+  festivity: Festivity;
+}
+
+const { festivity } = Astro.props;
+
+// Formatea "YYYY-MM-DD" evitando desfases de zona horaria.
+// Si el valor no es una fecha ISO valida, se devuelve el texto tal cual
+// (el cronograma del CMS usa texto libre como "15 de agosto - 7:00am").
+function formatDate(dateStr: string): string {
+  const iso = dateStr.split("T")[0];
+  const parts = iso.split("-").map(Number);
+  if (parts.length !== 3 || parts.some((n) => Number.isNaN(n))) return dateStr;
+  const [y, m, d] = parts;
+  return new Date(y, m - 1, d).toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+// Fechas del programa: el CMS puede enviar ISO ("2026-08-11T07:00:00Z") o texto libre.
+function formatScheduleDate(value: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  const day = d.toLocaleDateString("es-PE", { day: "numeric", month: "long", timeZone: "UTC" });
+  if (!value.includes("T")) return day;
+  const time = d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
+  return `${day} · ${time}`;
+}
+
+const dateRange =
+  festivity.start_date === festivity.end_date
+    ? formatDate(festivity.start_date)
+    : `${formatDate(festivity.start_date)} — ${formatDate(festivity.end_date)}`;
+
+const coverImage = festivity.images?.[0];
+
+// Iniciales para el avatar de cada cargonte (primera + ultima palabra)
+function initials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "?";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+}
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Festividades", url: "/festividades" },
+  { name: festivity.name, url: `/festividades/${festivity.slug}` },
+];
+
+const structuredData = [
+  {
+    type: "event" as const,
+    data: festivity,
+  },
+];
+---
+
+<BaseLayout
+  title={`${festivity.name}: fiesta en Pomabamba, Ayacucho`}
+  description={festivity.description.slice(0, 160)}
+  image={coverImage ?? "/images/hero-festivities.webp"}
+  article={true}
+  keywords={[festivity.name, "festividad Ayacucho", "María Parado de Bellido", "tradiciones andinas"]}
+  breadcrumbs={breadcrumbs}
+  structuredData={structuredData}
+>
+  <PageHero
+    eyebrow="Festividad"
+    title={festivity.name}
+    intro={festivity.place?.name ? `${dateRange} · ${festivity.place.name}` : dateRange}
+    image={coverImage ?? "/images/hero-festivities.webp"}
+    imageAlt={festivity.name}
+    breadcrumbs={breadcrumbs}
+    size="lg"
+  />
+
+  <section class="py-16 md:py-24">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <span class="eyebrow">Sobre la festividad</span>
+        <p class="text-lg leading-relaxed whitespace-pre-line">{festivity.description}</p>
+      </div>
+      <aside class="lg:col-span-5">
+        <dl class="rounded-2xl bg-white border border-line divide-y divide-line">
+          <div class="px-6 py-4">
+            <dt class="text-sm">Fecha</dt>
+            <dd class="mt-1 font-semibold text-ink">{dateRange}</dd>
+          </div>
+          {festivity.place?.name && (
+            <div class="px-6 py-4">
+              <dt class="text-sm">Lugar</dt>
+              <dd class="mt-1 font-semibold text-ink">{festivity.place.name}</dd>
+            </div>
+          )}
+          <div class="px-6 py-5">
+            <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  {festivity.schedule && festivity.schedule.length > 0 && (
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container-custom max-w-4xl">
+        <span class="eyebrow">Programación</span>
+        <h2 class="section-heading mb-10">Programa de la fiesta</h2>
+        <ol class="relative border-l border-line ml-3 space-y-8">
+          {festivity.schedule.map((item) => (
+            <li class="relative pl-8">
+              <span class="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full bg-primary ring-4 ring-white" aria-hidden="true"></span>
+              {item.date && (
+                <p class="text-xs font-semibold uppercase tracking-[0.15em] text-primary mb-1">{formatScheduleDate(item.date)}</p>
+              )}
+              <p class="text-lg font-semibold text-ink leading-snug">{item.activity}</p>
+              {item.location && <p class="mt-1 text-sm">{item.location}</p>}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  {festivity.cargontes && festivity.cargontes.length > 0 && (
+    <section class="py-16 md:py-24">
+      <div class="container-custom">
+        <span class="eyebrow">Cargontes</span>
+        <h2 class="section-heading">Quienes hacen posible la fiesta</h2>
+        <p class="text-lg mb-10 max-w-2xl">
+          Las familias que con devoción y esfuerzo organizan y financian la festividad.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {festivity.cargontes.map((cargonte) => (
+            <div class="rounded-2xl bg-white border border-line p-6 flex gap-4">
+              <div class="h-12 w-12 flex-shrink-0 rounded-full bg-primary-soft text-primary-dark flex items-center justify-center font-semibold">
+                {initials(cargonte.name)}
+              </div>
+              <div class="min-w-0">
+                <p class="font-semibold text-ink leading-tight">{cargonte.name}</p>
+                <p class="text-sm font-semibold text-secondary mt-1">{cargonte.role}</p>
+                {cargonte.notes && <p class="text-sm mt-2 leading-relaxed">{cargonte.notes}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="relative py-24 md:py-32 overflow-hidden">
+    <img src={coverImage ?? "/images/hero-festivities.webp"} alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
+    <div class="container-custom relative text-center">
+      <h2 class="section-heading !text-white">¿Quieres vivir esta festividad?</h2>
+      <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
+        Te ayudamos con las fechas exactas, cómo llegar y cómo participar de cerca en nuestras celebraciones.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/planifica-tu-visita" class="btn-primary">Planifica tu visita</a>
+        <a href="/festividades" class="btn-ghost-light">Ver todas las festividades</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

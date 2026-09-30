@@ -46,6 +46,13 @@ const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL || "#";
     bottom: 6.5rem; /* Espacio suficiente sobre WhatsApp (3.25rem btn + 1.5rem margen + 1.75rem gap) */
     right: 1.5rem;
     z-index: 998; /* Justo debajo de WhatsApp (999) pero por encima del contenido */
+    transition: opacity 0.3s ease;
+  }
+
+  /* Diferido en la home: se revela apenas el hero cinematográfico sale del viewport (ver BaseLayout.astro) */
+  :global(body.home-hero-pending) .feedback-widget-container {
+    opacity: 0;
+    pointer-events: none;
   }
 
   @media (min-width: 640px) {
@@ -60,7 +67,7 @@ const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL || "#";
     align-items: center;
     gap: 0.5rem;
     padding: 0.875rem 1.25rem;
-    background: linear-gradient(135deg, #e91e8c 0%, #d42c2a 50%, #ff6b35 100%);
+    background: #b5452a;
     color: white;
     font-weight: 600;
     font-size: 0.95rem;
@@ -78,7 +85,7 @@ const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL || "#";
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 6px 30px rgba(233, 30, 140, 0.6),
       0 4px 15px rgba(212, 44, 42, 0.5);
-    background: linear-gradient(135deg, #ff3ca8 0%, #e84745 50%, #ff8555 100%);
+    background: #963722;
   }
 
   /* Efecto activo/click */

@@ -1,0 +1,151 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import PhotoCard from "../../components/PhotoCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import type { TouristPlace } from "../../types";
+import { fetchPlaces } from "../../lib/api";
+import { placeCategoryLabel, placeCoverImage } from "../../lib/places";
+
+// Contenido 100% desde el CMS: si no hay lugares publicados, la pagina queda vacia
+const touristPlaces: TouristPlace[] = await fetchPlaces();
+
+// Agrupar por categoría
+const naturalPlaces = touristPlaces.filter(p => p.category === "natural");
+const archaeologicalPlaces = touristPlaces.filter(p => p.category === "archaeological");
+const historicalPlaces = touristPlaces.filter(p => p.category === "historical");
+const culturalPlaces = touristPlaces.filter(p => p.category === "cultural");
+const historicalAndCulturalPlaces = [...historicalPlaces, ...culturalPlaces];
+
+const groups = [
+  {
+    id: "naturaleza",
+    eyebrow: "Naturaleza",
+    title: "Paisajes naturales",
+    intro: "Miradores, formaciones rocosas y ecosistemas entre los 2,500 y 4,800 msnm.",
+    places: naturalPlaces,
+  },
+  {
+    id: "arqueologia",
+    eyebrow: "Arqueología",
+    title: "Legado Chanca",
+    intro: "Vestigios de quienes habitaron estos Andes mucho antes que nosotros.",
+    places: archaeologicalPlaces,
+  },
+  {
+    id: "historia-y-cultura",
+    eyebrow: "Historia y cultura",
+    title: "Memoria viva",
+    intro: "Templos, plazas y lugares donde la historia del distrito sigue presente.",
+    places: historicalAndCulturalPlaces,
+  },
+].filter((g) => g.places.length > 0);
+const hasPlaces = touristPlaces.length > 0;
+
+// SEO Keywords para sitios turísticos
+const placesKeywords = [
+  "lugares turísticos Ayacucho",
+  "sitios arqueológicos Chancas",
+  "turismo María Parado de Bellido",
+  "qué visitar en Cangallo",
+  "miradores Andes Perú",
+  "río Pampas turismo",
+  "atractivos turísticos Ayacucho",
+  "Allcaqapata Pomabamba",
+  "Tururumi Ayacucho",
+  "ecoturismo Cangallo",
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Destinos", url: "/lugares" },
+];
+
+// Generar Place schema para cada lugar turístico
+const placeSchemas = touristPlaces.map((place) => ({
+  type: "place" as const,
+  data: place,
+}));
+
+// ItemList schema para la lista de lugares (solo si hay lugares publicados)
+const placesStructuredData = hasPlaces
+  ? [
+      {
+        type: "itemList" as const,
+        data: {
+          name: "Sitios Turísticos de María Parado de Bellido",
+          description: "Guía completa de atractivos turísticos del distrito María Parado de Bellido: sitios arqueológicos, paisajes naturales, lugares históricos y culturales en Ayacucho, Perú.",
+          items: touristPlaces.map((p) => ({
+            name: p.name,
+            description: p.description,
+            url: `/lugares/${p.slug}`,
+            image: p.images?.[0],
+          })),
+        },
+      },
+      ...placeSchemas,
+    ]
+  : [];
+---
+
+<BaseLayout
+  title="Destinos turísticos en María Parado de Bellido, Ayacucho"
+  description="Descubre los destinos de María Parado de Bellido: miradores, sitios arqueológicos Chancas, paisajes andinos y lugares históricos en Cangallo, Ayacucho."
+  image="/images/hero_2.webp"
+  keywords={placesKeywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={placesStructuredData}
+>
+  <PageHero
+    eyebrow="Destinos"
+    title="Lugares que tienes que conocer"
+    intro="Desde vestigios de la cultura Chanca hasta miradores sobre el valle: cada rincón guarda una historia."
+    image="/images/hero_2.webp"
+    imageAlt="Cordillera andina y paisajes de María Parado de Bellido"
+    breadcrumbs={breadcrumbs}
+  />
+
+  {!hasPlaces && (
+    <section class="container-custom py-20">
+      <div class="max-w-2xl mx-auto text-center rounded-2xl bg-white border border-line p-10">
+        <h2 class="font-heading font-semibold text-2xl mb-3">Aún no hay destinos publicados</h2>
+        <p>Estamos preparando la información de los atractivos del distrito. Vuelve pronto para descubrirlos.</p>
+      </div>
+    </section>
+  )}
+
+  {groups.map((group, gi) => (
+    <section id={group.id} class:list={["py-16 md:py-24", gi % 2 === 1 && "bg-white"]}>
+      <div class="container-custom">
+        <SectionHeading eyebrow={group.eyebrow} title={group.title} intro={group.intro} align="left" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          {group.places.map((place) => (
+            <PhotoCard
+              href={`/lugares/${place.slug}`}
+              image={placeCoverImage(place)}
+              alt={place.name}
+              title={place.name}
+              subtitle={placeCategoryLabel(place.category)}
+              meta={place.location.name || "Pomabamba"}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="py-16 md:py-24">
+    <div class="container-custom">
+      <div class="rounded-3xl bg-secondary text-white p-8 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2">
+          <h2 class="font-heading text-3xl md:text-4xl font-semibold !text-white mb-3">Arma tu recorrido</h2>
+          <p class="text-white/85 text-lg">Cómo llegar, qué llevar y cuándo venir para aprovechar cada destino.</p>
+        </div>
+        <div class="flex md:justify-end">
+          <a href="/planifica-tu-visita" class="btn-ghost-light">Planifica tu visita</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

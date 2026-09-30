@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import PhotoCard from "../../components/PhotoCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import InteractiveMap from "../../components/InteractiveMap";
+import { fetchPlaces } from "../../lib/api";
+import { getExperiences } from "../../lib/content";
+import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../../lib/places";
+import type { TouristPlace } from "../../types";
+
+export async function getStaticPaths() {
+  const places = await fetchPlaces();
+  return places.map((place) => ({
+    params: { slug: place.slug },
+    props: { place, places },
+  }));
+}
+
+interface Props {
+  place: TouristPlace;
+  places: TouristPlace[];
+}
+
+const { place, places } = Astro.props;
+
+// Lugares cercanos: primero los de la misma categoría
+const related = [
+  ...places.filter((p) => p.id !== place.id && p.category === place.category),
+  ...places.filter((p) => p.id !== place.id && p.category !== place.category),
+].slice(0, 3);
+
+const experiences = await getExperiences();
+const suggestedExperiences =
+  place.category === "natural" || place.category === "archaeological"
+    ? experiences.filter((e) => e.slug !== "turismo-vivencial")
+    : experiences.filter((e) => e.slug === "turismo-vivencial");
+
+const categoryLabel = placeCategoryLabel(place.category);
+const paragraphs = place.description.split(/\n{2,}/);
+const cover = placeCoverImage(place);
+const extraImages = place.images?.slice(1, 5) ?? [];
+
+const facts = [
+  { label: "Tipo", value: categoryLabel },
+  place.location.name && { label: "Ubicación", value: place.location.name },
+  place.bestTimeToVisit && { label: "Mejor época", value: place.bestTimeToVisit },
+  place.entryFee !== undefined && {
+    label: "Entrada",
+    value: place.entryFee > 0 ? `S/ ${place.entryFee.toFixed(2)}` : "Libre",
+  },
+].filter(Boolean) as { label: string; value: string }[];
+
+const mapMarkers = [
+  {
+    id: place.id,
+    title: place.name,
+    type: "place" as const,
+    name: place.location.name,
+    lat: place.location.lat,
+    lng: place.location.lng,
+  },
+];
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Destinos", url: "/lugares" },
+  { name: place.name, url: `/lugares/${place.slug}` },
+];
+
+const description =
+  place.description.length > 155 ? `${place.description.slice(0, 152).trimEnd()}…` : place.description;
+---
+
+<BaseLayout
+  title={`${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba, Ayacucho`}
+  description={description}
+  image={cover}
+  keywords={[place.name, `${place.name} Ayacucho`, "turismo Cangallo", "María Parado de Bellido", categoryLabel]}
+  breadcrumbs={breadcrumbs}
+  structuredData={[{ type: "place" as const, data: place }]}
+>
+  <PageHero
+    eyebrow={categoryLabel}
+    title={place.name}
+    intro={place.location.name ? `${place.location.name} · María Parado de Bellido` : "María Parado de Bellido"}
+    image={cover}
+    imageAlt={place.name}
+    breadcrumbs={breadcrumbs}
+    size="lg"
+  />
+
+  <section class="py-16 md:py-24">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <span class="eyebrow">Sobre este lugar</span>
+        <div class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:text-ink text-ink-soft">
+          {paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+
+        {place.howToGetThere && (
+          <div class="mt-10 rounded-2xl bg-white border border-line p-6 md:p-8">
+            <h2 class="font-heading text-2xl font-semibold mb-3">Cómo llegar</h2>
+            <p class="leading-relaxed">{place.howToGetThere}</p>
+          </div>
+        )}
+      </div>
+
+      <aside class="lg:col-span-5 space-y-6">
+        <dl class="rounded-2xl bg-white border border-line divide-y divide-line">
+          {facts.map((fact) => (
+            <div class="flex items-baseline justify-between gap-4 px-6 py-4">
+              <dt class="text-sm text-ink-soft">{fact.label}</dt>
+              <dd class="font-semibold text-ink text-right">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {hasCoordinates(place) && (
+          <InteractiveMap
+            client:visible
+            markers={mapMarkers}
+            center={[place.location.lat, place.location.lng]}
+            zoom={14}
+            className="h-72"
+          />
+        )}
+
+        <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+      </aside>
+    </div>
+  </section>
+
+  {extraImages.length > 0 && (
+    <section class="pb-16 md:pb-24">
+      <div class="container-custom grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        {extraImages.map((src, i) => (
+          <div class="relative aspect-square overflow-hidden rounded-2xl">
+            <img src={src} alt={`${place.name} — foto ${i + 2}`} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {suggestedExperiences.length > 0 && (
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container-custom">
+        <SectionHeading eyebrow="Cómo vivirlo" title="Experiencias recomendadas" align="left" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+          {suggestedExperiences.map((exp) => (
+            <PhotoCard
+              href={`/experiencias/${exp.slug}`}
+              image={exp.image}
+              alt={exp.imageAlt}
+              title={exp.title}
+              subtitle={exp.tagline}
+              size="wide"
+              cta="Descubrir"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section class="py-16 md:py-24">
+      <div class="container-custom">
+        <SectionHeading eyebrow="Muy cerca" title="Otros destinos" align="left">
+          <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
+        </SectionHeading>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          {related.map((p) => (
+            <PhotoCard
+              href={`/lugares/${p.slug}`}
+              image={placeCoverImage(p)}
+              alt={p.name}
+              title={p.name}
+              subtitle={placeCategoryLabel(p.category)}
+              meta={p.location.name || "Pomabamba"}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

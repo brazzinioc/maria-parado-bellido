@@ -1,0 +1,169 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { getVisitInfo } from "../lib/content";
+import { fetchBusinesses } from "../lib/api";
+
+const [info, businesses] = await Promise.all([getVisitInfo(), fetchBusinesses()]);
+
+const whatsappNumber = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || "+51999888777").replace(/\D/g, "");
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(info.contact.whatsappMessage)}`;
+
+// Servicios del directorio agrupados por tipo, pensados para el visitante
+const serviceGroups = [
+  { category: "hostal", label: "Dónde dormir", description: "Hospedajes y casas de familia" },
+  { category: "restaurante", label: "Dónde comer", description: "Restaurantes y comida tradicional" },
+  { category: "transporte", label: "Cómo moverte", description: "Transporte local y colectivos" },
+  { category: "artesania", label: "Qué llevarte", description: "Artesanía y productos locales" },
+].map((group) => ({
+  ...group,
+  count: businesses.filter((b) => b.category === group.category).length,
+}));
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Planifica tu visita", url: "/planifica-tu-visita" },
+];
+---
+
+<BaseLayout
+  title="Planifica tu visita a Pomabamba y María Parado de Bellido"
+  description="Cómo llegar a Pomabamba desde Lima y Ayacucho, mejor época para viajar, qué llevar, alojamiento y preguntas frecuentes para visitar María Parado de Bellido."
+  image="/images/hero_1.webp"
+  keywords={["cómo llegar a Pomabamba", "Pomabamba Ayacucho", "viajar a Cangallo", "turismo Ayacucho", "clima Pomabamba"]}
+  breadcrumbs={breadcrumbs}
+  structuredData={[{ type: "faq" as const, data: { faqs: info.faqs } }]}
+>
+  <PageHero
+    eyebrow="Planifica tu visita"
+    title="Todo listo para tu viaje"
+    intro={info.intro}
+    image="/images/hero_1.webp"
+    imageAlt="Vista panorámica de Pomabamba"
+    breadcrumbs={breadcrumbs}
+  />
+
+  <!-- Datos clave -->
+  <section class="bg-white border-b border-line">
+    <dl class="container-custom grid grid-cols-2 md:grid-cols-4 divide-x divide-line">
+      {info.highlights.map((item) => (
+        <div class="py-6 px-4 first:pl-0">
+          <dt class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft">{item.label}</dt>
+          <dd class="mt-1 font-heading text-lg md:text-xl font-semibold text-ink">{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Cómo llegar -->
+  <section id="como-llegar" class="py-20 md:py-24">
+    <div class="container-custom">
+      <SectionHeading eyebrow="Cómo llegar" title="El camino a Pomabamba" align="left" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        {info.routes.map((route) => (
+          <article class="rounded-2xl bg-white border border-line p-6 md:p-8">
+            <h3 class="font-heading text-2xl font-semibold mb-5">{route.title}</h3>
+            <ol class="space-y-4">
+              {route.steps.map((step, i) => (
+                <li class="flex gap-4">
+                  <span class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">{i + 1}</span>
+                  <span class="leading-relaxed">{step}</span>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cuándo venir + qué llevar -->
+  <section id="cuando-venir" class="py-20 md:py-24 bg-white">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-7">
+        <SectionHeading eyebrow="Cuándo venir" title="Clima y temporadas" align="left" class="!mb-8" />
+        <div class="space-y-4">
+          {info.seasons.map((season) => (
+            <div class="rounded-2xl border border-line p-6">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                <h3 class="font-heading text-xl font-semibold">{season.name}</h3>
+                <span class="text-sm font-semibold text-secondary">{season.months}</span>
+              </div>
+              <p class="leading-relaxed">{season.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div id="que-llevar" class="lg:col-span-5">
+        <div class="rounded-2xl bg-accent-soft p-6 md:p-8 lg:mt-24">
+          <h2 class="font-heading text-2xl font-semibold mb-5">Qué llevar</h2>
+          <ul class="space-y-3">
+            {info.packing.map((item) => (
+              <li class="flex gap-3">
+                <svg class="mt-1 h-5 w-5 flex-shrink-0 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios" class="py-20 md:py-24">
+    <div class="container-custom">
+      <SectionHeading eyebrow="Servicios" title="Para tu estadía" align="left">
+        <a slot="actions" href="/directorio" class="btn-secondary">Ver directorio completo</a>
+      </SectionHeading>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {serviceGroups.map((group) => (
+          <a href="/directorio" class="card p-6 group">
+            <h3 class="font-heading text-xl font-semibold group-hover:text-primary transition-colors">{group.label}</h3>
+            <p class="mt-2 text-sm">{group.description}</p>
+            <p class="mt-5 text-sm font-semibold text-primary">
+              {group.count > 0 ? `${group.count} ${group.count === 1 ? "opción" : "opciones"} →` : "Ver directorio →"}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Preguntas frecuentes -->
+  <section id="preguntas-frecuentes" class="py-20 md:py-24 bg-white">
+    <div class="container-custom max-w-3xl">
+      <SectionHeading eyebrow="Preguntas frecuentes" title="Antes de viajar" />
+      <div class="divide-y divide-line border-y border-line">
+        {info.faqs.map((faq) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink text-lg">
+              {faq.question}
+              <svg class="h-5 w-5 flex-shrink-0 text-primary transition-transform group-open:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14" /></svg>
+            </summary>
+            <p class="mt-3 leading-relaxed">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="py-20 md:py-24">
+    <div class="container-custom">
+      <div class="rounded-3xl bg-secondary text-white p-8 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2">
+          <h2 class="font-heading text-3xl md:text-4xl font-semibold !text-white mb-3">{info.contact.title}</h2>
+          <p class="text-white/85 text-lg">{info.contact.description}</p>
+        </div>
+        <div class="flex md:justify-end">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-ghost-light">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 01-4.8-1.31l-.34-.2-3.57.93.95-3.48-.22-.36a9.4 9.4 0 01-1.44-5.02c0-5.2 4.23-9.43 9.44-9.43 2.52 0 4.89.98 6.67 2.77a9.37 9.37 0 012.76 6.67c0 5.2-4.23 9.43-9.44 9.43zM20.1 3.9A11.3 11.3 0 0012.05.56C5.8.56.7 5.65.7 11.9c0 2 .52 3.95 1.52 5.67L.6 23.44l6.02-1.58a11.33 11.33 0 005.42 1.38h.01c6.25 0 11.34-5.09 11.35-11.34 0-3.03-1.18-5.88-3.3-8z" /></svg>
+            Escríbenos por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

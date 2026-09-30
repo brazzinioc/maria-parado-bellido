@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Tour, Festivity, Location } from '../types';
+import 'leaflet/dist/leaflet.css';
 
 interface MapMarker extends Location {
   id: string;
@@ -15,6 +16,9 @@ interface Props {
   zoom?: number;
   className?: string;
 }
+
+const escapeHtml = (value: string) =>
+  value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
 
 export default function InteractiveMap({
   markers = [],
@@ -36,12 +40,6 @@ export default function InteractiveMap({
         const leaflet = await import('leaflet');
         L = leaflet.default;
 
-        // Import Leaflet CSS
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        document.head.appendChild(link);
-
         if (!mapRef.current) return;
 
         // Initialize map
@@ -60,7 +58,7 @@ export default function InteractiveMap({
             className: 'custom-marker',
             html: `
               <div class="relative">
-                <div class="w-10 h-10 bg-indigo rounded-full shadow-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-secondary rounded-full shadow-lg flex items-center justify-center">
                   <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
                   </svg>
@@ -88,7 +86,7 @@ export default function InteractiveMap({
             className: 'custom-marker',
             html: `
               <div class="relative">
-                <div class="w-10 h-10 bg-mostaza rounded-full shadow-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-primary rounded-full shadow-lg flex items-center justify-center">
                   <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -109,9 +107,9 @@ export default function InteractiveMap({
           // Popup content
           const popupContent = `
             <div class="p-2 min-w-[200px]">
-              ${marker.image ? `<img src="${marker.image}" alt="${marker.title}" class="w-full h-32 object-cover rounded mb-2" />` : ''}
-              <h3 class="font-semibold text-sm mb-1">${marker.title}</h3>
-              ${marker.slug ? `<a href="/${marker.type === 'tour' ? 'tours' : marker.type === 'festivity' ? 'festivities' : 'places'}/${marker.slug}" class="text-xs text-indigo hover:underline">Ver detalles →</a>` : ''}
+              ${marker.image ? `<img src="${escapeHtml(marker.image)}" alt="${escapeHtml(marker.title)}" class="w-full h-32 object-cover rounded mb-2" />` : ''}
+              <h3 class="font-semibold text-sm mb-1">${escapeHtml(marker.title)}</h3>
+              ${marker.slug ? `<a href="/${marker.type === 'tour' ? 'tours' : marker.type === 'festivity' ? 'festividades' : 'lugares'}/${encodeURIComponent(marker.slug)}" class="text-xs text-primary font-semibold hover:underline">Ver detalles →</a>` : ''}
             </div>
           `;
 
@@ -136,18 +134,18 @@ export default function InteractiveMap({
   }, [markers, center, zoom]);
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative isolate z-0 overflow-hidden rounded-2xl ${className}`}>
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-crema z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-sand z-10">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo mx-auto mb-2"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-2"></div>
             <p className="text-sm text-gray-600">Cargando mapa...</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-crema z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-sand z-10">
           <div className="text-center p-6">
             <p className="text-red-600 mb-2">{error}</p>
             <button
@@ -160,7 +158,7 @@ export default function InteractiveMap({
         </div>
       )}
 
-      <div ref={mapRef} className="w-full h-full rounded-lg shadow-lg" />
+      <div ref={mapRef} className="w-full h-full rounded-2xl" />
     </div>
   );
 }

@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    { "source": "/places", "destination": "/lugares", "permanent": true },
+    { "source": "/food", "destination": "/gastronomia", "permanent": true },
+    { "source": "/about", "destination": "/historia", "permanent": true },
+    { "source": "/privacy", "destination": "/privacidad", "permanent": true },
+    { "source": "/festivities", "destination": "/festividades", "permanent": true },
+    { "source": "/festivities/:slug", "destination": "/festividades/:slug", "permanent": true }
+  ]
+}
