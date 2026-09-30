@@ -70,8 +70,14 @@ const defaultWeather: WeatherData = {
   icon: "⛅",
 };
 
-export default function WeatherStat() {
+interface WeatherStatProps {
+  /** "dark": pill de vidrio sobre foto/video oscuro. "light": tarjeta sobre fondo claro. */
+  variant?: "dark" | "light";
+}
+
+export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
   const [weather, setWeather] = useState<WeatherData>(defaultWeather);
+  const isDark = variant === "dark";
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -106,14 +112,20 @@ export default function WeatherStat() {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full border border-line shadow-sm">
+    <div
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+        isDark
+          ? "bg-white/15 backdrop-blur-sm border-white/20"
+          : "bg-white border-line shadow-sm"
+      }`}
+    >
       <span className="text-base" role="img" aria-label={weather.description}>
         {weather.icon}
       </span>
-      <span className="font-bold text-naranja text-lg">
+      <span className={`font-bold text-lg ${isDark ? "text-amarillo drop-shadow" : "text-naranja"}`}>
         {weather.temperature}°
       </span>
-      <span className="text-ink-soft text-sm hidden sm:inline">
+      <span className={`text-sm hidden sm:inline ${isDark ? "text-white/70" : "text-ink-soft"}`}>
         Ahora · {weather.description}
       </span>
     </div>

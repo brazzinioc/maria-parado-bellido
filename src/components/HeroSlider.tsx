@@ -25,6 +25,24 @@ function isSlowConnection(): boolean {
   return typeof connection.effectiveType === "string" && /2g/.test(connection.effectiveType);
 }
 
+// Resuelve UNA sola URL de video (sin <source> hijos: en React, un <video>
+// con <source> hijos dinámicos falla de forma intermitente e impredecible
+// -confirmado con pruebas reales-, mientras que src directo en <video>
+// siempre funciona). Elige mobile/desktop por ancho y webm/mp4 según lo
+// que el navegador reporte poder reproducir.
+function resolveVideoSrc(slide: Slide): string | undefined {
+  const isNarrow = window.matchMedia("(max-width: 767px)").matches;
+  const probe = document.createElement("video");
+  const supportsWebm = probe.canPlayType('video/webm; codecs="vp9"') !== "";
+
+  if (isNarrow) {
+    if (supportsWebm && slide.mobileWebm) return slide.mobileWebm;
+    if (slide.mobileVideo) return slide.mobileVideo;
+  }
+  if (supportsWebm && slide.webm) return slide.webm;
+  return slide.video;
+}
+
 /**
  * Video de fondo del hero, cargado como mejora progresiva sobre su
  * poster (que ya se pinta de inmediato como <img>). No se monta en
@@ -32,19 +50,20 @@ function isSlowConnection(): boolean {
  * lenta/con ahorro de datos, y se pausa cuando no es el slide activo,
  * la pestaña está oculta o sale del viewport, para no gastar batería
  * de más. En viewports angostos se sirve una variante más liviana
- * (ver <source media="(max-width: 767px)"> más abajo), no se bloquea
- * el video por completo.
+ * (ver <source media="(max-width: 767px)"> más abajo).
  */
 function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [canShowVideo, setCanShowVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const evaluate = () => {
       setCanShowVideo(!reducedMotionQuery.matches && !isSlowConnection());
+      setVideoSrc(resolveVideoSrc(slide));
     };
 
     evaluate();
@@ -53,7 +72,7 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
     return () => {
       reducedMotionQuery.removeEventListener("change", evaluate);
     };
-  }, []);
+  }, [slide]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -92,9 +111,10 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
         loading="eager"
         fetchPriority="high"
       />
-      {canShowVideo && slide.video && (
+      {canShowVideo && videoSrc && (
         <video
           ref={videoRef}
+          src={videoSrc}
           className={`absolute inset-0 h-full w-full object-cover object-bottom transition-opacity duration-700 ${
             videoReady ? "opacity-100" : "opacity-0"
           }`}
@@ -108,18 +128,21 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
           aria-hidden="true"
           tabIndex={-1}
           onCanPlay={() => setVideoReady(true)}
-          onError={() => setCanShowVideo(false)}
-        >
-          {/* En viewports angostos, el navegador prueba primero estas fuentes livianas. */}
-          {slide.mobileWebm && (
-            <source media="(max-width: 767px)" src={slide.mobileWebm} type="video/webm" />
-          )}
-          {slide.mobileVideo && (
-            <source media="(max-width: 767px)" src={slide.mobileVideo} type="video/mp4" />
-          )}
-          {slide.webm && <source src={slide.webm} type="video/webm" />}
-          <source src={slide.video} type="video/mp4" />
-        </video>
+          onError={() => {
+            // Si falló la fuente webm elegida, reintenta con su equivalente
+            // mp4 antes de rendirse del todo (sin volver al patrón
+            // <source>, que es el que causaba fallos intermitentes).
+            if (videoSrc === slide.webm && slide.video) {
+              setVideoSrc(slide.video);
+              return;
+            }
+            if (videoSrc === slide.mobileWebm && slide.mobileVideo) {
+              setVideoSrc(slide.mobileVideo);
+              return;
+            }
+            setCanShowVideo(false);
+          }}
+        />
       )}
     </>
   );

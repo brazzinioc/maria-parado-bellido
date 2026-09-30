@@ -114,11 +114,11 @@ const homeStructuredData = [
   <!-- 1. Hero cinematográfico -->
   <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
     <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/65 to-ink/30" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/15" aria-hidden="true"></div>
 
     <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
       <div class="container-custom w-full pb-10 md:pb-16">
-        <div class="max-w-3xl [text-shadow:0_2px_16px_rgba(0,0,0,0.55)]">
+        <div class="max-w-3xl [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
           <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-accent mb-4">
             María Parado de Bellido
           </p>
@@ -137,14 +137,26 @@ const homeStructuredData = [
             </a>
           </div>
         </div>
+
+        <!-- Indicadores: desde tablet (md) hacia arriba van dentro del hero. -->
+        <!-- En mobile viven aparte, ver sección 1b. -->
+        <div class="hidden md:flex mt-14 pt-6 border-t border-white/20 flex-wrap items-center gap-x-10 gap-y-4 md:pr-48 [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
+          {heroStats.map((stat) => (
+            <div class="text-white">
+              <span class="font-heading text-2xl md:text-3xl font-semibold">{stat.value}</span>
+              <span class="ml-1.5 text-sm text-white/75">{stat.label}</span>
+            </div>
+          ))}
+          <div class="sm:ml-auto">
+            <WeatherStat client:load variant="dark" />
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 1b. Franja de indicadores (separada del hero a propósito: mantiene -->
-  <!-- el hero enfocado en la foto/video + mensaje + CTA, sin competir con -->
-  <!-- datos secundarios) -->
-  <section class="bg-crema border-b border-line">
+  <!-- 1b. Franja de indicadores: solo en mobile (ver arriba para tablet/desktop) -->
+  <section class="bg-crema border-b border-line md:hidden">
     <div class="container-custom py-5 flex flex-wrap items-center gap-x-10 gap-y-3">
       {heroStats.map((stat) => (
         <div class="text-ink">
@@ -153,7 +165,7 @@ const homeStructuredData = [
         </div>
       ))}
       <div class="sm:ml-auto">
-        <WeatherStat client:load />
+        <WeatherStat client:load variant="light" />
       </div>
     </div>
   </section>
