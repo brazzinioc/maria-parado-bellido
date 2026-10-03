@@ -122,7 +122,7 @@ export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
       <span className="text-base" role="img" aria-label={weather.description}>
         {weather.icon}
       </span>
-      <span className={`font-bold text-lg ${isDark ? "text-amarillo drop-shadow" : "text-naranja"}`}>
+      <span className={`font-bold text-lg ${isDark ? "text-amarillo" : "text-naranja"}`}>
         {weather.temperature}°
       </span>
       <span className={`text-sm hidden sm:inline ${isDark ? "text-white/70" : "text-ink-soft"}`}>
