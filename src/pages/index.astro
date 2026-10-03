@@ -115,14 +115,17 @@ const homeStructuredData = [
   <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
     <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
     <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/15" aria-hidden="true"></div>
+    <!-- Scrim: oscurece solo la esquina inferior izquierda, donde vive el texto, -->
+    <!-- para dar contraste sin apagar el resto del video ni recurrir a sombras. -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgb(0_0_0/0.55)_0%,transparent_60%)]" aria-hidden="true"></div>
 
     <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
       <div class="container-custom w-full pb-10 md:pb-16">
-        <div class="max-w-3xl [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
-          <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-accent mb-4">
+        <div class="max-w-3xl">
+          <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-white/80 mb-4">
             María Parado de Bellido
           </p>
-          <h1 class="font-heading font-semibold !text-white text-5xl md:text-7xl leading-[1.02] mb-5">
+          <h1 class="font-heading font-semibold !text-white text-5xl md:text-7xl leading-[1.02] mb-5 [text-shadow:0_1px_2px_rgb(0_0_0/0.25)]">
             Donde los Andes guardan sus secretos
           </h1>
           <p class="text-lg md:text-xl text-white/90 mb-8">
@@ -140,7 +143,7 @@ const homeStructuredData = [
 
         <!-- Indicadores: desde tablet (md) hacia arriba van dentro del hero. -->
         <!-- En mobile viven aparte, ver sección 1b. -->
-        <div class="hidden md:flex mt-14 pt-6 border-t border-white/20 flex-wrap items-center gap-x-10 gap-y-4 md:pr-48 [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
+        <div class="hidden md:flex mt-14 pt-6 border-t border-white/20 flex-wrap items-center gap-x-10 gap-y-4 md:pr-48">
           {heroStats.map((stat) => (
             <div class="text-white">
               <span class="font-heading text-2xl md:text-3xl font-semibold">{stat.value}</span>
