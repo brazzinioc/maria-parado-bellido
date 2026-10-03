@@ -68,12 +68,11 @@ const navGroups = {
   },
   cultura: {
     label: "Cultura",
-    paths: ["/historia", "/festividades", "/gastronomia", "/comunidad"],
+    paths: ["/historia", "/festividades", "/gastronomia"],
     items: [
       { href: "/historia", label: "Nuestra historia", icon: "🏛️", description: "Raíces Chancas y memoria viva" },
       { href: "/festividades", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
       { href: "/gastronomia", label: "Gastronomía", icon: "🍲", description: "Sabores de nuestra tierra" },
-      { href: "/comunidad", label: "Comunidad", icon: "👥", description: "Vida comunal y eventos" },
     ]
   }
 };
@@ -210,7 +209,7 @@ const navLinkIdle = "text-ink hover:text-primary";
               href="/directorio"
               class={`${navLinkBase} ${isActivePath("/directorio") ? navLinkActive : navLinkIdle}`}
             >
-              Directorio
+              Servicios
             </a>
 
             <a href="/planifica-tu-visita" class="btn-primary ml-3 !py-2.5">
@@ -332,8 +331,11 @@ const navLinkIdle = "text-ink hover:text-primary";
                     : "text-ink hover:bg-sand hover:text-primary"
                 }`}
               >
-                <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">📖</span>
-                <span>Directorio</span>
+                <span class="text-xl w-8 text-center flex-shrink-0" aria-hidden="true">🧭</span>
+                <span>
+                  <span class="block">Servicios</span>
+                  <span class="block text-xs font-normal text-ink-soft">Hospedaje, comida, transporte y más</span>
+                </span>
               </a>
             </li>
 
@@ -405,9 +407,14 @@ const navLinkIdle = "text-ink hover:text-primary";
             <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Tu visita</h4>
             <ul class="space-y-2">
               <li><a href="/planifica-tu-visita" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Planifica tu visita</a></li>
-              <li><a href="/directorio" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Servicios y directorio</a></li>
-              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Comunidad</a></li>
+              <li><a href="/directorio" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Servicios</a></li>
               <li><a href="/privacidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
+            </ul>
+
+            <!-- Para vecinos: fuera del menú principal, que está pensado para el visitante -->
+            <h4 class="font-semibold text-accent mt-8 mb-4 text-xs uppercase tracking-[0.18em]">Para vecinos</h4>
+            <ul class="space-y-2">
+              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Vida comunal</a></li>
             </ul>
           </div>
 
