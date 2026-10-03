@@ -5,7 +5,7 @@ import PhotoCard from "../components/PhotoCard.astro";
 import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
 import InteractiveMap from "../components/InteractiveMap";
-import { fetchFestivities, fetchPlaces, fetchDishes } from "../lib/api";
+import { fetchFestivities, fetchPlaces } from "../lib/api";
 import { getExperiences, getGallery } from "../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
 
@@ -23,10 +23,9 @@ import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/plac
 // const dbHeroSlides = await fetchHeroSlides();
 // const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
 
-const [festivities, places, dishes, experiences, gallery] = await Promise.all([
+const [festivities, places, experiences, gallery] = await Promise.all([
   fetchFestivities(),
   fetchPlaces(),
-  fetchDishes(),
   getExperiences(),
   getGallery(),
 ]);
@@ -67,7 +66,6 @@ const mapMarkers = mapPlaces.map((p) => ({
   lng: p.location.lng,
 }));
 
-const dishPhotos = dishes.filter((d) => d.image).slice(0, 3);
 const galleryItems = gallery.slice(0, 6);
 
 const formatDay = (date: string) =>
@@ -115,18 +113,21 @@ const homeStructuredData = [
   <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
     <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
     <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/15" aria-hidden="true"></div>
+    <!-- Scrim: oscurece solo la esquina inferior izquierda, donde vive el texto, -->
+    <!-- para dar contraste sin apagar el resto del video ni recurrir a sombras. -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgb(0_0_0/0.55)_0%,transparent_60%)]" aria-hidden="true"></div>
 
     <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
       <div class="container-custom w-full pb-10 md:pb-16">
-        <div class="max-w-3xl [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
-          <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-accent mb-4">
-            María Parado de Bellido
+        <div class="max-w-3xl">
+          <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-white/80 mb-4">
+            Pomabamba · Cangallo · Ayacucho, Perú
           </p>
-          <h1 class="font-heading font-semibold !text-white text-5xl md:text-7xl leading-[1.02] mb-5">
+          <h1 class="font-heading font-semibold !text-white text-5xl md:text-7xl leading-[1.02] mb-5 [text-shadow:0_1px_2px_rgb(0_0_0/0.25)]">
             Donde los Andes guardan sus secretos
           </h1>
           <p class="text-lg md:text-xl text-white/90 mb-8">
-            Naturaleza · Cultura · Aventura
+            Tierra chanca sobre el valle del río Pampas.
           </p>
           <div class="flex flex-wrap gap-3">
             <a href="/lugares" class="btn-primary">
@@ -140,16 +141,14 @@ const homeStructuredData = [
 
         <!-- Indicadores: desde tablet (md) hacia arriba van dentro del hero. -->
         <!-- En mobile viven aparte, ver sección 1b. -->
-        <div class="hidden md:flex mt-14 pt-6 border-t border-white/20 flex-wrap items-center gap-x-10 gap-y-4 md:pr-48 [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_2px_8px_rgba(0,0,0,0.8),0_4px_24px_rgba(0,0,0,0.7)]">
+        <div class="hidden md:flex mt-14 pt-6 border-t border-white/20 flex-wrap items-center gap-x-10 gap-y-4 md:pr-48">
           {heroStats.map((stat) => (
             <div class="text-white">
               <span class="font-heading text-2xl md:text-3xl font-semibold">{stat.value}</span>
               <span class="ml-1.5 text-sm text-white/75">{stat.label}</span>
             </div>
           ))}
-          <div class="sm:ml-auto">
-            <WeatherStat client:load variant="dark" />
-          </div>
+          <WeatherStat client:load variant="dark" />
         </div>
       </div>
     </div>
@@ -224,24 +223,25 @@ const homeStructuredData = [
 
   <!-- 4. Storytelling -->
   <section class="py-20 md:py-28">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div class="relative aspect-[4/5] lg:aspect-[5/6] rounded-2xl overflow-hidden">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <div class="relative aspect-[4/3] rounded-2xl overflow-hidden lg:col-span-7">
         <img
-          src="/images/hero_3.webp"
-          alt="Tradiciones y cultura viva en Pomabamba"
+          src="/images/comparsa-carnaval-pomabamba-ayacucho.webp"
+          alt="Comparsa de carnaval con ponchos, banderas y máscaras recorriendo la plaza de Pomabamba, Ayacucho"
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover"
         />
       </div>
-      <div class="max-w-xl">
+      <div class="max-w-xl lg:col-span-5">
         <span class="eyebrow">Nuestra identidad</span>
         <h2 class="section-heading">Más que visitar, es vivir</h2>
         <p class="text-lg leading-relaxed mb-5">
-          En María Parado de Bellido, cada camino conecta con una historia, cada comunidad conserva sus
-          tradiciones y cada paisaje cuenta parte de nuestra identidad.
+          En Pomabamba las tradiciones no se guardan en vitrinas: se bailan en carnavales y fiestas patronales,
+          se tejen en mantas, chumpis y ponchos, y se comparten en la chacra.
         </p>
         <p class="leading-relaxed mb-8">
-          Somos herederos de la cultura Chanca y del espíritu de la heroína que da nombre al distrito. Aquí el
+          Somos herederos de la cultura Chanca y llevamos el nombre de
+          <strong class="text-ink">María Parado de Bellido</strong>, heroína de la Independencia. Aquí el
           <strong class="text-ink">ayni</strong> y la <strong class="text-ink">minka</strong> siguen uniendo a la
           comunidad en el trabajo y en la fiesta.
         </p>
@@ -279,31 +279,27 @@ const homeStructuredData = [
 
   <!-- 6. Gastronomía -->
   <section class="py-20 md:py-28">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-      <div class="lg:col-span-5 lg:order-2">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="max-w-xl lg:order-2">
         <span class="eyebrow">Gastronomía</span>
         <h2 class="section-heading">Sabores de nuestra tierra</h2>
-        <p class="text-lg leading-relaxed mb-8">
-          Sabores que forman parte de nuestra historia y que todavía se preparan en nuestras comunidades:
-          pachamanca, puca picante y productos de la chacra.
+        <p class="text-lg leading-relaxed mb-5">
+          En nuestra mesa todo viene de la chacra: papas nativas, habas, maíz, quinua y el queso fresco
+          que las familias elaboran con la leche del día.
+        </p>
+        <p class="leading-relaxed mb-8">
+          Con ellos se preparan la <strong class="text-ink">pachamanca</strong>, el
+          <strong class="text-ink">puca picante</strong> y los platos que acompañan cada faena y cada fiesta.
         </p>
         <a href="/gastronomia" class="btn-primary">Descubre nuestra gastronomía</a>
       </div>
-      <div class="lg:col-span-7 lg:order-1 grid grid-cols-2 gap-4 md:gap-5">
-        {dishPhotos.length >= 3 ? (
-          dishPhotos.map((dish, i) => (
-            <figure class:list={["relative overflow-hidden rounded-2xl", i === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"]}>
-              <img src={dish.image} alt={dish.name} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
-              <figcaption class="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink">
-                {dish.name}
-              </figcaption>
-            </figure>
-          ))
-        ) : (
-          <figure class="col-span-2 relative aspect-[16/10] overflow-hidden rounded-2xl">
-            <img src={dishPhotos[0]?.image || "/images/default-photo.webp"} alt={dishPhotos[0]?.name || "Gastronomía tradicional"} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
-          </figure>
-        )}
+      <div class="relative aspect-[4/5] lg:aspect-[5/6] rounded-2xl overflow-hidden lg:order-1">
+        <img
+          src="/images/gastronomia-andina-queso-habas-maiz-papa-nativa-pomabamba.webp"
+          alt="Mano sirviendo queso fresco con ají y cebolla junto a habas, maíz y papas nativas, gastronomía andina de Pomabamba, Ayacucho"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover object-[center_45%]"
+        />
       </div>
     </div>
   </section>
@@ -312,20 +308,21 @@ const homeStructuredData = [
   <section class="relative py-20 md:py-28 bg-secondary text-white overflow-hidden">
     <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
       <div class="max-w-xl">
-        <span class="eyebrow !text-accent">Comunidad</span>
+        <span class="eyebrow !text-accent">Nuestra gente</span>
         <h2 class="section-heading !text-white">Conoce nuestra gente</h2>
         <p class="text-lg leading-relaxed text-white/85 mb-8">
-          Faenas comunales, trabajo en la chacra, artesanía y fiestas: la vida diaria de nuestras comunidades es
-          el corazón de la experiencia. Visítanos con respeto y comparte con nosotros.
+          En Pomabamba el quechua sigue siendo la lengua de casa. Somos un pueblo joven, de familias que volvieron
+          a su tierra para sembrarla de nuevo. Visítanos con respeto, saluda con un <em>allillanchu</em> y comparte
+          con nosotros.
         </p>
-        <a href="/comunidad" class="btn-ghost-light">Vida comunal y eventos</a>
+        <a href="/comunidad" class="btn-ghost-light">Ver agenda del distrito</a>
       </div>
       <div class="grid grid-cols-2 gap-4">
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
-          <img src="/images/hero_5.webp" alt="Vida comunitaria en los Andes de Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+          <img src="/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp" alt="Agricultor con poncho y sombrero mostrando mazorcas de maíz nativo de colores en una feria de Pomabamba, Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
         </div>
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl mt-10">
-          <img src="/images/hero-about.webp" alt="Pobladores de María Parado de Bellido" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+          <img src="/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp" alt="Comuneros con ponchos y sus caballos reunidos en la puna de Pomabamba, Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
         </div>
       </div>
     </div>
