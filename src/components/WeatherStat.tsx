@@ -71,7 +71,7 @@ const defaultWeather: WeatherData = {
 };
 
 interface WeatherStatProps {
-  /** "dark": pill de vidrio sobre foto/video oscuro. "light": tarjeta sobre fondo claro. */
+  /** "dark": indicador en línea sobre foto/video oscuro. "light": tarjeta sobre fondo claro. */
   variant?: "dark" | "light";
 }
 
@@ -111,23 +111,28 @@ export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
     return () => clearInterval(interval);
   }, []);
 
+  // Sobre el video del hero se muestra como un indicador más (misma
+  // tipografía que "3,236 msnm"), sin pill, para no sumar otra caja a la
+  // esquina inferior derecha, donde ya flotan los botones de feedback/WhatsApp.
+  if (isDark) {
+    return (
+      <div className="text-white">
+        <span className="mr-1.5 text-xl align-[0.1em]" role="img" aria-label={weather.description}>
+          {weather.icon}
+        </span>
+        <span className="font-heading text-2xl md:text-3xl font-semibold">{weather.temperature}°</span>
+        <span className="ml-1.5 text-sm text-white/75">ahora · {weather.description.toLowerCase()}</span>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${
-        isDark
-          ? "bg-white/15 backdrop-blur-sm border-white/20"
-          : "bg-white border-line shadow-sm"
-      }`}
-    >
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border bg-white border-line shadow-sm">
       <span className="text-base" role="img" aria-label={weather.description}>
         {weather.icon}
       </span>
-      <span className={`font-bold text-lg ${isDark ? "text-amarillo" : "text-naranja"}`}>
-        {weather.temperature}°
-      </span>
-      <span className={`text-sm hidden sm:inline ${isDark ? "text-white/70" : "text-ink-soft"}`}>
-        Ahora · {weather.description}
-      </span>
+      <span className="font-bold text-lg text-naranja">{weather.temperature}°</span>
+      <span className="text-sm hidden sm:inline text-ink-soft">Ahora · {weather.description}</span>
     </div>
   );
 }
