@@ -68,10 +68,11 @@ const navGroups = {
   },
   cultura: {
     label: "Cultura",
-    paths: ["/historia", "/festividades", "/gastronomia"],
+    paths: ["/historia", "/festividades", "/comunidad", "/gastronomia"],
     items: [
       { href: "/historia", label: "Nuestra historia", icon: "🏛️", description: "Raíces Chancas y memoria viva" },
       { href: "/festividades", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
+      { href: "/comunidad", label: "Agenda del distrito", icon: "📅", description: "Próximos eventos y actividades" },
       { href: "/gastronomia", label: "Gastronomía", icon: "🍲", description: "Sabores de nuestra tierra" },
     ]
   }
@@ -398,6 +399,7 @@ const navLinkIdle = "text-ink hover:text-primary";
               <li><a href="/experiencias" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Experiencias</a></li>
               <li><a href="/historia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Nuestra historia</a></li>
               <li><a href="/festividades" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Festividades</a></li>
+              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Agenda del distrito</a></li>
               <li><a href="/gastronomia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Gastronomía</a></li>
             </ul>
           </div>
@@ -411,11 +413,6 @@ const navLinkIdle = "text-ink hover:text-primary";
               <li><a href="/privacidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
             </ul>
 
-            <!-- Para vecinos: fuera del menú principal, que está pensado para el visitante -->
-            <h4 class="font-semibold text-accent mt-8 mb-4 text-xs uppercase tracking-[0.18em]">Para vecinos</h4>
-            <ul class="space-y-2">
-              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Vida comunal</a></li>
-            </ul>
           </div>
 
           <!-- Contact -->
