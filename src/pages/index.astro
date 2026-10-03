@@ -5,7 +5,7 @@ import PhotoCard from "../components/PhotoCard.astro";
 import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
 import InteractiveMap from "../components/InteractiveMap";
-import { fetchFestivities, fetchPlaces, fetchDishes } from "../lib/api";
+import { fetchFestivities, fetchPlaces } from "../lib/api";
 import { getExperiences, getGallery } from "../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
 
@@ -23,10 +23,9 @@ import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/plac
 // const dbHeroSlides = await fetchHeroSlides();
 // const heroSlides = dbHeroSlides.length ? dbHeroSlides : fallbackHeroSlides;
 
-const [festivities, places, dishes, experiences, gallery] = await Promise.all([
+const [festivities, places, experiences, gallery] = await Promise.all([
   fetchFestivities(),
   fetchPlaces(),
-  fetchDishes(),
   getExperiences(),
   getGallery(),
 ]);
@@ -67,7 +66,6 @@ const mapMarkers = mapPlaces.map((p) => ({
   lng: p.location.lng,
 }));
 
-const dishPhotos = dishes.filter((d) => d.image).slice(0, 3);
 const galleryItems = gallery.slice(0, 6);
 
 const formatDay = (date: string) =>
@@ -281,31 +279,27 @@ const homeStructuredData = [
 
   <!-- 6. Gastronomía -->
   <section class="py-20 md:py-28">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-      <div class="lg:col-span-5 lg:order-2">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+      <div class="max-w-xl lg:order-2">
         <span class="eyebrow">Gastronomía</span>
         <h2 class="section-heading">Sabores de nuestra tierra</h2>
-        <p class="text-lg leading-relaxed mb-8">
-          Sabores que forman parte de nuestra historia y que todavía se preparan en nuestras comunidades:
-          pachamanca, puca picante y productos de la chacra.
+        <p class="text-lg leading-relaxed mb-5">
+          En nuestra mesa todo viene de la chacra: papas nativas, habas, maíz, quinua y el queso fresco
+          que las familias elaboran con la leche del día.
+        </p>
+        <p class="leading-relaxed mb-8">
+          Con ellos se preparan la <strong class="text-ink">pachamanca</strong>, el
+          <strong class="text-ink">puca picante</strong> y los platos que acompañan cada faena y cada fiesta.
         </p>
         <a href="/gastronomia" class="btn-primary">Descubre nuestra gastronomía</a>
       </div>
-      <div class="lg:col-span-7 lg:order-1 grid grid-cols-2 gap-4 md:gap-5">
-        {dishPhotos.length >= 3 ? (
-          dishPhotos.map((dish, i) => (
-            <figure class:list={["relative overflow-hidden rounded-2xl", i === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"]}>
-              <img src={dish.image} alt={dish.name} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
-              <figcaption class="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink">
-                {dish.name}
-              </figcaption>
-            </figure>
-          ))
-        ) : (
-          <figure class="col-span-2 relative aspect-[16/10] overflow-hidden rounded-2xl">
-            <img src={dishPhotos[0]?.image || "/images/default-photo.webp"} alt={dishPhotos[0]?.name || "Gastronomía tradicional"} loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
-          </figure>
-        )}
+      <div class="relative aspect-[4/5] lg:aspect-[5/6] rounded-2xl overflow-hidden lg:order-1">
+        <img
+          src="/images/gastronomia-andina-queso-habas-maiz-papa-nativa-pomabamba.webp"
+          alt="Mano sirviendo queso fresco con ají y cebolla junto a habas, maíz y papas nativas, gastronomía andina de Pomabamba, Ayacucho"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover object-[center_45%]"
+        />
       </div>
     </div>
   </section>
