@@ -28,6 +28,8 @@ export interface Experience {
   highlights: string[];
   /** Condición física o experiencia previa que se necesita. */
   level?: string;
+  /** Qué vivir según la temporada: labores de la chacra y fiestas del periodo. */
+  calendar?: { months: string; farm: string; festivities: string[] }[];
   packing?: { required: string[]; recommended: string[] };
   safety?: string[];
   faqs?: { question: string; answer: string }[];

@@ -1,5 +1,5 @@
 {
-  "_nota": "Contenido de respaldo. En una segunda iteración se gestionará desde el CMS (tabla t_experiences). Revisar datos antes de producción: alturas, épocas, 'places' (slugs de t_places) y respuestas de las preguntas frecuentes.",
+  "_nota": "Contenido de respaldo. En una segunda iteración se gestionará desde el CMS (tabla t_experiences). Datos basados en el Plan de Desarrollo Concertado 2007-2022. Revisar datos antes de producción: alturas, épocas, 'places' (slugs de t_places) y respuestas de las preguntas frecuentes.",
   "items": [
     {
       "slug": "trekking",
@@ -30,14 +30,15 @@
         },
         {
           "label": "Mejor época",
-          "value": "Mayo a septiembre"
+          "value": "Abril a octubre"
         }
       ],
       "highlights": [
         "Miradores con vista al valle del río Pampas",
         "Formaciones rocosas y vestigios de la cultura Chanca",
         "Senderos tradicionales que unen comunidades",
-        "Amaneceres y cielos despejados en temporada seca"
+        "Queñuales, vizcachas y tarucas en la puna",
+        "Cielos despejados en temporada seca"
       ],
       "level": "Las rutas cortas son aptas para cualquier persona con buena salud. Las de altura piden buena condición física y un día de aclimatación previa.",
       "packing": {
@@ -70,7 +71,7 @@
         },
         {
           "question": "¿Cuál es la mejor época?",
-          "answer": "De mayo a septiembre, en temporada seca. De diciembre a marzo llueve con frecuencia y algunos caminos se ponen resbalosos."
+          "answer": "De abril a octubre, en temporada seca. De noviembre a marzo llueve con frecuencia y algunos caminos se ponen resbalosos."
         }
       ],
       "places": [
@@ -93,12 +94,12 @@
       "slug": "cicloturismo",
       "title": "Cicloturismo",
       "eyebrow": "Sobre dos ruedas",
-      "tagline": "Rutas de altura para descubrir el territorio en bicicleta.",
-      "summary": "Caminos rurales, bajadas largas y subidas de altura que recorren el distrito de comunidad en comunidad.",
+      "tagline": "Trochas, subidas de altura y downhill alrededor de Pomabamba.",
+      "summary": "Rutas por trocha y carretera alrededor de Pomabamba: subidas de altura, bajadas tipo downhill y el descenso al río Pampas.",
       "headline": "Subidas de altura, bajadas largas y una parada en cada pueblo",
       "description": [
-        "Las trochas y caminos rurales del distrito son un terreno ideal para la bicicleta de montaña. Se pedalea entre chacras, pueblos y quebradas, con el valle siempre de fondo.",
-        "Las rutas combinan subidas exigentes por la altitud con descensos largos y panorámicos. Es una forma distinta de recorrer el territorio y de detenerse a conversar con la gente en cada pueblo."
+        "Las trochas que unen Pomabamba con sus comunidades (Urihuana, Ñuñunhuaycco, Huayllabamba, Llullucha Pizarra) son un terreno ideal para la bicicleta de montaña. Se pedalea entre chacras, pueblos y quebradas, con el valle siempre de fondo.",
+        "Hay rutas de nivel intermedio y otras solo para ciclistas avanzados: la subida extrema al mirador de Puruchucuy, las bajadas tipo downhill hacia Unya y Huayllabamba, y el descenso hasta el valle de Tincocc, a orillas del río Pampas, con un retorno muy exigente."
       ],
       "image": "/images/experiencias/cicloturismo-ayacucho-pomabamba.webp",
       "imageAlt": "Bicicleta de montaña en una calle empedrada de Pomabamba, Ayacucho",
@@ -106,7 +107,7 @@
       "stats": [
         {
           "label": "Dificultad",
-          "value": "Moderada a exigente"
+          "value": "Intermedia a extrema"
         },
         {
           "label": "Duración",
@@ -114,24 +115,25 @@
         },
         {
           "label": "Terreno",
-          "value": "Trocha y camino rural"
+          "value": "Trocha, carretera y downhill"
         },
         {
           "label": "Mejor época",
-          "value": "Mayo a octubre"
+          "value": "Abril a octubre"
         }
       ],
       "highlights": [
-        "Descensos panorámicos hacia el valle",
-        "Rutas que conectan pueblos y comunidades",
-        "Paradas en miradores y plazas de pueblo",
-        "Terreno variado para bicicleta de montaña"
+        "Descenso al valle de Tincocc, a orillas del río Pampas",
+        "Bajadas tipo downhill por trocha hacia Unya y Huayllabamba",
+        "Subida al mirador de Puruchucuy",
+        "Trochas entre comunidades: Urihuana, Ñuñunhuaycco y Llullucha Pizarra"
       ],
-      "level": "Se necesita experiencia en bicicleta de montaña y buena condición física: la altitud hace más duras las subidas.",
+      "level": "Las rutas intermedias piden experiencia básica en trocha y buena condición física: la altitud hace más duras las subidas. Las de downhill y subida extrema son solo para ciclistas avanzados.",
       "packing": {
         "required": [
           "Bicicleta de montaña revisada (frenos y cambios)",
           "Casco y guantes",
+          "Rodilleras y coderas para las rutas de downhill",
           "Cámara de repuesto, parches e inflador",
           "Agua, algo de comer y abrigo"
         ],
@@ -154,11 +156,11 @@
         },
         {
           "question": "¿Qué tan exigentes son las rutas?",
-          "answer": "Hay tramos de trocha con subidas largas a más de 3,000 msnm. Si no estás aclimatado, empieza por una ruta corta."
+          "answer": "Depende de la ruta. Urihuana, Ñuñunhuaycco, Llullucha Pizarra y la Ruta 2 a Puruchucuy son de nivel intermedio. La Ruta 1 a Puruchucuy, Unya, el valle de Tincocc, Carampa y Tucre – Huayllabamba tienen subidas extremas o bajadas técnicas: solo para nivel avanzado."
         },
         {
           "question": "¿Cuál es la mejor época?",
-          "answer": "De mayo a octubre. En temporada de lluvias las trochas se llenan de barro."
+          "answer": "De abril a octubre, en temporada seca. De noviembre a marzo las trochas se llenan de barro."
         }
       ],
       "places": [
@@ -186,7 +188,7 @@
       "headline": "Aprender haciendo, junto a las familias del distrito",
       "description": [
         "En María Parado de Bellido la comunidad sigue organizándose con el ayni y la minka: el trabajo compartido que sostiene la vida en los Andes. El turismo vivencial te invita a ser parte de esa vida, no a mirarla desde fuera.",
-        "Puedes acompañar a una familia en la chacra, aprender a preparar platos tradicionales, participar en una faena o vivir de cerca una fiesta patronal con sus cargontes, danzas y música."
+        "Puedes acompañar a una familia en la chacra, aprender a tejer en telar, preparar queso cachipa en una estancia de altura o vivir de cerca una fiesta con sus cargontes, danzas como el Chinlili y la Chimaycha, y la música del wacrapuku."
       ],
       "image": "/images/experiencias/telar-tradicional-turismo-vivencial-pomabamba-ayacucho.webp",
       "imageAlt": "Tejedora andina trabajando una manta en telar tradicional, turismo vivencial en Pomabamba, Ayacucho",
@@ -210,10 +212,48 @@
         }
       ],
       "highlights": [
-        "Trabajo en la chacra junto a familias locales",
-        "Cocina tradicional: pachamanca y puca picante",
-        "Faenas comunales, ayni y minka",
-        "Fiestas patronales y costumbres vivas"
+        "Siembra, aporque o cosecha según el mes y el piso ecológico",
+        "Telar tradicional: mantas, chumpis y chullos",
+        "Queso cachipa y vida de estancia",
+        "Fiestas con sus cargontes, danzas y música",
+        "Ayni y minka: el trabajo compartido"
+      ],
+      "calendar": [
+        {
+          "months": "Enero – Marzo",
+          "farm": "Aporque en el valle. Siembra en la puna (enero y febrero) y cosecha en la suni (febrero y marzo).",
+          "festivities": [
+            "Año Nuevo (1 de enero)",
+            "Carnavales y apaico de los cargontes (febrero)",
+            "Semana Santa (marzo o abril)"
+          ]
+        },
+        {
+          "months": "Abril – Julio",
+          "farm": "Cosecha de maíz, papa y habas en el valle (mayo a julio) y en la puna (junio y julio).",
+          "festivities": [
+            "Virgen de Fátima (13 de mayo)",
+            "Aniversario del distrito (18 de junio)",
+            "San Juan en Urihuana (4 de julio)",
+            "Virgen del Carmen (16 de julio)"
+          ]
+        },
+        {
+          "months": "Agosto – Octubre",
+          "farm": "Descanso de la tierra en el valle y la puna. En la suni la siembra empieza en setiembre.",
+          "festivities": [
+            "San Cristóbal y San José (14 al 22 de agosto)",
+            "Fiesta patronal de San Francisco de Asís (4 de octubre)"
+          ]
+        },
+        {
+          "months": "Noviembre – Diciembre",
+          "farm": "Siembra en el valle (noviembre y diciembre) y última siembra en la suni.",
+          "festivities": [
+            "Todos los Santos (1 de noviembre)",
+            "Navidad (25 de diciembre)"
+          ]
+        }
       ],
       "level": "No se necesita experiencia previa. Las labores del campo se adaptan a cada persona y a la temporada.",
       "packing": {
@@ -246,6 +286,10 @@
         {
           "question": "¿Es apto para niños?",
           "answer": "Sí. Es una buena experiencia para familias: las actividades se adaptan a cada edad."
+        },
+        {
+          "question": "¿Cuándo conviene ir?",
+          "answer": "Todo el año hay algo que vivir. Para la cosecha, ven de mayo a julio; para la siembra, de setiembre a diciembre; y si quieres una fiesta, revisa el calendario de esta página."
         }
       ],
       "places": [

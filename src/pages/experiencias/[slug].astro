@@ -53,6 +53,7 @@ const contactMessage = `Hola, quiero hacer ${activity} en María Parado de Belli
 const contactUrl = whatsappUrl(contactMessage);
 
 const faqs = experience.faqs ?? [];
+const calendar = experience.calendar ?? [];
 const packing = experience.packing;
 const safety = experience.safety ?? [];
 
@@ -184,6 +185,42 @@ const structuredData = [
       )}
     </div>
   </section>
+
+  <!-- Calendario: labores de la chacra y fiestas por temporada -->
+  {calendar.length > 0 && (
+    <section class="py-20 md:py-24">
+      <div class="container-custom">
+        <SectionHeading
+          eyebrow="Calendario"
+          title="Qué vivir en cada temporada"
+          intro="La vida en el distrito sigue el ritmo de la chacra y de las fiestas. Elige tu fecha según lo que quieras vivir."
+          align="left"
+        />
+        <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {calendar.map((period) => (
+            <li class="flex flex-col rounded-2xl border border-line bg-white p-6">
+              <p class="font-heading text-xl font-semibold text-ink">{period.months}</p>
+              <p class="mt-4 text-xs font-semibold uppercase tracking-[0.15em] text-secondary">En la chacra</p>
+              <p class="mt-1.5 text-sm leading-relaxed">{period.farm}</p>
+              {period.festivities.length > 0 && (
+                <>
+                  <p class="mt-5 text-xs font-semibold uppercase tracking-[0.15em] text-primary">Fiestas y tradiciones</p>
+                  <ul class="mt-1.5 space-y-1.5 text-sm">
+                    {period.festivities.map((fest) => (
+                      <li class="flex gap-2">
+                        <span class="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" aria-hidden="true"></span>
+                        <span>{fest}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
 
   <!-- Galería de las rutas -->
   {gallery.length >= 3 && (
