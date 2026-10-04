@@ -1,0 +1,109 @@
+---
+/**
+ * ExperienceTourCard - Ruta o programa (tour del CMS) dentro de una experiencia.
+ * Muestra lo necesario para decidir (duración, dificultad, grupo, precio, guía)
+ * y lleva directo a reservar por WhatsApp.
+ */
+import type { Tour } from "../types";
+import { whatsappUrl, isDialable } from "../lib/whatsapp";
+
+interface Props {
+  tour: Tour;
+  /** Imagen si el tour no tiene fotos propias. */
+  fallbackImage: string;
+}
+
+const { tour, fallbackImage } = Astro.props;
+
+const difficultyLabels = { easy: "Fácil", moderate: "Moderada", hard: "Exigente" };
+
+function formatDuration(hours: number): string {
+  if (!hours) return "";
+  if (hours >= 24) {
+    const days = Math.round(hours / 24);
+    return `${days} ${days === 1 ? "día" : "días"}`;
+  }
+  const h = Math.floor(hours);
+  const min = Math.round((hours - h) * 60);
+  return min ? `${h} h ${min} min` : `${h} h`;
+}
+
+function formatPrice(price: number, currency: string): string {
+  const symbol = currency === "USD" ? "US$" : "S/";
+  return `${symbol} ${Number.isInteger(price) ? price : price.toFixed(2)}`;
+}
+
+const image = tour.images[0] || fallbackImage;
+const guide = tour.guide?.id ? tour.guide : undefined;
+const meta = [
+  { label: "Duración", value: formatDuration(tour.duration_hours) },
+  { label: "Dificultad", value: tour.difficulty ? difficultyLabels[tour.difficulty] : "" },
+  { label: "Grupo", value: tour.max_participants ? `Hasta ${tour.max_participants}` : "" },
+].filter((m) => m.value);
+const stops = tour.locations.map((l) => l.name).filter(Boolean);
+const bookUrl = whatsappUrl(`Hola, quiero reservar la ruta "${tour.title}". ¿Qué fechas tienen disponibles?`);
+const guideUrl = guide && isDialable(guide.phone)
+  ? whatsappUrl(`Hola ${guide.name.split(" ")[0]}, vi la ruta "${tour.title}" en la web y quiero hacer una consulta.`, guide.phone)
+  : undefined;
+---
+
+<article class="flex flex-col overflow-hidden rounded-2xl border border-line bg-white">
+  <div class="relative aspect-[16/10] overflow-hidden bg-sand-200">
+    <img src={image} alt={tour.title} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+    {tour.price > 0 && (
+      <p class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm text-ink shadow-sm">
+        Desde <strong class="font-semibold">{formatPrice(tour.price, tour.currency)}</strong>
+        <span class="text-ink-soft"> / persona</span>
+      </p>
+    )}
+  </div>
+
+  <div class="flex flex-1 flex-col p-6 md:p-7">
+    <h3 class="font-heading text-2xl font-semibold leading-snug text-ink">{tour.title}</h3>
+    <p class="mt-2 leading-relaxed">{tour.summary}</p>
+
+    {meta.length > 0 && (
+      <dl class="mt-5 grid grid-cols-3 gap-3 border-y border-line py-4">
+        {meta.map((m) => (
+          <div>
+            <dt class="text-[11px] font-semibold uppercase tracking-[0.15em] text-ink-soft">{m.label}</dt>
+            <dd class="mt-0.5 font-semibold text-ink">{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
+    {stops.length > 0 && (
+      <p class="mt-4 text-sm text-ink-soft">
+        <span class="font-semibold text-ink">Recorrido:</span> {stops.join(" · ")}
+      </p>
+    )}
+
+    {guide && (
+      <div class="mt-5 flex items-center gap-3">
+        {guide.image ? (
+          <img src={guide.image} alt="" loading="lazy" class="h-11 w-11 flex-shrink-0 rounded-full object-cover" />
+        ) : (
+          <span class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-secondary-soft font-heading font-semibold text-secondary" aria-hidden="true">
+            {guide.name.charAt(0)}
+          </span>
+        )}
+        <div class="min-w-0 text-sm">
+          <p class="text-ink-soft">Con tu guía</p>
+          <p class="font-semibold text-ink">{guide.name}</p>
+        </div>
+        {guideUrl && (
+          <a href={guideUrl} target="_blank" rel="noopener noreferrer" class="ml-auto text-sm font-semibold text-secondary hover:underline">
+            Escribirle
+          </a>
+        )}
+      </div>
+    )}
+
+    <div class="mt-auto pt-6">
+      <a href={bookUrl} target="_blank" rel="noopener noreferrer" class="btn-primary w-full">
+        Reservar por WhatsApp
+      </a>
+    </div>
+  </div>
+</article>

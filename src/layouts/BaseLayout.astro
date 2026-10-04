@@ -22,6 +22,8 @@ interface Props {
   modifiedTime?: string;
   breadcrumbs?: BreadcrumbItem[];
   structuredData?: { type: any; data: any; breadcrumbs?: BreadcrumbItem[] }[];
+  /** Mensaje prellenado del botón flotante de WhatsApp para esta página. */
+  whatsappMessage?: string;
 }
 
 const {
@@ -38,6 +40,7 @@ const {
   modifiedTime,
   breadcrumbs = [],
   structuredData = [],
+  whatsappMessage,
 } = Astro.props;
 
 // Get current pathname for active link highlighting
@@ -354,7 +357,7 @@ const navLinkIdle = "text-ink hover:text-primary";
     </main>
 
     <!-- WhatsApp Floating CTA Button -->
-    <WhatsAppCTA />
+    <WhatsAppCTA message={whatsappMessage} />
 
     <!-- Feedback Widget -->
     <FeedbackWidget />
