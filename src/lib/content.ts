@@ -22,9 +22,19 @@ export interface Experience {
   image: string;
   imageAlt: string;
   imagePosition?: string;
+  /** Titular de la sección "La experiencia" (distinto del resumen del índice). */
+  headline?: string;
   stats: ExperienceStat[];
   highlights: string[];
-  tips: string[];
+  /** Condición física o experiencia previa que se necesita. */
+  level?: string;
+  /** Qué vivir según la temporada: labores de la chacra y fiestas del periodo. */
+  calendar?: { months: string; farm: string; festivities: string[] }[];
+  packing?: { required: string[]; recommended: string[] };
+  safety?: string[];
+  faqs?: { question: string; answer: string }[];
+  /** Slugs de t_places donde se vive la experiencia, en orden de prioridad. */
+  places?: string[];
   seo: { title: string; description: string; keywords: string[] };
 }
 

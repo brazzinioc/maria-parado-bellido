@@ -54,11 +54,13 @@ function mapTourFromDB(t: any): Tour {
           phone: t.guide.phone ?? '',
           email: t.guide.email ?? undefined,
           bio: t.guide.bio ?? undefined,
+          image: mediaUrl(t.guide.image_path),
         }
       : { id: '', name: 'Guía por asignar', phone: '' },
     images: mapSpImages(t.images),
     difficulty: t.difficulty ?? undefined,
     max_participants: t.max_participants ?? undefined,
+    experience: t.experience ?? undefined,
   };
 }
 

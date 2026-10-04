@@ -29,6 +29,8 @@ export interface Tour {
   images: string[];
   difficulty?: 'easy' | 'moderate' | 'hard';
   max_participants?: number;
+  /** Slug de la experiencia (/experiencias/<slug>) donde se lista el tour. */
+  experience?: string;
 }
 
 // Tipos para Festividades

@@ -1,5 +1,5 @@
 {
-  "_nota": "Contenido de respaldo. En una segunda iteración se gestionará desde el CMS (tabla t_experiences). Revisar datos antes de producción.",
+  "_nota": "Contenido de respaldo. En una segunda iteración se gestionará desde el CMS (tabla t_experiences). Datos basados en el Plan de Desarrollo Concertado 2007-2022. Revisar datos antes de producción: alturas, épocas, 'places' (slugs de t_places) y respuestas de las preguntas frecuentes.",
   "items": [
     {
       "slug": "trekking",
@@ -7,6 +7,7 @@
       "eyebrow": "Caminar los Andes",
       "tagline": "Senderos, montañas y paisajes andinos.",
       "summary": "Rutas a pie entre miradores, quebradas y pastizales de altura, desde caminatas cortas por el valle hasta ascensos que superan los 4,000 msnm.",
+      "headline": "Del valle a la puna, a tu ritmo",
       "description": [
         "Caminar es la mejor forma de conocer María Parado de Bellido. Los senderos que usan a diario las familias del distrito conectan Pomabamba con miradores naturales, formaciones rocosas y restos arqueológicos de la cultura Chanca.",
         "Hay rutas para todos los niveles: paseos de medio día alrededor del pueblo y travesías más exigentes que suben por la puna. En cada tramo el paisaje cambia, y con él la flora, la fauna y las historias que cuentan los comuneros."
@@ -15,62 +16,167 @@
       "imageAlt": "Cordillera andina y senderos de Pomabamba, Ayacucho",
       "imagePosition": "center 68%",
       "stats": [
-        { "label": "Dificultad", "value": "Fácil a exigente" },
-        { "label": "Duración", "value": "2 h a día completo" },
-        { "label": "Altitud", "value": "2,500 – 4,800 msnm" },
-        { "label": "Mejor época", "value": "Mayo a septiembre" }
+        {
+          "label": "Dificultad",
+          "value": "Fácil a exigente"
+        },
+        {
+          "label": "Duración",
+          "value": "2 h a día completo"
+        },
+        {
+          "label": "Altitud",
+          "value": "2,500 – 4,800 msnm"
+        },
+        {
+          "label": "Mejor época",
+          "value": "Abril a octubre"
+        }
       ],
       "highlights": [
         "Miradores con vista al valle del río Pampas",
         "Formaciones rocosas y vestigios de la cultura Chanca",
         "Senderos tradicionales que unen comunidades",
-        "Amaneceres y cielos despejados en temporada seca"
+        "Queñuales, vizcachas y tarucas en la puna",
+        "Cielos despejados en temporada seca"
       ],
-      "tips": [
-        "Aclimátate al menos un día en Pomabamba antes de rutas largas.",
-        "Lleva agua, protector solar y abrigo: el clima cambia rápido.",
-        "Para rutas exigentes, camina con un guía local."
+      "level": "Las rutas cortas son aptas para cualquier persona con buena salud. Las de altura piden buena condición física y un día de aclimatación previa.",
+      "packing": {
+        "required": [
+          "Zapatillas o botas de trekking con buen agarre",
+          "Agua (al menos 2 litros) y algo de comer",
+          "Abrigo y casaca impermeable",
+          "Protector solar, lentes y gorro"
+        ],
+        "recommended": [
+          "Bastones de caminata",
+          "Linterna frontal para rutas de día completo",
+          "Efectivo en soles para pagos en las comunidades"
+        ]
+      },
+      "safety": [
+        "Aclimátate al menos un día en Pomabamba antes de subir a la puna.",
+        "La señal de celular es irregular en las partes altas: avisa tu ruta y tu hora de regreso.",
+        "Para rutas exigentes o de altura, camina con un guía local.",
+        "Si tienes dolor de cabeza fuerte, mareo o náuseas, baja de altitud."
+      ],
+      "faqs": [
+        {
+          "question": "¿Necesito ir con guía?",
+          "answer": "Para paseos cortos alrededor de Pomabamba no es indispensable. Para rutas largas o por encima de los 4,000 msnm recomendamos ir con un guía local: conoce los caminos y sabe leer el clima."
+        },
+        {
+          "question": "¿Puedo hacer trekking sin experiencia?",
+          "answer": "Sí. Hay rutas cortas y de poca pendiente. Cuéntanos tu nivel por WhatsApp y te recomendamos una."
+        },
+        {
+          "question": "¿Cuál es la mejor época?",
+          "answer": "De abril a octubre, en temporada seca. De noviembre a marzo llueve con frecuencia y algunos caminos se ponen resbalosos."
+        }
+      ],
+      "places": [
+        "allcaqapata",
+        "tururumi",
+        "tacsaorcco"
       ],
       "seo": {
         "title": "Trekking en Ayacucho: rutas en María Parado de Bellido",
         "description": "Rutas de trekking en Pomabamba, Cangallo (Ayacucho): miradores, senderos andinos y vestigios Chancas entre los 2,500 y 4,800 msnm.",
-        "keywords": ["trekking Ayacucho", "senderismo Cangallo", "rutas Pomabamba", "caminatas Andes Perú"]
+        "keywords": [
+          "trekking Ayacucho",
+          "senderismo Cangallo",
+          "rutas Pomabamba",
+          "caminatas Andes Perú"
+        ]
       }
     },
     {
       "slug": "cicloturismo",
       "title": "Cicloturismo",
       "eyebrow": "Sobre dos ruedas",
-      "tagline": "Rutas de altura para descubrir el territorio en bicicleta.",
-      "summary": "Caminos rurales, bajadas largas y subidas de altura que recorren el distrito de comunidad en comunidad.",
+      "tagline": "Trochas, subidas de altura y downhill alrededor de Pomabamba.",
+      "summary": "Rutas por trocha y carretera alrededor de Pomabamba: subidas de altura, bajadas tipo downhill y el descenso al río Pampas.",
+      "headline": "Subidas de altura, bajadas largas y una parada en cada pueblo",
       "description": [
-        "Las trochas y caminos rurales del distrito son un terreno ideal para la bicicleta de montaña. Se pedalea entre chacras, pueblos y quebradas, con el valle siempre de fondo.",
-        "Las rutas combinan subidas exigentes por la altitud con descensos largos y panorámicos. Es una forma distinta de recorrer el territorio y de detenerse a conversar con la gente en cada pueblo."
+        "Las trochas que unen Pomabamba con sus comunidades (Urihuana, Ñuñunhuaycco, Huayllabamba, Llullucha Pizarra) son un terreno ideal para la bicicleta de montaña. Se pedalea entre chacras, pueblos y quebradas, con el valle siempre de fondo.",
+        "Hay rutas de nivel intermedio y otras solo para ciclistas avanzados: la subida extrema al mirador de Puruchucuy, las bajadas tipo downhill hacia Unya y Huayllabamba, y el descenso hasta el valle de Tincocc, a orillas del río Pampas, con un retorno muy exigente."
       ],
       "image": "/images/experiencias/cicloturismo-ayacucho-pomabamba.webp",
       "imageAlt": "Bicicleta de montaña en una calle empedrada de Pomabamba, Ayacucho",
       "imagePosition": "center 40%",
       "stats": [
-        { "label": "Dificultad", "value": "Moderada a exigente" },
-        { "label": "Duración", "value": "3 h a día completo" },
-        { "label": "Terreno", "value": "Trocha y camino rural" },
-        { "label": "Mejor época", "value": "Mayo a octubre" }
+        {
+          "label": "Dificultad",
+          "value": "Intermedia a extrema"
+        },
+        {
+          "label": "Duración",
+          "value": "3 h a día completo"
+        },
+        {
+          "label": "Terreno",
+          "value": "Trocha, carretera y downhill"
+        },
+        {
+          "label": "Mejor época",
+          "value": "Abril a octubre"
+        }
       ],
       "highlights": [
-        "Descensos panorámicos hacia el valle",
-        "Rutas que conectan pueblos y comunidades",
-        "Paradas en miradores y plazas de pueblo",
-        "Terreno variado para bicicleta de montaña"
+        "Descenso al valle de Tincocc, a orillas del río Pampas",
+        "Bajadas tipo downhill por trocha hacia Unya y Huayllabamba",
+        "Subida al mirador de Puruchucuy",
+        "Trochas entre comunidades: Urihuana, Ñuñunhuaycco y Llullucha Pizarra"
       ],
-      "tips": [
-        "Revisa frenos y lleva cámara de repuesto: los talleres son escasos.",
-        "La altitud exige un ritmo más lento en las subidas.",
-        "Evita pedalear de noche: no hay iluminación en los caminos."
+      "level": "Las rutas intermedias piden experiencia básica en trocha y buena condición física: la altitud hace más duras las subidas. Las de downhill y subida extrema son solo para ciclistas avanzados.",
+      "packing": {
+        "required": [
+          "Bicicleta de montaña revisada (frenos y cambios)",
+          "Casco y guantes",
+          "Rodilleras y coderas para las rutas de downhill",
+          "Cámara de repuesto, parches e inflador",
+          "Agua, algo de comer y abrigo"
+        ],
+        "recommended": [
+          "Luces delantera y trasera",
+          "Lentes para el polvo de la trocha",
+          "Herramienta multiuso"
+        ]
+      },
+      "safety": [
+        "Los talleres de bicicleta son escasos: sal con tu equipo revisado.",
+        "Compartes la vía con vehículos y animales: baja la velocidad en curvas y pueblos.",
+        "Evita pedalear de noche: los caminos no tienen iluminación.",
+        "La señal de celular es irregular: avisa tu ruta antes de salir."
+      ],
+      "faqs": [
+        {
+          "question": "¿Alquilan bicicletas en el distrito?",
+          "answer": "Por ahora te recomendamos traer tu propia bicicleta. Escríbenos con tus fechas y te contamos si hay alguna opción disponible."
+        },
+        {
+          "question": "¿Qué tan exigentes son las rutas?",
+          "answer": "Depende de la ruta. Urihuana, Ñuñunhuaycco, Llullucha Pizarra y la Ruta 2 a Puruchucuy son de nivel intermedio. La Ruta 1 a Puruchucuy, Unya, el valle de Tincocc, Carampa y Tucre – Huayllabamba tienen subidas extremas o bajadas técnicas: solo para nivel avanzado."
+        },
+        {
+          "question": "¿Cuál es la mejor época?",
+          "answer": "De abril a octubre, en temporada seca. De noviembre a marzo las trochas se llenan de barro."
+        }
+      ],
+      "places": [
+        "rio-pampas",
+        "laplarco-y-qeccacha",
+        "kichkapata"
       ],
       "seo": {
         "title": "Cicloturismo en Ayacucho: rutas en bicicleta por Pomabamba",
         "description": "Rutas de cicloturismo y bicicleta de montaña en María Parado de Bellido, Cangallo (Ayacucho): caminos rurales, descensos y paisajes andinos.",
-        "keywords": ["cicloturismo Ayacucho", "bicicleta de montaña Cangallo", "rutas en bicicleta Andes", "MTB Pomabamba"]
+        "keywords": [
+          "cicloturismo Ayacucho",
+          "bicicleta de montaña Cangallo",
+          "rutas en bicicleta Andes",
+          "MTB Pomabamba"
+        ]
       }
     },
     {
@@ -79,34 +185,127 @@
       "eyebrow": "Vivir con la comunidad",
       "tagline": "Conoce nuestras comunidades, costumbres y formas de vida.",
       "summary": "Comparte la vida diaria de las familias: la chacra, la cocina tradicional, las faenas comunales y las fiestas.",
+      "headline": "Aprender haciendo, junto a las familias del distrito",
       "description": [
         "En María Parado de Bellido la comunidad sigue organizándose con el ayni y la minka: el trabajo compartido que sostiene la vida en los Andes. El turismo vivencial te invita a ser parte de esa vida, no a mirarla desde fuera.",
-        "Puedes acompañar a una familia en la chacra, aprender a preparar platos tradicionales, participar en una faena o vivir de cerca una fiesta patronal con sus cargontes, danzas y música."
+        "Puedes acompañar a una familia en la chacra, aprender a tejer en telar, preparar queso cachipa en una estancia de altura o vivir de cerca una fiesta con sus cargontes, danzas como el Chinlili y la Chimaycha, y la música del wacrapuku."
       ],
       "image": "/images/experiencias/telar-tradicional-turismo-vivencial-pomabamba-ayacucho.webp",
       "imageAlt": "Tejedora andina trabajando una manta en telar tradicional, turismo vivencial en Pomabamba, Ayacucho",
       "imagePosition": "center 38%",
       "stats": [
-        { "label": "Para quién", "value": "Todas las edades" },
-        { "label": "Duración", "value": "1 a 3 días" },
-        { "label": "Alojamiento", "value": "Casas de familia" },
-        { "label": "Mejor época", "value": "Todo el año" }
+        {
+          "label": "Para quién",
+          "value": "Todas las edades"
+        },
+        {
+          "label": "Duración",
+          "value": "Medio día a 3 días"
+        },
+        {
+          "label": "Organización",
+          "value": "Con familias locales"
+        },
+        {
+          "label": "Mejor época",
+          "value": "Todo el año"
+        }
       ],
       "highlights": [
-        "Trabajo en la chacra junto a familias locales",
-        "Cocina tradicional: pachamanca y puca picante",
-        "Faenas comunales, ayni y minka",
-        "Fiestas patronales y costumbres vivas"
+        "Siembra, aporque o cosecha según el mes y el piso ecológico",
+        "Telar tradicional: mantas, chumpis y chullos",
+        "Queso cachipa y vida de estancia",
+        "Fiestas con sus cargontes, danzas y música",
+        "Ayni y minka: el trabajo compartido"
       ],
-      "tips": [
+      "calendar": [
+        {
+          "months": "Enero – Marzo",
+          "farm": "Aporque en el valle. Siembra en la puna (enero y febrero) y cosecha en la suni (febrero y marzo).",
+          "festivities": [
+            "Año Nuevo (1 de enero)",
+            "Carnavales y apaico de los cargontes (febrero)",
+            "Semana Santa (marzo o abril)"
+          ]
+        },
+        {
+          "months": "Abril – Julio",
+          "farm": "Cosecha de maíz, papa y habas en el valle (mayo a julio) y en la puna (junio y julio).",
+          "festivities": [
+            "Virgen de Fátima (13 de mayo)",
+            "Aniversario del distrito (18 de junio)",
+            "San Juan en Urihuana (4 de julio)",
+            "Virgen del Carmen (16 de julio)"
+          ]
+        },
+        {
+          "months": "Agosto – Octubre",
+          "farm": "Descanso de la tierra en el valle y la puna. En la suni la siembra empieza en setiembre.",
+          "festivities": [
+            "San Cristóbal y San José (14 al 22 de agosto)",
+            "Fiesta patronal de San Francisco de Asís (4 de octubre)"
+          ]
+        },
+        {
+          "months": "Noviembre – Diciembre",
+          "farm": "Siembra en el valle (noviembre y diciembre) y última siembra en la suni.",
+          "festivities": [
+            "Todos los Santos (1 de noviembre)",
+            "Navidad (25 de diciembre)"
+          ]
+        }
+      ],
+      "level": "No se necesita experiencia previa. Las labores del campo se adaptan a cada persona y a la temporada.",
+      "packing": {
+        "required": [
+          "Ropa cómoda que se pueda ensuciar",
+          "Sombrero y protector solar",
+          "Abrigo para la tarde y la noche"
+        ],
+        "recommended": [
+          "Botas o zapatos cerrados para la chacra",
+          "Efectivo en soles",
+          "Ganas de conversar y aprender"
+        ]
+      },
+      "safety": [
         "Coordina tu visita con anticipación para que la familia pueda recibirte.",
         "Pregunta antes de fotografiar a las personas.",
-        "Lleva ropa cómoda para el trabajo en el campo."
+        "Las actividades dependen de la temporada agrícola y del calendario de fiestas.",
+        "Respeta los horarios y las costumbres de la casa."
+      ],
+      "faqs": [
+        {
+          "question": "¿Puedo quedarme a dormir con una familia?",
+          "answer": "Depende de la disponibilidad de las familias. Escríbenos con tus fechas y lo coordinamos contigo."
+        },
+        {
+          "question": "¿Qué actividades puedo hacer?",
+          "answer": "Según la temporada: siembra o cosecha, cuidado de animales, preparación de comidas tradicionales, tejido o una faena comunal."
+        },
+        {
+          "question": "¿Es apto para niños?",
+          "answer": "Sí. Es una buena experiencia para familias: las actividades se adaptan a cada edad."
+        },
+        {
+          "question": "¿Cuándo conviene ir?",
+          "answer": "Todo el año hay algo que vivir. Para la cosecha, ven de mayo a julio; para la siembra, de setiembre a diciembre; y si quieres una fiesta, revisa el calendario de esta página."
+        }
+      ],
+      "places": [
+        "templo-san-francisco-de-asis",
+        "laplarco-y-qeccacha",
+        "allcaqapata"
       ],
       "seo": {
         "title": "Turismo vivencial en Ayacucho: vive con la comunidad",
         "description": "Turismo vivencial en María Parado de Bellido, Cangallo (Ayacucho): vive con familias andinas, participa en la chacra, la cocina tradicional y las fiestas.",
-        "keywords": ["turismo vivencial Ayacucho", "turismo rural comunitario", "vivir con familias andinas", "Pomabamba cultura"]
+        "keywords": [
+          "turismo vivencial Ayacucho",
+          "turismo rural comunitario",
+          "vivir con familias andinas",
+          "Pomabamba cultura"
+        ]
       }
     }
   ]
