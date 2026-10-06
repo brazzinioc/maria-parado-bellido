@@ -32,8 +32,8 @@ const tours = (await fetchTours()).filter((t) => t.experience === experience.slu
 const gallery = [...new Set(tours.flatMap((t) => t.images))].slice(0, 5);
 
 // Lugares: primero los elegidos para la experiencia (experience.places), luego
-// se completa por categoría: naturales para trekking/cicloturismo, culturales
-// para vivencial.
+// se completa con el resto: antes los que tienen foto y, entre ellos, los de la
+// categoría afín (naturales para trekking/cicloturismo, culturales para vivencial).
 const places = await fetchPlaces();
 const curated = (experience.places ?? [])
   .map((slug) => places.find((p) => p.slug === slug))
@@ -42,11 +42,19 @@ const preferred =
   experience.slug === "turismo-vivencial"
     ? ["cultural", "historical", "archaeological"]
     : ["natural", "archaeological"];
+const rank = (p: (typeof places)[number]) =>
+  (p.images.length > 0 ? 0 : 2) + (preferred.includes(p.category) ? 0 : 1);
 const suggestedPlaces = [
   ...curated,
-  ...places.filter((p) => !curated.includes(p) && preferred.includes(p.category)),
-  ...places.filter((p) => !curated.includes(p) && !preferred.includes(p.category)),
+  ...places.filter((p) => !curated.includes(p)).sort((a, b) => rank(a) - rank(b)),
 ].slice(0, 3);
+// Con 1 o 2 lugares, tarjetas horizontales: una sola tarjeta vertical se ve suelta.
+const placeLayout =
+  suggestedPlaces.length >= 3
+    ? { grid: "grid-cols-1 md:grid-cols-3", size: "tall" as const }
+    : suggestedPlaces.length === 2
+      ? { grid: "grid-cols-1 md:grid-cols-2", size: "wide" as const }
+      : { grid: "grid-cols-1 max-w-2xl", size: "wide" as const };
 
 const activity = experience.title.toLowerCase();
 const contactMessage = `Hola, quiero hacer ${activity} en María Parado de Bellido. ¿Me pueden ayudar a organizarlo?`;
@@ -293,7 +301,7 @@ const structuredData = [
         <SectionHeading eyebrow="Dónde vivirlo" title="Destinos recomendados" align="left">
           <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
         </SectionHeading>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <div class:list={["grid gap-5 md:gap-6", placeLayout.grid]}>
           {suggestedPlaces.map((place) => (
             <PhotoCard
               href={`/lugares/${place.slug}`}
@@ -302,6 +310,7 @@ const structuredData = [
               title={place.name}
               subtitle={placeCategoryLabel(place.category)}
               meta={place.location.name || "Pomabamba"}
+              size={placeLayout.size}
             />
           ))}
         </div>
