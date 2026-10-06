@@ -351,7 +351,7 @@ function getFallbackTours(): Tour[] {
         phone: '+51 9XX XXX XXX',
         email: 'eusebio.paredes@mariaparadodebellido.com',
       },
-      images: ['/images/tours/default-photo.webp'],
+      images: [],
       difficulty: 'moderate',
       max_participants: 12,
     },
@@ -374,7 +374,7 @@ function getFallbackTours(): Tour[] {
         phone: '+51 9XX XXX XXX',
         email: 'ana.huaman@mariaparadodebellido.com',
       },
-      images: ['/images/tours/default-photo.webp'],
+      images: [],
       difficulty: 'hard',
       max_participants: 8,
     },
@@ -397,7 +397,7 @@ function getFallbackTours(): Tour[] {
         phone: '+51 9XX XXX XXX',
         email: 'rosa.quispe@mariaparadodebellido.com',
       },
-      images: ['/images/tours/default-photo.webp'],
+      images: [],
       difficulty: 'easy',
       max_participants: 5,
     }
@@ -420,7 +420,7 @@ function getFallbackFestivities(): Festivity[] {
         { name: 'Familia García Ayala', role: 'Alférez' },
         { name: 'Familia Rojas Poma', role: 'Encargado de Yunza' },
       ],
-      images: ['/images/festivities/default-photo.webp'],
+      images: ['/images/default-photo.webp'],
       schedule: [
         {
           date: '2026-02-14T09:00:00Z',
@@ -467,7 +467,7 @@ function getFallbackFestivities(): Festivity[] {
         { name: 'Familia Ccahuana Rojas', role: 'Alférez', notes: 'Encargados de la banda' },
         { name: 'Familia Palomino Cruz', role: 'Mayordoma de Comida' },
       ],
-      images: ['/images/festivities/default-photo.webp'],
+      images: ['/images/default-photo.webp'],
       schedule: [
         {
           date: '2026-10-04T06:00:00Z',
@@ -505,7 +505,7 @@ function getFallbackFestivities(): Festivity[] {
         { name: 'Familia Mendoza Pari', role: 'Mayordomo de San José' },
         { name: 'Familia Chávez Huamán', role: 'Encargado de Minka' },
       ],
-      images: ['/images/festivities/default-photo.webp'],
+      images: ['/images/default-photo.webp'],
       schedule: [
         {
           date: '2026-08-11T07:00:00Z',
