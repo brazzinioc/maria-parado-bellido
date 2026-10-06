@@ -1,5 +1,10 @@
 ---
+/**
+ * CommunityEventCard - Actividad de la agenda del distrito (CMS).
+ * Sin foto, muestra una ilustración según el tipo de actividad.
+ */
 import type { CommunityEvent } from "../types";
+import { eventCoverImage } from "../lib/placeholders";
 
 interface Props {
   event: CommunityEvent;
@@ -7,99 +12,61 @@ interface Props {
 
 const { event } = Astro.props;
 
-// Formato de fecha
-const eventDate = new Date(event.date);
-const day = eventDate.getDate();
-const month = eventDate.toLocaleDateString("es-PE", { month: "short" });
-const year = eventDate.getFullYear();
+const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
+const WEEKDAYS = ["domingos", "lunes", "martes", "miércoles", "jueves", "viernes", "sábados"];
+const [y, m, d] = event.date.split("T")[0].split("-").map(Number);
+const date = new Date(Date.UTC(y, m - 1, d));
 
-// Colores por tipo de evento
-const typeColors: Record<CommunityEvent["type"], { bg: string; text: string; icon: string }> = {
-  faena: { bg: "bg-sand", text: "text-ink", icon: "🛠️" },
-  pollada: { bg: "bg-sand", text: "text-ink", icon: "🍗" },
-  reunion: { bg: "bg-sand", text: "text-ink", icon: "👥" },
-  asamblea: { bg: "bg-sand", text: "text-ink", icon: "🏛️" },
-  minka: { bg: "bg-sand", text: "text-ink", icon: "🤝" },
-  aniversario: { bg: "bg-sand", text: "text-ink", icon: "🎉" },
-  otro: { bg: "bg-gray-100", text: "text-gray-700", icon: "📌" },
-};
+// Las actividades que se repiten muestran su frecuencia en vez de una fecha que pronto queda vieja.
+const when =
+  event.isRecurring && event.recurrencePattern === "weekly"
+    ? `Todos los ${WEEKDAYS[date.getUTCDay()]}`
+    : event.isRecurring && event.recurrencePattern === "monthly"
+      ? `Cada mes, el día ${d}`
+      : event.isRecurring && event.recurrencePattern === "annual"
+        ? `Cada ${d} de ${MONTHS[m - 1]}`
+        : `${d} de ${MONTHS[m - 1]} de ${y}`;
 
 const typeLabels: Record<CommunityEvent["type"], string> = {
-  faena: "Faena Comunal",
-  pollada: "Pollada/Actividad",
+  faena: "Faena comunal",
+  pollada: "Actividad pro fondos",
   reunion: "Reunión",
   asamblea: "Asamblea",
   minka: "Minka",
   aniversario: "Aniversario",
-  otro: "Evento",
+  otro: /feria/i.test(event.title) ? "Feria" : "Actividad",
 };
-
-const { bg, text, icon } = typeColors[event.type];
 ---
 
-<article class="bg-white rounded-2xl overflow-hidden border border-line">
-  <div class="flex flex-col md:flex-row">
-    <!-- Date Badge -->
-    <div class="md:w-28 flex-shrink-0 bg-primary-soft p-4 flex flex-col items-center justify-center text-primary-dark">
-      <span class="font-heading text-4xl font-semibold">{day}</span>
-      <span class="text-sm uppercase tracking-wide">{month}</span>
-      <span class="text-xs opacity-80">{year}</span>
-    </div>
-
-    <!-- Content -->
-    <div class="flex-1 p-5">
-      <!-- Type Badge -->
-      <div class="flex items-center gap-2 mb-3">
-        <span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${bg} ${text}`}>
-          <span>{icon}</span>
-          {typeLabels[event.type]}
-        </span>
-        {event.isRecurring && (
-          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amarillo/20 text-amarillo-dark">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Recurrente
-          </span>
-        )}
-      </div>
-
-      <!-- Title -->
-      <h3 class="font-heading font-semibold text-2xl text-ink mb-2">
-        {event.title}
-      </h3>
-
-      <!-- Description -->
-      <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-        {event.description}
-      </p>
-
-      <!-- Meta Info -->
-      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-        {event.time && (
-          <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{event.time}</span>
-          </div>
-        )}
-        <div class="flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>{event.location.name}</span>
-        </div>
-        {event.organizer && (
-          <div class="flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span>{event.organizer}</span>
-          </div>
-        )}
-      </div>
-    </div>
+<article class="flex flex-col overflow-hidden rounded-2xl border border-line bg-white">
+  <div class="relative aspect-[16/9] overflow-hidden bg-sand-200">
+    <img
+      src={eventCoverImage(event)}
+      alt={`${event.title} en ${event.location.name || "Pomabamba"}, María Parado de Bellido, Ayacucho`}
+      loading="lazy"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <span class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-ink shadow-sm">
+      {typeLabels[event.type]}
+    </span>
+  </div>
+  <div class="flex flex-1 flex-col p-5 md:p-6">
+    <p class="text-sm font-semibold text-primary">{when}{event.time && ` · ${event.time}`}</p>
+    <h3 class="mt-1 font-heading text-2xl font-semibold leading-snug text-ink">{event.title}</h3>
+    <p class="mt-3 leading-relaxed">{event.description}</p>
+    <ul class="mt-auto space-y-1.5 pt-5 text-sm">
+      {event.location.name && (
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 flex-shrink-0 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" /></svg>
+          {event.location.name}
+        </li>
+      )}
+      {event.organizer && (
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 flex-shrink-0 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+          {event.organizer}
+        </li>
+      )}
+    </ul>
   </div>
 </article>

@@ -1,86 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import SectionHeading from "../components/SectionHeading.astro";
 import { fetchDishes } from "../lib/api";
+import { dishCoverImage } from "../lib/placeholders";
 
-// Fallback usado solo si el CMS no devuelve platos publicados
-const fallbackDishes = [
-  {
-    name: "Puca Picante",
-    description:
-      "Guiso tradicional de papa con ají rojo (puca uchu), carne de cerdo o res, y especias andinas. Se sirve con arroz y acompaña perfectamente el clima frío de la altura. El sabor intenso del ají colorado es el alma de este plato ancestral.",
-    ingredients: [
-      "Papa amarilla",
-      "Ají panca",
-      "Ají colorado",
-      "Carne de res",
-      "Achiote",
-      "Especias",
-    ],
-    image: "/images/default-photo.webp",
-  },
-  {
-    name: "Caldo de Mondongo",
-    description:
-      "Sopa reconfortante preparada con mondongo (pancita de res), maíz pelado, papas y hierbas aromáticas. Ideal para las mañanas frías andinas. Este caldo es considerado medicinal y energizante, perfecto para iniciar el día con fuerza.",
-    ingredients: [
-      "Mondongo",
-      "Maíz pelado",
-      "Papa",
-      "Hierbabuena",
-      "Orégano",
-      "Ají",
-    ],
-    image: "/images/default-photo.webp",
-  },
-  {
-    name: "Pachamanca",
-    description:
-      'Técnica ancestral de cocción bajo tierra con piedras calientes. Incluye carnes (cordero, cerdo, pollo), papas nativas, habas, choclo y humitas. El nombre significa "olla de tierra" en quechua. Reservada para ocasiones especiales y festividades.',
-    ingredients: [
-      "Carnes variadas",
-      "Papa nativa",
-      "Habas",
-      "Choclo",
-      "Humitas",
-      "Hierbas aromáticas",
-    ],
-    image: "/images/default-photo.webp",
-  },
-  {
-    name: "Cuy Chactado",
-    description:
-      "Cuy (Cavia porcellus) prensado y frito hasta quedar crocante. Plato de origen prehispánico, considerado especial y festivo. Se sirve con papa dorada, salsa de maní y ají. Rico en proteínas y bajo en grasas.",
-    ingredients: ["Cuy", "Ajo", "Comino", "Ají", "Papa", "Salsa de maní"],
-    image: "/images/default-photo.webp",
-  },
-  {
-    name: "Kapchi de Habas",
-    description:
-      "Guiso cremoso de habas tiernas en salsa de leche, queso fresco y ají. Las habas son uno de los cultivos más antiguos de los Andes. Este plato combina suavidad y un toque picante, ideal para el almuerzo familiar.",
-    ingredients: [
-      "Habas tiernas",
-      "Leche",
-      "Queso fresco",
-      "Ají amarillo",
-      "Huevo",
-      "Hierbabuena",
-    ],
-    image: "/images/default-photo.webp",
-  },
-  {
-    name: "Chicha de Jora",
-    description:
-      "Bebida ceremonial y nutritiva elaborada con maíz germinado (jora), hervido con especias. De origen prehispánico, se consume en festividades y celebraciones. Simboliza la hospitalidad andina y la conexión con la Pachamama.",
-    ingredients: ["Maíz jora", "Azúcar", "Clavo de olor", "Canela", "Limón"],
-    image: "/images/default-photo.webp",
-  },
-];
-
-// Contenido desde el CMS; si no hay platos publicados, usa el fallback
-const dbDishes = await fetchDishes();
-const dishes = dbDishes.length ? dbDishes : fallbackDishes;
+// Todos los platos salen del CMS (seed 08_platos.sql); sin datos de ejemplo.
+const dishes = await fetchDishes();
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
@@ -88,17 +13,23 @@ const breadcrumbs = [
 ];
 
 const zones = [
-  { name: "Zona Quechua", text: "Papa, maíz, cebada, trigo, hortalizas, tuna, durazno, níspero. Clima templado y seco ideal para cultivos alimenticios." },
-  { name: "Zona Suni", text: "Quinua, kiwicha, papa, olluco, oca, mashua. Ganadería extensiva de ovinos, vacunos y camélidos." },
-  { name: "Zona Puna (Jalca)", text: "Pastos naturales y bofedales. Crianza de 4,278 ovinos, 1,490 vacunos y 90 camélidos. Lana para textiles." },
+  { name: "Zona Quechua", products: ["Maíz", "Papa", "Trigo", "Cebada", "Habas", "Tuna", "Durazno"], text: "Valles templados donde crecen el maíz y los frutales." },
+  { name: "Zona Suni", products: ["Quinua", "Kiwicha", "Papa nativa", "Oca", "Olluco", "Trucha"], text: "Laderas altas de granos andinos y tubérculos." },
+  { name: "Zona Puna", products: ["Leche y queso", "Carne de ovino", "Lana"], text: "Pastos naturales para ovinos, vacunos y camélidos." },
+];
+
+const where = [
+  { title: "En la feria de los viernes", text: "Queso fresco, papa, maíz y lo mejor de la chacra, directo de las familias.", href: "/comunidad", cta: "Ver la agenda" },
+  { title: "En las fiestas", text: "Los cargontes comparten mondongo, puca picante y chicha de jora con toda la comunidad.", href: "/festividades", cta: "Ver el calendario de fiestas" },
+  { title: "En casa de una familia", text: "Cocina en fogón de leña y comparte la mesa en una experiencia de turismo vivencial.", href: "/experiencias/turismo-vivencial", cta: "Turismo vivencial" },
 ];
 
 const dishesStructuredData = [
   {
     type: "itemList" as const,
     data: {
-      name: "Platos tradicionales de María Parado de Bellido",
-      description: "Gastronomía andina tradicional de Pomabamba, Cangallo (Ayacucho).",
+      name: "Platos tradicionales de Pomabamba, María Parado de Bellido",
+      description: "Gastronomía andina de Pomabamba, Cangallo (Ayacucho).",
       items: dishes.map((d) => ({ name: d.name, description: d.description, url: "/gastronomia", image: d.image })),
     },
   },
@@ -106,72 +37,83 @@ const dishesStructuredData = [
 ---
 
 <BaseLayout
-  title="Gastronomía andina tradicional de Pomabamba, Ayacucho"
-  description="Descubre la gastronomía del distrito María Parado de Bellido: puca picante, pachamanca, cuy chactado y más platos tradicionales andinos preparados con ingredientes ancestrales."
-  image={dishes[0]?.image || "/images/hero_3.webp"}
-  keywords={["gastronomía Ayacucho", "puca picante", "pachamanca", "comida típica Cangallo", "platos andinos"]}
+  title="Gastronomía de Pomabamba, Ayacucho: platos típicos y productos de la chacra"
+  description="Platos típicos y productos de Pomabamba, María Parado de Bellido (Cangallo, Ayacucho): puca picante, mondongo, qapchi, pachamanca, queso fresco y chicha de jora."
+  image="/images/gastronomia-andina-queso-habas-maiz-papa-nativa-pomabamba.webp"
+  keywords={["gastronomía Pomabamba", "comida típica Ayacucho", "puca picante", "qapchi de habas", "queso fresco Ayacucho", "platos andinos Cangallo"]}
   breadcrumbs={breadcrumbs}
   structuredData={dishesStructuredData}
 >
   <PageHero
     eyebrow="Gastronomía"
     title="Sabores de nuestra tierra"
-    intro="Recetas que se preparan en fogón de leña con productos de nuestros tres pisos ecológicos."
-    image={dishes.find((d) => d.image && !d.image.includes("default-photo"))?.image || "/images/hero_3.webp"}
+    intro="Recetas de fogón de leña con lo que dan nuestros tres pisos ecológicos: del maíz de los valles al queso de las alturas."
+    image="/images/gastronomia-andina-queso-habas-maiz-papa-nativa-pomabamba.webp"
+    imageAlt="Queso fresco, habas, maíz y papa nativa, productos de la gastronomía de Pomabamba, Ayacucho"
     breadcrumbs={breadcrumbs}
   />
 
-  <!-- Intro -->
+  <!-- Platos -->
   <section class="py-20 md:py-24">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <div class="lg:col-span-5">
-        <span class="eyebrow">De la chacra a la mesa</span>
-        <h2 class="section-heading">Una cocina que nace del territorio</h2>
-      </div>
-      <div class="lg:col-span-7 space-y-5 text-lg leading-relaxed">
-        <p>
-          Nuestra gastronomía se basa en productos que cultivamos y criamos en nuestros
-          <strong class="text-ink">tres pisos ecológicos</strong>: maíz, papa y trigo en la zona Quechua; quinua y
-          kiwicha en la Suni; y ganado ovino, vacuno y camélidos en la Puna.
-        </p>
-        <p>
-          Durante las <strong class="text-ink">fiestas patronales</strong>, los platos se preparan en fogón de leña
-          con recetas ancestrales, reuniendo a la comunidad en torno a la mesa.
+    <div class="container-custom">
+      <div class="max-w-3xl mb-14">
+        <span class="eyebrow">Platos típicos</span>
+        <h2 class="section-heading">Lo que tienes que probar</h2>
+        <p class="text-lg leading-relaxed">
+          Una cocina que nace de la chacra y se comparte: en la mesa familiar, en las faenas y, sobre todo, en las
+          <strong class="text-ink">fiestas patronales</strong>.
         </p>
       </div>
+      {dishes.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dishes.map((dish) => (
+            <article class="flex flex-col overflow-hidden rounded-2xl border border-line bg-white">
+              <div class="relative aspect-[16/10] overflow-hidden bg-sand-200">
+                <img
+                  src={dishCoverImage(dish)}
+                  alt={`${dish.name}, plato típico de Pomabamba, María Parado de Bellido, Ayacucho`}
+                  loading="lazy"
+                  class="absolute inset-0 h-full w-full object-cover object-[center_65%]"
+                />
+              </div>
+              <div class="flex flex-1 flex-col p-5 md:p-6">
+                <h3 class="font-heading text-2xl font-semibold leading-snug text-ink">{dish.name}</h3>
+                <p class="mt-2 leading-relaxed">{dish.description}</p>
+                {dish.ingredients.length > 0 && (
+                  <ul class="mt-auto flex flex-wrap gap-1.5 pt-4" aria-label="Ingredientes principales">
+                    {dish.ingredients.map((ingredient) => (
+                      <li class="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-semibold text-ink">{ingredient}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="rounded-2xl border border-dashed border-line bg-white p-8 md:p-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <img src="/images/placeholders/plato-general.svg" alt="" aria-hidden="true" class="md:col-span-3 w-full max-w-[220px] rounded-xl" />
+          <p class="md:col-span-9 text-lg leading-relaxed">Estamos preparando la carta de nuestros platos típicos. Mientras tanto, pruébalos en la feria de los viernes o en nuestras fiestas.</p>
+        </div>
+      )}
     </div>
   </section>
 
-  <!-- Platos -->
+  <!-- Dónde probar -->
   <section class="py-20 md:py-24 bg-white">
     <div class="container-custom">
-      <SectionHeading eyebrow="Platos típicos" title="Lo que tienes que probar" />
-      <div class="space-y-16 md:space-y-24">
-        {dishes.map((dish, index) => (
-          <article class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-            <div class:list={["relative aspect-[4/3] overflow-hidden rounded-2xl bg-sand", index % 2 === 1 && "lg:order-2"]}>
-              <img
-                src={dish.image || "/images/default-photo.webp"}
-                alt={dish.name}
-                loading="lazy"
-                class="absolute inset-0 h-full w-full object-cover"
-              />
-            </div>
-            <div>
-              <h3 class="font-heading text-3xl md:text-4xl font-semibold mb-4">{dish.name}</h3>
-              <p class="text-lg leading-relaxed mb-6">{dish.description}</p>
-              {dish.ingredients.length > 0 && (
-                <>
-                  <p class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft mb-3">Ingredientes principales</p>
-                  <ul class="flex flex-wrap gap-2">
-                    {dish.ingredients.map((ingredient) => (
-                      <li class="rounded-full bg-accent-soft px-3 py-1 text-sm font-medium text-ink">{ingredient}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          </article>
+      <div class="max-w-3xl mb-10">
+        <span class="eyebrow">Dónde probar</span>
+        <h2 class="section-heading">La mejor mesa es la compartida</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {where.map((w, i) => (
+          <a href={w.href} class="group flex flex-col rounded-2xl border border-line bg-sand p-6 md:p-7 transition-colors hover:border-primary/50">
+            <span class="font-heading text-3xl font-semibold text-primary/40" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="mt-2 font-heading text-2xl font-semibold text-ink">{w.title}</h3>
+            <p class="mt-2 leading-relaxed">{w.text}</p>
+            <span class="link-arrow mt-auto pt-5">{w.cta} <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span></span>
+          </a>
         ))}
       </div>
     </div>
@@ -180,34 +122,21 @@ const dishesStructuredData = [
   <!-- Productos por piso ecológico -->
   <section class="py-20 md:py-24">
     <div class="container-custom">
-      <SectionHeading
-        eyebrow="Productos"
-        title="Nuestros tres pisos ecológicos"
-        intro="Cultivamos y criamos en 12,913 hectáreas entre 2,500 y 4,800 msnm. El 76% de nuestra población se dedica a la agricultura y ganadería."
-      />
+      <div class="max-w-3xl mb-10">
+        <span class="eyebrow">De la chacra a la mesa</span>
+        <h2 class="section-heading">Tres pisos, tres despensas</h2>
+        <p class="text-lg leading-relaxed">Entre los 2,500 y los 4,800 msnm, cada altura da sus propios productos.</p>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         {zones.map((zone) => (
           <div class="rounded-2xl bg-secondary-soft p-6 md:p-8">
-            <h3 class="font-heading text-2xl font-semibold text-secondary-dark mb-3">{zone.name}</h3>
-            <p class="leading-relaxed">{zone.text}</p>
+            <h3 class="font-heading text-2xl font-semibold text-secondary-dark">{zone.name}</h3>
+            <p class="mt-2 leading-relaxed">{zone.text}</p>
+            <ul class="mt-4 flex flex-wrap gap-1.5">
+              {zone.products.map((p) => <li class="rounded-full bg-white px-3 py-1 text-sm text-ink">{p}</li>)}
+            </ul>
           </div>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="pb-20 md:pb-28">
-    <div class="container-custom">
-      <div class="rounded-3xl bg-secondary text-white p-8 md:p-14 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-        <div class="md:col-span-2">
-          <h2 class="font-heading text-3xl md:text-4xl font-semibold !text-white mb-3">Prueba nuestra gastronomía</h2>
-          <p class="text-white/85 text-lg">La mejor forma de probarla es en una fiesta patronal o en casa de una familia local.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row md:flex-col gap-3 md:items-end">
-          <a href="/festividades" class="btn-ghost-light">Ver festividades</a>
-          <a href="/experiencias/turismo-vivencial" class="btn-ghost-light">Turismo vivencial</a>
-        </div>
       </div>
     </div>
   </section>
