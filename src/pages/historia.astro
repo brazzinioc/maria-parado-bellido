@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import CensoCifras from "../components/CensoCifras.astro";
 
 // SEO Keywords para página de historia
 const aboutKeywords = [
@@ -179,7 +180,7 @@ const keyFacts = [
   { value: "+10,000", label: "años de historia" },
   { value: "1822", label: "sacrificio de la heroína" },
   { value: "1962", label: "creación del distrito" },
-  { value: "3,047", label: "habitantes (censo 2005)" },
+  { value: "3,268", label: "habitantes (censo 2025)" },
   { value: "3", label: "pisos ecológicos" },
 ];
 
@@ -188,6 +189,7 @@ const sections = [
   { href: "#resena", label: "Línea de tiempo" },
   { href: "#territorio", label: "Territorio" },
   { href: "#comunidades", label: "Comunidades" },
+  { href: "#cifras", label: "En cifras" },
   { href: "#cultura", label: "Cultura" },
 ];
 
@@ -367,6 +369,7 @@ const potentials = [
       <ul class="mt-2 space-y-1 list-disc pl-5">
         <li>Municipalidad Distrital de María Parado de Bellido. <em>Plan de Desarrollo Concertado del Distrito de María Parado de Bellido 2007-2022.</em></li>
         <li id="fuente-tukri" class="scroll-mt-40">Tipe Yaranga, D. (2021). <em>Secuencia constructiva lado norte de la plataforma principal de Tukri – Apu Urqu, María Parado de Bellido, Cangallo – Ayacucho</em> [Tesis de licenciatura]. Universidad Nacional de San Cristóbal de Huamanga.</li>
+        <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). (2025). <em>Censos Nacionales 2025: XIII de Población, VIII de Vivienda y IV de Comunidades Indígenas. Resultados del distrito de María Parado de Bellido (ubigeo 050204).</em> <a href="https://censos2025.inei.gob.pe" target="_blank" rel="noopener noreferrer" class="underline">censos2025.inei.gob.pe</a></li>
         <li id="fuente-congreso" class="scroll-mt-40">Congreso de la República del Perú. <em>Mujeres heroicas de la independencia del Perú: María Parado de Bellido.</em></li>
         <li id="fuente-gore-ayacucho" class="scroll-mt-40">Gobierno Regional de Ayacucho. Conmemoración del bicentenario de la inmolación de María Parado Jayo, Paras (2022).</li>
       </ul>
@@ -431,21 +434,25 @@ const potentials = [
     </div>
   </section>
 
+  <!-- Censo 2025 -->
+  <CensoCifras />
+
   <!-- Cultura y tradiciones -->
-  <section id="cultura" class="scroll-mt-40 py-20 md:py-28">
+  <section id="cultura" class="scroll-mt-40 py-20 md:py-28 bg-white">
     <div class="container-custom">
       <div class="max-w-3xl mb-12">
         <span class="eyebrow">Identidad</span>
         <h2 class="section-heading">Cultura y tradiciones de Pomabamba</h2>
         <p class="text-lg leading-relaxed">
-          Mantenemos <strong class="text-ink">fuerte identidad cultural</strong> y sentido comunitario. Según el censo de 2005, somos
-          <strong class="text-ink">3,047 habitantes</strong>, con un <strong class="text-ink">67% de población joven</strong>
-          (0-34 años) que preserva las tradiciones de nuestros ancestros.
+          Mantenemos <strong class="text-ink">fuerte identidad cultural</strong> y sentido comunitario. Somos
+          <strong class="text-ink">3,268 habitantes</strong> y el <strong class="text-ink">90.9%</strong> aprendió a hablar en
+          quechua en su niñez <a href="#fuente-inei" class="text-base text-ink-soft hover:underline">(INEI, 2025)</a>: la lengua
+          con la que se siguen transmitiendo las tradiciones de nuestros ancestros.
         </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {culture.map((item) => (
-          <article class="rounded-2xl bg-white border border-line p-6 md:p-8">
+          <article class="rounded-2xl bg-sand border border-line p-6 md:p-8">
             <h3 class="font-heading text-2xl font-semibold mb-3">{item.title}</h3>
             <p class="leading-relaxed [&_strong]:text-ink" set:html={item.text} />
           </article>
@@ -455,19 +462,19 @@ const potentials = [
   </section>
 
   <!-- Potencialidades -->
-  <section id="potencialidades" class="scroll-mt-40 py-20 md:py-28 bg-white">
+  <section id="potencialidades" class="scroll-mt-40 py-20 md:py-28">
     <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
       <div class="lg:col-span-5">
         <span class="eyebrow">Futuro</span>
         <h2 class="section-heading">Potencialidades</h2>
         <p class="text-lg leading-relaxed">
-          Somos un distrito con <strong class="text-ink">población joven y activa</strong> que mantiene
+          Somos un distrito con <strong class="text-ink">fuerte organización comunal</strong> que mantiene
           <strong class="text-ink">gran disposición al progreso</strong> y fe en el futuro.
         </p>
       </div>
       <ul class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {potentials.map((item) => (
-          <li class="flex gap-3 rounded-2xl bg-sand p-5">
+          <li class="flex gap-3 rounded-2xl bg-white border border-line p-5">
             <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
             <span class="text-ink">{item}</span>
           </li>
