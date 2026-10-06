@@ -1,6 +1,6 @@
 ---
 /**
- * CensoCifras - "Pomabamba en cifras": resultados del Censo 2025 (INEI) del distrito.
+ * CensoCifras - Población del distrito según el Censo 2025 (INEI). Se usa en /datos.
  * Pirámide de población, comparación con Ayacucho y el Perú y material para el aula.
  * Los datos viven en src/data/censo-2025.json; el CSV completo, en /public/datos.
  */
@@ -22,13 +22,13 @@ const { total, hombres, mujeres, total2005 } = censo.poblacion;
 const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
 ---
 
-<section id="cifras" class="scroll-mt-40 py-20 md:py-28">
+<section id="poblacion" class="scroll-mt-40 py-20 md:py-28">
   <div class="container-custom">
     <!-- Encabezado + población total -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
       <div class="lg:col-span-7">
-        <span class="eyebrow">Censos Nacionales 2025</span>
-        <h2 class="section-heading">Pomabamba en cifras</h2>
+        <span class="eyebrow">Población · Censos Nacionales 2025</span>
+        <h2 class="section-heading">¿Quiénes somos?</h2>
         <p class="text-lg leading-relaxed">
           Lo que dice el censo más reciente del INEI sobre quiénes somos, cómo vivimos y qué nos falta.
           Datos para conocer el distrito de María Parado de Bellido y para trabajar en el aula.
