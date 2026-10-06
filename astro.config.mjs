@@ -10,7 +10,8 @@ export default defineConfig({
 
   integrations: [
     react(),
-    sitemap(),
+    // /datos aún no está enlazada en la UI: fuera del sitemap hasta activarla.
+    sitemap({ filter: (page) => !page.includes('/datos') }),
   ],
 
   output: 'static',

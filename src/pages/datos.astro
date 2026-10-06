@@ -9,6 +9,7 @@ import { whatsappUrl } from "../lib/whatsapp";
 /**
  * Pomabamba en datos: página de referencia con las cifras del distrito, organizada por temas.
  * Cada tema lleva su fuente y su año. Los temas "en preparación" se activan al cargar sus datos.
+ * Aún sin enlace en el menú y con noindex: al activarla, quitar noindex y el filtro del sitemap.
  */
 const keywords = [
   "Pomabamba en datos",
@@ -92,6 +93,7 @@ const ecoZones = [
   keywords={keywords}
   breadcrumbs={breadcrumbs}
   structuredData={structuredData}
+  noindex={true}
 >
   <PageHero
     eyebrow="Datos del distrito"
