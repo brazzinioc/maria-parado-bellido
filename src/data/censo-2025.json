@@ -1,0 +1,77 @@
+{
+  "fuente": "INEI, Censos Nacionales 2025: XIII de Población, VIII de Vivienda y IV de Comunidades Indígenas",
+  "url": "https://censos2025.inei.gob.pe/resultados/poblacion-total/dashboard",
+  "ubigeo": "050204",
+  "csv": "/datos/censo-2025-pomabamba-maria-parado-de-bellido-ayacucho.csv",
+  "poblacion": { "total": 3268, "hombres": 1592, "mujeres": 1676, "total2005": 3047 },
+  "resumen": [
+    { "valor": "1,380", "etiqueta": "hogares" },
+    { "valor": "1,822", "etiqueta": "viviendas" },
+    { "valor": "25.3", "etiqueta": "hab. por km²" },
+    { "valor": "36 años", "etiqueta": "edad mediana (Perú: 32)" }
+  ],
+  "piramide": [
+    { "edad": "0-4", "hombres": 104, "mujeres": 78 },
+    { "edad": "5-9", "hombres": 128, "mujeres": 108 },
+    { "edad": "10-14", "hombres": 130, "mujeres": 134 },
+    { "edad": "15-19", "hombres": 140, "mujeres": 119 },
+    { "edad": "20-24", "hombres": 101, "mujeres": 102 },
+    { "edad": "25-29", "hombres": 98, "mujeres": 123 },
+    { "edad": "30-34", "hombres": 109, "mujeres": 103 },
+    { "edad": "35-39", "hombres": 96, "mujeres": 102 },
+    { "edad": "40-44", "hombres": 97, "mujeres": 99 },
+    { "edad": "45-49", "hombres": 93, "mujeres": 94 },
+    { "edad": "50-54", "hombres": 93, "mujeres": 108 },
+    { "edad": "55-59", "hombres": 110, "mujeres": 136 },
+    { "edad": "60-64", "hombres": 69, "mujeres": 102 },
+    { "edad": "65-69", "hombres": 63, "mujeres": 77 },
+    { "edad": "70-74", "hombres": 74, "mujeres": 57 },
+    { "edad": "75-79", "hombres": 43, "mujeres": 70 },
+    { "edad": "80-84", "hombres": 28, "mujeres": 41 },
+    { "edad": "85+", "hombres": 16, "mujeres": 23 }
+  ],
+  "envejecimiento": [
+    { "indicador": "Adultos de 60 años y más por cada 100 menores de 15", "distrito": 97.2, "peru": 65.1, "unidad": "" },
+    { "indicador": "Hogares de una sola persona", "distrito": 39.3, "peru": 20.6, "unidad": "%" },
+    { "indicador": "Hogares formados solo por adultos mayores", "distrito": 25.6, "peru": 12.2, "unidad": "%" }
+  ],
+  "comparativo": [
+    {
+      "tema": "Identidad",
+      "titular": "Tierra quechua",
+      "texto": "9 de cada 10 personas aprendieron a hablar en quechua: casi siete veces el promedio nacional.",
+      "filas": [
+        { "indicador": "Aprendió quechua en su niñez", "distrito": 90.9, "cangallo": 88.4, "ayacucho": 68.1, "peru": 13.5 },
+        { "indicador": "Se identifica con un pueblo indígena u originario", "distrito": 97.8, "cangallo": 94.6, "ayacucho": 86.2, "peru": 20.7 }
+      ]
+    },
+    {
+      "tema": "Servicios en la vivienda",
+      "titular": "Agua sí, desagüe todavía no",
+      "texto": "El agua por red pública llega a más hogares que el promedio del país, pero solo uno de cada cuatro tiene desagüe.",
+      "filas": [
+        { "indicador": "Agua por red pública", "distrito": 96.9, "cangallo": 84.0, "ayacucho": 85.9, "peru": 79.3 },
+        { "indicador": "Electricidad por red pública", "distrito": 92.5, "cangallo": 82.3, "ayacucho": 88.3, "peru": 91.4 },
+        { "indicador": "Desagüe conectado a red pública", "distrito": 26.7, "cangallo": 35.2, "ayacucho": 60.6, "peru": 68.8 },
+        { "indicador": "Cocina con gas, electricidad u otra energía limpia", "distrito": 50.4, "cangallo": 49.7, "ayacucho": 68.1, "peru": 82.7 }
+      ]
+    },
+    {
+      "tema": "Educación y conectividad",
+      "titular": "La brecha por cerrar",
+      "texto": "Uno de cada tres adultos terminó la secundaria y menos de un tercio de los hogares tiene internet: en ambos casos, cerca de la mitad del promedio nacional.",
+      "filas": [
+        { "indicador": "Sabe leer y escribir (15 años y más)", "distrito": 77.3, "cangallo": 81.6, "ayacucho": 87.8, "peru": 94.9 },
+        { "indicador": "Secundaria completa o más (15 años y más)", "distrito": 33.6, "cangallo": 41.3, "ayacucho": 53.5, "peru": 66.7 },
+        { "indicador": "Usó internet (3 años y más)", "distrito": 45.1, "cangallo": 47.4, "ayacucho": 60.4, "peru": 74.3 },
+        { "indicador": "Hogares con conexión a internet", "distrito": 29.8, "cangallo": 30.5, "ayacucho": 46.8, "peru": 67.8 }
+      ]
+    }
+  ],
+  "preguntas": [
+    "En la pirámide hay menos niñas y niños de 0 a 4 años que adolescentes de 15 a 19. ¿Qué nos dice eso sobre los nacimientos en el distrito?",
+    "¿Por qué crees que hay menos jóvenes de 20 a 24 años que de 15 a 19? Pregunta en tu familia quiénes salieron a estudiar o trabajar, y a dónde.",
+    "Casi todas las viviendas tienen agua por red pública, pero pocas tienen desagüe. ¿Qué consecuencias tiene para la salud y para el río?",
+    "El 90.9% aprendió quechua en su niñez. ¿Cómo podemos lograr que las nuevas generaciones lo sigan hablando?"
+  ]
+}

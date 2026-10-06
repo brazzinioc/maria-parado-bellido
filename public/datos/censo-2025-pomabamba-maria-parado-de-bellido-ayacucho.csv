@@ -1,0 +1,377 @@
+﻿tema,indicador,ambito,valor,porcentaje
+Demográficos,Población censada,María Parado de Bellido (distrito),3268,100.0
+Demográficos,Población censada,Cangallo (provincia),40029,100.0
+Demográficos,Población censada,Ayacucho (departamento),676976,100.0
+Demográficos,Población censada,Perú,32706028,100.0
+Demográficos,Población censada hombres,María Parado de Bellido (distrito),1592,48.7
+Demográficos,Población censada hombres,Cangallo (provincia),19558,48.9
+Demográficos,Población censada hombres,Ayacucho (departamento),333775,49.3
+Demográficos,Población censada hombres,Perú,16120555,49.3
+Demográficos,Población censada mujeres,María Parado de Bellido (distrito),1676,51.3
+Demográficos,Población censada mujeres,Cangallo (provincia),20471,51.1
+Demográficos,Población censada mujeres,Ayacucho (departamento),343201,50.7
+Demográficos,Población censada mujeres,Perú,16585473,50.7
+Demográficos,Población censada de 0 a 14 años,María Parado de Bellido (distrito),682,20.9
+Demográficos,Población censada de 0 a 14 años,Cangallo (provincia),8831,22.1
+Demográficos,Población censada de 0 a 14 años,Ayacucho (departamento),161520,23.9
+Demográficos,Población censada de 0 a 14 años,Perú,7429471,22.7
+Demográficos,Población censada de 15 a 59 años,María Parado de Bellido (distrito),1923,58.8
+Demográficos,Población censada de 15 a 59 años,Cangallo (provincia),23337,58.3
+Demográficos,Población censada de 15 a 59 años,Ayacucho (departamento),411146,60.7
+Demográficos,Población censada de 15 a 59 años,Perú,20437419,62.5
+Demográficos,Población censada de 60 años y más,María Parado de Bellido (distrito),663,20.3
+Demográficos,Población censada de 60 años y más,Cangallo (provincia),7861,19.6
+Demográficos,Población censada de 60 años y más,Ayacucho (departamento),104310,15.4
+Demográficos,Población censada de 60 años y más,Perú,4839138,14.8
+Demográficos,Edad promedio,María Parado de Bellido (distrito),37.6,
+Demográficos,Edad promedio,Cangallo (provincia),36.7,
+Demográficos,Edad promedio,Ayacucho (departamento),34.1,
+Demográficos,Edad promedio,Perú,34.2,
+Demográficos,Edad mediana,María Parado de Bellido (distrito),36,
+Demográficos,Edad mediana,Cangallo (provincia),35,
+Demográficos,Edad mediana,Ayacucho (departamento),31,
+Demográficos,Edad mediana,Perú,32,
+Demográficos,Razón hombre - mujer,María Parado de Bellido (distrito),95,
+Demográficos,Razón hombre - mujer,Cangallo (provincia),95.5,
+Demográficos,Razón hombre - mujer,Ayacucho (departamento),97.3,
+Demográficos,Razón hombre - mujer,Perú,97.2,
+Demográficos,Índice de envejecimiento,María Parado de Bellido (distrito),97.2,
+Demográficos,Índice de envejecimiento,Cangallo (provincia),89,
+Demográficos,Índice de envejecimiento,Ayacucho (departamento),64.6,
+Demográficos,Índice de envejecimiento,Perú,65.1,
+Demográficos,Relación de dependencia total,María Parado de Bellido (distrito),69.9,
+Demográficos,Relación de dependencia total,Cangallo (provincia),71.5,
+Demográficos,Relación de dependencia total,Ayacucho (departamento),64.7,
+Demográficos,Relación de dependencia total,Perú,60,
+Demográficos,Relación de dependencia juvenil,María Parado de Bellido (distrito),35.5,
+Demográficos,Relación de dependencia juvenil,Cangallo (provincia),37.8,
+Demográficos,Relación de dependencia juvenil,Ayacucho (departamento),39.3,
+Demográficos,Relación de dependencia juvenil,Perú,36.4,
+Demográficos,Relación de dependencia adulta,María Parado de Bellido (distrito),34.5,
+Demográficos,Relación de dependencia adulta,Cangallo (provincia),33.7,
+Demográficos,Relación de dependencia adulta,Ayacucho (departamento),25.4,
+Demográficos,Relación de dependencia adulta,Perú,23.7,
+Demográficos,Densidad de la población censada,María Parado de Bellido (distrito),25.3,
+Demográficos,Densidad de la población censada,Cangallo (provincia),21.2,
+Demográficos,Densidad de la población censada,Ayacucho (departamento),15.4,
+Demográficos,Densidad de la población censada,Perú,25.5,
+Demográficos,Densidad de la población adulta mayor,María Parado de Bellido (distrito),5.1,
+Demográficos,Densidad de la población adulta mayor,Cangallo (provincia),4.2,
+Demográficos,Densidad de la población adulta mayor,Ayacucho (departamento),2.4,
+Demográficos,Densidad de la población adulta mayor,Perú,3.8,
+Fecundidad,Mujeres entre 15 y 49 años (mujeres en edad fértil),María Parado de Bellido (distrito),742,100.0
+Fecundidad,Mujeres entre 15 y 49 años (mujeres en edad fértil),Cangallo (provincia),9327,100.0
+Fecundidad,Mujeres entre 15 y 49 años (mujeres en edad fértil),Ayacucho (departamento),170829,100.0
+Fecundidad,Mujeres entre 15 y 49 años (mujeres en edad fértil),Perú,8563388,100.0
+Fecundidad,Promedio de hijas e hijos nacidos vivos de mujeres entre 15 y 49 años,María Parado de Bellido (distrito),1.8,
+Fecundidad,Promedio de hijas e hijos nacidos vivos de mujeres entre 15 y 49 años,Cangallo (provincia),1.7,
+Fecundidad,Promedio de hijas e hijos nacidos vivos de mujeres entre 15 y 49 años,Ayacucho (departamento),1.6,
+Fecundidad,Promedio de hijas e hijos nacidos vivos de mujeres entre 15 y 49 años,Perú,1.4,
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años con hijas e hijos nacidos vivos,María Parado de Bellido (distrito),533,71.8
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años con hijas e hijos nacidos vivos,Cangallo (provincia),6284,67.4
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años con hijas e hijos nacidos vivos,Ayacucho (departamento),110992,65.0
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años con hijas e hijos nacidos vivos,Perú,5042914,58.9
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años sin hijas e hijos nacidos vivos,María Parado de Bellido (distrito),209,28.2
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años sin hijas e hijos nacidos vivos,Cangallo (provincia),3043,32.6
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años sin hijas e hijos nacidos vivos,Ayacucho (departamento),59837,35.0
+Fecundidad,Porcentaje de mujeres entre 15 y 49 años sin hijas e hijos nacidos vivos,Perú,3520474,41.1
+Fecundidad,Razón niño/a - mujer,María Parado de Bellido (distrito),245.3,
+Fecundidad,Razón niño/a - mujer,Cangallo (provincia),257.5,
+Fecundidad,Razón niño/a - mujer,Ayacucho (departamento),268.3,
+Fecundidad,Razón niño/a - mujer,Perú,235.2,
+Fecundidad,Porcentaje de madres solteras de 12 años y más,María Parado de Bellido (distrito),87,7.7
+Fecundidad,Porcentaje de madres solteras de 12 años y más,Cangallo (provincia),1281,9.9
+Fecundidad,Porcentaje de madres solteras de 12 años y más,Ayacucho (departamento),14273,7.1
+Fecundidad,Porcentaje de madres solteras de 12 años y más,Perú,603264,6.6
+Fecundidad,Porcentaje de madres adolescentes de 12 a 17 años,María Parado de Bellido (distrito),3,1.9
+Fecundidad,Porcentaje de madres adolescentes de 12 a 17 años,Cangallo (provincia),47,2.2
+Fecundidad,Porcentaje de madres adolescentes de 12 a 17 años,Ayacucho (departamento),710,2.0
+Fecundidad,Porcentaje de madres adolescentes de 12 a 17 años,Perú,27212,1.6
+Inmigración extranjera,Población inmigrante extranjera,María Parado de Bellido (distrito),0,
+Inmigración extranjera,Población inmigrante extranjera,Cangallo (provincia),12,100.0
+Inmigración extranjera,Población inmigrante extranjera,Ayacucho (departamento),1826,100.0
+Inmigración extranjera,Población inmigrante extranjera,Perú,1052977,100.0
+Inmigración extranjera,Razón hombre - mujer de la población inmigrante extranjera,Cangallo (provincia),71.4,
+Inmigración extranjera,Razón hombre - mujer de la población inmigrante extranjera,Ayacucho (departamento),106.1,
+Inmigración extranjera,Razón hombre - mujer de la población inmigrante extranjera,Perú,102.8,
+Inmigración extranjera,Edad promedio de la población inmigrante extranjera,Cangallo (provincia),24.3,
+Inmigración extranjera,Edad promedio de la población inmigrante extranjera,Ayacucho (departamento),30.8,
+Inmigración extranjera,Edad promedio de la población inmigrante extranjera,Perú,31.7,
+Inmigración extranjera,Edad mediana de la población inmigrante extranjera,Cangallo (provincia),16.5,
+Inmigración extranjera,Edad mediana de la población inmigrante extranjera,Ayacucho (departamento),31,
+Inmigración extranjera,Edad mediana de la población inmigrante extranjera,Perú,31,
+Inmigración extranjera,Índice de envejecimiento de la población inmigrante extranjera,Cangallo (provincia),25,
+Inmigración extranjera,Índice de envejecimiento de la población inmigrante extranjera,Ayacucho (departamento),23.6,
+Inmigración extranjera,Índice de envejecimiento de la población inmigrante extranjera,Perú,30.7,
+Inmigración extranjera,Población inmigrante extranjera por tenencia de seguro de salud,María Parado de Bellido (distrito),0,
+Inmigración extranjera,Población inmigrante extranjera por tenencia de seguro de salud,Cangallo (provincia),7,58.3
+Inmigración extranjera,Población inmigrante extranjera por tenencia de seguro de salud,Ayacucho (departamento),725,39.7
+Inmigración extranjera,Población inmigrante extranjera por tenencia de seguro de salud,Perú,421343,40.0
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más actualmente unida,María Parado de Bellido (distrito),1561,57.0
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más actualmente unida,Cangallo (provincia),18130,54.5
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más actualmente unida,Ayacucho (departamento),277448,50.3
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más actualmente unida,Perú,12617040,46.8
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más anteriormente unida,María Parado de Bellido (distrito),379,13.8
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más anteriormente unida,Cangallo (provincia),4243,12.8
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más anteriormente unida,Ayacucho (departamento),79356,14.4
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más anteriormente unida,Perú,3908593,14.5
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más soltera (nunca unida o nunca conviviente),María Parado de Bellido (distrito),801,29.2
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más soltera (nunca unida o nunca conviviente),Cangallo (provincia),10892,32.7
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más soltera (nunca unida o nunca conviviente),Ayacucho (departamento),194484,35.3
+"Estado civil, Identidad y Seguro de salud",Población de 12 años y más soltera (nunca unida o nunca conviviente),Perú,10451758,38.7
+"Estado civil, Identidad y Seguro de salud",Población que tiene DNI,María Parado de Bellido (distrito),3266,99.9
+"Estado civil, Identidad y Seguro de salud",Población que tiene DNI,Cangallo (provincia),39991,99.9
+"Estado civil, Identidad y Seguro de salud",Población que tiene DNI,Ayacucho (departamento),674803,99.7
+"Estado civil, Identidad y Seguro de salud",Población que tiene DNI,Perú,31730252,97.0
+"Estado civil, Identidad y Seguro de salud",Población inmigrante extranjera con DNI,María Parado de Bellido (distrito),0,
+"Estado civil, Identidad y Seguro de salud",Población inmigrante extranjera con DNI,Cangallo (provincia),6,50.0
+"Estado civil, Identidad y Seguro de salud",Población inmigrante extranjera con DNI,Ayacucho (departamento),303,16.6
+"Estado civil, Identidad y Seguro de salud",Población inmigrante extranjera con DNI,Perú,153716,14.6
+"Estado civil, Identidad y Seguro de salud",Población censada inmigrante extranjera con documento de identidad,María Parado de Bellido (distrito),0,
+"Estado civil, Identidad y Seguro de salud",Población censada inmigrante extranjera con documento de identidad,Cangallo (provincia),12,100.0
+"Estado civil, Identidad y Seguro de salud",Población censada inmigrante extranjera con documento de identidad,Ayacucho (departamento),1759,96.3
+"Estado civil, Identidad y Seguro de salud",Población censada inmigrante extranjera con documento de identidad,Perú,1018322,96.7
+"Estado civil, Identidad y Seguro de salud",Población que tiene algún seguro de salud,María Parado de Bellido (distrito),3257,99.7
+"Estado civil, Identidad y Seguro de salud",Población que tiene algún seguro de salud,Cangallo (provincia),39815,99.5
+"Estado civil, Identidad y Seguro de salud",Población que tiene algún seguro de salud,Ayacucho (departamento),665746,98.3
+"Estado civil, Identidad y Seguro de salud",Población que tiene algún seguro de salud,Perú,30997871,94.8
+Educación,Tasa de asistencia escolar de la población de 3 a 24 años,María Parado de Bellido (distrito),810,77.4
+Educación,Tasa de asistencia escolar de la población de 3 a 24 años,Cangallo (provincia),10837,79.8
+Educación,Tasa de asistencia escolar de la población de 3 a 24 años,Ayacucho (departamento),198525,81.4
+Educación,Tasa de asistencia escolar de la población de 3 a 24 años,Perú,9193646,80.3
+Educación,Población de 3 a 24 años que se desplaza fuera de su distrito para asistir a su centro de estudios,María Parado de Bellido (distrito),187,17.9
+Educación,Población de 3 a 24 años que se desplaza fuera de su distrito para asistir a su centro de estudios,Cangallo (provincia),2730,20.1
+Educación,Población de 3 a 24 años que se desplaza fuera de su distrito para asistir a su centro de estudios,Ayacucho (departamento),45802,18.8
+Educación,Población de 3 a 24 años que se desplaza fuera de su distrito para asistir a su centro de estudios,Perú,2004558,17.5
+Educación,Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado,María Parado de Bellido (distrito),869,33.6
+Educación,Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado,Cangallo (provincia),12882,41.3
+Educación,Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado,Ayacucho (departamento),275538,53.5
+Educación,Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado,Perú,16847013,66.7
+Educación,Tasa de alfabetismo de la población de 15 años y más,María Parado de Bellido (distrito),1999,77.3
+Educación,Tasa de alfabetismo de la población de 15 años y más,Cangallo (provincia),25452,81.6
+Educación,Tasa de alfabetismo de la población de 15 años y más,Ayacucho (departamento),452721,87.8
+Educación,Tasa de alfabetismo de la población de 15 años y más,Perú,23979289,94.9
+Educación,Población de 3 años y más que utilizó dispositivos TIC's,María Parado de Bellido (distrito),1602,50.5
+Educación,Población de 3 años y más que utilizó dispositivos TIC's,Cangallo (provincia),21108,54.5
+Educación,Población de 3 años y más que utilizó dispositivos TIC's,Ayacucho (departamento),423760,64.9
+Educación,Población de 3 años y más que utilizó dispositivos TIC's,Perú,24475242,77.5
+Educación,Población de 3 años y más que utilizó internet,María Parado de Bellido (distrito),1431,45.1
+Educación,Población de 3 años y más que utilizó internet,Cangallo (provincia),18381,47.4
+Educación,Población de 3 años y más que utilizó internet,Ayacucho (departamento),394388,60.4
+Educación,Población de 3 años y más que utilizó internet,Perú,23464703,74.3
+Discapacidad,Población de 5 años y más con discapacidad,María Parado de Bellido (distrito),240,7.8
+Discapacidad,Población de 5 años y más con discapacidad,Cangallo (provincia),3568,9.5
+Discapacidad,Población de 5 años y más con discapacidad,Ayacucho (departamento),39989,6.3
+Discapacidad,Población de 5 años y más con discapacidad,Perú,1637090,5.3
+Discapacidad,Población de 5 a 14 años con discapacidad,María Parado de Bellido (distrito),8,3.3
+Discapacidad,Población de 5 a 14 años con discapacidad,Cangallo (provincia),96,2.7
+Discapacidad,Población de 5 a 14 años con discapacidad,Ayacucho (departamento),1420,3.6
+Discapacidad,Población de 5 a 14 años con discapacidad,Perú,72103,4.4
+Discapacidad,Población de 15 a 59 años con discapacidad,María Parado de Bellido (distrito),74,30.8
+Discapacidad,Población de 15 a 59 años con discapacidad,Cangallo (provincia),1185,33.2
+Discapacidad,Población de 15 a 59 años con discapacidad,Ayacucho (departamento),13729,34.3
+Discapacidad,Población de 15 a 59 años con discapacidad,Perú,571735,34.9
+Discapacidad,Población de 60 años y más con discapacidad,María Parado de Bellido (distrito),158,65.8
+Discapacidad,Población de 60 años y más con discapacidad,Cangallo (provincia),2287,64.1
+Discapacidad,Población de 60 años y más con discapacidad,Ayacucho (departamento),24840,62.1
+Discapacidad,Población de 60 años y más con discapacidad,Perú,993252,60.7
+Discapacidad,Población de 5 años y más con discapacidad para ver,María Parado de Bellido (distrito),84,35.0
+Discapacidad,Población de 5 años y más con discapacidad para ver,Cangallo (provincia),1556,43.6
+Discapacidad,Población de 5 años y más con discapacidad para ver,Ayacucho (departamento),16524,41.3
+Discapacidad,Población de 5 años y más con discapacidad para ver,Perú,602409,36.8
+Discapacidad,Población de 5 años y más con discapacidad para oír,María Parado de Bellido (distrito),77,32.1
+Discapacidad,Población de 5 años y más con discapacidad para oír,Cangallo (provincia),1088,30.5
+Discapacidad,Población de 5 años y más con discapacidad para oír,Ayacucho (departamento),11653,29.1
+Discapacidad,Población de 5 años y más con discapacidad para oír,Perú,400078,24.4
+Discapacidad,Población de 5 años y más con discapacidad para comunicarse,María Parado de Bellido (distrito),18,7.5
+Discapacidad,Población de 5 años y más con discapacidad para comunicarse,Cangallo (provincia),348,9.8
+Discapacidad,Población de 5 años y más con discapacidad para comunicarse,Ayacucho (departamento),4482,11.2
+Discapacidad,Población de 5 años y más con discapacidad para comunicarse,Perú,192473,11.8
+Discapacidad,Población de 5 años y más con discapacidad para caminar,María Parado de Bellido (distrito),102,42.5
+Discapacidad,Población de 5 años y más con discapacidad para caminar,Cangallo (provincia),1752,49.1
+Discapacidad,Población de 5 años y más con discapacidad para caminar,Ayacucho (departamento),19274,48.2
+Discapacidad,Población de 5 años y más con discapacidad para caminar,Perú,845717,51.7
+Discapacidad,Población de 5 años y más con discapacidad para el cuidado personal,María Parado de Bellido (distrito),34,14.2
+Discapacidad,Población de 5 años y más con discapacidad para el cuidado personal,Cangallo (provincia),847,23.7
+Discapacidad,Población de 5 años y más con discapacidad para el cuidado personal,Ayacucho (departamento),8424,21.1
+Discapacidad,Población de 5 años y más con discapacidad para el cuidado personal,Perú,326559,19.9
+Discapacidad,Población de 5 años y más con discapacidad para concentrarse,María Parado de Bellido (distrito),80,33.3
+Discapacidad,Población de 5 años y más con discapacidad para concentrarse,Cangallo (provincia),1037,29.1
+Discapacidad,Población de 5 años y más con discapacidad para concentrarse,Ayacucho (departamento),9410,23.5
+Discapacidad,Población de 5 años y más con discapacidad para concentrarse,Perú,317704,19.4
+Discapacidad,Población de 5 años y más con discapacidad para relacionarse con los demás,María Parado de Bellido (distrito),37,15.4
+Discapacidad,Población de 5 años y más con discapacidad para relacionarse con los demás,Cangallo (provincia),438,12.3
+Discapacidad,Población de 5 años y más con discapacidad para relacionarse con los demás,Ayacucho (departamento),5129,12.8
+Discapacidad,Población de 5 años y más con discapacidad para relacionarse con los demás,Perú,222373,13.6
+Discapacidad,Porcentaje de hogares con al menos una persona de 5 años y más con discapacidad,María Parado de Bellido (distrito),199,14.4
+Discapacidad,Porcentaje de hogares con al menos una persona de 5 años y más con discapacidad,Cangallo (provincia),2987,18.9
+Discapacidad,Porcentaje de hogares con al menos una persona de 5 años y más con discapacidad,Ayacucho (departamento),34278,13.8
+Discapacidad,Porcentaje de hogares con al menos una persona de 5 años y más con discapacidad,Perú,1392791,13.2
+Discapacidad,Población de 5 años y más con discapacidad que tienen algún seguro de salud,María Parado de Bellido (distrito),238,99.2
+Discapacidad,Población de 5 años y más con discapacidad que tienen algún seguro de salud,Cangallo (provincia),3554,99.6
+Discapacidad,Población de 5 años y más con discapacidad que tienen algún seguro de salud,Ayacucho (departamento),39445,98.6
+Discapacidad,Población de 5 años y más con discapacidad que tienen algún seguro de salud,Perú,1582731,96.7
+Discapacidad,Población de 5 a 24 años con discapacidad que asiste a un centro de estudios,María Parado de Bellido (distrito),5,27.8
+Discapacidad,Población de 5 a 24 años con discapacidad que asiste a un centro de estudios,Cangallo (provincia),106,44.4
+Discapacidad,Población de 5 a 24 años con discapacidad que asiste a un centro de estudios,Ayacucho (departamento),1371,43.3
+Discapacidad,Población de 5 a 24 años con discapacidad que asiste a un centro de estudios,Perú,66929,47.4
+Discapacidad,Población de 15 años y más con discapacidad que no sabe leer ni escribir,María Parado de Bellido (distrito),150,64.7
+Discapacidad,Población de 15 años y más con discapacidad que no sabe leer ni escribir,Cangallo (provincia),1793,51.6
+Discapacidad,Población de 15 años y más con discapacidad que no sabe leer ni escribir,Ayacucho (departamento),16920,43.9
+Discapacidad,Población de 15 años y más con discapacidad que no sabe leer ni escribir,Perú,381015,24.3
+Discapacidad,Población de 5 años y más con discapacidad que hace uso de TIC's,María Parado de Bellido (distrito),36,15.0
+Discapacidad,Población de 5 años y más con discapacidad que hace uso de TIC's,Cangallo (provincia),788,22.1
+Discapacidad,Población de 5 años y más con discapacidad que hace uso de TIC's,Ayacucho (departamento),10871,27.2
+Discapacidad,Población de 5 años y más con discapacidad que hace uso de TIC's,Perú,710231,43.4
+Etnicidad,Población censada cuya identificación étnica corresponde a un pueblo indígena u originario,María Parado de Bellido (distrito),3195,97.8
+Etnicidad,Población censada cuya identificación étnica corresponde a un pueblo indígena u originario,Cangallo (provincia),37875,94.6
+Etnicidad,Población censada cuya identificación étnica corresponde a un pueblo indígena u originario,Ayacucho (departamento),583849,86.2
+Etnicidad,Población censada cuya identificación étnica corresponde a un pueblo indígena u originario,Perú,6783697,20.7
+Etnicidad,Población censada con identificación étnica afroperuana o afrodescendiente,María Parado de Bellido (distrito),1,0.0
+Etnicidad,Población censada con identificación étnica afroperuana o afrodescendiente,Cangallo (provincia),161,0.4
+Etnicidad,Población censada con identificación étnica afroperuana o afrodescendiente,Ayacucho (departamento),6100,0.9
+Etnicidad,Población censada con identificación étnica afroperuana o afrodescendiente,Perú,1976396,6.0
+Etnicidad,Población censada de 12 años y más que se autoidentifica con un pueblo indígena u originario,María Parado de Bellido (distrito),1521,99.3
+Etnicidad,Población censada de 12 años y más que se autoidentifica con un pueblo indígena u originario,Cangallo (provincia),16890,97.3
+Etnicidad,Población censada de 12 años y más que se autoidentifica con un pueblo indígena u originario,Ayacucho (departamento),255698,90.0
+Etnicidad,Población censada de 12 años y más que se autoidentifica con un pueblo indígena u originario,Perú,3238667,26.0
+Etnicidad,Población censada de 12 años y más que se autoidentifica como afroperuana o afrodescendiente,María Parado de Bellido (distrito),1,0.1
+Etnicidad,Población censada de 12 años y más que se autoidentifica como afroperuana o afrodescendiente,Cangallo (provincia),36,0.2
+Etnicidad,Población censada de 12 años y más que se autoidentifica como afroperuana o afrodescendiente,Ayacucho (departamento),1842,0.6
+Etnicidad,Población censada de 12 años y más que se autoidentifica como afroperuana o afrodescendiente,Perú,801116,6.4
+Etnicidad,Población censada de 3 años y más que aprendió a hablar quechua en su niñez,María Parado de Bellido (distrito),2884,90.9
+Etnicidad,Población censada de 3 años y más que aprendió a hablar quechua en su niñez,Cangallo (provincia),34242,88.4
+Etnicidad,Población censada de 3 años y más que aprendió a hablar quechua en su niñez,Ayacucho (departamento),444564,68.1
+Etnicidad,Población censada de 3 años y más que aprendió a hablar quechua en su niñez,Perú,4270065,13.5
+Etnicidad,Población censada de 3 años y más que aprendió a hablar aimara en su niñez,María Parado de Bellido (distrito),0,0.0
+Etnicidad,Población censada de 3 años y más que aprendió a hablar aimara en su niñez,Cangallo (provincia),15,0.0
+Etnicidad,Población censada de 3 años y más que aprendió a hablar aimara en su niñez,Ayacucho (departamento),682,0.1
+Etnicidad,Población censada de 3 años y más que aprendió a hablar aimara en su niñez,Perú,462086,1.5
+Etnicidad,Población censada de 3 años y más que aprendió a hablar algún otro idioma o lengua indígena u originaria en su niñez,María Parado de Bellido (distrito),0,0.0
+Etnicidad,Población censada de 3 años y más que aprendió a hablar algún otro idioma o lengua indígena u originaria en su niñez,Cangallo (provincia),2,0.0
+Etnicidad,Población censada de 3 años y más que aprendió a hablar algún otro idioma o lengua indígena u originaria en su niñez,Ayacucho (departamento),544,0.1
+Etnicidad,Población censada de 3 años y más que aprendió a hablar algún otro idioma o lengua indígena u originaria en su niñez,Perú,392165,1.2
+Población en edad de trabajar,Población en edad de trabajar (de 14 años y más),María Parado de Bellido (distrito),2644,100.0
+Población en edad de trabajar,Población en edad de trabajar (de 14 años y más),Cangallo (provincia),31901,100.0
+Población en edad de trabajar,Población en edad de trabajar (de 14 años y más),Ayacucho (departamento),527616,100.0
+Población en edad de trabajar,Población en edad de trabajar (de 14 años y más),Perú,25835532,100.0
+Población en edad de trabajar,Población censada en edad de trabajar con tenencia de seguro de salud,María Parado de Bellido (distrito),2633,99.6
+Población en edad de trabajar,Población censada en edad de trabajar con tenencia de seguro de salud,Cangallo (provincia),31699,99.4
+Población en edad de trabajar,Población censada en edad de trabajar con tenencia de seguro de salud,Ayacucho (departamento),517458,98.1
+Población en edad de trabajar,Población censada en edad de trabajar con tenencia de seguro de salud,Perú,24333815,94.2
+Población en edad de trabajar,Población censada en edad de trabajar con discapacidad,María Parado de Bellido (distrito),234,8.9
+Población en edad de trabajar,Población censada en edad de trabajar con discapacidad,Cangallo (provincia),3486,10.9
+Población en edad de trabajar,Población censada en edad de trabajar con discapacidad,Ayacucho (departamento),38706,7.3
+Población en edad de trabajar,Población censada en edad de trabajar con discapacidad,Perú,1570556,6.1
+Población en edad de trabajar,Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir,María Parado de Bellido (distrito),587,22.7
+Población en edad de trabajar,Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir,Cangallo (provincia),5746,18.4
+Población en edad de trabajar,Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir,Ayacucho (departamento),62735,12.2
+Población en edad de trabajar,Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir,Perú,1297268,5.1
+Características de la vivienda,Viviendas particulares censadas,María Parado de Bellido (distrito),1822,100.0
+Características de la vivienda,Viviendas particulares censadas,Cangallo (provincia),23940,100.0
+Características de la vivienda,Viviendas particulares censadas,Ayacucho (departamento),355840,100.0
+Características de la vivienda,Viviendas particulares censadas,Perú,13762606,100.0
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente,María Parado de Bellido (distrito),1359,74.6
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente,Cangallo (provincia),15373,64.2
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente,Ayacucho (departamento),240966,67.7
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente,Perú,10167523,73.9
+Características de la vivienda,Viviendas particulares con ocupantes ausentes que viven permanentemente,María Parado de Bellido (distrito),0,0.0
+Características de la vivienda,Viviendas particulares con ocupantes ausentes que viven permanentemente,Cangallo (provincia),10,0.0
+Características de la vivienda,Viviendas particulares con ocupantes ausentes que viven permanentemente,Ayacucho (departamento),3318,0.9
+Características de la vivienda,Viviendas particulares con ocupantes ausentes que viven permanentemente,Perú,394173,2.9
+Características de la vivienda,Viviendas particulares desocupadas,María Parado de Bellido (distrito),136,7.5
+Características de la vivienda,Viviendas particulares desocupadas,Cangallo (provincia),2641,11.0
+Características de la vivienda,Viviendas particulares desocupadas,Ayacucho (departamento),37832,10.6
+Características de la vivienda,Viviendas particulares desocupadas,Perú,1605713,11.7
+Características de la vivienda,Viviendas particulares que son departamentos en edificio o en block de condominio,María Parado de Bellido (distrito),0,0.0
+Características de la vivienda,Viviendas particulares que son departamentos en edificio o en block de condominio,Cangallo (provincia),8,0.0
+Características de la vivienda,Viviendas particulares que son departamentos en edificio o en block de condominio,Ayacucho (departamento),2695,0.8
+Características de la vivienda,Viviendas particulares que son departamentos en edificio o en block de condominio,Perú,1355119,9.8
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con calidad adecuada,María Parado de Bellido (distrito),1330,97.9
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con calidad adecuada,Cangallo (provincia),14666,95.4
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con calidad adecuada,Ayacucho (departamento),221306,91.8
+Características de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con calidad adecuada,Perú,9323533,91.7
+Características de la vivienda,Promedio de habitaciones de las viviendas particulares con ocupantes presentes que viven permanentemente,María Parado de Bellido (distrito),2.7,
+Características de la vivienda,Promedio de habitaciones de las viviendas particulares con ocupantes presentes que viven permanentemente,Cangallo (provincia),2.4,
+Características de la vivienda,Promedio de habitaciones de las viviendas particulares con ocupantes presentes que viven permanentemente,Ayacucho (departamento),2.4,
+Características de la vivienda,Promedio de habitaciones de las viviendas particulares con ocupantes presentes que viven permanentemente,Perú,2.8,
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública,María Parado de Bellido (distrito),1317,96.9
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública,Cangallo (provincia),12921,84.0
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública,Ayacucho (departamento),207103,85.9
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública,Perú,8060180,79.3
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública,María Parado de Bellido (distrito),363,26.7
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública,Cangallo (provincia),5410,35.2
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública,Ayacucho (departamento),145978,60.6
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública,Perú,6990262,68.8
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública,María Parado de Bellido (distrito),1257,92.5
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública,Cangallo (provincia),12647,82.3
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública,Ayacucho (departamento),212776,88.3
+Servicios básicos de la vivienda,Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública,Perú,9288787,91.4
+Características del hogar,Hogares censados,María Parado de Bellido (distrito),1380,100.0
+Características del hogar,Hogares censados,Cangallo (provincia),15799,100.0
+Características del hogar,Hogares censados,Ayacucho (departamento),247889,100.0
+Características del hogar,Hogares censados,Perú,10570171,100.0
+Características del hogar,Hogares con vivienda propia,María Parado de Bellido (distrito),1302,94.3
+Características del hogar,Hogares con vivienda propia,Cangallo (provincia),14180,89.8
+Características del hogar,Hogares con vivienda propia,Ayacucho (departamento),192607,77.7
+Características del hogar,Hogares con vivienda propia,Perú,7869536,74.5
+Características del hogar,Hogares que utilizan energía o combustible limpios para cocinar,María Parado de Bellido (distrito),695,50.4
+Características del hogar,Hogares que utilizan energía o combustible limpios para cocinar,Cangallo (provincia),7845,49.7
+Características del hogar,Hogares que utilizan energía o combustible limpios para cocinar,Ayacucho (departamento),168924,68.1
+Características del hogar,Hogares que utilizan energía o combustible limpios para cocinar,Perú,8741857,82.7
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector municipal,María Parado de Bellido (distrito),909,65.9
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector municipal,Cangallo (provincia),8702,55.1
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector municipal,Ayacucho (departamento),184241,74.3
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector municipal,Perú,8647285,81.8
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector informal,María Parado de Bellido (distrito),0,0.0
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector informal,Cangallo (provincia),654,4.1
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector informal,Ayacucho (departamento),5019,2.0
+Características del hogar,Hogares que eliminan los residuos sólidos por recolector informal,Perú,324060,3.1
+Características del hogar,"Hogares que eliminan los residuos sólidos al quemarlos, enterrarlos u otra forma",María Parado de Bellido (distrito),1029,74.6
+Características del hogar,"Hogares que eliminan los residuos sólidos al quemarlos, enterrarlos u otra forma",Cangallo (provincia),11404,72.2
+Características del hogar,"Hogares que eliminan los residuos sólidos al quemarlos, enterrarlos u otra forma",Ayacucho (departamento),104098,42.0
+Características del hogar,"Hogares que eliminan los residuos sólidos al quemarlos, enterrarlos u otra forma",Perú,2737137,25.9
+Características del hogar,Hogares con algún miembro en condición de emigrante internacional,María Parado de Bellido (distrito),2,0.1
+Características del hogar,Hogares con algún miembro en condición de emigrante internacional,Cangallo (provincia),53,0.3
+Características del hogar,Hogares con algún miembro en condición de emigrante internacional,Ayacucho (departamento),1387,0.6
+Características del hogar,Hogares con algún miembro en condición de emigrante internacional,Perú,133277,1.3
+Composición del hogar,Promedio de personas residentes habituales por hogar,María Parado de Bellido (distrito),2.4,
+Composición del hogar,Promedio de personas residentes habituales por hogar,Cangallo (provincia),2.5,
+Composición del hogar,Promedio de personas residentes habituales por hogar,Ayacucho (departamento),2.7,
+Composición del hogar,Promedio de personas residentes habituales por hogar,Perú,3.1,
+Composición del hogar,Porcentaje de hogares unipersonales,María Parado de Bellido (distrito),542,39.3
+Composición del hogar,Porcentaje de hogares unipersonales,Cangallo (provincia),5504,34.8
+Composición del hogar,Porcentaje de hogares unipersonales,Ayacucho (departamento),73156,29.5
+Composición del hogar,Porcentaje de hogares unipersonales,Perú,2180025,20.6
+Composición del hogar,Porcentaje de hogares con niños/as y adolescentes menores de 18 años,María Parado de Bellido (distrito),507,36.7
+Composición del hogar,Porcentaje de hogares con niños/as y adolescentes menores de 18 años,Cangallo (provincia),6183,39.1
+Composición del hogar,Porcentaje de hogares con niños/as y adolescentes menores de 18 años,Ayacucho (departamento),113146,45.6
+Composición del hogar,Porcentaje de hogares con niños/as y adolescentes menores de 18 años,Perú,5158471,48.8
+Composición del hogar,Porcentaje de hogares conformados solo por adultos mayores,María Parado de Bellido (distrito),353,25.6
+Composición del hogar,Porcentaje de hogares conformados solo por adultos mayores,Cangallo (provincia),3876,24.5
+Composición del hogar,Porcentaje de hogares conformados solo por adultos mayores,Ayacucho (departamento),45454,18.3
+Composición del hogar,Porcentaje de hogares conformados solo por adultos mayores,Perú,1288591,12.2
+Composición del hogar,Hogares con responsable de hogar hombre,María Parado de Bellido (distrito),690,50.0
+Composición del hogar,Hogares con responsable de hogar hombre,Cangallo (provincia),8936,56.6
+Composición del hogar,Hogares con responsable de hogar hombre,Ayacucho (departamento),139258,56.2
+Composición del hogar,Hogares con responsable de hogar hombre,Perú,6158595,58.3
+Composición del hogar,Hogares con responsable de hogar mujer,María Parado de Bellido (distrito),690,50.0
+Composición del hogar,Hogares con responsable de hogar mujer,Cangallo (provincia),6863,43.4
+Composición del hogar,Hogares con responsable de hogar mujer,Ayacucho (departamento),108631,43.8
+Composición del hogar,Hogares con responsable de hogar mujer,Perú,4411576,41.7
+Equipamiento del hogar,Hogares que tienen conexión a internet,María Parado de Bellido (distrito),411,29.8
+Equipamiento del hogar,Hogares que tienen conexión a internet,Cangallo (provincia),4825,30.5
+Equipamiento del hogar,Hogares que tienen conexión a internet,Ayacucho (departamento),116061,46.8
+Equipamiento del hogar,Hogares que tienen conexión a internet,Perú,7161393,67.8
+Equipamiento del hogar,Hogares que tienen teléfono celular,María Parado de Bellido (distrito),1224,88.7
+Equipamiento del hogar,Hogares que tienen teléfono celular,Cangallo (provincia),14485,91.7
+Equipamiento del hogar,Hogares que tienen teléfono celular,Ayacucho (departamento),230369,92.9
+Equipamiento del hogar,Hogares que tienen teléfono celular,Perú,10083134,95.4
+Equipamiento del hogar,"Hogares que tienen computadora, laptop o tableta",María Parado de Bellido (distrito),29,2.1
+Equipamiento del hogar,"Hogares que tienen computadora, laptop o tableta",Cangallo (provincia),852,5.4
+Equipamiento del hogar,"Hogares que tienen computadora, laptop o tableta",Ayacucho (departamento),45739,18.5
+Equipamiento del hogar,"Hogares que tienen computadora, laptop o tableta",Perú,3484925,33.0
+Equipamiento del hogar,Hogares que tienen auto o camioneta,María Parado de Bellido (distrito),14,1.0
+Equipamiento del hogar,Hogares que tienen auto o camioneta,Cangallo (provincia),336,2.1
+Equipamiento del hogar,Hogares que tienen auto o camioneta,Ayacucho (departamento),12321,5.0
+Equipamiento del hogar,Hogares que tienen auto o camioneta,Perú,1285772,12.2
