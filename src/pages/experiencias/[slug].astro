@@ -205,9 +205,9 @@ const structuredData = [
             </div>
           )}
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6" data-route-list>
-            {tours.map((tour) => (
+            {tours.map((tour, i) => (
               <div class="grid" data-difficulty={tour.difficulty ?? "none"}>
-                <ExperienceTourCard tour={tour} fallbackImage={experience.image} />
+                <ExperienceTourCard tour={tour} fallbackImage={`/images/placeholders/ruta-${experience.slug}-${(i % 3) + 1}.svg`} />
               </div>
             ))}
           </div>
