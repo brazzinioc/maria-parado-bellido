@@ -15,6 +15,12 @@
       "image": "/images/experiencias/trekking-ayacucho-pomabamba.webp",
       "imageAlt": "Cordillera andina y senderos de Pomabamba, Ayacucho",
       "imagePosition": "center 68%",
+      "secondaryImage": {
+        "src": "/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp",
+        "alt": "Comuneros con ponchos y caballos en la puna de Pomabamba, Ayacucho",
+        "caption": "La puna, camino a las rutas de altura.",
+        "position": "center 60%"
+      },
       "stats": [
         {
           "label": "Dificultad",
@@ -108,6 +114,12 @@
       "image": "/images/experiencias/cicloturismo-ayacucho-pomabamba.webp",
       "imageAlt": "Manubrio de bicicleta de montaña en una trocha de altura sobre el valle, Pomabamba, Ayacucho",
       "imagePosition": "center 55%",
+      "secondaryImage": {
+        "src": "/images/experiencias/cicloturismo-trocha-puna-pomabamba-ayacucho.webp",
+        "alt": "Trocha de tierra entre lomas de la puna bajo un cielo amplio, Pomabamba, Ayacucho",
+        "caption": "Trochas entre lomas y pastizales de altura.",
+        "position": "center 85%"
+      },
       "stats": [
         {
           "label": "Dificultad",
@@ -198,6 +210,12 @@
       "image": "/images/experiencias/telar-tradicional-turismo-vivencial-pomabamba-ayacucho.webp",
       "imageAlt": "Tejedora andina trabajando una manta en telar tradicional, turismo vivencial en Pomabamba, Ayacucho",
       "imagePosition": "center 38%",
+      "secondaryImage": {
+        "src": "/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp",
+        "alt": "Agricultor con poncho mostrando mazorcas de maíz nativo en una feria de Pomabamba, Ayacucho",
+        "caption": "Maíz nativo en la feria del distrito.",
+        "position": "center 35%"
+      },
       "stats": [
         {
           "label": "Para quién",

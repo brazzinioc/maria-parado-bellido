@@ -22,6 +22,8 @@ export interface Experience {
   image: string;
   imageAlt: string;
   imagePosition?: string;
+  /** Segunda foto, bajo el texto de "La experiencia". */
+  secondaryImage?: { src: string; alt: string; caption?: string; position?: string };
   /** Titular de la sección "La experiencia" (distinto del resumen del índice). */
   headline?: string;
   stats: ExperienceStat[];

@@ -158,6 +158,20 @@ const structuredData = [
         {experience.description.map((paragraph) => (
           <p class="text-lg leading-relaxed mb-5">{paragraph}</p>
         ))}
+        {experience.secondaryImage && (
+          <figure class="mt-8">
+            <img
+              src={experience.secondaryImage.src}
+              alt={experience.secondaryImage.alt}
+              loading="lazy"
+              class="aspect-[16/10] w-full rounded-2xl object-cover"
+              style={`object-position: ${experience.secondaryImage.position ?? "center"}`}
+            />
+            {experience.secondaryImage.caption && (
+              <figcaption class="mt-2 text-sm text-ink-soft">{experience.secondaryImage.caption}</figcaption>
+            )}
+          </figure>
+        )}
       </div>
       <aside class="lg:col-span-5 space-y-6">
         <div class="rounded-2xl bg-white border border-line p-6 md:p-8">
