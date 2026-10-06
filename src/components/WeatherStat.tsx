@@ -59,8 +59,19 @@ function getWeatherDescription(code: number): string {
   return weatherDescriptions[code] || "Variable";
 }
 
-function getWeatherIcon(code: number): string {
-  return weatherIcons[code] || "🌤️";
+// De noche, los códigos con sol se cambian por luna o nube (Open-Meteo indica is_day).
+const nightIcons: Record<number, string> = {
+  0: "🌙",
+  1: "🌙",
+  2: "☁️",
+  51: "🌧️",
+  53: "🌧️",
+  80: "🌧️",
+};
+
+function getWeatherIcon(code: number, isDay: boolean): string {
+  if (!isDay && nightIcons[code]) return nightIcons[code];
+  return weatherIcons[code] || (isDay ? "🌤️" : "☁️");
 }
 
 // Datos por defecto
@@ -83,7 +94,7 @@ export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
     const fetchWeather = async () => {
       try {
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&timezone=America%2FLima`,
+          `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,is_day&timezone=America%2FLima`,
         );
 
         if (!response.ok) {
@@ -96,7 +107,7 @@ export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
           setWeather({
             temperature: Math.round(data.current.temperature_2m),
             description: getWeatherDescription(data.current.weather_code),
-            icon: getWeatherIcon(data.current.weather_code),
+            icon: getWeatherIcon(data.current.weather_code, data.current.is_day !== 0),
           });
         }
       } catch (err) {
