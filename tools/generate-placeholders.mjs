@@ -13,6 +13,8 @@ const PALETTES = {
   verde: { sky: ["#dfe9e2", "#f6f1e7"], sun: "#e0a526", far: "#b7cbbc", mid: "#6f9a7d", near: "#2f5d46", ground: "#234635", detail: "#faf6f0" },
   tierra: { sky: ["#f3dcc0", "#faf1e4"], sun: "#e0a526", far: "#d2b49a", mid: "#a8775a", near: "#6e4632", ground: "#4a2f22", detail: "#faf6f0" },
   atardecer: { sky: ["#efc6b4", "#fbefd8"], sun: "#fbf0d6", far: "#d59a82", mid: "#b5452a", near: "#7a2e1d", ground: "#4f1d13", detail: "#fbf0d6" },
+  // Neutra para rutas: no compite con el rojo de las acciones del sitio.
+  arena: { sky: ["#f1eadf", "#faf6f0"], sun: "#e0a526", far: "#d8ccb8", mid: "#b7a283", near: "#7d6a52", ground: "#54473a", detail: "#faf6f0" },
   puna: { sky: ["#d8e2ea", "#f5f2ea"], sun: "#f2d38a", far: "#c3ccd2", mid: "#8e9f96", near: "#55705f", ground: "#3a4d40", detail: "#ffffff" },
 };
 
@@ -181,7 +183,7 @@ const RUTAS = {
     return s + textile(p);
   },
 };
-const RUTA_PALETAS = ["verde", "tierra", "atardecer"];
+const RUTA_PALETAS = ["verde", "tierra", "arena"];
 
 mkdirSync(OUT, { recursive: true });
 for (const [tipo, draw] of Object.entries(LUGARES)) {
