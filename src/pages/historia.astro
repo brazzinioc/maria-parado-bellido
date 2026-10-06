@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import SectionHeading from "../components/SectionHeading.astro";
 
 // SEO Keywords para página de historia
 const aboutKeywords = [
@@ -179,64 +178,74 @@ const keyFacts = [
   { value: "+10,000", label: "años de historia" },
   { value: "1822", label: "sacrificio de la heroína" },
   { value: "1962", label: "creación del distrito" },
-  { value: "3,047", label: "habitantes (censo 2005)" },
+  { value: "3,268", label: "habitantes (censo 2025)" },
   { value: "3", label: "pisos ecológicos" },
 ];
 
 const sections = [
   { href: "#heroina", label: "La heroína" },
   { href: "#resena", label: "Línea de tiempo" },
-  { href: "#territorio", label: "Territorio" },
   { href: "#comunidades", label: "Comunidades" },
   { href: "#cultura", label: "Cultura" },
 ];
 
-const locationFacts = [
-  { label: "Departamento", value: "Ayacucho" },
-  { label: "Provincia", value: "Cangallo" },
-  { label: "Capital distrital", value: "Pomabamba" },
-  { label: "Altitud (capital)", value: "3,236 msnm" },
-  { label: "Superficie", value: "129.13 km² (9,266.62 Has)" },
-  { label: "Distancia a Ayacucho", value: "80-93 km (4 horas)" },
-];
-
-const climateFacts = [
-  { label: "Tipo", value: "Sierra - Seco y frío" },
-  { label: "Temperatura", value: "-4.4°C a 24.2°C" },
-  { label: "Precipitación", value: "700-1,150 mm anuales" },
-  { label: "Humedad", value: "46% - 70%" },
-  { label: "Época lluviosa", value: "Noviembre - Marzo" },
-  { label: "Época seca", value: "Abril - Octubre" },
-];
-
-const ecoZones = [
-  { name: "Zona Quechua", description: "Cultivos de maíz, papa, trigo y frutales" },
-  { name: "Zona Suni", description: "Ganadería y cultivos de quinua, kiwicha" },
-  { name: "Zona Puna", description: "Pastos naturales y camélidos" },
-];
-
+const DISTRICT_HAS = 9266.62;
 const communities = [
-  { name: "Pomabamba", meta: "Capital distrital • 2,822.19 Has • 3,170 msnm", detail: "Anexos: Ccachccara, San Miguel de Acco, San Martín de Ccoriacc, Huascarpampa, Ccasanccay y Tucre" },
-  { name: "Urihuana", meta: "963.62 Has • 3,170 msnm", detail: "Barrios: Llullucha Pizara, Carapuma, Tancarpampa" },
-  { name: "Santa Cruz de Ñuñunhuaycco", meta: "Centro Poblado Menor • 4,380.81 Has • 3,500 msnm", detail: "Barrios: Mayocancha, Capillapata, Haciendapata, Calvario y Callpana" },
-  { name: "Huayllabamba", meta: "1,100 Has • 3,175 msnm", detail: "Barrio: Roccray" },
-];
+  { name: "Pomabamba", type: "Capital distrital", has: 2822.19, altitude: "3,170", groupLabel: "Anexos", places: ["Ccachccara", "San Miguel de Acco", "San Martín de Ccoriacc", "Huascarpampa", "Ccasanccay", "Tucre"] },
+  { name: "Santa Cruz de Ñuñunhuaycco", type: "Centro poblado", has: 4380.81, altitude: "3,500", groupLabel: "Barrios", places: ["Mayocancha", "Capillapata", "Haciendapata", "Calvario", "Callpana"] },
+  { name: "Huayllabamba", type: "Comunidad", has: 1100, altitude: "3,175", groupLabel: "Barrio", places: ["Roccray"] },
+  { name: "Urihuana", type: "Comunidad", has: 963.62, altitude: "3,170", groupLabel: "Barrios", places: ["Llullucha Pizara", "Carapuma", "Tancarpampa"] },
+].map((c) => ({ ...c, share: (c.has / DISTRICT_HAS) * 100 }));
 
 const culture = [
-  { title: "Ayni y Minka", text: "El <strong>ayni</strong> (reciprocidad) y la <strong>minka</strong> (trabajo colectivo) perviven especialmente en nuestras <strong>fiestas patronales y costumbristas</strong>. Durante estas celebraciones, la comunidad participa voluntariamente y los <strong>cargontes</strong> retribuyen con comida, chicha de jora y música, manteniendo vivo el espíritu de reciprocidad andina." },
-  { title: "Folklore", text: "Nuestras expresiones artísticas incluyen el <strong>Chinlili, Chimaycha, Qacchwa</strong>, el toril, las rejoneras y los wacqrapukus. Estas danzas y músicas se relacionan con las actividades agrícolas y las fiestas religiosas." },
-  { title: "Economía agropecuaria", text: "Según el Plan de Desarrollo (2007), el <strong>76%</strong> de la población se dedica a agricultura y ganadería. Cultivamos <strong>papa, maíz, cebada, trigo, quinua, kiwicha</strong> y frutales. Criamos <strong>7,920 cabezas de ganado</strong> entre ovinos (54%), vacunos (18.8%) y camélidos." },
-  { title: "Flora y fauna", text: "Bosques de <strong>queñua, molle, tara, eucalipto</strong> y plantas como cabuya y tuna. Fauna: <strong>vizcacha, zorro andino, taruca, puma</strong>, cuy silvestre y aves como el cernícalo (killillin) y lechuzas. Según el mismo Plan, el 72% del ambiente estaba conservado." },
+  {
+    title: "Ayni y minka",
+    kicker: "Trabajo comunal",
+    text: "El <strong>ayni</strong> (reciprocidad) y la <strong>minka</strong> (trabajo colectivo) siguen vivos en las faenas y en las <strong>fiestas patronales y costumbristas</strong>. La comunidad participa voluntariamente y los <strong>cargontes</strong> retribuyen con comida, chicha de jora y música.",
+    image: "/images/experiencias/faena-limpieza-canal-turismo-vivencial-pomabamba-ayacucho.webp",
+    alt: "Comuneros de Pomabamba, Ayacucho, en una faena de limpieza de canal, ejemplo vivo del ayni y la minka",
+    link: { href: "/experiencias/turismo-vivencial", label: "Vive una faena comunal" },
+  },
+  {
+    title: "Música y danza",
+    kicker: "Folklore",
+    text: "Nuestras danzas y músicas acompañan el calendario agrícola y las fiestas religiosas: del carnaval a la siembra, cada celebración tiene su ritmo.",
+    tags: ["Chinlili", "Chimaycha", "Qacchwa", "Toril", "Rejoneras", "Wacqrapukus"],
+    image: "/images/comparsa-carnaval-pomabamba-ayacucho.webp",
+    alt: "Comparsa de carnaval con ponchos y polleras recorriendo las calles de Pomabamba, Ayacucho",
+    link: { href: "/festividades", label: "Ver el calendario de fiestas" },
+  },
+  {
+    title: "Tierra que alimenta",
+    kicker: "Economía agropecuaria",
+    stat: { value: "76%", label: "de la población vive de la agricultura y la ganadería (Plan de Desarrollo, 2007)" },
+    text: "Cultivamos <strong>papa, maíz, cebada, trigo, quinua, kiwicha</strong> y frutales, y criamos ovinos, vacunos y camélidos en los tres pisos ecológicos del distrito.",
+    image: "/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp",
+    alt: "Agricultor de Pomabamba, Ayacucho, muestra mazorcas de maíz nativo en una feria agropecuaria",
+    link: { href: "/gastronomia", label: "Prueba nuestra gastronomía" },
+  },
+  {
+    title: "Flora y fauna",
+    kicker: "Naturaleza",
+    text: "Bosques de <strong>queñua, molle y tara</strong>, cabuya y tuna en las laderas. En los cerros viven la <strong>vizcacha, el zorro andino, la taruca y el puma</strong>, y en el cielo el cernícalo (killillin).",
+    image: "/images/hero_4.webp",
+    alt: "Laderas con bosques y pastizales en los cerros de Pomabamba, María Parado de Bellido, Ayacucho",
+    link: { href: "/lugares", label: "Explora los destinos naturales" },
+  },
+];
+
+const experiencesToday = [
+  { title: "Tukri – Apu Urqu", text: "Un templo de más de 2,500 años, a 400 metros de Tucre.", href: "/lugares/tukri-apu-urqu", image: "/images/placeholders/lugar-arqueologico.svg", alt: "Ilustración del templo Tukri – Apu Urqu en Pomabamba, Ayacucho" },
+  { title: "Trekking", text: "Caminos de herradura entre quebradas, miradores y puna.", href: "/experiencias/trekking", image: "/images/experiencias/trekking-camino-herradura-unya-pomabamba-ayacucho.webp", alt: "Camino de herradura hacia Unya, ruta de trekking en Pomabamba, Ayacucho" },
+  { title: "Turismo vivencial", text: "Teje, siembra y comparte la vida diaria con las familias.", href: "/experiencias/turismo-vivencial", image: "/images/experiencias/telar-tradicional-turismo-vivencial-pomabamba-ayacucho.webp", alt: "Telar tradicional andino en una experiencia de turismo vivencial en Pomabamba, Ayacucho" },
 ];
 
 const potentials = [
   "Tres pisos ecológicos con alta biodiversidad",
-  "Recursos agrícolas y forestales abundantes",
-  "Yacimientos minerales (yeso, mármol, agregados)",
-  "Tukri – Apu Urqu: templo del Periodo Formativo, con más de 2,500 años",
-  "Atractivos turísticos arqueológicos y naturales",
-  "Posición estratégica: eje Ayacucho-Cangallo-Sarhua-Ica",
-  "Proyecto Represa de Pastocorralpata para riego",
+  "Recursos agrícolas y forestales",
+  "Yeso, mármol y agregados",
+  "Eje vial Ayacucho – Cangallo – Sarhua – Ica",
+  "Represa de Pastocorralpata para riego",
 ];
 ---
 
@@ -367,112 +376,152 @@ const potentials = [
       <ul class="mt-2 space-y-1 list-disc pl-5">
         <li>Municipalidad Distrital de María Parado de Bellido. <em>Plan de Desarrollo Concertado del Distrito de María Parado de Bellido 2007-2022.</em></li>
         <li id="fuente-tukri" class="scroll-mt-40">Tipe Yaranga, D. (2021). <em>Secuencia constructiva lado norte de la plataforma principal de Tukri – Apu Urqu, María Parado de Bellido, Cangallo – Ayacucho</em> [Tesis de licenciatura]. Universidad Nacional de San Cristóbal de Huamanga.</li>
+        <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). (2025). <em>Censos Nacionales 2025: XIII de Población, VIII de Vivienda y IV de Comunidades Indígenas. Resultados del distrito de María Parado de Bellido (ubigeo 050204).</em> <a href="https://censos2025.inei.gob.pe" target="_blank" rel="noopener noreferrer" class="underline">censos2025.inei.gob.pe</a></li>
         <li id="fuente-congreso" class="scroll-mt-40">Congreso de la República del Perú. <em>Mujeres heroicas de la independencia del Perú: María Parado de Bellido.</em></li>
         <li id="fuente-gore-ayacucho" class="scroll-mt-40">Gobierno Regional de Ayacucho. Conmemoración del bicentenario de la inmolación de María Parado Jayo, Paras (2022).</li>
       </ul>
     </div>
   </section>
 
-  <!-- Geografía -->
-  <section id="territorio" class="scroll-mt-40 py-20 md:py-28">
+  <!-- Comunidades -->
+  <section id="comunidades" class="scroll-mt-40 py-20 md:py-28">
     <div class="container-custom">
-      <SectionHeading
-        eyebrow="Territorio"
-        title="Geografía y clima de Pomabamba"
-        intro="Nuestro territorio se extiende desde los 2,500 hasta los 4,800 msnm."
-        align="left"
-      />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {[{ title: "Ubicación", facts: locationFacts }, { title: "Clima", facts: climateFacts }].map((group) => (
-          <div class="rounded-2xl bg-white border border-line">
-            <h3 class="font-heading text-xl font-semibold px-6 pt-6 pb-2">{group.title}</h3>
-            <dl class="divide-y divide-line">
-              {group.facts.map((fact) => (
-                <div class="flex items-baseline justify-between gap-4 px-6 py-3.5">
-                  <dt class="text-sm">{fact.label}</dt>
-                  <dd class="font-semibold text-ink text-right">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        ))}
+      <div class="max-w-3xl mb-12">
+        <div>
+          <span class="eyebrow">Comunidades</span>
+          <h2 class="section-heading">Cuatro comunidades, un solo distrito</h2>
+          <p class="text-lg leading-relaxed">
+            Entre los 3,170 y los 3,500 msnm se reparten las comunidades que dan vida al distrito, cada una con sus anexos y barrios.
+          </p>
+        </div>
       </div>
-      <p class="mb-8 text-sm">
-        Coordenadas:
-        <a class="link-arrow" href="https://maps.app.goo.gl/MJNp5zsYJbbQZGDr8" target="_blank" rel="noopener noreferrer">
-          74°14'03'' O, 13°36'05'' S
-        </a>
-      </p>
-      <h3 class="font-heading text-2xl font-semibold mb-5">Tres pisos ecológicos</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {ecoZones.map((zone) => (
-          <div class="rounded-2xl bg-secondary-soft p-6">
-            <h4 class="font-heading text-xl font-semibold text-secondary-dark">{zone.name}</h4>
-            <p class="mt-2">{zone.description}</p>
-          </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {communities.map((c) => (
+          <article class="flex flex-col rounded-2xl bg-white border border-line p-6 md:p-8">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.15em] text-secondary">{c.type}</p>
+                <h3 class="mt-1 font-heading text-2xl font-semibold leading-tight">{c.name}</h3>
+              </div>
+              <span class="flex flex-shrink-0 items-center gap-1.5 rounded-full bg-sand px-3 py-1 text-sm font-semibold text-ink">
+                <svg class="h-4 w-4 text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 20l6-10 4 6 3-4 5 8H3z" /></svg>
+                {c.altitude} msnm
+              </span>
+            </div>
+            <div class="mt-5">
+              <div class="flex items-baseline justify-between text-sm">
+                <span>Superficie</span>
+                <span class="font-semibold text-ink">{c.has.toLocaleString("en-US", { maximumFractionDigits: 0 })} ha · {Math.round(c.share)}% del distrito</span>
+              </div>
+              <div class="mt-2 h-2 rounded-full bg-sand-200" aria-hidden="true">
+                <div class="h-full rounded-full bg-secondary" style={`width:${c.share}%`}></div>
+              </div>
+            </div>
+            <div class="mt-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft">{c.groupLabel}</p>
+              <ul class="mt-2 flex flex-wrap gap-2">
+                {c.places.map((place) => (
+                  <li class="rounded-full border border-line px-3 py-1 text-sm text-ink">{place}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Comunidades -->
-  <section id="comunidades" class="scroll-mt-40 py-20 md:py-28 bg-white">
-    <div class="container-custom">
-      <SectionHeading eyebrow="Comunidades" title="Nuestras comunidades" align="left" />
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {communities.map((c) => (
-          <article class="rounded-2xl border border-line p-6 md:p-8">
-            <h3 class="font-heading text-2xl font-semibold">{c.name}</h3>
-            <p class="mt-1 text-sm font-semibold text-secondary">{c.meta}</p>
-            <p class="mt-4">{c.detail}</p>
-          </article>
-        ))}
-      </div>
+  <!-- Pausa visual: el ayni en una frase -->
+  <section class="relative overflow-hidden py-24 md:py-36" aria-label="Kunan qampaq, paqarin ñuqapaq">
+    <img src="/images/hero-festivities.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/60 to-ink/20" aria-hidden="true"></div>
+    <div class="container-custom relative">
+      <blockquote class="max-w-2xl">
+        <p class="font-heading text-4xl md:text-6xl font-semibold leading-[1.05] text-white" lang="qu">«Kunan qampaq, paqarin ñuqapaq»</p>
+        <p class="mt-5 text-lg md:text-xl text-white/85">Hoy por ti, mañana por mí. Así se resume el <strong class="text-white">ayni</strong>, la reciprocidad que sostiene la vida en nuestras comunidades.</p>
+      </blockquote>
     </div>
   </section>
 
   <!-- Cultura y tradiciones -->
-  <section id="cultura" class="scroll-mt-40 py-20 md:py-28">
+  <section id="cultura" class="scroll-mt-40 py-20 md:py-28 bg-white">
     <div class="container-custom">
-      <div class="max-w-3xl mb-12">
+      <div class="max-w-3xl mb-14 md:mb-20">
         <span class="eyebrow">Identidad</span>
         <h2 class="section-heading">Cultura y tradiciones de Pomabamba</h2>
         <p class="text-lg leading-relaxed">
-          Mantenemos <strong class="text-ink">fuerte identidad cultural</strong> y sentido comunitario. Según el censo de 2005, somos
-          <strong class="text-ink">3,047 habitantes</strong>, con un <strong class="text-ink">67% de población joven</strong>
-          (0-34 años) que preserva las tradiciones de nuestros ancestros.
+          Mantenemos <strong class="text-ink">fuerte identidad cultural</strong> y sentido comunitario. Somos
+          <strong class="text-ink">3,268 habitantes</strong> y el <strong class="text-ink">90.9%</strong> aprendió a hablar en
+          quechua en su niñez <a href="#fuente-inei" class="text-base text-ink-soft hover:underline">(INEI, 2025)</a>: la lengua
+          con la que se siguen transmitiendo las tradiciones de nuestros ancestros.
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {culture.map((item) => (
-          <article class="rounded-2xl bg-white border border-line p-6 md:p-8">
-            <h3 class="font-heading text-2xl font-semibold mb-3">{item.title}</h3>
-            <p class="leading-relaxed [&_strong]:text-ink" set:html={item.text} />
+      <div class="space-y-16 md:space-y-24">
+        {culture.map((item, i) => (
+          <article class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+            <div class:list={["md:col-span-6", i % 2 === 1 && "md:order-2"]}>
+              <img src={item.image} alt={item.alt} loading="lazy" class="aspect-[4/3] w-full rounded-3xl object-cover" />
+            </div>
+            <div class:list={["md:col-span-6", i % 2 === 1 && "md:order-1"]}>
+              <p class="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <span class="font-heading text-2xl tracking-normal text-primary/40">{String(i + 1).padStart(2, "0")}</span>
+                {item.kicker}
+              </p>
+              <h3 class="mt-3 font-heading text-3xl md:text-4xl font-semibold leading-tight text-ink">{item.title}</h3>
+              {item.stat && (
+                <p class="mt-5 flex items-baseline gap-3">
+                  <span class="font-heading text-5xl font-semibold text-secondary">{item.stat.value}</span>
+                  <span class="text-sm max-w-[16rem]">{item.stat.label}</span>
+                </p>
+              )}
+              <p class="mt-4 text-lg leading-relaxed [&_strong]:text-ink" set:html={item.text} />
+              {item.tags && (
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {item.tags.map((tag) => (
+                    <li class="rounded-full bg-accent-soft px-3.5 py-1.5 text-sm font-semibold text-ink">{tag}</li>
+                  ))}
+                </ul>
+              )}
+              <a href={item.link.href} class="link-arrow mt-6">{item.link.label} <span aria-hidden="true">→</span></a>
+            </div>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Potencialidades -->
-  <section id="potencialidades" class="scroll-mt-40 py-20 md:py-28 bg-white">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <div class="lg:col-span-5">
-        <span class="eyebrow">Futuro</span>
-        <h2 class="section-heading">Potencialidades</h2>
+  <!-- De la historia a la visita -->
+  <section id="potencialidades" class="scroll-mt-40 py-20 md:py-28">
+    <div class="container-custom">
+      <div class="max-w-3xl mb-12">
+        <span class="eyebrow">Hoy</span>
+        <h2 class="section-heading">Lo que puedes vivir hoy</h2>
         <p class="text-lg leading-relaxed">
-          Somos un distrito con <strong class="text-ink">población joven y activa</strong> que mantiene
-          <strong class="text-ink">gran disposición al progreso</strong> y fe en el futuro.
+          La historia de Pomabamba no está solo en los libros: se camina, se teje y se comparte.
         </p>
       </div>
-      <ul class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {potentials.map((item) => (
-          <li class="flex gap-3 rounded-2xl bg-sand p-5">
-            <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-            <span class="text-ink">{item}</span>
-          </li>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {experiencesToday.map((e) => (
+          <a href={e.href} class="group relative flex min-h-[340px] flex-col justify-end overflow-hidden rounded-3xl bg-sand-200 p-6">
+            <img src={e.image} alt={e.alt} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent" aria-hidden="true"></div>
+            <div class="relative">
+              <h3 class="font-heading text-2xl font-semibold text-white">{e.title}</h3>
+              <p class="mt-1 text-white/85">{e.text}</p>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-white">Descubrir <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span></span>
+            </div>
+          </a>
         ))}
-      </ul>
+      </div>
+      <div class="mt-12 flex flex-col md:flex-row md:items-center gap-4 border-t border-line pt-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft md:w-48 flex-shrink-0">Mirando al futuro</p>
+        <ul class="flex flex-wrap gap-2">
+          {potentials.map((item) => (
+            <li class="rounded-full bg-white border border-line px-3.5 py-1.5 text-sm text-ink">{item}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,238 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CensoCifras from "../components/CensoCifras.astro";
+import censo from "../data/censo-2025.json";
+import { whatsappUrl } from "../lib/whatsapp";
+
+/**
+ * Pomabamba en datos: página de referencia con las cifras del distrito, organizada por temas.
+ * Cada tema lleva su fuente y su año. Los temas "en preparación" se activan al cargar sus datos.
+ * Aún sin enlace en el menú y con noindex: al activarla, quitar noindex y el filtro del sitemap.
+ */
+const keywords = [
+  "Pomabamba en datos",
+  "Pomabamba Ayacucho censo 2025",
+  "población Pomabamba",
+  "María Parado de Bellido censo",
+  "distrito María Parado de Bellido estadísticas",
+  "Cangallo Ayacucho datos",
+  "clima Pomabamba",
+  "geografía Pomabamba",
+];
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Pomabamba en datos", url: "/datos" },
+];
+
+const title = "Pomabamba en datos: población, territorio y clima del distrito";
+const description =
+  "Datos y estadísticas de Pomabamba, distrito de María Parado de Bellido (Cangallo, Ayacucho): Censo 2025, pirámide de población, territorio, clima y datos descargables.";
+
+const structuredData = [
+  {
+    type: "article" as const,
+    data: {
+      title,
+      description,
+      url: "/datos",
+      image: "/images/hero-dron-pomabamba-ayacucho.webp",
+      section: "Datos",
+      keywords,
+      publishedTime: "2026-10-06T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
+    },
+  },
+];
+
+const aportarUrl = whatsappUrl("Hola, quiero aportar información sobre mi comunidad para la sección Pomabamba en datos.");
+
+type Tema = { href?: string; titulo: string; texto: string; fuente: string; icono: string };
+const temas: Tema[] = [
+  { href: "#poblacion", titulo: "Población", texto: "Habitantes, edades, lengua, educación y servicios.", fuente: "INEI · 2025", icono: "M17 20h5v-2a3 3 0 00-5.36-1.86M17 20H7m10 0v-2c0-.66-.13-1.28-.36-1.86M7 20H2v-2a3 3 0 015.36-1.86M7 20v-2c0-.66.13-1.28.36-1.86m0 0a5 5 0 019.28 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
+  { href: "#territorio", titulo: "Territorio y clima", texto: "Ubicación, superficie, clima y pisos ecológicos.", fuente: "Plan de Desarrollo · 2007", icono: "M9 20l-5.45-2.73A1 1 0 013 16.38V5.62a1 1 0 011.45-.9L9 7m0 13l6-3m-6 3V7m6 10l4.55 2.28A1 1 0 0021 18.38V7.62a1 1 0 00-.55-.9L15 4m0 13V4m0 0L9 7" },
+  { titulo: "Agua", texto: "Puquiales y reservorios, con sus ubicaciones.", fuente: "En preparación", icono: "M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z" },
+  { titulo: "Vías y transporte", texto: "Caminos, trochas y bases de transporte.", fuente: "En preparación", icono: "M8 7h8m-8 5h8m-8 5h8M4 21V3m16 18V3" },
+  { titulo: "Producción", texto: "Cultivos, ganado y campañas agrícolas.", fuente: "En preparación", icono: "M12 21V11m0 0c0-3 2-6 6-6 0 4-2 6-6 6zm0 0c0-3-2-6-6-6 0 4 2 6 6 6z" },
+  { href: "#descargas", titulo: "Descargas y fuentes", texto: "Datos abiertos en CSV y referencias completas.", fuente: "Para docentes y estudiantes", icono: "M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" },
+];
+
+const locationFacts = [
+  { label: "Departamento", value: "Ayacucho" },
+  { label: "Provincia", value: "Cangallo" },
+  { label: "Capital distrital", value: "Pomabamba" },
+  { label: "Altitud (capital)", value: "3,236 msnm" },
+  { label: "Superficie", value: "129.13 km² (9,266.62 Has)" },
+  { label: "Distancia a Ayacucho", value: "80-93 km (4 horas)" },
+];
+
+const climateFacts = [
+  { label: "Tipo", value: "Sierra - Seco y frío" },
+  { label: "Temperatura", value: "-4.4°C a 24.2°C" },
+  { label: "Precipitación", value: "700-1,150 mm anuales" },
+  { label: "Humedad", value: "46% - 70%" },
+  { label: "Época lluviosa", value: "Noviembre - Marzo" },
+  { label: "Época seca", value: "Abril - Octubre" },
+];
+
+const ecoZones = [
+  { name: "Zona Quechua", description: "Cultivos de maíz, papa, trigo y frutales" },
+  { name: "Zona Suni", description: "Ganadería y cultivos de quinua, kiwicha" },
+  { name: "Zona Puna", description: "Pastos naturales y camélidos" },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image="/images/hero-dron-pomabamba-ayacucho.webp"
+  article={true}
+  section="Datos"
+  keywords={keywords}
+  breadcrumbs={breadcrumbs}
+  structuredData={structuredData}
+  noindex={true}
+>
+  <PageHero
+    eyebrow="Datos del distrito"
+    title="Pomabamba en datos"
+    intro="Las cifras de María Parado de Bellido (Cangallo, Ayacucho) reunidas en un solo lugar: quiénes somos, cómo es nuestro territorio y qué recursos tenemos. Cada dato con su fuente y su año."
+    image="/images/hero-dron-pomabamba-ayacucho.webp"
+    imageAlt="Vista aérea de Pomabamba, capital del distrito de María Parado de Bellido, Ayacucho"
+    breadcrumbs={breadcrumbs}
+  />
+
+  <!-- Índice de temas -->
+  <section class="bg-white border-b border-line py-12 md:py-16">
+    <div class="container-custom">
+      <h2 class="font-heading text-2xl font-semibold text-ink">Temas</h2>
+      <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {temas.map((t) => {
+          const contenido = (
+            <>
+              <span class:list={["flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl", t.href ? "bg-primary-soft text-primary" : "bg-sand-200 text-ink-soft"]} aria-hidden="true">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d={t.icono} /></svg>
+              </span>
+              <span class="min-w-0">
+                <span class="flex items-center gap-2 font-heading text-lg font-semibold text-ink">
+                  {t.titulo}
+                  {t.href && <span class="text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>}
+                </span>
+                <span class="mt-0.5 block text-sm">{t.texto}</span>
+                <span class:list={["mt-2 inline-block text-xs font-semibold uppercase tracking-[0.12em]", t.href ? "text-secondary" : "text-ink-soft"]}>{t.fuente}</span>
+              </span>
+            </>
+          );
+          return (
+            <li>
+              {t.href ? (
+                <a href={t.href} class="group flex h-full gap-4 rounded-2xl border border-line bg-white p-5 transition-colors hover:border-primary/50">{contenido}</a>
+              ) : (
+                <div class="flex h-full gap-4 rounded-2xl border border-dashed border-line bg-sand/60 p-5">{contenido}</div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+
+  <CensoCifras />
+
+  <!-- Territorio y clima -->
+  <section id="territorio" class="scroll-mt-40 py-20 md:py-28 bg-white">
+    <div class="container-custom">
+      <SectionHeading
+        eyebrow="Territorio y clima"
+        title="Geografía y clima de Pomabamba"
+        intro="Nuestro territorio se extiende desde los 2,500 hasta los 4,800 msnm."
+        align="left"
+      />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {[{ title: "Ubicación", facts: locationFacts }, { title: "Clima", facts: climateFacts }].map((group) => (
+          <div class="rounded-2xl bg-sand border border-line">
+            <h3 class="font-heading text-xl font-semibold px-6 pt-6 pb-2">{group.title}</h3>
+            <dl class="divide-y divide-line">
+              {group.facts.map((fact) => (
+                <div class="flex items-baseline justify-between gap-4 px-6 py-3.5">
+                  <dt class="text-sm">{fact.label}</dt>
+                  <dd class="font-semibold text-ink text-right">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+      <p class="mb-8 text-sm">
+        Coordenadas:
+        <a class="link-arrow" href="https://maps.app.goo.gl/MJNp5zsYJbbQZGDr8" target="_blank" rel="noopener noreferrer">
+          74°14'03'' O, 13°36'05'' S
+        </a>
+      </p>
+      <h3 class="font-heading text-2xl font-semibold mb-5">Tres pisos ecológicos</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {ecoZones.map((zone) => (
+          <div class="rounded-2xl bg-secondary-soft p-6">
+            <h4 class="font-heading text-xl font-semibold text-secondary-dark">{zone.name}</h4>
+            <p class="mt-2">{zone.description}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-8 text-sm text-ink-soft">
+        Fuente: <a href="#fuente-pdc" class="underline hover:text-ink">Municipalidad Distrital de María Parado de Bellido, Plan de Desarrollo Concertado 2007-2022</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Próximamente -->
+  <section class="py-16 md:py-20">
+    <div class="container-custom">
+      <div class="rounded-3xl border border-dashed border-line bg-white/60 p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">En preparación</p>
+          <h2 class="font-heading text-3xl font-semibold text-ink leading-tight">Agua, vías y producción</h2>
+          <p class="mt-3 text-lg leading-relaxed">
+            Estamos registrando los puquiales, reservorios, caminos y bases de transporte del distrito, con sus ubicaciones en el mapa.
+            Si tu comunidad tiene información que sumar, escríbenos.
+          </p>
+        </div>
+        <div class="lg:col-span-4 lg:text-right">
+          <a href={aportarUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">Aportar información</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Descargas y fuentes -->
+  <section id="descargas" class="scroll-mt-40 py-20 md:py-28 bg-white">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-5">
+        <span class="eyebrow">Datos abiertos</span>
+        <h2 class="section-heading">Descargas y fuentes</h2>
+        <p class="text-lg leading-relaxed">
+          Puedes usar estos datos en clases, trabajos o proyectos. Te pedimos citar la fuente original.
+        </p>
+      </div>
+      <div class="lg:col-span-7 space-y-8">
+        <a href={censo.csv} download class="flex items-center gap-4 rounded-2xl border border-line bg-sand p-5 transition-colors hover:border-secondary/60">
+          <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-secondary text-white" aria-hidden="true">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block font-semibold text-ink">Censo 2025: 91 indicadores del distrito (CSV)</span>
+            <span class="block text-sm">Comparados con la provincia de Cangallo, el departamento de Ayacucho y el Perú.</span>
+          </span>
+        </a>
+        <div>
+          <h3 class="font-heading text-xl font-semibold text-ink">Fuentes</h3>
+          <ul class="mt-3 space-y-2 list-disc pl-5 text-sm">
+            <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). (2025). <em>Censos Nacionales 2025: XIII de Población, VIII de Vivienda y IV de Comunidades Indígenas.</em> Distrito de María Parado de Bellido, ubigeo 050204. <a href="https://censos2025.inei.gob.pe" target="_blank" rel="noopener noreferrer" class="underline">censos2025.inei.gob.pe</a></li>
+            <li id="fuente-pdc" class="scroll-mt-40">Municipalidad Distrital de María Parado de Bellido. (2007). <em>Plan de Desarrollo Concertado del Distrito de María Parado de Bellido 2007-2022.</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

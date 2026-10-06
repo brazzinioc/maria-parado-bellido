@@ -1,0 +1,275 @@
+---
+/**
+ * CensoCifras - Población del distrito según el Censo 2025 (INEI). Se usa en /datos.
+ * Pirámide de población, comparación con Ayacucho y el Perú y material para el aula.
+ * Los datos viven en src/data/censo-2025.json; el CSV completo, en /public/datos.
+ */
+import censo from "../data/censo-2025.json";
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+const pct = (n: number) => `${n.toFixed(1)}%`;
+
+// Pirámide: de mayor a menor edad, escala común a ambos lados.
+const piramide = [...censo.piramide].reverse();
+const ESCALA = 150;
+const ticks = [150, 100, 50, 0];
+const destacados: Record<string, string> = {
+  "0-4": "La base se estrecha",
+  "20-24": "Menos jóvenes",
+};
+
+const { total, hombres, mujeres, total2005 } = censo.poblacion;
+const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
+---
+
+<section id="poblacion" class="scroll-mt-40 py-20 md:py-28">
+  <div class="container-custom">
+    <!-- Encabezado + población total -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+      <div class="lg:col-span-7">
+        <span class="eyebrow">Población · Censos Nacionales 2025</span>
+        <h2 class="section-heading">¿Quiénes somos?</h2>
+        <p class="text-lg leading-relaxed">
+          Lo que dice el censo más reciente del INEI sobre quiénes somos, cómo vivimos y qué nos falta.
+          Datos para conocer el distrito de María Parado de Bellido y para trabajar en el aula.
+        </p>
+      </div>
+      <div class="lg:col-span-5 rounded-2xl bg-white border border-line p-6 md:p-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">Población censada</p>
+        <p class="mt-1 font-heading text-6xl md:text-7xl font-semibold leading-none text-ink">{fmt(total)}</p>
+        <p class="mt-3 text-ink-soft">
+          habitantes · {crecimiento}% más que en 2005 ({fmt(total2005)})
+        </p>
+      </div>
+    </div>
+
+    <dl class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-line bg-line">
+      {censo.resumen.map((r) => (
+        <div class="bg-white px-5 py-4">
+          <dd class="font-heading text-2xl font-semibold text-ink">{r.valor}</dd>
+          <dt class="mt-0.5 text-sm">{r.etiqueta}</dt>
+        </div>
+      ))}
+    </dl>
+
+    <!-- Pirámide + envejecimiento -->
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <figure class="lg:col-span-7 rounded-2xl bg-white border border-line p-5 md:p-8">
+        <figcaption>
+          <h3 class="font-heading text-2xl font-semibold text-ink">¿Cómo está compuesta la población?</h3>
+          <p class="mt-1 text-sm">Habitantes por edad y sexo. Pasa el cursor o toca una fila para ver las cifras.</p>
+        </figcaption>
+
+        <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
+          <li class="flex items-center gap-2"><span class="censo-swatch censo-h" aria-hidden="true"></span>Hombres <span class="text-ink-soft">{fmt(hombres)}</span></li>
+          <li class="flex items-center gap-2"><span class="censo-swatch censo-m" aria-hidden="true"></span>Mujeres <span class="text-ink-soft">{fmt(mujeres)}</span></li>
+        </ul>
+
+        <div class="censo-piramide mt-5" role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo 2025. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
+          {piramide.map((r) => (
+            <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]} tabindex="0" aria-label={`${r.edad} años: ${r.hombres} hombres, ${r.mujeres} mujeres`}>
+              <div class="censo-lado censo-lado-h">
+                <span class="censo-barra censo-h" style={`width:${(r.hombres / ESCALA) * 100}%`}><span class="censo-valor">{r.hombres}</span></span>
+              </div>
+              <span class="censo-edad">{r.edad}</span>
+              <div class="censo-lado">
+                <span class="censo-barra censo-m" style={`width:${(r.mujeres / ESCALA) * 100}%`}><span class="censo-valor">{r.mujeres}</span></span>
+              </div>
+            </div>
+          ))}
+          <div class="censo-fila censo-eje" aria-hidden="true">
+            <div class="censo-lado censo-ticks">{ticks.map((t) => <span>{t}</span>)}</div>
+            <span class="censo-edad">edad</span>
+            <div class="censo-lado censo-ticks">{[...ticks].reverse().map((t) => <span>{t}</span>)}</div>
+          </div>
+        </div>
+
+        <ul class="mt-6 space-y-2 text-sm">
+          {Object.entries(destacados).map(([edad, titulo]) => {
+            const fila = censo.piramide.find((r) => r.edad === edad)!;
+            const ref = censo.piramide.find((r) => r.edad === "15-19")!;
+            return (
+              <li class="flex gap-3">
+                <span class="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+                <span>
+                  <strong class="text-ink">{titulo} ({edad} años):</strong>{" "}
+                  {fmt(fila.hombres + fila.mujeres)} personas, frente a {fmt(ref.hombres + ref.mujeres)} de 15 a 19 años.
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </figure>
+
+      <div class="lg:col-span-5">
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-primary">Lo que muestra la pirámide</p>
+        <h3 class="mt-2 font-heading text-3xl font-semibold text-ink leading-tight">Un pueblo que envejece</h3>
+        <p class="mt-4 text-lg leading-relaxed">
+          Nacen menos niñas y niños, y muchos jóvenes salen a estudiar o trabajar fuera. Los que se quedan son,
+          cada vez más, nuestros mayores: guardianes de la lengua, las fiestas y el trabajo comunal.
+        </p>
+        <dl class="mt-8 space-y-6">
+          {censo.envejecimiento.map((e) => (
+            <div class="border-t border-line pt-5">
+              <dt class="text-sm">{e.indicador}</dt>
+              <dd class="mt-1 flex items-baseline gap-3">
+                <span class="font-heading text-4xl font-semibold text-ink">{e.distrito}{e.unidad}</span>
+                <span class="text-sm text-ink-soft">Perú: {e.peru}{e.unidad}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
+    <!-- Comparativo -->
+    <div class="mt-20">
+      <h3 class="font-heading text-3xl font-semibold text-ink">Pomabamba frente a Ayacucho y el Perú</h3>
+      <p class="mt-2 max-w-3xl">Porcentaje de la población, las viviendas o los hogares, según el indicador.</p>
+      <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
+        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-distrito static" aria-hidden="true"></span>María Parado de Bellido</li>
+        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-ayacucho static" aria-hidden="true"></span>Ayacucho</li>
+        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-peru static" aria-hidden="true"></span>Perú</li>
+      </ul>
+
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {censo.comparativo.map((grupo) => (
+          <article class="flex flex-col rounded-2xl bg-white border border-line p-6 md:p-7">
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft">{grupo.tema}</p>
+            <h4 class="mt-1 font-heading text-2xl font-semibold text-ink">{grupo.titular}</h4>
+            <p class="mt-2 text-sm leading-relaxed">{grupo.texto}</p>
+            <ul class="mt-6 space-y-6">
+              {grupo.filas.map((f) => (
+                <li>
+                  <div class="flex items-baseline justify-between gap-3">
+                    <span class="text-sm text-ink">{f.indicador}</span>
+                    <span class="font-heading text-xl font-semibold text-ink">{pct(f.distrito)}</span>
+                  </div>
+                  <div class="censo-pista mt-2.5" aria-hidden="true">
+                    <span class="censo-punto censo-punto-peru" style={`left:${f.peru}%`} title={`Perú: ${pct(f.peru)}`}></span>
+                    <span class="censo-punto censo-punto-ayacucho" style={`left:${f.ayacucho}%`} title={`Ayacucho: ${pct(f.ayacucho)}`}></span>
+                    <span class="censo-punto censo-punto-distrito" style={`left:${f.distrito}%`} title={`María Parado de Bellido: ${pct(f.distrito)}`}></span>
+                  </div>
+                  <p class="mt-2 text-xs text-ink-soft">Ayacucho {pct(f.ayacucho)} · Perú {pct(f.peru)}</p>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <details class="mt-6 rounded-2xl border border-line bg-white">
+        <summary class="cursor-pointer px-6 py-4 text-sm font-semibold text-ink">Ver la tabla de datos (incluye la provincia de Cangallo)</summary>
+        <div class="overflow-x-auto px-6 pb-6">
+          <table class="w-full min-w-[560px] text-sm">
+            <thead>
+              <tr class="border-b border-line text-left text-ink">
+                <th class="py-2 pr-4 font-semibold">Indicador</th>
+                <th class="py-2 px-2 text-right font-semibold">Distrito</th>
+                <th class="py-2 px-2 text-right font-semibold">Cangallo</th>
+                <th class="py-2 px-2 text-right font-semibold">Ayacucho</th>
+                <th class="py-2 pl-2 text-right font-semibold">Perú</th>
+              </tr>
+            </thead>
+            <tbody>
+              {censo.comparativo.flatMap((g) => g.filas).map((f) => (
+                <tr class="border-b border-line last:border-0">
+                  <td class="py-2 pr-4">{f.indicador}</td>
+                  <td class="py-2 px-2 text-right font-semibold text-ink">{pct(f.distrito)}</td>
+                  <td class="py-2 px-2 text-right">{pct(f.cangallo)}</td>
+                  <td class="py-2 px-2 text-right">{pct(f.ayacucho)}</td>
+                  <td class="py-2 pl-2 text-right">{pct(f.peru)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <!-- Para el aula -->
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 rounded-3xl bg-secondary-soft p-6 md:p-10">
+      <div class="lg:col-span-4">
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-secondary">Para docentes y estudiantes</p>
+        <h3 class="mt-2 font-heading text-3xl font-semibold text-secondary-dark leading-tight">Preguntas para el aula</h3>
+        <p class="mt-3">
+          Descarga los 91 indicadores del censo para el distrito, comparados con Cangallo, Ayacucho y el Perú.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href={censo.csv} download class="btn-accent">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+            Descargar datos (CSV)
+          </a>
+        </div>
+      </div>
+      <ol class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        {censo.preguntas.map((q, i) => (
+          <li class="flex gap-4 rounded-2xl bg-white p-5">
+            <span class="font-heading text-2xl font-semibold text-secondary leading-none" aria-hidden="true">{i + 1}</span>
+            <span class="text-ink leading-relaxed">{q}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <p class="mt-6 text-sm text-ink-soft">
+      Fuente: <a href={censo.url} target="_blank" rel="noopener noreferrer" class="underline hover:text-ink">{censo.fuente}</a>.
+      Ubigeo {censo.ubigeo}. La cifra de 2005 corresponde al censo de ese año.
+    </p>
+  </div>
+</section>
+
+<style>
+  .censo-h { background: #2a6fc0; }
+  .censo-m { background: var(--color-primary); }
+  .censo-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+
+  /* Pirámide: dos lados que crecen desde el centro; 2px de aire entre filas. */
+  .censo-piramide { display: flex; flex-direction: column; gap: 2px; }
+  .censo-fila {
+    display: grid;
+    grid-template-columns: 1fr 3.25rem 1fr;
+    align-items: center;
+    height: 16px;
+    border-radius: 4px;
+    outline: none;
+  }
+  .censo-fila.is-destacada { background: var(--color-accent-soft); }
+  .censo-fila:not(.censo-eje):hover,
+  .censo-fila:not(.censo-eje):focus-visible { background: var(--color-sand-200); }
+  .censo-lado { display: flex; align-items: center; height: 100%; }
+  .censo-lado-h { justify-content: flex-end; }
+  .censo-barra { position: relative; display: block; flex-shrink: 0; height: 12px; min-width: 2px; }
+  .censo-lado-h .censo-barra { border-radius: 4px 0 0 4px; }
+  .censo-lado:not(.censo-lado-h) .censo-barra { border-radius: 0 4px 4px 0; }
+  .censo-edad { text-align: center; font-size: 11px; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; }
+  .censo-valor {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 11px; line-height: 1; color: var(--color-ink); font-variant-numeric: tabular-nums;
+    opacity: 0; transition: opacity 120ms;
+  }
+  .censo-lado-h .censo-valor { right: calc(100% + 4px); }
+  .censo-lado:not(.censo-lado-h) .censo-valor { left: calc(100% + 4px); }
+  .censo-fila:hover .censo-valor,
+  .censo-fila:focus-visible .censo-valor { opacity: 1; }
+  .censo-eje { height: auto; margin-top: 6px; }
+  .censo-ticks { justify-content: space-between; }
+  .censo-eje .censo-lado { font-size: 11px; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; }
+
+  /* Comparativo: pista de 0 a 100% con un marcador por ámbito. */
+  .censo-pista {
+    position: relative; height: 16px;
+    background: linear-gradient(var(--color-line), var(--color-line)) center / 100% 2px no-repeat;
+  }
+  .censo-punto { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+  .censo-punto.static { position: static; transform: none; display: inline-block; }
+  .censo-punto-distrito {
+    width: 16px; height: 16px; border-radius: 9999px;
+    background: var(--color-primary); box-shadow: 0 0 0 2px #fff; z-index: 2;
+  }
+  .censo-punto-ayacucho {
+    width: 12px; height: 12px; border-radius: 9999px;
+    background: #fff; border: 2px solid var(--color-ink-soft); z-index: 1;
+  }
+  .censo-punto-peru { width: 3px; height: 16px; border-radius: 2px; background: var(--color-ink); }
+</style>
