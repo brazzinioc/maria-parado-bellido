@@ -9,7 +9,7 @@ const dishes = await fetchDishes();
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Gastronomía", url: "/gastronomia" },
+  { name: "Gastronomía", url: "/gastronomia/" },
 ];
 
 const zones = [
@@ -19,9 +19,9 @@ const zones = [
 ];
 
 const where = [
-  { title: "En la feria de los viernes", text: "Queso fresco, papa, maíz y lo mejor de la chacra, directo de las familias.", href: "/comunidad", cta: "Ver la agenda" },
-  { title: "En las fiestas", text: "Los cargontes comparten mondongo, puca picante y chicha de jora con toda la comunidad.", href: "/festividades", cta: "Ver el calendario de fiestas" },
-  { title: "En casa de una familia", text: "Cocina en fogón de leña y comparte la mesa en una experiencia de turismo vivencial.", href: "/experiencias/turismo-vivencial", cta: "Turismo vivencial" },
+  { title: "En la feria de los viernes", text: "Queso fresco, papa, maíz y lo mejor de la chacra, directo de las familias.", href: "/comunidad/", cta: "Ver la agenda" },
+  { title: "En las fiestas", text: "Los cargontes comparten mondongo, puca picante y chicha de jora con toda la comunidad.", href: "/festividades/", cta: "Ver el calendario de fiestas" },
+  { title: "En casa de una familia", text: "Cocina en fogón de leña y comparte la mesa en una experiencia de turismo vivencial.", href: "/experiencias/turismo-vivencial/", cta: "Turismo vivencial" },
 ];
 
 const dishesStructuredData = [
@@ -30,14 +30,14 @@ const dishesStructuredData = [
     data: {
       name: "Platos tradicionales de Pomabamba, María Parado de Bellido",
       description: "Gastronomía andina de Pomabamba, Cangallo (Ayacucho).",
-      items: dishes.map((d) => ({ name: d.name, description: d.description, url: "/gastronomia", image: d.image })),
+      items: dishes.map((d) => ({ name: d.name, description: d.description, url: "/gastronomia/", image: d.image })),
     },
   },
 ];
 ---
 
 <BaseLayout
-  title="Gastronomía de Pomabamba, Ayacucho: platos típicos y productos de la chacra"
+  title="Gastronomía de Pomabamba, Ayacucho: platos típicos"
   description="Platos típicos y productos de Pomabamba, María Parado de Bellido (Cangallo, Ayacucho): puca picante, mondongo, qapchi, pachamanca, queso fresco y chicha de jora."
   image="/images/gastronomia-andina-queso-habas-maiz-papa-nativa-pomabamba.webp"
   keywords={["gastronomía Pomabamba", "comida típica Ayacucho", "puca picante", "qapchi de habas", "queso fresco Ayacucho", "platos andinos Cangallo"]}
@@ -109,7 +109,7 @@ const dishesStructuredData = [
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         {where.map((w, i) => (
           <a href={w.href} class="group flex flex-col rounded-2xl border border-line bg-sand p-6 md:p-7 transition-colors hover:border-primary/50">
-            <span class="font-heading text-3xl font-semibold text-primary/40" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span class="font-heading text-3xl font-semibold text-primary/75" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
             <h3 class="mt-2 font-heading text-2xl font-semibold text-ink">{w.title}</h3>
             <p class="mt-2 leading-relaxed">{w.text}</p>
             <span class="link-arrow mt-auto pt-5">{w.cta} <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span></span>

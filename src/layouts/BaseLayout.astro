@@ -6,6 +6,11 @@ import WhatsAppCTA from "../components/WhatsAppCTA.astro";
 import FeedbackWidget from "../components/FeedbackWidget.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import type { BreadcrumbItem } from "../types";
+// Fuentes servidas desde el propio sitio (antes: @import a Google Fonts, que bloqueaba el pintado).
+import "@fontsource-variable/fraunces/opsz.css";
+import "@fontsource-variable/inter";
+import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import "../styles/global.css";
 
 interface Props {
@@ -62,21 +67,21 @@ function isGroupActive(paths: string[]): boolean {
 const navGroups = {
   experiencias: {
     label: "Experiencias",
-    paths: ["/experiencias"],
+    paths: ["/experiencias/"],
     items: [
-      { href: "/experiencias/trekking", label: "Trekking", icon: "🥾", description: "Senderos y paisajes andinos" },
-      { href: "/experiencias/cicloturismo", label: "Cicloturismo", icon: "🚵", description: "Rutas de altura en bicicleta" },
-      { href: "/experiencias/turismo-vivencial", label: "Turismo vivencial", icon: "🌾", description: "Vive con nuestras comunidades" },
+      { href: "/experiencias/trekking/", label: "Trekking", icon: "🥾", description: "Senderos y paisajes andinos" },
+      { href: "/experiencias/cicloturismo/", label: "Cicloturismo", icon: "🚵", description: "Rutas de altura en bicicleta" },
+      { href: "/experiencias/turismo-vivencial/", label: "Turismo vivencial", icon: "🌾", description: "Vive con nuestras comunidades" },
     ]
   },
   cultura: {
     label: "Cultura",
-    paths: ["/historia", "/festividades", "/comunidad", "/gastronomia"],
+    paths: ["/historia/", "/festividades/", "/comunidad/", "/gastronomia/"],
     items: [
-      { href: "/historia", label: "Nuestra historia", icon: "🏛️", description: "Raíces Chancas y memoria viva" },
-      { href: "/festividades", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
-      { href: "/comunidad", label: "Agenda del distrito", icon: "📅", description: "Próximos eventos y actividades" },
-      { href: "/gastronomia", label: "Gastronomía", icon: "🍲", description: "Sabores de nuestra tierra" },
+      { href: "/historia/", label: "Nuestra historia", icon: "🏛️", description: "Raíces Chancas y memoria viva" },
+      { href: "/festividades/", label: "Festividades", icon: "🎉", description: "Calendario de fiestas" },
+      { href: "/comunidad/", label: "Agenda del distrito", icon: "📅", description: "Próximos eventos y actividades" },
+      { href: "/gastronomia/", label: "Gastronomía", icon: "🍲", description: "Sabores de nuestra tierra" },
     ]
   }
 };
@@ -125,10 +130,18 @@ const navLinkIdle = "text-ink hover:text-primary";
     <!-- Google Analytics -->
     <GoogleAnalytics />
 
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+
+    <!-- Recursos críticos propios de cada página (p. ej. la imagen del hero). -->
+    <slot name="head" />
+
     <!-- Transiciones de vista entre páginas (fade por defecto en todo el sitio) -->
     <ClientRouter />
   </head>
   <body class:list={["antialiased", currentPath === "/" && "home-hero-pending"]}>
+    <!-- Barra de progreso durante la navegación entre páginas (ClientRouter). -->
+    <div id="nav-progress" aria-hidden="true" transition:persist></div>
     <!-- Skip Link for Accessibility -->
     <a
       href="#main-content"
@@ -145,7 +158,6 @@ const navLinkIdle = "text-ink hover:text-primary";
           <a
             href="/"
             class="flex items-center gap-2 md:gap-3 group transition-all duration-300 focus-ring rounded-lg"
-            aria-label="Ir a la página principal de María Parado de Bellido"
           >
             <div class="flex flex-col justify-center h-14 md:h-[68px]">
               <span class="font-heading font-semibold text-ink text-lg md:text-2xl leading-none group-hover:text-primary transition-colors">
@@ -160,8 +172,8 @@ const navLinkIdle = "text-ink hover:text-primary";
           <!-- Desktop Navigation - Mega Menu -->
           <div class="hidden lg:flex items-center gap-1">
             <a
-              href="/lugares"
-              class={`${navLinkBase} ${isActivePath("/lugares") ? navLinkActive : navLinkIdle}`}
+              href="/lugares/"
+              class={`${navLinkBase} ${isActivePath("/lugares/") ? navLinkActive : navLinkIdle}`}
             >
               Destinos
             </a>
@@ -210,13 +222,13 @@ const navLinkIdle = "text-ink hover:text-primary";
             ))}
 
             <a
-              href="/directorio"
-              class={`${navLinkBase} ${isActivePath("/directorio") ? navLinkActive : navLinkIdle}`}
+              href="/directorio/"
+              class={`${navLinkBase} ${isActivePath("/directorio/") ? navLinkActive : navLinkIdle}`}
             >
               Servicios
             </a>
 
-            <a href="/planifica-tu-visita" class="btn-primary ml-3 !py-2.5">
+            <a href="/planifica-tu-visita/" class="btn-primary ml-3 !py-2.5">
               Planifica tu visita
             </a>
           </div>
@@ -286,9 +298,9 @@ const navLinkIdle = "text-ink hover:text-primary";
 
             <li>
               <a
-                href="/lugares"
+                href="/lugares/"
                 class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
-                  isActivePath("/lugares")
+                  isActivePath("/lugares/")
                     ? "bg-primary-soft text-primary"
                     : "text-ink hover:bg-sand hover:text-primary"
                 }`}
@@ -328,9 +340,9 @@ const navLinkIdle = "text-ink hover:text-primary";
 
             <li>
               <a
-                href="/directorio"
+                href="/directorio/"
                 class={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 focus-ring ${
-                  isActivePath("/directorio")
+                  isActivePath("/directorio/")
                     ? "bg-primary-soft text-primary"
                     : "text-ink hover:bg-sand hover:text-primary"
                 }`}
@@ -344,7 +356,7 @@ const navLinkIdle = "text-ink hover:text-primary";
             </li>
 
             <li class="pt-3">
-              <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+              <a href="/planifica-tu-visita/" class="btn-primary w-full">Planifica tu visita</a>
             </li>
           </ul>
         </div>
@@ -398,12 +410,12 @@ const navLinkIdle = "text-ink hover:text-primary";
           <div>
             <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Descubre</h4>
             <ul class="space-y-2">
-              <li><a href="/lugares" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Destinos</a></li>
-              <li><a href="/experiencias" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Experiencias</a></li>
-              <li><a href="/historia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Nuestra historia</a></li>
-              <li><a href="/festividades" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Festividades</a></li>
-              <li><a href="/comunidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Agenda del distrito</a></li>
-              <li><a href="/gastronomia" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Gastronomía</a></li>
+              <li><a href="/lugares/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Destinos</a></li>
+              <li><a href="/experiencias/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Experiencias</a></li>
+              <li><a href="/historia/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Nuestra historia</a></li>
+              <li><a href="/festividades/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Festividades</a></li>
+              <li><a href="/comunidad/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Agenda del distrito</a></li>
+              <li><a href="/gastronomia/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Gastronomía</a></li>
             </ul>
           </div>
 
@@ -411,9 +423,9 @@ const navLinkIdle = "text-ink hover:text-primary";
           <div>
             <h4 class="font-semibold text-accent mb-4 text-xs uppercase tracking-[0.18em]">Tu visita</h4>
             <ul class="space-y-2">
-              <li><a href="/planifica-tu-visita" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Planifica tu visita</a></li>
-              <li><a href="/directorio" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Servicios</a></li>
-              <li><a href="/privacidad" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
+              <li><a href="/planifica-tu-visita/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Planifica tu visita</a></li>
+              <li><a href="/directorio/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Servicios</a></li>
+              <li><a href="/privacidad/" class="text-white/65 hover:text-white transition-colors text-sm focus-ring rounded">Privacidad</a></li>
             </ul>
 
           </div>
@@ -499,6 +511,26 @@ const navLinkIdle = "text-ink hover:text-primary";
         </div>
       </div>
     </footer>
+
+    <!-- Barra de progreso: aparece si la página siguiente tarda más de 150 ms. -->
+    <script>
+      const bar = () => document.getElementById("nav-progress");
+      let timer: number | undefined;
+      document.addEventListener("astro:before-preparation", () => {
+        const el = bar();
+        if (!el) return;
+        window.clearTimeout(timer);
+        el.className = "";
+        timer = window.setTimeout(() => el.classList.add("is-loading"), 150);
+      });
+      document.addEventListener("astro:after-swap", () => {
+        window.clearTimeout(timer);
+        const el = bar();
+        if (!el || !el.classList.contains("is-loading")) return;
+        el.classList.add("is-done");
+        timer = window.setTimeout(() => (el.className = ""), 400);
+      });
+    </script>
 
     <!-- Scripts -->
     <script>
@@ -647,6 +679,31 @@ const navLinkIdle = "text-ink hover:text-primary";
 
     <style>
       /* Skip link for accessibility */
+      #nav-progress {
+        position: fixed;
+        inset: 0 auto auto 0;
+        z-index: 100;
+        height: 3px;
+        width: 0;
+        background: var(--color-primary);
+        box-shadow: 0 0 8px rgb(181 69 42 / 0.5);
+        opacity: 0;
+        pointer-events: none;
+      }
+      #nav-progress.is-loading {
+        opacity: 1;
+        width: 85%;
+        transition: width 6s cubic-bezier(0.1, 0.7, 0.2, 1), opacity 0.1s;
+      }
+      #nav-progress.is-done {
+        width: 100%;
+        opacity: 0;
+        transition: width 0.2s ease-out, opacity 0.3s 0.2s;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #nav-progress.is-loading { transition: opacity 0.1s; width: 100%; }
+      }
+
       .skip-link {
         position: absolute;
         left: -9999px;

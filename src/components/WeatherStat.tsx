@@ -142,7 +142,7 @@ export default function WeatherStat({ variant = "dark" }: WeatherStatProps) {
       <span className="text-base" role="img" aria-label={weather.description}>
         {weather.icon}
       </span>
-      <span className="font-bold text-lg text-naranja">{weather.temperature}°</span>
+      <span className="font-bold text-lg text-primary">{weather.temperature}°</span>
       <span className="text-sm hidden sm:inline text-ink-soft">Ahora · {weather.description}</span>
     </div>
   );

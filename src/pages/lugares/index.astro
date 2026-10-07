@@ -59,7 +59,7 @@ const placesKeywords = [
 // Breadcrumbs
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Destinos", url: "/lugares" },
+  { name: "Destinos", url: "/lugares/" },
 ];
 
 // Generar Place schema para cada lugar turístico
@@ -79,7 +79,7 @@ const placesStructuredData = hasPlaces
           items: touristPlaces.map((p) => ({
             name: p.name,
             description: p.description,
-            url: `/lugares/${p.slug}`,
+            url: `/lugares/${p.slug}/`,
             image: p.images?.[0],
           })),
         },
@@ -122,7 +122,7 @@ const placesStructuredData = hasPlaces
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {group.places.map((place) => (
             <PhotoCard
-              href={`/lugares/${place.slug}`}
+              href={`/lugares/${place.slug}/`}
               image={placeCoverImage(place)}
               alt={place.name}
               title={place.name}
@@ -143,7 +143,7 @@ const placesStructuredData = hasPlaces
           <p class="text-white/85 text-lg">Cómo llegar, qué llevar y cuándo venir para aprovechar cada destino.</p>
         </div>
         <div class="flex md:justify-end">
-          <a href="/planifica-tu-visita" class="btn-ghost-light">Planifica tu visita</a>
+          <a href="/planifica-tu-visita/" class="btn-ghost-light">Planifica tu visita</a>
         </div>
       </div>
     </div>

@@ -21,14 +21,17 @@ const {
 } = Astro.props;
 
 const siteName = "María Parado de Bellido - Turismo Ayacucho";
-const siteUrl = Astro.site || "https://mariaparadodebellido.com";
+const siteUrl = Astro.site || "https://www.mariaparadodebellido.com";
 const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const imageUrl = new URL(image, siteUrl).href;
 
-// Construir el título completo (max 60 chars para Google)
-const fullTitle = title.includes("María Parado de Bellido")
-  ? title
-  : `${title} | ${siteName}`;
+// Título completo: Google corta a ~60 caracteres. Se agrega la marca solo si el
+// título no la nombra ya (ni a Pomabamba) y si cabe.
+const brandSuffix = " | María Parado de Bellido";
+const fullTitle =
+  /María Parado de Bellido|Pomabamba/.test(title) || title.length + brandSuffix.length > 60
+    ? title
+    : `${title}${brandSuffix}`;
 
 // Keywords base del sitio + keywords de la página
 const baseKeywords = [
@@ -120,8 +123,6 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <link rel="alternate" hreflang="x-default" href={canonicalURL} />
 
 <!-- Preload critical assets -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
 <!-- Favicon variants -->

@@ -7,7 +7,7 @@ const experiences = await getExperiences();
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Experiencias", url: "/experiencias" },
+  { name: "Experiencias", url: "/experiencias/" },
 ];
 
 const structuredData = [
@@ -19,7 +19,7 @@ const structuredData = [
       items: experiences.map((e) => ({
         name: e.title,
         description: e.summary,
-        url: `/experiencias/${e.slug}`,
+        url: `/experiencias/${e.slug}/`,
         image: e.image,
       })),
     },
@@ -28,7 +28,7 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="Experiencias: trekking, cicloturismo y turismo vivencial en Ayacucho"
+  title="Trekking, cicloturismo y turismo vivencial en Pomabamba"
   description="Vive los Andes de María Parado de Bellido: rutas de trekking, cicloturismo de altura y turismo vivencial con comunidades de Cangallo, Ayacucho."
   image={experiences[0]?.image}
   keywords={experiences.flatMap((e) => e.seo.keywords)}
@@ -48,10 +48,10 @@ const structuredData = [
       {experiences.map((exp, i) => (
         <article class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <a
-            href={`/experiencias/${exp.slug}`}
+            href={`/experiencias/${exp.slug}/`}
             class:list={["group relative block aspect-[4/3] overflow-hidden rounded-2xl", i % 2 === 1 && "lg:order-2"]}
           >
-            <img src={exp.image} alt={exp.imageAlt} loading={i === 0 ? "eager" : "lazy"} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={exp.image} alt={exp.imageAlt} sizes="(min-width: 768px) 50vw, 100vw" loading={i === 0 ? "eager" : "lazy"} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
           </a>
           <div class="max-w-xl">
             <span class="eyebrow">{exp.eyebrow}</span>
@@ -65,7 +65,7 @@ const structuredData = [
                 </div>
               ))}
             </dl>
-            <a href={`/experiencias/${exp.slug}`} class="btn-primary">Descubrir {exp.title.toLowerCase()}</a>
+            <a href={`/experiencias/${exp.slug}/`} class="btn-primary">Descubrir {exp.title.toLowerCase()}</a>
           </div>
         </article>
       ))}

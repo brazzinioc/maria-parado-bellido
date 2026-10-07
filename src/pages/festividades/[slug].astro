@@ -62,8 +62,8 @@ function initials(name: string): string {
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Festividades", url: "/festividades" },
-  { name: festivity.name, url: `/festividades/${festivity.slug}` },
+  { name: "Festividades", url: "/festividades/" },
+  { name: festivity.name, url: `/festividades/${festivity.slug}/` },
 ];
 
 const structuredData = [
@@ -75,7 +75,7 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title={`${festivity.name}: fiesta en Pomabamba, Ayacucho`}
+  title={`${festivity.name} en Pomabamba${festivity.name.length <= 38 ? ", Ayacucho" : ""}`}
   description={festivity.description.slice(0, 160)}
   image={coverImage ?? "/images/hero-festivities.webp"}
   article={true}
@@ -112,7 +112,7 @@ const structuredData = [
             </div>
           )}
           <div class="px-6 py-5">
-            <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+            <a href="/planifica-tu-visita/" class="btn-primary w-full">Planifica tu visita</a>
           </div>
         </dl>
       </aside>
@@ -175,8 +175,8 @@ const structuredData = [
         Te ayudamos con las fechas exactas, cómo llegar y cómo participar de cerca en nuestras celebraciones.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/planifica-tu-visita" class="btn-primary">Planifica tu visita</a>
-        <a href="/festividades" class="btn-ghost-light">Ver todas las festividades</a>
+        <a href="/planifica-tu-visita/" class="btn-primary">Planifica tu visita</a>
+        <a href="/festividades/" class="btn-ghost-light">Ver todas las festividades</a>
       </div>
     </div>
   </section>
