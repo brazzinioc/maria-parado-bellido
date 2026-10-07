@@ -1,50 +1,77 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
-import SectionHeading from "../../components/SectionHeading.astro";
 import { fetchFestivities } from "../../lib/api";
+import { festivityCoverImage } from "../../lib/placeholders";
+import type { Festivity } from "../../types";
 
+// Todo el calendario sale del CMS (seed 06_festividades.sql); sin datos de ejemplo.
 const festivities = await fetchFestivities();
 
-// Sort by date
-const sortedFestivities = [...festivities].sort(
-  (a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
-);
+const MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+const parse = (iso: string) => {
+  const [y, m, d] = iso.split("T")[0].split("-").map(Number);
+  return { y, m: m - 1, d, time: Date.UTC(y, m - 1, d) };
+};
 
-// SEO Keywords para festividades
+// El calendario es anual: se ordena por mes empezando por el mes actual (fecha de la compilación).
+const now = new Date();
+const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+const currentMonth = now.getUTCMonth();
+const cyclic = (f: Festivity) => {
+  const s = parse(f.start_date);
+  return ((s.m - currentMonth + 12) % 12) * 100 + s.d;
+};
+const ordered = [...festivities].sort((a, b) => cyclic(a) - cyclic(b));
+
+// Próxima fiesta: la primera con fecha real por venir; si todas pasaron, la primera del ciclo.
+const upcoming = [...festivities]
+  .filter((f) => parse(f.end_date).time >= today)
+  .sort((a, b) => parse(a.start_date).time - parse(b.start_date).time);
+const next = upcoming[0] ?? ordered[0];
+const daysToNext = next ? Math.round((parse(next.start_date).time - today) / 86400000) : 0;
+
+const byMonth = MONTHS.map((name, m) => ({
+  name,
+  m,
+  items: ordered.filter((f) => parse(f.start_date).m === m),
+}));
+
+const formatRange = (f: Festivity) => {
+  const s = parse(f.start_date);
+  const e = parse(f.end_date);
+  if (s.time === e.time) return `${s.d} de ${MONTHS[s.m].toLowerCase()}`;
+  if (s.m === e.m) return `${s.d} al ${e.d} de ${MONTHS[s.m].toLowerCase()}`;
+  return `${s.d} de ${MONTHS[s.m].toLowerCase()} al ${e.d} de ${MONTHS[e.m].toLowerCase()}`;
+};
+const excerpt = (text: string, max = 150) => (text.length > max ? `${text.slice(0, text.lastIndexOf(" ", max))}…` : text);
+const altFor = (f: Festivity) => `${f.name} en Pomabamba, María Parado de Bellido, Ayacucho`;
+
+const dances = ["Chinlili", "Chimaycha", "Qacchwa", "Toril", "Rejoneras", "Wacqrapukus"];
+
 const festivitiesKeywords = [
-  "festividades Ayacucho",
-  "fiestas patronales Perú",
+  "fiestas de Pomabamba",
+  "festividades Pomabamba Ayacucho",
+  "fiesta patronal San Francisco de Asís Pomabamba",
+  "carnavales Pomabamba",
   "cargontes tradición andina",
-  "celebraciones María Parado de Bellido",
-  "fiestas costumbristas Cangallo",
+  "calendario festivo Cangallo",
   "danzas tradicionales Ayacucho",
-  "calendario festivo Pomabamba",
-  "procesiones andinas",
-  "fiesta patronal Perú",
-  "tradiciones peruanas",
+  "María Parado de Bellido fiestas",
 ];
 
-// Breadcrumbs
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
   { name: "Festividades", url: "/festividades" },
 ];
 
-// Generar Event schema para cada festividad
-const eventSchemas = sortedFestivities.map((festivity) => ({
-  type: "event" as const,
-  data: festivity,
-}));
-
-// ItemList schema para la lista de festividades
 const festivitiesStructuredData = [
   {
     type: "itemList" as const,
     data: {
-      name: "Festividades de María Parado de Bellido",
-      description: "Calendario completo de festividades y celebraciones tradicionales en el distrito María Parado de Bellido, Ayacucho.",
-      items: sortedFestivities.map((f) => ({
+      name: "Calendario de fiestas de Pomabamba, María Parado de Bellido",
+      description: "Fiestas patronales y costumbristas del distrito María Parado de Bellido, Cangallo, Ayacucho.",
+      items: ordered.map((f) => ({
         name: f.name,
         description: f.description,
         url: `/festividades/${f.slug}`,
@@ -52,29 +79,13 @@ const festivitiesStructuredData = [
       })),
     },
   },
-  ...eventSchemas,
+  ...ordered.map((festivity) => ({ type: "event" as const, data: festivity })),
 ];
-
-const dateParts = (date: string) => {
-  const d = new Date(date);
-  return {
-    day: d.toLocaleDateString("es-PE", { day: "2-digit", timeZone: "UTC" }),
-    month: d.toLocaleDateString("es-PE", { month: "short", timeZone: "UTC" }).replace(".", ""),
-    year: d.getUTCFullYear(),
-  };
-};
-
-const formatRange = (start: string, end: string) => {
-  const opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", timeZone: "UTC" };
-  const s = new Date(start).toLocaleDateString("es-PE", opts);
-  if (start === end) return s;
-  return `${s} al ${new Date(end).toLocaleDateString("es-PE", opts)}`;
-};
 ---
 
 <BaseLayout
-  title="Festividades y fiestas patronales en María Parado de Bellido, Ayacucho"
-  description="Calendario de festividades y fiestas costumbristas en María Parado de Bellido, Ayacucho. Descubre nuestras celebraciones patronales, cargontes y tradiciones andinas."
+  title="Fiestas de Pomabamba, Ayacucho: calendario de festividades"
+  description="Calendario de fiestas de Pomabamba, María Parado de Bellido (Cangallo, Ayacucho): carnavales, fiesta patronal de San Francisco de Asís, San Cristóbal y San José, cargontes y danzas tradicionales."
   image="/images/hero-festivities.webp"
   keywords={festivitiesKeywords}
   breadcrumbs={breadcrumbs}
@@ -83,97 +94,134 @@ const formatRange = (start: string, end: string) => {
   <PageHero
     eyebrow="Calendario festivo"
     title="Vive nuestras fiestas"
-    intro="La fe y la tradición se encuentran en nuestras fiestas: procesiones, danzas, música y comida compartida."
+    intro="La fe y la tradición se encuentran en las fiestas de Pomabamba: procesiones, danzas, música y comida compartida durante todo el año."
     image="/images/hero-festivities.webp"
-    imageAlt="Festividades tradicionales del distrito"
+    imageAlt="Procesión con banderas blancas por los cerros de Pomabamba, María Parado de Bellido, Ayacucho"
     breadcrumbs={breadcrumbs}
   />
 
-  <section class="py-20 md:py-28">
-    <div class="container-custom">
-      <div class="max-w-3xl mb-14">
-        <span class="eyebrow">Fe y tradición</span>
-        <h2 class="section-heading">Calendario de fiestas</h2>
-        <p class="text-lg leading-relaxed mb-4">
-          Las festividades de María Parado de Bellido son expresiones vivas de nuestra fe católica entrelazada
-          con creencias ancestrales andinas. Cada celebración es organizada por los cargontes, familias que con
-          devoción y sacrificio asumen la responsabilidad de honrar a nuestros santos patronos.
-        </p>
-        <p class="text-lg leading-relaxed">
-          Procesiones, danzas tradicionales, misas solemnes y comida comunitaria se unen en una explosión de
-          color, música y espiritualidad que convoca a toda la comunidad.
-        </p>
+  {festivities.length === 0 ? (
+    <section class="py-20 md:py-28">
+      <div class="container-custom">
+        <div class="rounded-3xl border border-dashed border-line bg-white p-10 text-center max-w-2xl mx-auto">
+          <h2 class="font-heading text-3xl font-semibold text-ink">Calendario en preparación</h2>
+          <p class="mt-3">Estamos actualizando las fechas de nuestras fiestas. Escríbenos y te contamos cuál es la próxima.</p>
+          <a href="/planifica-tu-visita" class="btn-primary mt-6">Planifica tu visita</a>
+        </div>
       </div>
-
-      {sortedFestivities.length > 0 ? (
-        <div class="space-y-6">
-          {sortedFestivities.map((festivity) => {
-            const d = dateParts(festivity.start_date);
-            return (
-              <a
-                href={`/festividades/${festivity.slug}`}
-                class="group grid grid-cols-1 md:grid-cols-12 overflow-hidden rounded-2xl bg-white border border-line hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)] transition-shadow"
-              >
-                <div class="relative md:col-span-5 aspect-[16/10] md:aspect-auto md:min-h-[260px] overflow-hidden">
-                  <img
-                    src={festivity.images?.[0] || "/images/default-photo.webp"}
-                    alt={festivity.name}
-                    loading="lazy"
-                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <div class="md:col-span-7 flex gap-6 p-6 md:p-10">
-                  <div class="flex-shrink-0 text-center">
-                    <p class="font-heading text-4xl md:text-5xl font-semibold text-primary leading-none">{d.day}</p>
-                    <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-ink">{d.month}</p>
-                    <p class="text-xs text-ink-soft">{d.year}</p>
-                  </div>
-                  <div class="min-w-0">
-                    <h3 class="font-heading text-2xl md:text-3xl font-semibold group-hover:text-primary transition-colors">
-                      {festivity.name}
-                    </h3>
-                    <p class="mt-1 text-sm font-semibold text-secondary">{formatRange(festivity.start_date, festivity.end_date)}</p>
-                    <p class="mt-4 leading-relaxed line-clamp-3">{festivity.description}</p>
-                    {festivity.place?.name && (
-                      <p class="mt-4 flex items-center gap-1.5 text-sm">
-                        <svg class="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" /></svg>
-                        {festivity.place.name}
-                      </p>
-                    )}
-                    <span class="link-arrow mt-5">Ver programa completo →</span>
-                  </div>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      ) : (
-        <div class="rounded-2xl bg-white border border-line p-10 text-center">
-          <p class="mb-6">No hay festividades programadas en este momento. Vuelve pronto o escríbenos para más información.</p>
-          <a href="/planifica-tu-visita" class="btn-primary">Planifica tu visita</a>
-        </div>
+    </section>
+  ) : (
+    <>
+      <!-- Próxima fiesta -->
+      {next && (
+        <section class="py-16 md:py-20">
+          <div class="container-custom">
+            <a href={`/festividades/${next.slug}`} class="group grid grid-cols-1 lg:grid-cols-12 overflow-hidden rounded-3xl bg-white border border-line transition-shadow hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)]">
+              <div class="relative lg:col-span-7 aspect-[16/10] lg:aspect-auto lg:min-h-[380px] overflow-hidden bg-sand-200">
+                <img src={festivityCoverImage(next)} alt={altFor(next)} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              </div>
+              <div class="lg:col-span-5 flex flex-col justify-center p-6 md:p-10">
+                <p class="eyebrow">Próxima fiesta</p>
+                <h2 class="font-heading text-3xl md:text-4xl font-semibold leading-tight text-ink group-hover:text-primary transition-colors">{next.name}</h2>
+                <p class="mt-2 font-semibold text-secondary">{formatRange(next)}{next.place?.name && ` · ${next.place.name}`}</p>
+                {daysToNext > 0 && (
+                  <p class="mt-5 flex items-baseline gap-2">
+                    <span class="font-heading text-5xl font-semibold text-primary">{daysToNext}</span>
+                    <span class="text-sm">{daysToNext === 1 ? "día para la fiesta" : "días para la fiesta"}</span>
+                  </p>
+                )}
+                <p class="mt-4 leading-relaxed">{excerpt(next.description, 220)}</p>
+                <span class="link-arrow mt-6">Ver la fiesta →</span>
+              </div>
+            </a>
+          </div>
+        </section>
       )}
-    </div>
-  </section>
 
-  <!-- Cargontes -->
+      <!-- Calendario por meses -->
+      <section class="pb-20 md:pb-28">
+        <div class="container-custom">
+          <div class="max-w-3xl mb-8">
+            <span class="eyebrow">Fe y tradición</span>
+            <h2 class="section-heading">Calendario de fiestas</h2>
+            <p class="text-lg leading-relaxed">
+              Fiestas religiosas, cívicas y costumbristas mes a mes. Cada celebración la organizan los cargontes,
+              familias que asumen con devoción el compromiso de honrar a sus santos y atender a la comunidad.
+            </p>
+          </div>
+
+          <!-- Filtro por mes: de enero a diciembre, con el mes actual seleccionado (lo fija el script en el navegador). -->
+          <div role="tablist" aria-label="Filtrar fiestas por mes" class="mb-10 grid grid-cols-4 sm:grid-cols-7 lg:grid-cols-13 gap-1.5" data-fiestas-filtro>
+            {byMonth.map((g) => (
+              <button
+                type="button"
+                role="tab"
+                data-month={g.m}
+                aria-selected={g.m === currentMonth ? "true" : "false"}
+                class="fiesta-mes rounded-xl px-2 py-3 text-center"
+                data-has={g.items.length > 0 ? "true" : "false"}
+              >
+                <span class="block text-xs font-semibold uppercase tracking-[0.12em]">{g.name.slice(0, 3)}</span>
+                <span class="mt-1 block font-heading text-lg font-semibold leading-none">{g.items.length || "·"}</span>
+              </button>
+            ))}
+            <button type="button" role="tab" data-month="all" aria-selected="false" class="fiesta-mes col-span-4 sm:col-span-7 lg:col-span-1 rounded-xl px-2 py-3 text-center" data-has="true">
+              <span class="block text-xs font-semibold uppercase tracking-[0.12em]">Todo</span>
+              <span class="mt-1 block font-heading text-lg font-semibold leading-none">{festivities.length}</span>
+            </button>
+          </div>
+
+          <p class="mb-6 font-heading text-2xl font-semibold text-ink" data-fiestas-titulo aria-live="polite">Todo el año</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" data-fiestas-lista>
+            {byMonth.flatMap((g) =>
+              g.items.map((f) => (
+                <a href={`/festividades/${f.slug}`} data-month={g.m} data-name={f.name} class="group flex flex-col overflow-hidden rounded-2xl bg-white border border-line transition-colors hover:border-primary/50">
+                  <div class="relative aspect-[16/10] overflow-hidden bg-sand-200">
+                    <img src={festivityCoverImage(f)} alt={altFor(f)} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  </div>
+                  <div class="flex flex-1 flex-col p-5 md:p-6">
+                    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-primary">{g.name}</p>
+                    <h4 class="mt-1 font-heading text-2xl font-semibold leading-snug text-ink group-hover:text-primary transition-colors">{f.name}</h4>
+                    <p class="mt-1 text-sm font-semibold text-secondary">{formatRange(f)}{f.place?.name && ` · ${f.place.name}`}</p>
+                    <p class="mt-3 leading-relaxed">{excerpt(f.description, 120)}</p>
+                    <span class="link-arrow mt-auto pt-5">Ver la fiesta →</span>
+                  </div>
+                </a>
+              )),
+            )}
+          </div>
+
+          <div hidden data-fiestas-vacio class="rounded-2xl border border-dashed border-line bg-white p-8 text-center">
+            <p class="text-lg"><span data-vacio-mes></span> no tiene fiestas en el calendario.</p>
+            <button type="button" class="link-arrow mt-3" data-vacio-siguiente></button>
+          </div>
+        </div>
+      </section>
+    </>
+  )}
+
+  <!-- Cargontes (la foto se agregará más adelante) -->
   <section class="py-20 md:py-28 bg-secondary text-white">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl">
-        <img src="/images/hero_3.webp" alt="Tradiciones y cultura viva en Pomabamba" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
-      </div>
-      <div class="max-w-xl">
+    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-5">
         <span class="eyebrow !text-accent">Tradición</span>
-        <h2 class="section-heading !text-white">El sistema de cargontes</h2>
-        <p class="text-lg leading-relaxed text-white/85 mb-5">
-          Los cargontes son el corazón de nuestras festividades. Familias enteras asumen el cargo de organizar
-          las celebraciones: financian la banda de música, preparan la comida para cientos de personas, adornan
-          la iglesia y coordinan las procesiones. Es un acto de fe, generosidad y servicio comunitario que
-          fortalece nuestros lazos sociales y espirituales.
+        <h2 class="section-heading !text-white">Los cargontes</h2>
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-accent">Música y danza</p>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {dances.map((d) => <li class="rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-semibold text-white">{d}</li>)}
+        </ul>
+      </div>
+      <div class="lg:col-span-7 space-y-5 text-lg leading-relaxed text-white/85">
+        <p>
+          Los cargontes son el corazón de cada fiesta: familias que asumen el cargo de organizarla, contratan la banda,
+          preparan la comida para la comunidad y acompañan las procesiones. El ecónomo, responsable de las fiestas
+          religiosas y patronales, coordina con ellos.
         </p>
-        <p class="text-lg leading-relaxed text-white/85">
-          Ser cargonte es un honor que se transmite con orgullo y que deja una huella imborrable en la memoria
-          colectiva del distrito.
+        <p>
+          Todo funciona con el <strong class="text-white">ayni</strong>: quien ayuda hoy recibe ayuda mañana. En carnavales,
+          los cargontes de agosto cumplen el <strong class="text-white">apaico</strong>, una ayuda que la comunidad les devuelve
+          en sus propias fiestas.
         </p>
       </div>
     </div>
@@ -181,16 +229,68 @@ const formatRange = (start: string, end: string) => {
 
   <!-- CTA -->
   <section class="py-20 md:py-28">
-    <div class="container-custom">
-      <SectionHeading
-        eyebrow="Sigue explorando"
-        title="Descubre más de nuestro distrito"
-        intro="Las festividades son solo una parte de nuestra cultura. Explora nuestros paisajes y conoce la historia de nuestro pueblo."
-      />
+    <div class="container-custom text-center max-w-2xl">
+      <span class="eyebrow">Sigue explorando</span>
+      <h2 class="section-heading">Vive la fiesta como local</h2>
+      <p class="text-lg leading-relaxed mb-8">Prueba la comida de las fiestas, conoce la agenda de la semana o quédate con una familia.</p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/lugares" class="btn-primary">Explorar destinos</a>
-        <a href="/historia" class="btn-secondary">Conocer nuestra historia</a>
+        <a href="/gastronomia" class="btn-primary">Gastronomía</a>
+        <a href="/comunidad" class="btn-secondary">Agenda del distrito</a>
+        <a href="/experiencias/turismo-vivencial" class="btn-secondary">Turismo vivencial</a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  function initFiltro() {
+    const filtro = document.querySelector<HTMLElement>("[data-fiestas-filtro]");
+    if (!filtro) return;
+    const tabs = [...filtro.querySelectorAll<HTMLButtonElement>("[data-month]")];
+    const cards = [...document.querySelectorAll<HTMLElement>("[data-fiestas-lista] [data-month]")];
+    const titulo = document.querySelector<HTMLElement>("[data-fiestas-titulo]")!;
+    const vacio = document.querySelector<HTMLElement>("[data-fiestas-vacio]")!;
+    const siguiente = vacio.querySelector<HTMLButtonElement>("[data-vacio-siguiente]")!;
+
+    const seleccionar = (mes: string) => {
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.month === mes)));
+      let visibles = 0;
+      cards.forEach((c) => {
+        const ver = mes === "all" || c.dataset.month === mes;
+        c.hidden = !ver;
+        if (ver) visibles++;
+      });
+      titulo.textContent = mes === "all" ? "Todo el año" : MESES[Number(mes)];
+      vacio.hidden = visibles > 0;
+      if (!visibles) {
+        // Próximo mes con fiesta, dando la vuelta al año.
+        const m = Number(mes);
+        const meses = cards.map((c) => Number(c.dataset.month));
+        const prox = [...Array(12).keys()].map((i) => (m + i + 1) % 12).find((x) => meses.includes(x));
+        vacio.querySelector("[data-vacio-mes]")!.textContent = MESES[m];
+        siguiente.hidden = prox === undefined;
+        if (prox !== undefined) {
+          const nombre = cards.find((c) => Number(c.dataset.month) === prox)?.dataset.name;
+          siguiente.textContent = `La próxima: ${nombre} (${MESES[prox].toLowerCase()}) →`;
+          siguiente.onclick = () => seleccionar(String(prox));
+        }
+      }
+    };
+
+    tabs.forEach((t) => t.addEventListener("click", () => seleccionar(t.dataset.month!)));
+    seleccionar(String(new Date().getMonth()));
+  }
+
+  document.addEventListener("astro:page-load", initFiltro);
+</script>
+
+<style>
+  .fiesta-mes { background: var(--color-sand-200); color: var(--color-ink-soft); transition: background-color 150ms, color 150ms; }
+  .fiesta-mes[data-has="true"] { background: var(--color-primary-soft); color: var(--color-primary-dark); }
+  .fiesta-mes:hover { background: var(--color-primary-soft); color: var(--color-primary-dark); }
+  .fiesta-mes[aria-selected="true"] { background: var(--color-primary); color: #fff; }
+  .fiesta-mes:focus-visible { outline: 3px solid color-mix(in srgb, var(--color-primary) 40%, transparent); outline-offset: 2px; }
+  [data-fiestas-lista] > [hidden] { display: none; }
+</style>

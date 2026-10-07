@@ -126,8 +126,9 @@ export async function fetchFestivities(): Promise<Festivity[]> {
     festivitiesCache = festivities;
     return festivities;
   } catch (error) {
-    console.error('Error fetching festivities, usando fallback:', error);
-    return getFallbackFestivities();
+    // Sin datos de ejemplo: las festividades salen siempre del CMS.
+    console.error('Error fetching festivities:', error);
+    return [];
   }
 }
 
@@ -163,7 +164,7 @@ export async function fetchFestivityBySlug(slug: string): Promise<Festivity | nu
     if (error) throw error;
     return data ? mapFestivityFromDB(data) : null;
   } catch (error) {
-    console.error('Error fetching festivity by slug, usando fallback:', error);
+    console.error('Error fetching festivity by slug:', error);
     const festivities = await fetchFestivities();
     return festivities.find((festivity) => festivity.slug === slug) || null;
   }
@@ -404,140 +405,3 @@ function getFallbackTours(): Tour[] {
   ];
 }
 
-function getFallbackFestivities(): Festivity[] {
-  return [
-    {
-      id: 'f1',
-      name: 'Carnavales de Ayacucho',
-      slug: 'carnavales-ayacucho-2026',
-      description:
-        'Los Carnavales de Ayacucho son una festividad costumbrista llena de alegría, color y tradición andina. Se celebran generalmente en febrero, aunque pueden extenderse hasta marzo. Durante los días centrales, las calles se llenan de comparsas, yunzas, música tradicional y el tradicional cortamonte. Los cargontes que liderarán las fiestas de agosto realizan el micuchinacuy o apaycu en febrero, una práctica de ayni (reciprocidad andina) donde apoyan en la organización de los carnavales, comprometiéndose a colaborar con la expectativa de recibir la devolución de este ayni en agosto durante sus propias fiestas patronales.',
-      start_date: '2026-02-14',
-      end_date: '2026-02-17',
-      place: { name: 'Plaza Principal de Pomabamba', lat: -13.6014, lng: -74.2342 },
-      cargontes: [
-        { name: 'Familia Vilca Mendoza', role: 'Mayordomo Principal' },
-        { name: 'Familia García Ayala', role: 'Alférez' },
-        { name: 'Familia Rojas Poma', role: 'Encargado de Yunza' },
-      ],
-      images: ['/images/default-photo.webp'],
-      schedule: [
-        {
-          date: '2026-02-14T09:00:00Z',
-          activity: 'Inauguración de carnavales y entrada de comparsas',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-02-14T14:00:00Z',
-          activity: 'Micuchinacuy o Apaycu - Ayni de cargontes de agosto',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-02-15T11:00:00Z',
-          activity: 'Cortamonte y yunza tradicional',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-02-16T14:00:00Z',
-          activity: 'Concurso de danzas y música carnavalesca',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-02-17T16:00:00Z',
-          activity: 'Despedida de carnavales y entierro del ño carnavalón',
-          location: 'Calles de Pomabamba',
-        },
-      ],
-    },
-   {
-      id: 'f2',
-      name: 'Fiesta Patronal de San Francisco de Asís',
-      slug: 'fiesta-san-francisco-2026',
-      description:
-        'La festividad patronal más importante del distrito, celebrada cada 4 de octubre en honor a San Francisco de Asís. Los cargontes de Pomabamba organizan procesiones, misas solemnes, danzas tradicionales y eventos culturales que reúnen a toda la comunidad en una celebración de fe y tradición andina.',
-      start_date: '2026-10-04',
-      end_date: '2026-10-04',
-      place: { name: 'Plaza Principal de Pomabamba', lat: -13.6014, lng: -74.2342 },
-      cargontes: [
-        {
-          name: 'Familia Quispe Huamán',
-          role: 'Mayordomo Principal',
-          notes: 'Líder del cargo 2026',
-        },
-        { name: 'Familia Ccahuana Rojas', role: 'Alférez', notes: 'Encargados de la banda' },
-        { name: 'Familia Palomino Cruz', role: 'Mayordoma de Comida' },
-      ],
-      images: ['/images/default-photo.webp'],
-      schedule: [
-        {
-          date: '2026-10-04T06:00:00Z',
-          activity: 'Diana y quema de castillos',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-10-04T09:00:00Z',
-          activity: 'Misa Solemne',
-          location: 'Iglesia de Pomabamba',
-        },
-        {
-          date: '2026-10-04T11:00:00Z',
-          activity: 'Procesión por las calles de Pomabamba',
-          location: 'Recorrido tradicional',
-        },
-        {
-          date: '2026-10-04T15:00:00Z',
-          activity: 'Danzas de tijeras y música tradicional',
-          location: 'Plaza Principal de Pomabamba',
-        },
-      ],
-    },
-    {
-      id: 'f3',
-      name: 'Yarqa Aspiy - Fiestas Costumbristas',
-      slug: 'yarqa-aspiy-2026',
-      description:
-        'El Yarqa Aspiy es una festividad costumbrista ancestral que combina el trabajo comunal de limpieza de canales de riego (acequias) con la celebración religiosa en honor a San Cristóbal y San José. Esta práctica de minka (trabajo comunitario) se realiza cada agosto, uniendo a toda la comunidad en la preparación de los sistemas de riego antes de la temporada de siembra. Durante diez días, las familias participan en la limpieza de las yarqas, comparten alimentos tradicionales, realizan ceremonias de agradecimiento a la Pachamama y celebran con danzas, música y procesiones en honor a los santos patronos.',
-      start_date: '2026-08-11',
-      end_date: '2026-08-20',
-      place: { name: 'Canales de Riego y Plaza de Pomabamba', lat: -13.6014, lng: -74.2342 },
-      cargontes: [
-        { name: 'Familia Ayala Torres', role: 'Mayordomo de San Cristóbal' },
-        { name: 'Familia Mendoza Pari', role: 'Mayordomo de San José' },
-        { name: 'Familia Chávez Huamán', role: 'Encargado de Minka' },
-      ],
-      images: ['/images/default-photo.webp'],
-      schedule: [
-        {
-          date: '2026-08-11T07:00:00Z',
-          activity: 'Inicio de la limpieza de canales - Minka comunal',
-          location: 'Canales de riego del distrito',
-        },
-        {
-          date: '2026-08-15T10:00:00Z',
-          activity: 'Misa en honor a San Cristóbal',
-          location: 'Iglesia de Pomabamba',
-        },
-        {
-          date: '2026-08-15T15:00:00Z',
-          activity: 'Procesión de San Cristóbal y danzas tradicionales',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-08-19T10:00:00Z',
-          activity: 'Misa en honor a San José',
-          location: 'Iglesia de Pomabamba',
-        },
-        {
-          date: '2026-08-19T16:00:00Z',
-          activity: 'Procesión de San José y música andina',
-          location: 'Plaza Principal de Pomabamba',
-        },
-        {
-          date: '2026-08-20T12:00:00Z',
-          activity: 'Ceremonia de cierre y pago a la tierra',
-          location: 'Canales de riego del distrito',
-        },
-      ],
-    }
-  ];
-}

@@ -6,6 +6,7 @@ import WeatherStat from "../components/WeatherStat";
 import HeroSlider from "../components/HeroSlider";
 import InteractiveMap from "../components/InteractiveMap";
 import { fetchFestivities, fetchPlaces } from "../lib/api";
+import { festivityCoverImage } from "../lib/placeholders";
 import { getExperiences, getGallery } from "../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
 
@@ -49,9 +50,10 @@ const heroSlides = [
   },
 ];
 
-const upcomingFestivities = [...festivities]
-  .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
-  .slice(0, 3);
+// Próximas fiestas: las que aún no terminan; si el CMS solo tiene fechas pasadas, las más recientes.
+const byStart = [...festivities].sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+const notOver = byStart.filter((f) => new Date(f.end_date).getTime() >= Date.now() - 86400000);
+const upcomingFestivities = (notOver.length ? notOver : byStart).slice(0, 3);
 
 const featuredPlaces = places.slice(0, 5);
 const mapPlaces = places.filter(hasCoordinates);
@@ -264,7 +266,7 @@ const homeStructuredData = [
           {upcomingFestivities.map((fest) => (
             <PhotoCard
               href={`/festividades/${fest.slug}`}
-              image={fest.images?.[0] || "/images/hero-festivities.webp"}
+              image={festivityCoverImage(fest)}
               alt={fest.name}
               title={fest.name}
               badge={formatDay(fest.start_date)}

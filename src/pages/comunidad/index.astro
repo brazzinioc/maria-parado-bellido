@@ -1,266 +1,186 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
-import SectionHeading from "../../components/SectionHeading.astro";
 import CommunityEventCard from "../../components/CommunityEventCard.astro";
-import type { CommunityEvent } from "../../types";
 import { fetchEvents } from "../../lib/api";
+import { whatsappUrl } from "../../lib/whatsapp";
 
-// Fallback usado solo si el CMS no devuelve eventos publicados
-const fallbackEvents: CommunityEvent[] = [
-  {
-    id: "1",
-    title: "Faena Comunal - Limpieza de Canales de Riego",
-    slug: "faena-limpieza-canales",
-    type: "faena",
-    description: "Trabajo comunitario para la limpieza y mantenimiento de los canales de riego que abastecen a las chacras de Pomabamba. Participación obligatoria de todos los comuneros empadronados.",
-    date: "2026-02-15",
-    time: "6:00 AM",
-    location: {
-      name: "Canal Principal - Sector Allcaqapata",
-      coordinates: { lat: -13.6014, lng: -74.2342 }
-    },
-    organizer: "Junta Directiva Comunal",
-    isRecurring: true,
-    recurrencePattern: "monthly"
-  },
-  {
-    id: "2",
-    title: "Pollada Pro-Fondos Escuela Inicial",
-    slug: "pollada-escuela-inicial",
-    type: "pollada",
-    description: "Gran pollada bailable para recaudar fondos destinados a la mejora de infraestructura de la Escuela Inicial N° 432. Incluye música en vivo con orquesta típica.",
-    date: "2026-02-22",
-    time: "12:00 PM",
-    location: {
-      name: "Plaza Principal de Pomabamba",
-      coordinates: { lat: -13.6014, lng: -74.2342 }
-    },
-    organizer: "APAFA - Escuela Inicial N° 432",
-    isRecurring: false
-  },
-  {
-    id: "3",
-    title: "Asamblea General Ordinaria - Comunidad de Pomabamba",
-    slug: "asamblea-general-febrero",
-    type: "asamblea",
-    description: "Asamblea mensual para tratar temas de interés comunal: distribución de agua, mantenimiento de caminos, preparativos para la fiesta patronal y elección de nuevos cargontes.",
-    date: "2026-02-28",
-    time: "10:00 AM",
-    location: {
-      name: "Salón Comunal de Pomabamba",
-      coordinates: { lat: -13.6014, lng: -74.2342 }
-    },
-    organizer: "Presidente Comunal",
-    isRecurring: true,
-    recurrencePattern: "monthly"
-  },
-  {
-    id: "4",
-    title: "Minka - Techado de Casa Comunal",
-    slug: "minka-techado-casa",
-    type: "minka",
-    description: "Trabajo colectivo tradicional (Minka) para el techado de la nueva casa comunal. Se solicita apoyo con materiales: ichu, palos, sogas. Se ofrecerá almuerzo y chicha de jora a los participantes.",
-    date: "2026-03-08",
-    time: "7:00 AM",
-    location: {
-      name: "Nueva Casa Comunal - Pomabamba",
-      coordinates: { lat: -13.6014, lng: -74.2342 }
-    },
-    organizer: "Comité de Obra",
-    isRecurring: false
-  },
-  {
-    id: "5",
-    title: "Reunión de Regantes - Sector Urihuana",
-    slug: "reunion-regantes-urihuana",
-    type: "reunion",
-    description: "Reunión de coordinación para establecer el rol de riego de la temporada. Todos los usuarios del canal deben asistir con sus documentos de empadronamiento actualizados.",
-    date: "2026-03-10",
-    time: "3:00 PM",
-    location: {
-      name: "Local Comunal Urihuana",
-      coordinates: { lat: -13.6100, lng: -74.2400 }
-    },
-    organizer: "Comité de Regantes",
-    isRecurring: true,
-    recurrencePattern: "monthly"
-  },
-  {
-    id: "6",
-    title: "Aniversario del Distrito - 195 Años",
-    slug: "aniversario-distrito-195",
-    type: "aniversario",
-    description: "Celebración del 195° Aniversario de creación política del distrito María Parado de Bellido. Programa incluye: izamiento de bandera, desfile cívico-escolar, presentación de danzas típicas (Chinlili, Chimaycha) y verbena popular.",
-    date: "2026-04-14",
-    time: "8:00 AM",
-    location: {
-      name: "Plaza Principal de Pomabamba",
-      coordinates: { lat: -13.6014, lng: -74.2342 }
-    },
-    organizer: "Municipalidad Distrital",
-    isRecurring: true,
-    recurrencePattern: "annual"
-  },
-  {
-    id: "7",
-    title: "Faena - Mantenimiento Camino a Allcaqapata",
-    slug: "faena-camino-allcaqapata",
-    type: "faena",
-    description: "Trabajo comunal para reparar el camino de herradura que conecta Pomabamba con el mirador de Allcaqapata. Traer herramientas: pico, lampa, barreta.",
-    date: "2026-03-15",
-    time: "6:30 AM",
-    location: {
-      name: "Tramo Pomabamba - Allcaqapata",
-      coordinates: { lat: -13.5950, lng: -74.2300 }
-    },
-    organizer: "Junta Directiva Comunal",
-    isRecurring: false
-  },
-  {
-    id: "8",
-    title: "Pollada Deportiva - Club Juventud Pomabamba",
-    slug: "pollada-club-juventud",
-    type: "pollada",
-    description: "Actividad pro-fondos para la compra de uniformes y equipamiento del club de fútbol Juventud Pomabamba. Incluye campeonato relámpago de fulbito.",
-    date: "2026-03-22",
-    time: "11:00 AM",
-    location: {
-      name: "Campo Deportivo de Pomabamba",
-      coordinates: { lat: -13.6020, lng: -74.2350 }
-    },
-    organizer: "Club Deportivo Juventud Pomabamba",
-    isRecurring: false
-  }
+// Todas las actividades salen del CMS (seed 07_eventos_agenda.sql); sin datos de ejemplo.
+const events = await fetchEvents();
+
+const now = new Date();
+const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+const dayOf = (iso: string) => {
+  const [y, m, d] = iso.split("T")[0].split("-").map(Number);
+  return Date.UTC(y, m - 1, d);
+};
+
+// Lo que se repite cada semana (ferias) va aparte; el resto, solo si aún no pasó.
+const weekly = events.filter((e) => e.isRecurring && e.recurrencePattern === "weekly");
+const upcoming = events
+  .filter((e) => !(e.isRecurring && e.recurrencePattern === "weekly"))
+  .filter((e) => e.isRecurring || dayOf(e.date) >= today)
+  .sort((a, b) => dayOf(a.date) - dayOf(b.date));
+
+const avisarUrl = whatsappUrl("Hola, quiero avisar de una actividad en mi comunidad para la Agenda del distrito.");
+
+const activityTypes = [
+  { title: "Faena comunal", image: "evento-faena", text: "Trabajo de todos los comuneros para el bien común: limpieza de canales de riego, arreglo de caminos y obras de la comunidad." },
+  { title: "Minka y ayni", image: "evento-minka", text: "Ayuda mutua entre familias para techar una casa, sembrar o cosechar. Quien ayuda hoy recibe ayuda mañana, y se retribuye con comida y chicha." },
+  { title: "Asamblea", image: "evento-asamblea", text: "Reunión de la comunidad donde se toman las decisiones: el uso del agua, los cargos de las fiestas y las obras del año." },
+  { title: "Feria", image: "evento-feria", text: "Cada viernes en Pomabamba y cada martes en Ñuñunhuaycco, las familias venden e intercambian lo que producen." },
 ];
 
-// Contenido desde el CMS; si no hay eventos publicados, usa el fallback
-const dbEvents = await fetchEvents();
-const communityEvents = dbEvents.length ? dbEvents : fallbackEvents;
-
-// Ordenar eventos por fecha
-const sortedEvents = [...communityEvents].sort((a, b) =>
-  new Date(a.date).getTime() - new Date(b.date).getTime()
-);
-
-// Filtrar eventos futuros y pasados
-const today = new Date();
-const upcomingEvents = sortedEvents.filter(e => new Date(e.date) >= today);
-const pastEvents = sortedEvents.filter(e => new Date(e.date) < today);
+// Calendario agrícola por piso ecológico (meses 1-12).
+const MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"];
+const farming = [
+  { zone: "Zona Quechua", note: "Maíz, papa, trigo y frutales", tasks: [["Siembra", [11, 12]], ["Aporque", [1, 2, 3, 4]], ["Cosecha", [5, 6, 7]], ["Descanso", [8, 9, 10]]] },
+  { zone: "Zona Suni", note: "Papa, quinua, kiwicha, oca y olluco", tasks: [["Siembra", [9, 10, 11]], ["Aporque", [12, 1]], ["Cosecha", [2, 3]], ["Descanso", [7, 8, 9]]] },
+  { zone: "Zona Puna", note: "Pastos naturales y crianza de ganado", tasks: [["Siembra", [1, 2]], ["Aporque", [3, 4]], ["Cosecha", [6, 7]], ["Descanso", [8, 9, 10]]] },
+] as { zone: string; note: string; tasks: [string, number[]][] }[];
+const month = now.getUTCMonth() + 1;
+const range = (ms: number[]) => (ms.length === 1 ? MONTHS[ms[0] - 1] : `${MONTHS[ms[0] - 1]} a ${MONTHS[ms[ms.length - 1] - 1].toLowerCase()}`);
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
   { name: "Agenda del distrito", url: "/comunidad" },
 ];
-
-const activityTypes = [
-  { title: "Faena comunal", text: "Trabajo obligatorio para todos los comuneros empadronados. Incluye limpieza de canales, mantenimiento de caminos y obras de beneficio común." },
-  { title: "Minka y ayni", text: "Trabajo colectivo voluntario que pervive principalmente en las fiestas patronales. Los cargontes retribuyen a los participantes con comida, chicha de jora y música." },
-  { title: "Asamblea", text: "Reunión general donde se toman decisiones importantes para la comunidad. Participación con voz y voto de todos los comuneros." },
-  { title: "Reunión", text: "Encuentros de coordinación entre sectores, comités o grupos específicos para organizar actividades o resolver temas puntuales." },
-  { title: "Pollada / actividad", text: "Eventos sociales para recaudar fondos. Incluyen venta de comida, música en vivo y espacios de confraternidad comunal." },
-  { title: "Aniversario", text: "Celebraciones especiales del distrito, comunidades, instituciones o fechas históricas importantes para nuestra identidad." },
-];
-
-const communities = [
-  { name: "Pomabamba", detail: "Capital del distrito · 3,236 msnm" },
-  { name: "Urihuana", detail: "Comunidad campesina · Zona Quechua" },
-  { name: "Ñuñunhuaycco", detail: "Comunidad campesina · Zona Quechua" },
-  { name: "Huayllabamba", detail: "Comunidad campesina · Zona Quechua" },
-];
 ---
 
 <BaseLayout
-  title="Vida comunal en María Parado de Bellido: faenas, minkas y eventos"
-  description="Calendario de actividades comunales, faenas, asambleas y eventos en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+  title="Agenda de Pomabamba, Ayacucho: ferias, faenas y vida comunal"
+  description="Agenda del distrito María Parado de Bellido (Pomabamba, Cangallo, Ayacucho): ferias semanales, faenas, asambleas, minkas y el calendario agrícola de nuestras comunidades."
   image="/images/hero_5.webp"
+  keywords={["agenda Pomabamba", "feria de Pomabamba", "faenas comunales Ayacucho", "calendario agrícola Ayacucho", "vida comunal Cangallo"]}
   breadcrumbs={breadcrumbs}
 >
   <PageHero
     eyebrow="Agenda del distrito"
     title="Vida comunal"
-    intro="Faenas, asambleas, minkas y actividades que fortalecen nuestra identidad."
+    intro="Ferias, faenas, asambleas y minkas: así se organiza la vida en Pomabamba y sus comunidades."
     image="/images/hero_5.webp"
-    imageAlt="Vida comunitaria en los Andes de Ayacucho"
+    imageAlt="Cerros y comunidades del distrito María Parado de Bellido, Pomabamba, Ayacucho"
     breadcrumbs={breadcrumbs}
   />
 
-  <section class="py-20 md:py-24">
-    <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <div class="lg:col-span-5">
-        <span class="eyebrow">Ayni y minka</span>
-        <h2 class="section-heading">Tradiciones que perviven en nuestras fiestas</h2>
-      </div>
-      <div class="lg:col-span-7 space-y-5 text-lg leading-relaxed">
-        <p>
-          El <strong class="text-ink">ayni</strong> (reciprocidad) y la <strong class="text-ink">minka</strong> (trabajo colectivo),
-          tradiciones heredadas de nuestros antepasados, cobran vida especialmente durante las
-          <strong class="text-ink">fiestas patronales y costumbristas</strong>. En estas celebraciones, la comunidad
-          participa voluntariamente y los <strong class="text-ink">cargontes</strong> retribuyen con comida, chicha de jora y música.
-        </p>
-        <p>
-          Aquí encontrarás el calendario de actividades comunales donde puedes participar o conocer
-          más sobre nuestra forma de vida comunitaria.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  {upcomingEvents.length > 0 && (
-    <section class="py-20 md:py-24 bg-white">
+  <!-- Cada semana -->
+  {weekly.length > 0 && (
+    <section class="py-20 md:py-24">
       <div class="container-custom">
-        <SectionHeading eyebrow="Calendario" title="Próximos eventos" align="left" />
-        <div class="grid gap-6">
-          {upcomingEvents.map((event) => (
-            <CommunityEventCard event={event} />
-          ))}
+        <div class="max-w-3xl mb-10">
+          <span class="eyebrow">Cada semana</span>
+          <h2 class="section-heading">Días de feria</h2>
+          <p class="text-lg leading-relaxed">El mejor momento para conocer los productos de la chacra y conversar con las familias de las comunidades.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {weekly.map((event) => <CommunityEventCard event={event} />)}
         </div>
       </div>
     </section>
   )}
 
-  <section class="py-20 md:py-24">
+  <!-- Próximas actividades -->
+  <section class:list={["py-20 md:py-24", weekly.length > 0 && "bg-white"]}>
     <div class="container-custom">
-      <SectionHeading eyebrow="Organización" title="Tipos de actividades comunales" align="left" />
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+        <div class="max-w-3xl">
+          <span class="eyebrow">Calendario</span>
+          <h2 class="section-heading">Próximas actividades</h2>
+          <p class="text-lg leading-relaxed">Faenas, asambleas, minkas y actividades convocadas por las comunidades y la municipalidad.</p>
+        </div>
+        <a href={avisarUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary self-start md:self-auto">Avisar de una actividad</a>
+      </div>
+      {upcoming.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {upcoming.map((event) => <CommunityEventCard event={event} />)}
+        </div>
+      ) : (
+        <div class="rounded-2xl border border-dashed border-line bg-sand/60 p-8 md:p-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <img src="/images/placeholders/evento-asamblea.svg" alt="" aria-hidden="true" class="md:col-span-3 w-full max-w-[220px] rounded-xl" />
+          <div class="md:col-span-9">
+            <h3 class="font-heading text-2xl font-semibold text-ink">No hay actividades convocadas por ahora</h3>
+            <p class="mt-2 leading-relaxed">Cuando las comunidades o la municipalidad convoquen una faena, asamblea o minka, la verás aquí. ¿Organizas una? Avísanos y la publicamos.</p>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Calendario agrícola -->
+  <section class:list={["py-20 md:py-24", weekly.length === 0 && "bg-white"]}>
+    <div class="container-custom">
+      <div class="max-w-3xl mb-10">
+        <span class="eyebrow">El ritmo del campo</span>
+        <h2 class="section-heading">Calendario agrícola</h2>
+        <p class="text-lg leading-relaxed">
+          Las faenas, las ferias y hasta las fiestas siguen el ritmo de la chacra, que cambia según la altura.
+          En <strong class="text-ink">{MONTHS[month - 1].toLowerCase()}</strong>, esto es lo que pasa en cada piso ecológico.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {farming.map((z) => {
+          const nowTask = z.tasks.find(([, ms]) => ms.includes(month))?.[0];
+          return (
+            <article class="rounded-2xl border border-line bg-white p-6 md:p-7">
+              <h3 class="font-heading text-2xl font-semibold text-secondary-dark">{z.zone}</h3>
+              <p class="mt-1 text-sm">{z.note}</p>
+              {nowTask && (
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold text-ink">
+                  <span class="h-2 w-2 rounded-full bg-accent" aria-hidden="true"></span>
+                  Ahora: {nowTask.toLowerCase()}
+                </p>
+              )}
+              <dl class="mt-5 divide-y divide-line">
+                {z.tasks.map(([task, ms]) => (
+                  <div class:list={["flex items-baseline justify-between gap-4 py-2.5", task === nowTask && "font-semibold text-ink"]}>
+                    <dt>{task}</dt>
+                    <dd class="text-right">{range(ms)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Tipos de actividad -->
+  <section class:list={["py-20 md:py-24", weekly.length > 0 && "bg-white"]}>
+    <div class="container-custom">
+      <div class="max-w-3xl mb-10">
+        <span class="eyebrow">Ayni y minka</span>
+        <h2 class="section-heading">Cómo nos organizamos</h2>
+        <p class="text-lg leading-relaxed">
+          El <strong class="text-ink">ayni</strong> (reciprocidad) y la <strong class="text-ink">minka</strong> (trabajo colectivo)
+          siguen vivos en la vida diaria y en las fiestas de nuestras comunidades.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {activityTypes.map((item) => (
-          <article class="rounded-2xl bg-white border border-line p-6 md:p-8">
-            <h3 class="font-heading text-2xl font-semibold mb-3">{item.title}</h3>
-            <p class="leading-relaxed">{item.text}</p>
+          <article class="overflow-hidden rounded-2xl border border-line bg-white">
+            <img src={`/images/placeholders/${item.image}.svg`} alt="" aria-hidden="true" loading="lazy" class="aspect-[4/3] w-full object-cover" />
+            <div class="p-5">
+              <h3 class="font-heading text-xl font-semibold text-ink">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed">{item.text}</p>
+            </div>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="py-20 md:py-24 bg-white">
-    <div class="container-custom">
-      <SectionHeading eyebrow="Territorio" title="Nuestras comunidades" align="left">
-        <a slot="actions" href="/historia#comunidades" class="btn-secondary">Conoce más</a>
-      </SectionHeading>
-      <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {communities.map((c) => (
-          <li class="rounded-2xl bg-secondary-soft p-6">
-            <h3 class="font-heading text-2xl font-semibold text-secondary-dark">{c.name}</h3>
-            <p class="mt-2 text-sm">{c.detail}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
   <section class="relative py-24 md:py-32 overflow-hidden">
-    <img src="/images/hero_1.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+    <img src="/images/experiencias/faena-limpieza-canal-turismo-vivencial-pomabamba-ayacucho.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
     <div class="container-custom relative text-center">
       <h2 class="section-heading !text-white">¿Te gustaría participar en una minka?</h2>
       <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
-        Visita nuestro distrito y vive la experiencia del trabajo comunitario andino. Es una oportunidad única
-        de conectar con nuestra cultura ancestral y contribuir al bienestar de la comunidad.
+        Vive el trabajo comunitario andino junto a las familias de Pomabamba: una forma distinta de conocer nuestra cultura.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
         <a href="/experiencias/turismo-vivencial" class="btn-primary">Turismo vivencial</a>
-        <a href="/festividades" class="btn-ghost-light">Conocer festividades</a>
+        <a href="/festividades" class="btn-ghost-light">Ver festividades</a>
       </div>
     </div>
   </section>
