@@ -16,8 +16,7 @@ export default defineConfig({
     responsiveImages(),
     // og:image en JPEG 1200x630 para WhatsApp y Facebook (ver el archivo).
     ogImages(),
-    // /datos aún no está enlazada en la UI: fuera del sitemap hasta activarla.
-    sitemap({ filter: (page) => !page.includes('/datos') && !page.includes('/404') }),
+    sitemap({ filter: (page) => !page.includes('/404') }),
   ],
 
   output: 'static',
