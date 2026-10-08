@@ -1,18 +1,20 @@
 ---
 /**
- * CensoCifras - Población del distrito según el Censo 2025 (INEI). Se usa en /datos.
+ * CensoCifras - Población del distrito según el último censo del INEI. Se usa en /datos.
  * Pensado para leerse sin saber estadística: hallazgos en frases, "Pomabamba en 100
  * personas", comparación directa con el Perú y un "¿Qué significa?" junto a cada término.
  * Orden: ¿Quiénes somos? → ¿Qué hablamos? → ¿Cómo vivimos? → ¿Qué aprendemos? → aula.
- * Los datos viven en src/data/censo-2025.json; el CSV completo, en /public/datos.
+ * Cifras: el CSV de /public/datos (tools/censo-inei.mjs). Textos: src/data/censo-<año>.json.
+ * Ambos se combinan en src/lib/censo.ts.
  */
-import censo from "../data/censo-2025.json";
+import { censo } from "../lib/censo";
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 const pct = (n: number) => `${n.toFixed(1)}%`;
 
-const { total, hombres, mujeres, total2005 } = censo.poblacion;
-const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
+const { total, hombres, mujeres } = censo.poblacion;
+const { anterior } = censo;
+const cambio = ((total - anterior.total) / anterior.total) * 100;
 
 // 100 personas: se pinta en el servidor el primer indicador; el script cambia los demás.
 const [cienInicial] = censo.cien;
@@ -38,7 +40,7 @@ const bloques = [
     <!-- ¿Quiénes somos? -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
       <div class="lg:col-span-7">
-        <span class="eyebrow">Población · Censos Nacionales 2025</span>
+        <span class="eyebrow">Población · Censos Nacionales {censo.anio}</span>
         <h2 class="section-heading">¿Quiénes somos?</h2>
         <p class="text-lg leading-relaxed">
           Lo que dice el censo más reciente del INEI sobre quiénes somos, cómo vivimos y qué nos falta,
@@ -49,7 +51,7 @@ const bloques = [
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">Somos</p>
         <p class="mt-1 font-heading text-6xl md:text-7xl font-semibold leading-none text-ink">{fmt(total)}</p>
         <p class="mt-3 text-ink-soft">
-          habitantes: {fmt(mujeres)} mujeres y {fmt(hombres)} hombres. {crecimiento}% más que en 2005 ({fmt(total2005)}).
+          habitantes: {fmt(mujeres)} mujeres y {fmt(hombres)} hombres. {Math.abs(cambio).toFixed(1)}% {cambio >= 0 ? "más" : "menos"} que en {anterior.anio} ({fmt(anterior.total)}).
         </p>
       </div>
     </div>
@@ -169,7 +171,7 @@ const bloques = [
           <li class="flex items-center gap-2"><span class="censo-swatch censo-m" aria-hidden="true"></span>Mujeres <span class="text-ink-soft">{fmt(mujeres)}</span></li>
         </ul>
 
-        <div class="censo-piramide mt-5" role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo 2025. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
+        <div class="censo-piramide mt-5" role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo ${censo.anio}. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
           {piramide.map((r) => (
             <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]}>
               <div class="censo-lado censo-lado-h">
@@ -318,7 +320,7 @@ const bloques = [
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-secondary">Para docentes y estudiantes</p>
         <h3 class="mt-2 font-heading text-3xl font-semibold text-secondary-dark leading-tight">Preguntas para el aula</h3>
         <p class="mt-3">
-          Descarga los 95 indicadores del censo para el distrito, comparados con Cangallo, Ayacucho y el Perú. Abre en Excel, Google Sheets o LibreOffice.
+          Descarga los {censo.indicadores} indicadores del censo para el distrito, comparados con Cangallo, Ayacucho y el Perú. Abre en Excel, Google Sheets o LibreOffice.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a href={censo.csv} download class="btn-accent">
@@ -339,7 +341,7 @@ const bloques = [
 
     <p class="mt-6 text-sm text-ink-soft">
       Fuente: <a href={censo.url} target="_blank" rel="noopener noreferrer" class="underline hover:text-ink">{censo.fuente}</a>.
-      Ubigeo {censo.ubigeo}. La cifra de 2005 corresponde al censo de ese año. "De cada 100" redondea los porcentajes del censo.
+      Ubigeo {censo.ubigeo}. La cifra de {anterior.anio} corresponde al censo de ese año. "De cada 100" redondea los porcentajes del censo.
     </p>
   </div>
 </section>

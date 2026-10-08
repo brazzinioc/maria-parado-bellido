@@ -34,7 +34,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "censo": "node tools/censo-inei.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
