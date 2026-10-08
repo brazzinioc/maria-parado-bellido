@@ -53,7 +53,8 @@ const guideUrl = guide && isDialable(guide.phone)
     {tour.price > 0 && (
       <p class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm text-ink shadow-sm">
         Desde <strong class="font-semibold">{formatPrice(tour.price, tour.currency)}</strong>
-        <span class="text-ink-soft"> / persona</span>
+        <span class="text-ink-soft"> / persona</span><span class="text-ink-soft" aria-hidden="true">*</span>
+        <span class="sr-only">(precio referencial)</span>
       </p>
     )}
   </div>

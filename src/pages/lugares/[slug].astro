@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
+import PriceNote from "../../components/PriceNote.astro";
 import PhotoCard from "../../components/PhotoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import InteractiveMap from "../../components/InteractiveMap";
@@ -47,7 +48,7 @@ const facts = [
   place.bestTimeToVisit && { label: "Mejor época", value: place.bestTimeToVisit },
   place.entryFee !== undefined && {
     label: "Entrada",
-    value: place.entryFee > 0 ? `S/ ${place.entryFee.toFixed(2)}` : "Libre",
+    value: place.entryFee > 0 ? `S/ ${place.entryFee.toFixed(2)}*` : "Libre",
   },
 ].filter(Boolean) as { label: string; value: string }[];
 
@@ -115,6 +116,9 @@ const description =
             </div>
           ))}
         </dl>
+        {place.entryFee !== undefined && place.entryFee > 0 && (
+          <PriceNote class="mt-3 px-1" text="* Precio referencial de la entrada. Puede variar según la temporada u otras condiciones; confírmalo antes de tu visita." />
+        )}
 
         {hasCoordinates(place) && (
           <InteractiveMap
