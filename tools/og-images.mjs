@@ -4,10 +4,12 @@
 // WebP o con imágenes pesadas. Al terminar el build, cada og:image propio del sitio
 // se convierte en un JPEG de 1200x630 (el tamaño que piden) de menos de ~300 KB en
 // /og/, y se reescriben og:image y twitter:image para que apunten a él.
-// Las imágenes que vienen del CMS (otro dominio) se dejan como están.
+// Las fotos del CMS (Supabase Storage) se descargan en el build y se convierten igual,
+// porque pueden ser WebP, SVG o pesar hasta 5 MB. Si la descarga falla, queda la original.
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, basename, extname } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
@@ -48,6 +50,27 @@ export default function ogImages() {
           return out;
         };
 
+        const toJpegRemote = async (href) => {
+          if (done.has(href)) return done.get(href);
+          try {
+            const res = await fetch(href, { signal: AbortSignal.timeout(15000) });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const input = Buffer.from(await res.arrayBuffer());
+            const out = `/og/cms-${createHash("sha1").update(href).digest("hex").slice(0, 12)}.jpg`;
+            await sharp(input, { density: 150 })
+              .resize(1200, 630, { fit: "cover", position: "attention" })
+              .flatten({ background: "#faf6f0" })
+              .jpeg({ quality: 78, mozjpeg: true })
+              .toFile(join(root, out));
+            done.set(href, out);
+            return out;
+          } catch (error) {
+            logger.warn(`No se pudo convertir ${href}: ${error.message}`);
+            done.set(href, null);
+            return null;
+          }
+        };
+
         let pages = 0;
         for (const file of await walk(root)) {
           const html = await readFile(file, "utf8");
@@ -59,15 +82,17 @@ export default function ogImages() {
           } catch {
             continue;
           }
-          if (!OWN_HOST.test(url.hostname)) {
-            // Foto del CMS: no se convierte; se quitan las medidas fijas, que no le corresponden.
+          const own = OWN_HOST.test(url.hostname);
+          if (own && url.pathname.endsWith(".jpg")) continue;
+          const jpg = own ? await toJpeg(url.pathname) : await toJpegRemote(url.href);
+          if (!jpg) {
+            // Sin conversión: se quitan las medidas fijas, que no le corresponden a la original.
             await writeFile(file, html.replace(/<meta property="og:image:(width|height)" content="\d+"\s*\/?>/g, ""));
             continue;
           }
-          if (url.pathname.endsWith(".jpg")) continue;
-          const jpg = await toJpeg(url.pathname);
-          if (!jpg) continue;
-          const next = new URL(jpg, url.origin).href;
+          // La imagen convertida vive en el sitio: www en producción, el despliegue en vistas previas.
+          const base = own ? url.origin : (html.match(/<meta property="og:url" content="(https?:\/\/[^/"]+)/)?.[1] ?? url.origin);
+          const next = new URL(jpg, process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : base).href;
           const replaced = html
             .replaceAll(`content="${content}"`, `content="${next}"`)
             .replace(/(<meta property="og:image" content="[^"]+"\s*\/?>)/, '$1<meta property="og:image:type" content="image/jpeg">');
