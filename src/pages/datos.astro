@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import CensoCifras from "../components/CensoCifras.astro";
-import censo from "../data/censo-2025.json";
+import { censo } from "../lib/censo";
 import { whatsappUrl } from "../lib/whatsapp";
 
 /**
@@ -11,7 +11,7 @@ import { whatsappUrl } from "../lib/whatsapp";
  */
 const keywords = [
   "Pomabamba en datos",
-  "Pomabamba Ayacucho censo 2025",
+  `Pomabamba Ayacucho censo ${censo.anio}`,
   "población Pomabamba",
   "María Parado de Bellido censo",
   "distrito María Parado de Bellido estadísticas",
@@ -27,7 +27,7 @@ const breadcrumbs = [
 
 const title = "Pomabamba en datos: población y estadísticas del distrito";
 const description =
-  "Datos y estadísticas de Pomabamba, distrito de María Parado de Bellido (Cangallo, Ayacucho): Censo 2025, pirámide de población, comparación con Ayacucho y el Perú, y datos abiertos para descargar.";
+  `Datos y estadísticas de Pomabamba, distrito de María Parado de Bellido (Cangallo, Ayacucho): Censo ${censo.anio}, pirámide de población, comparación con Ayacucho y el Perú, y datos abiertos para descargar.`;
 
 const structuredData = [
   {
@@ -49,7 +49,7 @@ const aportarUrl = whatsappUrl("Hola, quiero aportar información sobre mi comun
 
 type Tema = { href?: string; titulo: string; texto: string; fuente: string; icono: string };
 const temas: Tema[] = [
-  { href: "#poblacion", titulo: "Población", texto: "Habitantes, edades, lengua, educación y servicios.", fuente: "INEI · 2025", icono: "M17 20h5v-2a3 3 0 00-5.36-1.86M17 20H7m10 0v-2c0-.66-.13-1.28-.36-1.86M7 20H2v-2a3 3 0 015.36-1.86M7 20v-2c0-.66.13-1.28.36-1.86m0 0a5 5 0 019.28 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
+  { href: "#poblacion", titulo: "Población", texto: "Habitantes, edades, lengua, educación y servicios.", fuente: `INEI · ${censo.anio}`, icono: "M17 20h5v-2a3 3 0 00-5.36-1.86M17 20H7m10 0v-2c0-.66-.13-1.28-.36-1.86M7 20H2v-2a3 3 0 015.36-1.86M7 20v-2c0-.66.13-1.28.36-1.86m0 0a5 5 0 019.28 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
   { titulo: "Territorio", texto: "Ficha técnica, uso del suelo y perfil altitudinal.", fuente: "En preparación", icono: "M9 20l-5.45-2.73A1 1 0 013 16.38V5.62a1 1 0 011.45-.9L9 7m0 13l6-3m-6 3V7m6 10l4.55 2.28A1 1 0 0021 18.38V7.62a1 1 0 00-.55-.9L15 4m0 13V4m0 0L9 7" },
   { titulo: "Agua", texto: "Puquiales y reservorios, con sus ubicaciones.", fuente: "En preparación", icono: "M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z" },
   { titulo: "Vías y transporte", texto: "Caminos, trochas y bases de transporte.", fuente: "En preparación", icono: "M8 7h8m-8 5h8m-8 5h8M4 21V3m16 18V3" },
@@ -151,19 +151,30 @@ const temas: Tema[] = [
             <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
           </span>
           <span class="min-w-0">
-            <span class="block font-semibold text-ink">Censo 2025: 95 indicadores del distrito (CSV)</span>
+            <span class="block font-semibold text-ink">Censo {censo.anio}: {censo.indicadores} indicadores del distrito (CSV)</span>
             <span class="block text-sm">Comparados con la provincia de Cangallo, el departamento de Ayacucho y el Perú.</span>
           </span>
         </a>
         <p class="-mt-4 text-sm text-ink-soft">
           Columnas: tema, indicador, ámbito, valor y porcentaje. El valor es una cantidad (personas, hogares o viviendas),
           una edad, un índice o una densidad, según el indicador. Una celda vacía significa que el INEI no publica ese dato;
-          por ejemplo, en el distrito no se censaron inmigrantes extranjeros.
+          por ejemplo, en el distrito no se censaron inmigrantes extranjeros. Al final está la pirámide de población:
+          personas por grupo de edad y sexo.
         </p>
+        <a href={censo.evolucion.anterior.csv} download class="flex items-center gap-4 rounded-2xl border border-line bg-sand p-5 transition-colors hover:border-secondary/60">
+          <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-secondary text-white" aria-hidden="true">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block font-semibold text-ink">Censo {censo.evolucion.anterior.anio}: indicadores del distrito (CSV)</span>
+            <span class="block text-sm">Los mismos indicadores que en {censo.anio}, para comparar. Solo el distrito.</span>
+          </span>
+        </a>
         <div>
           <h3 class="font-heading text-xl font-semibold text-ink">Fuentes</h3>
           <ul class="mt-3 space-y-2 list-disc pl-5 text-sm">
-            <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). (2025). <em>Censos Nacionales 2025: XIII de Población, VIII de Vivienda y IV de Comunidades Indígenas.</em> Distrito de María Parado de Bellido, ubigeo 050204. <a href="https://censos2025.inei.gob.pe" target="_blank" rel="noopener noreferrer" class="underline">censos2025.inei.gob.pe</a></li>
+            <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). ({censo.anio}). <em>{censo.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={new URL(censo.url).origin} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.url).host}</a></li>
+            <li>Instituto Nacional de Estadística e Informática (INEI). ({censo.evolucion.anterior.anio}). <em>{censo.evolucion.anterior.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={censo.evolucion.anterior.url} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.evolucion.anterior.url).host}</a></li>
           </ul>
         </div>
       </div>
