@@ -46,50 +46,35 @@ const generateSchema = () => {
         description:
           "Descubre el distrito de María Parado de Bellido en Ayacucho, Perú. Turismo vivencial, paisajes andinos, festividades tradicionales y gastronomía local a 3,236 msnm.",
         inLanguage: "es-PE",
-        potentialAction: {
-          "@type": "SearchAction",
-          target: {
-            "@type": "EntryPoint",
-            urlTemplate: `${baseUrl}/search?q={search_term_string}`,
-          },
-          "query-input": "required name=search_term_string",
-        },
+        publisher: { "@id": `${baseUrl}/#organization` },
       };
 
     case "organization":
       return {
         "@context": "https://schema.org",
-        "@type": "GovernmentOrganization",
+        // Proyecto comunitario independiente (ver /privacidad): no es la municipalidad.
+        "@type": "Organization",
         "@id": `${baseUrl}/#organization`,
-        name: "Municipalidad Distrital de María Parado de Bellido",
-        alternateName: "Municipalidad de Pomabamba",
+        name: "María Parado de Bellido - Turismo Ayacucho",
+        alternateName: "Turismo Pomabamba",
+        description:
+          "Proyecto comunitario sin fines de lucro para promover el turismo y la cultura del distrito María Parado de Bellido (Pomabamba, Cangallo, Ayacucho).",
         url: baseUrl,
         logo: {
           "@type": "ImageObject",
           url: `${baseUrl}/images/Maria_Parado_de_Bellido_Pomabamba.png`,
-          width: 200,
-          height: 200,
         },
         image: `${baseUrl}/images/hero_1.webp`,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Plaza de Armas s/n",
-          addressLocality: "María Parado de Bellido (Pomabamba)",
+          addressLocality: "Pomabamba, María Parado de Bellido",
           addressRegion: "Ayacucho",
-          postalCode: "05650",
           addressCountry: "PE",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: LOCATION.lat,
-          longitude: LOCATION.lng,
-          elevation: LOCATION.altitude,
         },
         areaServed: {
           "@type": "AdministrativeArea",
           name: "Distrito María Parado de Bellido, Provincia Cangallo, Departamento Ayacucho",
         },
-        sameAs: ["https://www.facebook.com/mariaparadodebellido"],
       };
 
     case "touristDestination":
@@ -155,11 +140,7 @@ const generateSchema = () => {
           : `${baseUrl}/images/hero_1.webp`,
         datePublished: data.publishedTime || new Date().toISOString(),
         dateModified: data.modifiedTime || new Date().toISOString(),
-        author: {
-          "@type": "Organization",
-          name: "Municipalidad de María Parado de Bellido",
-          url: baseUrl,
-        },
+        author: { "@id": `${baseUrl}/#organization` },
         publisher: {
           "@type": "Organization",
           name: "María Parado de Bellido - Turismo Ayacucho",
@@ -183,10 +164,10 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": "TouristAttraction",
-        "@id": `${baseUrl}/lugares/${data.slug || ""}#place`,
+        "@id": `${baseUrl}/lugares/${data.slug || ""}/#place`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/lugares/${data.slug || ""}`,
+        url: `${baseUrl}/lugares/${data.slug || ""}/`,
         image:
           data.images?.map((img: string) =>
             img.startsWith("http") ? img : `${baseUrl}${img}`,
@@ -221,16 +202,15 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": "Event",
-        "@id": `${baseUrl}/festividades/${data.slug || ""}#event`,
+        "@id": `${baseUrl}/festividades/${data.slug || ""}/#event`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/festividades/${data.slug || ""}`,
+        url: `${baseUrl}/festividades/${data.slug || ""}/`,
         startDate: data.start_date,
         endDate: data.end_date,
-        image:
-          data.images?.map((img: string) =>
-            img.startsWith("http") ? img : `${baseUrl}${img}`,
-          ) || [],
+        image: data.images?.length
+          ? data.images.map((img: string) => (img.startsWith("http") ? img : `${baseUrl}${img}`))
+          : [`${baseUrl}/images/hero-festivities.webp`],
         location: {
           "@type": "Place",
           name: data.place?.name || "María Parado de Bellido",
@@ -319,10 +299,10 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": "TouristTrip",
-        "@id": `${baseUrl}/experiencias/${data.slug || ""}#trip`,
+        "@id": `${baseUrl}/experiencias/${data.slug || ""}/#trip`,
         name: data.title,
         description: data.summary,
-        url: `${baseUrl}/experiencias/${data.slug || ""}`,
+        url: `${baseUrl}/experiencias/${data.slug || ""}/`,
         image: data.image
           ? [data.image.startsWith("http") ? data.image : `${baseUrl}${data.image}`]
           : [],
@@ -341,7 +321,7 @@ const generateSchema = () => {
               item: {
                 "@type": "TouristAttraction",
                 name: p.name,
-                url: `${baseUrl}/lugares/${p.slug}`,
+                url: `${baseUrl}/lugares/${p.slug}/`,
               },
             })),
           },
@@ -363,10 +343,10 @@ const generateSchema = () => {
       return {
         "@context": "https://schema.org",
         "@type": getBusinessType(data.category),
-        "@id": `${baseUrl}/directorio/${data.slug || ""}#business`,
+        "@id": `${baseUrl}/directorio/#${data.slug || ""}`,
         name: data.name,
         description: data.description,
-        url: `${baseUrl}/directorio`,
+        url: `${baseUrl}/directorio/`,
         image:
           data.images?.map((img: string) =>
             img.startsWith("http") ? img : `${baseUrl}${img}`,

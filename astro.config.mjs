@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 import tailwindcss from '@tailwindcss/vite';
 import responsiveImages from './tools/responsive-images.mjs';
+import ogImages from './tools/og-images.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,8 +14,10 @@ export default defineConfig({
     react(),
     // Variantes de cada foto y srcset en el HTML final (ver el archivo).
     responsiveImages(),
+    // og:image en JPEG 1200x630 para WhatsApp y Facebook (ver el archivo).
+    ogImages(),
     // /datos aún no está enlazada en la UI: fuera del sitemap hasta activarla.
-    sitemap({ filter: (page) => !page.includes('/datos') }),
+    sitemap({ filter: (page) => !page.includes('/datos') && !page.includes('/404') }),
   ],
 
   output: 'static',

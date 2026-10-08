@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Página para direcciones que no existen. Vercel la sirve con estado 404.
+const links = [
+  { href: "/lugares/", label: "Destinos", text: "Miradores, sitios arqueológicos y paisajes" },
+  { href: "/experiencias/", label: "Experiencias", text: "Trekking, cicloturismo y turismo vivencial" },
+  { href: "/historia/", label: "Nuestra historia", text: "De los Chancas a la heroína" },
+  { href: "/planifica-tu-visita/", label: "Planifica tu visita", text: "Cómo llegar, cuándo ir y qué llevar" },
+];
+---
+
+<BaseLayout
+  title="Página no encontrada"
+  description="La página que buscas no existe o cambió de dirección. Sigue explorando Pomabamba, Ayacucho."
+  noindex={true}
+>
+  <section class="py-24 md:py-32">
+    <div class="container-custom max-w-3xl text-center">
+      <img src="/images/placeholders/lugar-montana.svg" alt="" aria-hidden="true" class="mx-auto mb-10 w-full max-w-sm rounded-3xl" />
+      <span class="eyebrow">Error 404</span>
+      <h1 class="section-heading">Este camino no lleva a ninguna parte</h1>
+      <p class="text-lg leading-relaxed">
+        La página que buscas no existe o cambió de dirección. Te sugerimos seguir por aquí:
+      </p>
+      <ul class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="group block h-full rounded-2xl border border-line bg-white p-5 transition-colors hover:border-primary/50">
+              <span class="font-heading text-xl font-semibold text-ink group-hover:text-primary">{l.label} →</span>
+              <span class="mt-1 block text-sm">{l.text}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/" class="btn-primary mt-10">Volver al inicio</a>
+    </div>
+  </section>
+</BaseLayout>
