@@ -5,6 +5,7 @@
  * src/data/censo-<año>.json aporta los textos y el nombre exacto de cada indicador del INEI.
  * Para un censo nuevo: correr el script con --anio, copiar el JSON con el año nuevo, revisar
  * sus textos y cambiar CENSO_ACTUAL. Si falta un indicador en el CSV, el build se detiene.
+ * El censo anterior (2017) sale de REDATAM: tools/censo-2017-redatam.mjs.
  */
 import textos from "../data/censo-2025.json";
 
@@ -34,28 +35,38 @@ function parse(texto: string): string[][] {
     .map((linea) => [...linea.matchAll(/("(?:[^"]|"")*"|[^,]*)(?:,|$)/g)].map((m) => m[1].replace(/^"|"$/g, "").replace(/""/g, '"')).slice(0, 5));
 }
 
+const archivoDe = (anio: number) => `/datos/censo-${anio}-pomabamba-maria-parado-de-bellido-ayacucho.csv`;
+
+// Cifras de un censo: indicador|ámbito -> valor y porcentaje.
+function cargar(anio: number, comando: string) {
+  const raw = archivos[`/public${archivoDe(anio)}`];
+  if (!raw) throw new Error(`Falta ${archivoDe(anio)}. Genéralo con: ${comando}`);
+  const datos = new Map<string, Fila>();
+  for (const [, indicador, ambito, valor, porcentaje] of parse(raw).slice(1)) {
+    datos.set(`${indicador}|${ambito}`, {
+      valor: valor === "" ? null : Number(valor),
+      porcentaje: porcentaje === "" ? null : Number(porcentaje),
+    });
+  }
+  const dato = (indicador: string, ambito: Ambito, campo: keyof Fila): number => {
+    const n = datos.get(`${indicador}|${AMBITOS[ambito]}`)?.[campo];
+    if (n === null || n === undefined) throw new Error(`Censo ${anio}: sin ${campo} para «${indicador}» en ${AMBITOS[ambito]}.`);
+    return n;
+  };
+  return { datos, dato };
+}
+
 const anio = CENSO_ACTUAL.anio;
-const csv = `/datos/censo-${anio}-pomabamba-maria-parado-de-bellido-ayacucho.csv`;
-const raw = archivos[`/public${csv}`];
-if (!raw) throw new Error(`Falta ${csv}. Genéralo con: npm run censo -- --anio ${anio}`);
+const csv = archivoDe(anio);
+const { datos, dato } = cargar(anio, `npm run censo -- --anio ${anio}`);
 
-const datos = new Map<string, Fila>();
-for (const [, indicador, ambito, valor, porcentaje] of parse(raw).slice(1)) {
-  datos.set(`${indicador}|${ambito}`, {
-    valor: valor === "" ? null : Number(valor),
-    porcentaje: porcentaje === "" ? null : Number(porcentaje),
-  });
-}
-
-function dato(indicador: string, ambito: Ambito, campo: keyof Fila): number {
-  const n = datos.get(`${indicador}|${AMBITOS[ambito]}`)?.[campo];
-  if (n === null || n === undefined) throw new Error(`Censo ${anio}: sin ${campo} para «${indicador}» en ${AMBITOS[ambito]}.`);
-  return n;
-}
+// Censo anterior del distrito (solo distrito), para "¿Cómo hemos cambiado?".
+const { anterior } = CENSO_ACTUAL.evolucion;
+const previo = cargar(anterior.anio, `npm run censo:${anterior.anio}`);
 
 // Porcentaje; con "complemento" se usa 100 menos el dato (p. ej., "no sabe leer" → "sabe leer").
-const pct = (i: { inei: string; complemento?: boolean }, ambito: Ambito) => {
-  const p = dato(i.inei, ambito, "porcentaje");
+const pct = (i: { inei: string; complemento?: boolean }, ambito: Ambito, fuente = dato) => {
+  const p = fuente(i.inei, ambito, "porcentaje");
   return i.complemento ? Math.round((100 - p) * 10) / 10 : p;
 };
 
@@ -98,6 +109,15 @@ export const censo = {
     const campo = e.campo as keyof Fila;
     return { ...e, distrito: dato(e.inei, "distrito", campo), peru: dato(e.inei, "peru", campo) };
   }),
+  evolucion: {
+    ...CENSO_ACTUAL.evolucion,
+    anterior: { ...anterior, csv: archivoDe(anterior.anio), total: previo.dato("Población censada", "distrito", "valor") },
+    indicadores: CENSO_ACTUAL.evolucion.indicadores.map((i) => ({
+      ...i,
+      antes: pct(i, "distrito", previo.dato),
+      ahora: pct(i, "distrito"),
+    })),
+  },
   comparativo: CENSO_ACTUAL.comparativo.map((g) => ({
     ...g,
     filas: g.filas.map((f) => ({

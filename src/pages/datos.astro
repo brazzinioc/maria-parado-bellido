@@ -161,10 +161,20 @@ const temas: Tema[] = [
           por ejemplo, en el distrito no se censaron inmigrantes extranjeros. Al final está la pirámide de población:
           personas por grupo de edad y sexo.
         </p>
+        <a href={censo.evolucion.anterior.csv} download class="flex items-center gap-4 rounded-2xl border border-line bg-sand p-5 transition-colors hover:border-secondary/60">
+          <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-secondary text-white" aria-hidden="true">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block font-semibold text-ink">Censo {censo.evolucion.anterior.anio}: indicadores del distrito (CSV)</span>
+            <span class="block text-sm">Los mismos indicadores que en {censo.anio}, para comparar. Solo el distrito.</span>
+          </span>
+        </a>
         <div>
           <h3 class="font-heading text-xl font-semibold text-ink">Fuentes</h3>
           <ul class="mt-3 space-y-2 list-disc pl-5 text-sm">
             <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). ({censo.anio}). <em>{censo.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={new URL(censo.url).origin} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.url).host}</a></li>
+            <li>Instituto Nacional de Estadística e Informática (INEI). ({censo.evolucion.anterior.anio}). <em>{censo.evolucion.anterior.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={censo.evolucion.anterior.url} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.evolucion.anterior.url).host}</a></li>
           </ul>
         </div>
       </div>

@@ -35,7 +35,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "censo": "node tools/censo-inei.mjs"
+    "censo": "node tools/censo-inei.mjs",
+    "censo:2017": "node tools/censo-2017-redatam.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

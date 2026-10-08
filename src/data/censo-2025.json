@@ -4,10 +4,6 @@
   "url": "https://censos2025.inei.gob.pe/resultados/poblacion-total/dashboard",
   "ubigeo": "050204",
   "_nota": "Las cifras se leen del CSV (tools/censo-inei.mjs); aquí van los textos y el nombre exacto del indicador del INEI. Los números escritos dentro de los textos (hallazgos, titulares, preguntas) se revisan a mano con cada censo.",
-  "anterior": {
-    "anio": 2005,
-    "total": 3047
-  },
   "resumen": [
     {
       "inei": "Hogares censados",
@@ -210,10 +206,79 @@
       ]
     }
   ],
+  "evolucion": {
+    "anterior": {
+      "anio": 2017,
+      "metodo": "de hecho",
+      "fuente": "INEI, Censos Nacionales 2017: XII de Población, VII de Vivienda y III de Comunidades Indígenas (consulta en REDATAM)",
+      "url": "https://censos2017.inei.gob.pe/redatam/",
+      "totalConOmision": 2167
+    },
+    "metodoActual": "de derecho",
+    "indicadores": [
+      {
+        "grupo": "Personas",
+        "etiqueta": "Niñas y niños de 0 a 14 años",
+        "inei": "Población censada de 0 a 14 años"
+      },
+      {
+        "grupo": "Personas",
+        "etiqueta": "Adultos mayores de 60 años y más",
+        "inei": "Población censada de 60 años y más"
+      },
+      {
+        "grupo": "Personas",
+        "etiqueta": "Aprendió quechua en su niñez",
+        "inei": "Población censada de 3 años y más que aprendió a hablar quechua en su niñez"
+      },
+      {
+        "grupo": "Educación",
+        "etiqueta": "Sabe leer y escribir (15 años y más)",
+        "inei": "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir",
+        "complemento": true
+      },
+      {
+        "grupo": "Educación",
+        "etiqueta": "Secundaria completa o más (15 años y más)",
+        "inei": "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Agua por red pública",
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Electricidad por red pública",
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Desagüe conectado a red pública",
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Cocina con gas, electricidad u otra energía limpia",
+        "inei": "Hogares que utilizan energía o combustible limpios para cocinar"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Hogares con conexión a internet",
+        "inei": "Hogares que tienen conexión a internet"
+      },
+      {
+        "grupo": "Vivienda y hogar",
+        "etiqueta": "Hogares de una sola persona",
+        "inei": "Porcentaje de hogares unipersonales"
+      }
+    ]
+  },
   "preguntas": [
     "En la pirámide hay menos niñas y niños de 0 a 4 años que adolescentes de 15 a 19. ¿Qué nos dice eso sobre los nacimientos en el distrito?",
     "¿Por qué crees que hay menos jóvenes de 20 a 24 años que de 15 a 19? Pregunta en tu familia quiénes salieron a estudiar o trabajar, y a dónde.",
     "Casi todas las viviendas tienen agua por red pública, pero pocas tienen desagüe. ¿Qué consecuencias tiene para la salud y para el río?",
-    "El 90.9% aprendió quechua en su niñez. ¿Cómo podemos lograr que las nuevas generaciones lo sigan hablando?"
+    "El 90.9% aprendió quechua en su niñez. ¿Cómo podemos lograr que las nuevas generaciones lo sigan hablando?",
+    "Entre 2017 y 2025, los hogares con internet pasaron de casi ninguno a 3 de cada 10. ¿Qué cambió en tu familia o en tu comunidad con la llegada de internet?"
   ]
 }
