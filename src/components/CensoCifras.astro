@@ -1,7 +1,9 @@
 ---
 /**
  * CensoCifras - Población del distrito según el Censo 2025 (INEI). Se usa en /datos.
- * Pirámide de población, comparación con Ayacucho y el Perú y material para el aula.
+ * Pensado para leerse sin saber estadística: hallazgos en frases, "Pomabamba en 100
+ * personas", comparación directa con el Perú y un "¿Qué significa?" junto a cada término.
+ * Orden: ¿Quiénes somos? → ¿Qué hablamos? → ¿Cómo vivimos? → ¿Qué aprendemos? → aula.
  * Los datos viven en src/data/censo-2025.json; el CSV completo, en /public/datos.
  */
 import censo from "../data/censo-2025.json";
@@ -9,36 +11,45 @@ import censo from "../data/censo-2025.json";
 const fmt = (n: number) => n.toLocaleString("en-US");
 const pct = (n: number) => `${n.toFixed(1)}%`;
 
-// Pirámide: de mayor a menor edad, escala común a ambos lados.
+const { total, hombres, mujeres, total2005 } = censo.poblacion;
+const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
+
+// 100 personas: se pinta en el servidor el primer indicador; el script cambia los demás.
+const [cienInicial] = censo.cien;
+
+// Pirámide: de mayor a menor edad. La escala deja aire para la cifra junto a cada barra.
 const piramide = [...censo.piramide].reverse();
-const ESCALA = 150;
-const ticks = [150, 100, 50, 0];
+const ESCALA = 180;
 const destacados: Record<string, string> = {
   "0-4": "La base se estrecha",
   "20-24": "Menos jóvenes",
 };
 
-const { total, hombres, mujeres, total2005 } = censo.poblacion;
-const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
+const [identidad, servicios, educacion] = censo.comparativo;
+const bloques = [
+  { id: "lengua", grupo: identidad, intro: "Lengua e identidad" },
+  { id: "vivienda", grupo: servicios, intro: "Servicios en la vivienda" },
+  { id: "educacion", grupo: educacion, intro: "Educación e internet" },
+];
 ---
 
 <section id="poblacion" class="scroll-mt-40 py-20 md:py-28">
   <div class="container-custom">
-    <!-- Encabezado + población total -->
+    <!-- ¿Quiénes somos? -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
       <div class="lg:col-span-7">
         <span class="eyebrow">Población · Censos Nacionales 2025</span>
         <h2 class="section-heading">¿Quiénes somos?</h2>
         <p class="text-lg leading-relaxed">
-          Lo que dice el censo más reciente del INEI sobre quiénes somos, cómo vivimos y qué nos falta.
-          Datos para conocer el distrito de María Parado de Bellido y para trabajar en el aula.
+          Lo que dice el censo más reciente del INEI sobre quiénes somos, cómo vivimos y qué nos falta,
+          contado de forma sencilla. Datos para conocer el distrito de María Parado de Bellido y para trabajar en el aula.
         </p>
       </div>
       <div class="lg:col-span-5 rounded-2xl bg-white border border-line p-6 md:p-8">
-        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">Población censada</p>
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">Somos</p>
         <p class="mt-1 font-heading text-6xl md:text-7xl font-semibold leading-none text-ink">{fmt(total)}</p>
         <p class="mt-3 text-ink-soft">
-          habitantes · {crecimiento}% más que en 2005 ({fmt(total2005)})
+          habitantes: {fmt(mujeres)} mujeres y {fmt(hombres)} hombres. {crecimiento}% más que en 2005 ({fmt(total2005)}).
         </p>
       </div>
     </div>
@@ -48,16 +59,109 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
         <div class="bg-white px-5 py-4">
           <dd class="font-heading text-2xl font-semibold text-ink">{r.valor}</dd>
           <dt class="mt-0.5 text-sm">{r.etiqueta}</dt>
+          {r.def && (
+            <details class="censo-def mt-1.5">
+              <summary>¿Qué significa?</summary>
+              <p>{r.def}</p>
+            </details>
+          )}
         </div>
       ))}
     </dl>
 
+    <!-- Lo que dice el censo -->
+    <div class="mt-16">
+      <h3 class="font-heading text-3xl font-semibold text-ink">Lo que dice el censo, en cinco frases</h3>
+      <ol class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {censo.hallazgos.map((h) => (
+          <li class="flex flex-col rounded-2xl bg-white border border-line p-5">
+            <span class="font-heading text-4xl font-semibold leading-none text-primary">{h.cifra}</span>
+            <span class="mt-2 font-semibold leading-snug text-ink">{h.texto}</span>
+            <span class="mt-auto pt-3 text-sm leading-relaxed">{h.contexto}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <!-- Pomabamba en 100 personas -->
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center rounded-3xl bg-white border border-line p-6 md:p-10" data-cien>
+      <div class="lg:col-span-5">
+        <p class="text-sm font-semibold uppercase tracking-[0.15em] text-primary">Imagina que somos 100</p>
+        <h3 class="mt-2 font-heading text-3xl font-semibold text-ink leading-tight">Pomabamba en 100 personas</h3>
+        <p class="mt-3">Si el distrito fuera un grupo de 100 personas, ¿cuántas…? Elige un dato:</p>
+        <div class="mt-5 flex flex-wrap gap-2" role="group" aria-label="Elige un dato">
+          {censo.cien.map((c, i) => (
+            <button
+              type="button"
+              class="censo-chip"
+              aria-pressed={i === 0 ? "true" : "false"}
+              data-valor={c.valor}
+              data-peru={c.peru}
+              data-texto={c.texto}
+              data-base={c.base}
+            >{c.chip}</button>
+          ))}
+        </div>
+        <p class="mt-8" aria-live="polite">
+          <span class="block font-heading text-6xl font-semibold leading-none text-primary" data-cien-valor>{cienInicial.valor}</span>
+          <span class="mt-2 block text-lg font-semibold text-ink">de cada 100 <span data-cien-texto>{cienInicial.texto}</span></span>
+          <span class="mt-2 block text-ink-soft">En el Perú: <strong class="text-ink" data-cien-peru>{cienInicial.peru}</strong> de cada 100.</span>
+          <span class="mt-1 block text-sm text-ink-soft" data-cien-base>{cienInicial.base}</span>
+        </p>
+      </div>
+      <div class="lg:col-span-7">
+        <div class="censo-cien" aria-hidden="true">
+          {Array.from({ length: 100 }, (_, i) => (
+            <svg viewBox="0 0 20 28" class:list={["censo-persona", i < cienInicial.valor && "is-on"]}>
+              <circle cx="10" cy="6" r="5" />
+              <path d="M2 27v-8a8 8 0 0 1 16 0v8z" />
+            </svg>
+          ))}
+        </div>
+        <ul class="mt-4 flex justify-center flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
+          <li class="flex items-center gap-2"><span class="censo-swatch bg-primary" aria-hidden="true"></span>Sí</li>
+          <li class="flex items-center gap-2"><span class="censo-swatch censo-swatch-off" aria-hidden="true"></span>No</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ¿Qué edad tenemos? -->
+    <div class="mt-16">
+      <h3 class="font-heading text-3xl font-semibold text-ink">¿Qué edad tenemos?</h3>
+      <p class="mt-2 max-w-3xl">De cada 100 personas, cuántas son niños, jóvenes y adultos, o adultos mayores.</p>
+      <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
+        {censo.edades.grupos.map((g) => (
+          <li class="flex items-center gap-2"><span class={`censo-swatch censo-edad-${g.id}`} aria-hidden="true"></span>{g.etiqueta} <span class="text-ink-soft">({g.rango})</span></li>
+        ))}
+      </ul>
+      <div class="mt-5 space-y-4">
+        {censo.edades.ambitos.map((a) => (
+          <div class="grid grid-cols-1 sm:grid-cols-[7rem_1fr] items-center gap-x-4 gap-y-1.5">
+            <span class:list={["text-sm font-semibold", a.nombre === "Perú" ? "text-ink-soft" : "text-ink"]}>{a.nombre}</span>
+            <div
+              class="censo-apilada"
+              role="img"
+              aria-label={`${a.nombre}: ${censo.edades.grupos.map((g, i) => `${g.etiqueta.toLowerCase()} ${a.valores[i]}%`).join(", ")}`}
+            >
+              {censo.edades.grupos.map((g, i) => (
+                <span class={`censo-edad-${g.id}`} style={`width:${a.valores[i]}%`}>{Math.round(a.valores[i])}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-ink-soft">Hay menos niños y más adultos mayores que en el promedio del país.</p>
+    </div>
+
     <!-- Pirámide + envejecimiento -->
-    <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
       <figure class="lg:col-span-7 rounded-2xl bg-white border border-line p-5 md:p-8">
         <figcaption>
-          <h3 class="font-heading text-2xl font-semibold text-ink">¿Cómo está compuesta la población?</h3>
-          <p class="mt-1 text-sm">Habitantes por edad y sexo. Pasa el cursor o toca una fila para ver las cifras.</p>
+          <h4 class="font-heading text-2xl font-semibold text-ink">En detalle: la pirámide de población</h4>
+          <p class="mt-1 text-sm">
+            Cuántas personas hay en cada grupo de 5 años de edad. A la izquierda los hombres, a la derecha las mujeres;
+            los más pequeños abajo y los mayores arriba.
+          </p>
         </figcaption>
 
         <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
@@ -67,7 +171,7 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
 
         <div class="censo-piramide mt-5" role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo 2025. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
           {piramide.map((r) => (
-            <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]} tabindex="0" aria-label={`${r.edad} años: ${r.hombres} hombres, ${r.mujeres} mujeres`}>
+            <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]}>
               <div class="censo-lado censo-lado-h">
                 <span class="censo-barra censo-h" style={`width:${(r.hombres / ESCALA) * 100}%`}><span class="censo-valor">{r.hombres}</span></span>
               </div>
@@ -77,11 +181,7 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
               </div>
             </div>
           ))}
-          <div class="censo-fila censo-eje" aria-hidden="true">
-            <div class="censo-lado censo-ticks">{ticks.map((t) => <span>{t}</span>)}</div>
-            <span class="censo-edad">edad</span>
-            <div class="censo-lado censo-ticks">{[...ticks].reverse().map((t) => <span>{t}</span>)}</div>
-          </div>
+          <p class="censo-pie" aria-hidden="true">años de edad</p>
         </div>
 
         <ul class="mt-6 space-y-2 text-sm">
@@ -103,7 +203,7 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
 
       <div class="lg:col-span-5">
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-primary">Lo que muestra la pirámide</p>
-        <h3 class="mt-2 font-heading text-3xl font-semibold text-ink leading-tight">Un pueblo que envejece</h3>
+        <h4 class="mt-2 font-heading text-3xl font-semibold text-ink leading-tight">Un pueblo que envejece</h4>
         <p class="mt-4 text-lg leading-relaxed">
           Nacen menos niñas y niños, y muchos jóvenes salen a estudiar o trabajar fuera. Los que se quedan son,
           cada vez más, nuestros mayores: guardianes de la lengua, las fiestas y el trabajo comunal.
@@ -116,50 +216,75 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
                 <span class="font-heading text-4xl font-semibold text-ink">{e.distrito}{e.unidad}</span>
                 <span class="text-sm text-ink-soft">Perú: {e.peru}{e.unidad}</span>
               </dd>
+              {e.def && (
+                <dd>
+                  <details class="censo-def mt-1.5">
+                    <summary>¿Qué significa?</summary>
+                    <p>{e.def}</p>
+                  </details>
+                </dd>
+              )}
             </div>
           ))}
         </dl>
       </div>
     </div>
 
-    <!-- Comparativo -->
+    <!-- ¿Qué hablamos? ¿Cómo vivimos? ¿Qué aprendemos? -->
     <div class="mt-20">
-      <h3 class="font-heading text-3xl font-semibold text-ink">Pomabamba frente a Ayacucho y el Perú</h3>
-      <p class="mt-2 max-w-3xl">Porcentaje de la población, las viviendas o los hogares, según el indicador.</p>
-      <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda">
-        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-distrito static" aria-hidden="true"></span>María Parado de Bellido</li>
-        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-ayacucho static" aria-hidden="true"></span>Ayacucho</li>
-        <li class="flex items-center gap-2"><span class="censo-punto censo-punto-peru static" aria-hidden="true"></span>Perú</li>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda de las comparaciones">
+        <li class="flex items-center gap-2"><span class="censo-swatch bg-primary" aria-hidden="true"></span>Pomabamba (distrito)</li>
+        <li class="flex items-center gap-2"><span class="censo-swatch censo-swatch-peru" aria-hidden="true"></span>Promedio del Perú</li>
       </ul>
 
-      <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {censo.comparativo.map((grupo) => (
-          <article class="flex flex-col rounded-2xl bg-white border border-line p-6 md:p-7">
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-ink-soft">{grupo.tema}</p>
-            <h4 class="mt-1 font-heading text-2xl font-semibold text-ink">{grupo.titular}</h4>
-            <p class="mt-2 text-sm leading-relaxed">{grupo.texto}</p>
-            <ul class="mt-6 space-y-6">
-              {grupo.filas.map((f) => (
-                <li>
-                  <div class="flex items-baseline justify-between gap-3">
-                    <span class="text-sm text-ink">{f.indicador}</span>
-                    <span class="font-heading text-xl font-semibold text-ink">{pct(f.distrito)}</span>
-                  </div>
-                  <div class="censo-pista mt-2.5" aria-hidden="true">
-                    <span class="censo-punto censo-punto-peru" style={`left:${f.peru}%`} title={`Perú: ${pct(f.peru)}`}></span>
-                    <span class="censo-punto censo-punto-ayacucho" style={`left:${f.ayacucho}%`} title={`Ayacucho: ${pct(f.ayacucho)}`}></span>
-                    <span class="censo-punto censo-punto-distrito" style={`left:${f.distrito}%`} title={`María Parado de Bellido: ${pct(f.distrito)}`}></span>
-                  </div>
-                  <p class="mt-2 text-xs text-ink-soft">Ayacucho {pct(f.ayacucho)} · Perú {pct(f.peru)}</p>
-                </li>
-              ))}
+      <div class="mt-6 space-y-14">
+        {bloques.map(({ id, grupo, intro }) => (
+          <div id={id} class="scroll-mt-40 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14">
+            <div class="lg:col-span-4">
+              <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">{intro}</p>
+              <h3 class="mt-2 font-heading text-3xl font-semibold text-ink">{grupo.pregunta}</h3>
+              <p class="mt-2 font-heading text-xl text-primary-dark">{grupo.titular}</p>
+              <p class="mt-2 leading-relaxed">{grupo.texto}</p>
+            </div>
+            <ul class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {grupo.filas.map((f) => {
+                const mas = f.distrito >= f.peru;
+                return (
+                  <li class="flex flex-col rounded-2xl bg-white border border-line p-5">
+                    <div class="flex items-start justify-between gap-3">
+                      <span class="font-semibold leading-snug text-ink">{f.indicador}</span>
+                      <span class:list={["censo-badge", mas ? "is-mas" : "is-menos"]}>
+                        <span aria-hidden="true">{mas ? "▲" : "▼"}</span> {mas ? "más" : "menos"} que el Perú
+                      </span>
+                    </div>
+                    <div class="mt-4 space-y-2" role="img" aria-label={`${f.indicador}: Pomabamba ${pct(f.distrito)}, Perú ${pct(f.peru)}`}>
+                      <div class="censo-par">
+                        <span class="censo-par-nombre">Pomabamba</span>
+                        <span class="censo-par-pista"><span class="censo-par-barra bg-primary" style={`width:${f.distrito}%`}></span></span>
+                        <span class="censo-par-valor text-ink">{pct(f.distrito)}</span>
+                      </div>
+                      <div class="censo-par">
+                        <span class="censo-par-nombre">Perú</span>
+                        <span class="censo-par-pista"><span class="censo-par-barra censo-swatch-peru" style={`width:${f.peru}%`}></span></span>
+                        <span class="censo-par-valor text-ink-soft">{pct(f.peru)}</span>
+                      </div>
+                    </div>
+                    {f.def && (
+                      <details class="censo-def mt-3">
+                        <summary>¿Qué significa?</summary>
+                        <p>{f.def}</p>
+                      </details>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
-          </article>
+          </div>
         ))}
       </div>
 
-      <details class="mt-6 rounded-2xl border border-line bg-white">
-        <summary class="cursor-pointer px-6 py-4 text-sm font-semibold text-ink">Ver la tabla de datos (incluye la provincia de Cangallo)</summary>
+      <details class="mt-10 rounded-2xl border border-line bg-white">
+        <summary class="cursor-pointer px-6 py-4 text-sm font-semibold text-ink">Ver la tabla completa (con la provincia de Cangallo y el departamento de Ayacucho)</summary>
         <div class="overflow-x-auto px-6 pb-6">
           <table class="w-full min-w-[560px] text-sm">
             <thead>
@@ -214,29 +339,95 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
 
     <p class="mt-6 text-sm text-ink-soft">
       Fuente: <a href={censo.url} target="_blank" rel="noopener noreferrer" class="underline hover:text-ink">{censo.fuente}</a>.
-      Ubigeo {censo.ubigeo}. La cifra de 2005 corresponde al censo de ese año.
+      Ubigeo {censo.ubigeo}. La cifra de 2005 corresponde al censo de ese año. "De cada 100" redondea los porcentajes del censo.
     </p>
   </div>
 </section>
 
+<script>
+  // "Pomabamba en 100 personas": cambia el dato al elegir otro botón.
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>("[data-cien]").forEach((root) => {
+      const personas = root.querySelectorAll(".censo-persona");
+      const set = (sel: string, text: string) => {
+        const el = root.querySelector(sel);
+        if (el) el.textContent = text;
+      };
+      root.querySelectorAll<HTMLButtonElement>(".censo-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const d = btn.dataset;
+          const valor = Number(d.valor);
+          root.querySelectorAll(".censo-chip").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+          personas.forEach((p, i) => p.classList.toggle("is-on", i < valor));
+          set("[data-cien-valor]", String(valor));
+          set("[data-cien-texto]", d.texto ?? "");
+          set("[data-cien-peru]", d.peru ?? "");
+          set("[data-cien-base]", d.base ?? "");
+        });
+      });
+    });
+  });
+</script>
+
 <style>
   .censo-h { background: #2a6fc0; }
   .censo-m { background: var(--color-primary); }
-  .censo-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+  .censo-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .censo-swatch-off { background: var(--color-line); }
+  .censo-swatch-peru { background: #8a7d75; }
 
-  /* Pirámide: dos lados que crecen desde el centro; 2px de aire entre filas. */
+  /* "¿Qué significa?": desplegable nativo, sin JavaScript. */
+  .censo-def summary {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    cursor: pointer; list-style: none;
+    font-size: 0.8125rem; font-weight: 600; color: var(--color-primary-dark);
+  }
+  .censo-def summary::-webkit-details-marker { display: none; }
+  .censo-def summary::before {
+    content: "i"; display: inline-grid; place-items: center;
+    width: 1.05rem; height: 1.05rem; border-radius: 9999px;
+    border: 1.5px solid currentColor; font-size: 0.7rem; font-style: italic; font-family: Georgia, serif;
+  }
+  .censo-def summary:hover { text-decoration: underline; }
+  .censo-def p {
+    margin-top: 0.5rem; padding: 0.625rem 0.75rem; border-radius: 0.5rem;
+    background: var(--color-accent-soft); font-size: 0.875rem; line-height: 1.5; color: var(--color-ink);
+  }
+
+  /* 100 personas */
+  .censo-chip {
+    padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid var(--color-line);
+    background: #fff; font-size: 0.875rem; font-weight: 600; color: var(--color-ink);
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+  }
+  .censo-chip:hover { border-color: var(--color-primary); }
+  .censo-chip[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+  .censo-cien { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px 4px; max-width: 26rem; margin-inline: auto; }
+  .censo-persona { width: 100%; height: auto; fill: var(--color-line); transition: fill 200ms; }
+  .censo-persona.is-on { fill: var(--color-primary); }
+  @media (prefers-reduced-motion: reduce) { .censo-persona { transition: none; } }
+
+  /* Grupos de edad: barra apilada al 100% con la cifra dentro. */
+  .censo-edad-ninos { background: var(--color-accent); }
+  .censo-edad-adultos { background: var(--color-secondary); }
+  .censo-edad-mayores { background: #6b4a7a; }
+  .censo-apilada { display: flex; height: 2.5rem; border-radius: 0.5rem; overflow: hidden; gap: 2px; background: #fff; }
+  .censo-apilada > span {
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.95rem; font-variant-numeric: tabular-nums; color: #fff;
+  }
+  .censo-apilada > .censo-edad-ninos { color: var(--color-ink); }
+
+  /* Pirámide: dos lados que crecen desde el centro, con la cifra siempre visible. */
   .censo-piramide { display: flex; flex-direction: column; gap: 2px; }
   .censo-fila {
     display: grid;
     grid-template-columns: 1fr 3.25rem 1fr;
     align-items: center;
-    height: 16px;
+    height: 17px;
     border-radius: 4px;
-    outline: none;
   }
   .censo-fila.is-destacada { background: var(--color-accent-soft); }
-  .censo-fila:not(.censo-eje):hover,
-  .censo-fila:not(.censo-eje):focus-visible { background: var(--color-sand-200); }
   .censo-lado { display: flex; align-items: center; height: 100%; }
   .censo-lado-h { justify-content: flex-end; }
   .censo-barra { position: relative; display: block; flex-shrink: 0; height: 12px; min-width: 2px; }
@@ -246,30 +437,21 @@ const crecimiento = (((total - total2005) / total2005) * 100).toFixed(1);
   .censo-valor {
     position: absolute; top: 50%; transform: translateY(-50%);
     font-size: 11px; line-height: 1; color: var(--color-ink); font-variant-numeric: tabular-nums;
-    opacity: 0; transition: opacity 120ms;
   }
   .censo-lado-h .censo-valor { right: calc(100% + 4px); }
   .censo-lado:not(.censo-lado-h) .censo-valor { left: calc(100% + 4px); }
-  .censo-fila:hover .censo-valor,
-  .censo-fila:focus-visible .censo-valor { opacity: 1; }
-  .censo-eje { height: auto; margin-top: 6px; }
-  .censo-ticks { justify-content: space-between; }
-  .censo-eje .censo-lado { font-size: 11px; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; }
+  .censo-pie { margin-top: 6px; text-align: center; font-size: 11px; color: var(--color-ink-soft); }
 
-  /* Comparativo: pista de 0 a 100% con un marcador por ámbito. */
-  .censo-pista {
-    position: relative; height: 16px;
-    background: linear-gradient(var(--color-line), var(--color-line)) center / 100% 2px no-repeat;
+  /* Comparaciones: Pomabamba y Perú, dos barras sobre la misma escala de 0 a 100%. */
+  .censo-par { display: grid; grid-template-columns: 5.5rem 1fr 3.25rem; align-items: center; gap: 0.5rem; }
+  .censo-par-nombre { font-size: 0.8125rem; color: var(--color-ink-soft); }
+  .censo-par-pista { display: block; height: 14px; border-radius: 4px; background: var(--color-sand-200); overflow: hidden; }
+  .censo-par-barra { display: block; height: 100%; border-radius: 4px; }
+  .censo-par-valor { text-align: right; font-size: 0.875rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .censo-badge {
+    flex-shrink: 0; white-space: nowrap; border-radius: 9999px; padding: 0.15rem 0.55rem;
+    font-size: 0.75rem; font-weight: 600; color: var(--color-ink);
   }
-  .censo-punto { position: absolute; top: 50%; transform: translate(-50%, -50%); }
-  .censo-punto.static { position: static; transform: none; display: inline-block; }
-  .censo-punto-distrito {
-    width: 16px; height: 16px; border-radius: 9999px;
-    background: var(--color-primary); box-shadow: 0 0 0 2px #fff; z-index: 2;
-  }
-  .censo-punto-ayacucho {
-    width: 12px; height: 12px; border-radius: 9999px;
-    background: #fff; border: 2px solid var(--color-ink-soft); z-index: 1;
-  }
-  .censo-punto-peru { width: 3px; height: 16px; border-radius: 2px; background: var(--color-ink); }
+  .censo-badge.is-mas { background: var(--color-primary-soft); }
+  .censo-badge.is-menos { background: var(--color-sand-200); }
 </style>
