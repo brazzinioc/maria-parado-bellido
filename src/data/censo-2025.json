@@ -21,7 +21,7 @@
     {
       "valor": "25.3",
       "etiqueta": "hab. por km²",
-      "def": "Densidad: cuántas personas viven, en promedio, en cada kilómetro cuadrado del distrito. En Pomabamba hay mucho territorio y poca gente."
+      "def": "Densidad: cuántas personas viven, en promedio, en cada kilómetro cuadrado del distrito. Es casi igual al promedio del Perú (25.5)."
     },
     {
       "valor": "36 años",
@@ -216,7 +216,7 @@
           "cangallo": 81.6,
           "ayacucho": 87.8,
           "peru": 94.9,
-          "def": "Alfabetismo: personas de 15 años o más que saben leer y escribir."
+          "def": "Alfabetismo: personas de 15 años o más que saben leer y escribir. Se calcula restando del total a quienes, según el censo, no saben leer ni escribir."
         },
         {
           "indicador": "Secundaria completa o más (15 años y más)",
@@ -262,7 +262,7 @@
     },
     {
       "cifra": "97%",
-      "texto": "de las viviendas tiene agua por red pública",
+      "texto": "de las viviendas habitadas tiene agua por red pública",
       "contexto": "Pero solo 1 de cada 4 tiene desagüe."
     },
     {
@@ -272,7 +272,7 @@
     },
     {
       "cifra": "3 de 10",
-      "texto": "hogares tiene conexión a internet",
+      "texto": "hogares tienen conexión a internet",
       "contexto": "En el Perú, casi 7 de cada 10."
     }
   ],
