@@ -87,8 +87,8 @@ const safety = experience.safety ?? [];
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Experiencias", url: "/experiencias" },
-  { name: experience.title, url: `/experiencias/${experience.slug}` },
+  { name: "Experiencias", url: "/experiencias/" },
+  { name: experience.title, url: `/experiencias/${experience.slug}/` },
 ];
 
 const structuredData = [
@@ -349,12 +349,12 @@ const structuredData = [
     <section class="py-20 md:py-24 bg-white">
       <div class="container-custom">
         <SectionHeading eyebrow="Dónde vivirlo" title="Destinos recomendados" align="left">
-          <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
+          <a slot="actions" href="/lugares/" class="btn-secondary">Ver todos los destinos</a>
         </SectionHeading>
         <div class:list={["grid gap-5 md:gap-6", placeLayout.grid]}>
           {suggestedPlaces.map((place) => (
             <PhotoCard
-              href={`/lugares/${place.slug}`}
+              href={`/lugares/${place.slug}/`}
               image={placeCoverImage(place)}
               alt={place.name}
               title={place.name}
@@ -398,7 +398,7 @@ const structuredData = [
         </div>
         <div class="flex flex-col sm:flex-row md:flex-col gap-3 md:items-end">
           <a href={contactUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">Escribir por WhatsApp</a>
-          <a href="/planifica-tu-visita" class="btn-ghost-light">Planifica tu visita</a>
+          <a href="/planifica-tu-visita/" class="btn-ghost-light">Planifica tu visita</a>
         </div>
       </div>
     </div>
@@ -411,7 +411,7 @@ const structuredData = [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
         {others.map((exp) => (
           <PhotoCard
-            href={`/experiencias/${exp.slug}`}
+            href={`/experiencias/${exp.slug}/`}
             image={exp.image}
             alt={exp.imageAlt}
             title={exp.title}

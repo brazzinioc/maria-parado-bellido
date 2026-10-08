@@ -35,17 +35,14 @@ const [festivities, places, experiences, gallery] = await Promise.all([
 // Clip completo (55s originales -> ~110s a 0.5x).
 // `image` funciona como poster/fallback: es lo que se pinta de inmediato
 // y lo que ven quienes tienen prefers-reduced-motion, conexión lenta/con
-// ahorro de datos, o si el video falla. `webm` es una fuente más liviana
-// que el navegador prueba antes que el mp4. Las variantes `mobile*` son
-// versiones a menor resolución (960x540) para viewports angostos.
+// ahorro de datos, o si el video falla. Video H.264 a 1280x720 (~9 MB) y
+// variante `mobileVideo` a 854x480 (~5 MB) para viewports angostos.
 const heroSlides = [
   {
     type: "video" as const,
     image: "/images/hero-dron-pomabamba-ayacucho.webp",
-    video: "/videos/vuelo-dron-pomabamba-ayacucho.mp4",
-    webm: "/videos/vuelo-dron-pomabamba-ayacucho.webm",
-    mobileVideo: "/videos/vuelo-dron-pomabamba-ayacucho-mobile.mp4",
-    mobileWebm: "/videos/vuelo-dron-pomabamba-ayacucho-mobile.webm",
+    video: "/media/vuelo-dron-pomabamba-ayacucho-720p.mp4",
+    mobileVideo: "/media/vuelo-dron-pomabamba-ayacucho-480p.mp4",
     alt: "Vuelo de dron sobre Pomabamba, María Parado de Bellido",
   },
 ];
@@ -105,15 +102,33 @@ const homeStructuredData = [
 ---
 
 <BaseLayout
-  title="María Parado de Bellido: trekking, cultura y turismo vivencial en Ayacucho"
+  title="Pomabamba, Ayacucho: trekking, cultura y turismo vivencial"
   description="Descubre Pomabamba y María Parado de Bellido: trekking, cicloturismo, turismo vivencial, fiestas y gastronomía a 3,236 msnm en Cangallo, Ayacucho."
   image="/images/hero_1.webp"
   keywords={homeKeywords}
   structuredData={homeStructuredData}
 >
+  <!-- La foto del hero es lo primero que se ve (LCP): se pide antes que el resto.
+       Las variantes -480w…-1600w las genera tools/responsive-images.mjs. -->
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/hero-dron-pomabamba-ayacucho.webp"
+    imagesrcset="/images/hero-dron-pomabamba-ayacucho-480w.webp 480w, /images/hero-dron-pomabamba-ayacucho-800w.webp 800w, /images/hero-dron-pomabamba-ayacucho-1200w.webp 1200w, /images/hero-dron-pomabamba-ayacucho-1600w.webp 1600w, /images/hero-dron-pomabamba-ayacucho.webp 1920w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <!-- 1. Hero cinematográfico -->
   <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
-    <HeroSlider client:load slides={heroSlides} autoPlayInterval={6500} />
+    <img
+      src={heroSlides[0].image}
+      alt={heroSlides[0].alt}
+      loading="eager"
+      class="absolute inset-0 h-full w-full object-cover object-bottom"
+    />
+    <HeroSlider client:idle slides={heroSlides} autoPlayInterval={6500} />
     <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/45 to-ink/15" aria-hidden="true"></div>
     <!-- Scrim: oscurece solo la esquina inferior izquierda, donde vive el texto, -->
     <!-- para dar contraste sin apagar el resto del video ni recurrir a sombras. -->
@@ -132,10 +147,10 @@ const homeStructuredData = [
             Tierra chanca sobre el valle del río Pampas.
           </p>
           <div class="flex flex-wrap gap-3">
-            <a href="/lugares" class="btn-primary">
+            <a href="/lugares/" class="btn-primary">
               Explorar destinos
             </a>
-            <a href="/planifica-tu-visita" class="btn-ghost-light">
+            <a href="/planifica-tu-visita/" class="btn-ghost-light">
               Planifica tu visita
             </a>
           </div>
@@ -150,7 +165,7 @@ const homeStructuredData = [
               <span class="ml-1.5 text-sm text-white/75">{stat.label}</span>
             </div>
           ))}
-          <WeatherStat client:load variant="dark" />
+          <WeatherStat client:idle variant="dark" />
         </div>
       </div>
     </div>
@@ -166,7 +181,7 @@ const homeStructuredData = [
         </div>
       ))}
       <div class="sm:ml-auto">
-        <WeatherStat client:load variant="light" />
+        <WeatherStat client:idle variant="light" />
       </div>
     </div>
   </section>
@@ -182,7 +197,7 @@ const homeStructuredData = [
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
         {experiences.map((exp) => (
           <PhotoCard
-            href={`/experiencias/${exp.slug}`}
+            href={`/experiencias/${exp.slug}/`}
             image={exp.image}
             alt={exp.imageAlt}
             title={exp.title}
@@ -203,12 +218,12 @@ const homeStructuredData = [
           title="Lugares que tienes que conocer"
           align="left"
         >
-          <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
+          <a slot="actions" href="/lugares/" class="btn-secondary">Ver todos los destinos</a>
         </SectionHeading>
         <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-5 md:gap-6 md:h-[640px]">
           {featuredPlaces.map((place, i) => (
             <PhotoCard
-              href={`/lugares/${place.slug}`}
+              href={`/lugares/${place.slug}/`}
               image={placeCoverImage(place)}
               alt={place.name}
               title={place.name}
@@ -247,7 +262,7 @@ const homeStructuredData = [
           <strong class="text-ink">ayni</strong> y la <strong class="text-ink">minka</strong> siguen uniendo a la
           comunidad en el trabajo y en la fiesta.
         </p>
-        <a href="/historia" class="link-arrow">
+        <a href="/historia/" class="link-arrow">
           Conoce nuestra historia
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
         </a>
@@ -260,12 +275,12 @@ const homeStructuredData = [
     <section class="py-20 md:py-28 bg-white">
       <div class="container-custom">
         <SectionHeading eyebrow="Calendario festivo" title="Vive nuestras fiestas" align="left">
-          <a slot="actions" href="/festividades" class="btn-secondary">Ver calendario completo</a>
+          <a slot="actions" href="/festividades/" class="btn-secondary">Ver calendario completo</a>
         </SectionHeading>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           {upcomingFestivities.map((fest) => (
             <PhotoCard
-              href={`/festividades/${fest.slug}`}
+              href={`/festividades/${fest.slug}/`}
               image={festivityCoverImage(fest)}
               alt={fest.name}
               title={fest.name}
@@ -293,7 +308,7 @@ const homeStructuredData = [
           Con ellos se preparan la <strong class="text-ink">pachamanca</strong>, el
           <strong class="text-ink">puca picante</strong> y los platos que acompañan cada faena y cada fiesta.
         </p>
-        <a href="/gastronomia" class="btn-primary">Descubre nuestra gastronomía</a>
+        <a href="/gastronomia/" class="btn-primary">Descubre nuestra gastronomía</a>
       </div>
       <div class="relative aspect-[4/5] lg:aspect-[5/6] rounded-2xl overflow-hidden lg:order-1">
         <img
@@ -310,14 +325,14 @@ const homeStructuredData = [
   <section class="relative py-20 md:py-28 bg-secondary text-white overflow-hidden">
     <div class="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
       <div class="max-w-xl">
-        <span class="eyebrow !text-accent">Nuestra gente</span>
+        <span class="eyebrow !text-accent-light">Nuestra gente</span>
         <h2 class="section-heading !text-white">Conoce nuestra gente</h2>
         <p class="text-lg leading-relaxed text-white/85 mb-8">
           En Pomabamba el quechua sigue siendo la lengua de casa. Somos un pueblo joven, de familias que volvieron
           a su tierra para sembrarla de nuevo. Visítanos con respeto, saluda con un <em>allillanchu</em> y comparte
           con nosotros.
         </p>
-        <a href="/comunidad" class="btn-ghost-light">Ver agenda del distrito</a>
+        <a href="/comunidad/" class="btn-ghost-light">Ver agenda del distrito</a>
       </div>
       <div class="grid grid-cols-2 gap-4">
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
@@ -350,7 +365,7 @@ const homeStructuredData = [
           <ul class="space-y-3 lg:max-h-[520px] lg:overflow-y-auto">
             {mapPlaces.map((place) => (
               <li>
-                <a href={`/lugares/${place.slug}`} class="group flex items-center gap-4 rounded-2xl border border-line p-3 hover:border-primary/40 transition-colors">
+                <a href={`/lugares/${place.slug}/`} class="group flex items-center gap-4 rounded-2xl border border-line p-3 hover:border-primary/40 transition-colors">
                   <img src={placeCoverImage(place)} alt="" loading="lazy" class="h-16 w-16 rounded-xl object-cover" />
                   <div>
                     <p class="font-semibold text-ink group-hover:text-primary">{place.name}</p>
@@ -397,14 +412,14 @@ const homeStructuredData = [
     <img src="/images/hero_1.webp" alt="" aria-hidden="true" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-ink/70" aria-hidden="true"></div>
     <div class="container-custom relative text-center">
-      <span class="eyebrow !text-accent">Tu próxima aventura</span>
+      <span class="eyebrow !text-accent-light">Tu próxima aventura</span>
       <h2 class="section-heading !text-white max-w-3xl mx-auto">¿Listo para descubrir los Andes?</h2>
       <p class="text-lg md:text-xl text-white/85 mb-10 max-w-2xl mx-auto">
         A solo unas horas de Ayacucho comienza una experiencia diferente. Quien viene a Pomabamba, siempre vuelve.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/lugares" class="btn-primary">Explorar destinos</a>
-        <a href="/planifica-tu-visita" class="btn-ghost-light">Planificar mi visita</a>
+        <a href="/lugares/" class="btn-primary">Explorar destinos</a>
+        <a href="/planifica-tu-visita/" class="btn-ghost-light">Planificar mi visita</a>
       </div>
     </div>
   </section>

@@ -64,8 +64,8 @@ const mapMarkers = [
 
 const breadcrumbs = [
   { name: "Inicio", url: "/" },
-  { name: "Destinos", url: "/lugares" },
-  { name: place.name, url: `/lugares/${place.slug}` },
+  { name: "Destinos", url: "/lugares/" },
+  { name: place.name, url: `/lugares/${place.slug}/` },
 ];
 
 const description =
@@ -73,7 +73,7 @@ const description =
 ---
 
 <BaseLayout
-  title={`${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba, Ayacucho`}
+  title={`${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba`.length <= 49 ? `${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba, Ayacucho` : `${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba`}
   description={description}
   image={cover}
   keywords={[place.name, `${place.name} Ayacucho`, "turismo Cangallo", "María Parado de Bellido", categoryLabel]}
@@ -126,7 +126,7 @@ const description =
           />
         )}
 
-        <a href="/planifica-tu-visita" class="btn-primary w-full">Planifica tu visita</a>
+        <a href="/planifica-tu-visita/" class="btn-primary w-full">Planifica tu visita</a>
       </aside>
     </div>
   </section>
@@ -150,7 +150,7 @@ const description =
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
           {suggestedExperiences.map((exp) => (
             <PhotoCard
-              href={`/experiencias/${exp.slug}`}
+              href={`/experiencias/${exp.slug}/`}
               image={exp.image}
               alt={exp.imageAlt}
               title={exp.title}
@@ -168,12 +168,12 @@ const description =
     <section class="py-16 md:py-24">
       <div class="container-custom">
         <SectionHeading eyebrow="Muy cerca" title="Otros destinos" align="left">
-          <a slot="actions" href="/lugares" class="btn-secondary">Ver todos los destinos</a>
+          <a slot="actions" href="/lugares/" class="btn-secondary">Ver todos los destinos</a>
         </SectionHeading>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           {related.map((p) => (
             <PhotoCard
-              href={`/lugares/${p.slug}`}
+              href={`/lugares/${p.slug}/`}
               image={placeCoverImage(p)}
               alt={p.name}
               title={p.name}

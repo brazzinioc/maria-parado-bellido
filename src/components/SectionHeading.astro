@@ -37,7 +37,7 @@ const isCenter = align === "center" && !hasActions;
 >
   <div class:list={[isCenter ? "max-w-2xl mx-auto" : "max-w-2xl"]}>
     {eyebrow && (
-      <span class:list={["eyebrow", tone === "dark" && "!text-accent"]}>{eyebrow}</span>
+      <span class:list={["eyebrow", tone === "dark" && "!text-accent-light"]}>{eyebrow}</span>
     )}
     <Tag class:list={["section-heading", tone === "dark" && "!text-white"]}>{title}</Tag>
     {intro && (

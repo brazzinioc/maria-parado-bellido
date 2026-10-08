@@ -1,10 +1,55 @@
 {
+  "trailingSlash": true,
   "redirects": [
-    { "source": "/places", "destination": "/lugares", "permanent": true },
-    { "source": "/food", "destination": "/gastronomia", "permanent": true },
-    { "source": "/about", "destination": "/historia", "permanent": true },
-    { "source": "/privacy", "destination": "/privacidad", "permanent": true },
-    { "source": "/festivities", "destination": "/festividades", "permanent": true },
-    { "source": "/festivities/:slug", "destination": "/festividades/:slug", "permanent": true }
+    {
+      "source": "/places",
+      "destination": "/lugares/",
+      "permanent": true
+    },
+    {
+      "source": "/food",
+      "destination": "/gastronomia/",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/historia/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacidad/",
+      "permanent": true
+    },
+    {
+      "source": "/festivities",
+      "destination": "/festividades/",
+      "permanent": true
+    },
+    {
+      "source": "/festivities/:slug",
+      "destination": "/festividades/:slug/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/media/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    }
   ]
 }

@@ -66,13 +66,41 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
       setVideoSrc(resolveVideoSrc(slide));
     };
 
-    evaluate();
+    // El video espera a que la página termine de cargar (poster, estilos, fuentes)
+    // y a un momento libre del navegador: así no le quita ancho de banda a lo
+    // que el visitante necesita primero.
+    let idleId: number | undefined;
+    const start = () => {
+      const ric = (window as any).requestIdleCallback as ((cb: () => void, o?: object) => number) | undefined;
+      idleId = ric ? ric(evaluate, { timeout: 2500 }) : window.setTimeout(evaluate, 1200);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
     reducedMotionQuery.addEventListener("change", evaluate);
 
     return () => {
+      window.removeEventListener("load", start);
+      if (idleId !== undefined) ((window as any).cancelIdleCallback ?? window.clearTimeout)(idleId);
       reducedMotionQuery.removeEventListener("change", evaluate);
     };
   }, [slide]);
+
+  // Al navegar a otra página (ClientRouter) se corta la descarga del video:
+  // si sigue bajando en segundo plano, compite con la página nueva.
+  useEffect(() => {
+    const abort = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+    };
+    document.addEventListener("astro:before-preparation", abort);
+    return () => {
+      document.removeEventListener("astro:before-preparation", abort);
+      abort();
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -103,14 +131,9 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
 
   return (
     <>
-      {/* Poster: pintado inmediato (LCP), y fallback real si el video no se muestra o falla. */}
-      <img
-        src={slide.image}
-        alt={slide.alt}
-        className="absolute inset-0 h-full w-full object-cover object-bottom"
-        loading="eager"
-        fetchPriority="high"
-      />
+      {/* El poster (LCP) lo pinta la página como <img> estático debajo de este
+          componente: así no espera a React y usa el srcset del build. Si el video
+          no se muestra o falla, queda visible ese poster. */}
       {canShowVideo && videoSrc && (
         <video
           ref={videoRef}
@@ -124,7 +147,7 @@ function HeroVideoBackground({ slide, isActive }: { slide: Slide; isActive: bool
           playsInline
           disablePictureInPicture
           disableRemotePlayback
-          preload="auto"
+          preload="metadata"
           aria-hidden="true"
           tabIndex={-1}
           onCanPlay={() => setVideoReady(true)}

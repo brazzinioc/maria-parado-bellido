@@ -14,21 +14,28 @@ const {
   modifiedTime,
   canonical,
   keywords = [],
-  author = "Municipalidad de María Parado de Bellido",
+  author = "María Parado de Bellido - Turismo Ayacucho",
   section,
   noindex = false,
   type = "website",
 } = Astro.props;
 
 const siteName = "María Parado de Bellido - Turismo Ayacucho";
-const siteUrl = Astro.site || "https://mariaparadodebellido.com";
+const siteUrl = Astro.site || "https://www.mariaparadodebellido.com";
 const canonicalURL = canonical || new URL(Astro.url.pathname, siteUrl).href;
-const imageUrl = new URL(image, siteUrl).href;
+// En las vistas previas de Vercel la imagen para redes sale del propio despliegue:
+// así se ve al compartir el enlace de prueba, aunque la canónica siga siendo www.
+const imageBase =
+  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : siteUrl;
+const imageUrl = new URL(image, imageBase).href;
 
-// Construir el título completo (max 60 chars para Google)
-const fullTitle = title.includes("María Parado de Bellido")
-  ? title
-  : `${title} | ${siteName}`;
+// Título completo: Google corta a ~60 caracteres. Se agrega la marca solo si el
+// título no la nombra ya (ni a Pomabamba) y si cabe.
+const brandSuffix = " | María Parado de Bellido";
+const fullTitle =
+  /María Parado de Bellido|Pomabamba/.test(title) || title.length + brandSuffix.length > 60
+    ? title
+    : `${title}${brandSuffix}`;
 
 // Keywords base del sitio + keywords de la página
 const baseKeywords = [
@@ -108,8 +115,8 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <meta name="ICBM" content="-13.6014, -74.2342" />
 
 <!-- Mobile & Theme -->
-<meta name="theme-color" content="#e91e8c" />
-<meta name="msapplication-TileColor" content="#e91e8c" />
+<meta name="theme-color" content="#b5452a" />
+<meta name="msapplication-TileColor" content="#b5452a" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="María Parado de Bellido" />
@@ -120,8 +127,6 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <link rel="alternate" hreflang="x-default" href={canonicalURL} />
 
 <!-- Preload critical assets -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
 <!-- Favicon variants -->
