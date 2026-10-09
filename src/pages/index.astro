@@ -52,6 +52,15 @@ const byStart = [...festivities].sort((a, b) => new Date(a.start_date).getTime()
 const notOver = byStart.filter((f) => new Date(f.end_date).getTime() >= Date.now() - 86400000);
 const upcomingFestivities = (notOver.length ? notOver : byStart).slice(0, 3);
 
+// Aviso de la próxima fiesta en el hero. El sitio es estático: se elige al compilar y el
+// navegador lo recalcula con la fecha del día (data-fiestas), para que no quede desactualizado.
+const nextFiesta = notOver[0];
+const heroFiestas = byStart.map((f) => ({ n: f.name, s: f.slug, i: f.start_date.slice(0, 10), f: f.end_date.slice(0, 10) }));
+const fechaCorta = (iso: string) => {
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("es-PE", { day: "numeric", month: "long" });
+};
+
 const featuredPlaces = places.slice(0, 5);
 const mapPlaces = places.filter(hasCoordinates);
 const mapMarkers = mapPlaces.map((p) => ({
@@ -121,7 +130,7 @@ const homeStructuredData = [
   />
 
   <!-- 1. Hero cinematográfico -->
-  <section id="home-hero" class="relative h-dvh min-h-[640px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
+  <section id="home-hero" class="relative h-[88dvh] min-h-[600px] -mt-20 md:-mt-[92px] overflow-hidden w-full max-w-[100vw]">
     <img
       src={heroSlides[0].image}
       alt={heroSlides[0].alt}
@@ -135,8 +144,22 @@ const homeStructuredData = [
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgb(0_0_0/0.55)_0%,transparent_60%)]" aria-hidden="true"></div>
 
     <div class="absolute inset-0 z-10 flex items-end pt-20 md:pt-[92px]">
-      <div class="container-custom w-full pb-10 md:pb-16">
+      <div class="container-custom w-full pb-14 md:pb-16">
         <div class="max-w-3xl">
+          {nextFiesta && (
+            <a
+              href={`/festividades/${nextFiesta.slug}/`}
+              class="hero-fiesta group mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-sm text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+              data-hero-fiesta
+              data-fiestas={JSON.stringify(heroFiestas)}
+            >
+              <span class="hero-fiesta-punto" aria-hidden="true"></span>
+              <span class="hidden sm:inline whitespace-nowrap text-white/80" data-hf-etiqueta>Próxima fiesta</span>
+              <strong class="truncate font-semibold" data-hf-nombre>{nextFiesta.name}</strong>
+              <span class="whitespace-nowrap text-white/80" data-hf-cuando>· {fechaCorta(nextFiesta.start_date)}</span>
+              <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+          )}
           <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-white/80 mb-4">
             Pomabamba · Cangallo · Ayacucho, Perú
           </p>
@@ -169,6 +192,13 @@ const homeStructuredData = [
         </div>
       </div>
     </div>
+
+    <!-- Invitación a seguir: baja a la siguiente sección y se oculta al primer scroll. -->
+    <a href="#experiencias" class="hero-cue absolute bottom-3 left-1/2 z-10 -translate-x-1/2 md:bottom-16 md:left-auto md:right-10 md:translate-x-0 flex flex-col items-center gap-2 text-white/85 hover:text-white" data-hero-cue>
+      <span class="hidden md:block text-[11px] font-semibold uppercase tracking-[0.3em]">Descubre más</span>
+      <span class="hero-cue-linea" aria-hidden="true"></span>
+      <span class="sr-only md:hidden">Descubre más</span>
+    </a>
   </section>
 
   <!-- 1b. Franja de indicadores: solo en mobile (ver arriba para tablet/desktop) -->
@@ -187,7 +217,7 @@ const homeStructuredData = [
   </section>
 
   <!-- 2. Experiencias -->
-  <section class="py-20 md:py-28">
+  <section id="experiencias" class="scroll-mt-20 py-20 md:py-28">
     <div class="container-custom">
       <SectionHeading
         eyebrow="Experiencias"
@@ -424,3 +454,70 @@ const homeStructuredData = [
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Hero de la home: aviso de la próxima fiesta según la fecha de hoy, e invitación a seguir.
+  const DIA = 86400000;
+  const fecha = (iso: string) => {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  };
+
+  document.addEventListener("astro:page-load", () => {
+    const chip = document.querySelector<HTMLAnchorElement>("[data-hero-fiesta]");
+    if (chip) {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      const fiestas: { n: string; s: string; i: string; f: string }[] = JSON.parse(chip.dataset.fiestas || "[]");
+      const prox = fiestas.find((x) => fecha(x.f) >= hoy);
+      if (!prox) chip.hidden = true;
+      else {
+        const dias = Math.round((fecha(prox.i).getTime() - hoy.getTime()) / DIA);
+        const set = (sel: string, t: string) => { const el = chip.querySelector(sel); if (el) el.textContent = t; };
+        chip.href = `/festividades/${prox.s}/`;
+        set("[data-hf-nombre]", prox.n);
+        if (dias <= 0) {
+          set("[data-hf-etiqueta]", "Hoy en fiesta");
+          set("[data-hf-cuando]", "");
+        } else {
+          set("[data-hf-etiqueta]", "Próxima fiesta");
+          set("[data-hf-cuando]", dias === 1 ? "· mañana" : dias <= 60 ? `· en ${dias} días` : `· ${fecha(prox.i).toLocaleDateString("es-PE", { day: "numeric", month: "long" })}`);
+        }
+      }
+    }
+
+    const cue = document.querySelector<HTMLAnchorElement>("[data-hero-cue]");
+    if (!cue) return;
+    cue.addEventListener("click", (e) => {
+      const destino = document.getElementById("experiencias");
+      if (!destino) return;
+      e.preventDefault();
+      const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      destino.scrollIntoView({ behavior: suave ? "smooth" : "auto" });
+    });
+    const ocultar = () => {
+      cue.classList.toggle("is-oculto", window.scrollY > 40);
+    };
+    ocultar();
+    window.addEventListener("scroll", ocultar, { passive: true });
+    document.addEventListener("astro:before-swap", () => window.removeEventListener("scroll", ocultar), { once: true });
+  });
+</script>
+
+<style>
+  /* Aviso de la próxima fiesta: punto que late suave. */
+  .hero-fiesta-punto { position: relative; width: 8px; height: 8px; flex-shrink: 0; border-radius: 9999px; background: var(--color-accent); }
+  .hero-fiesta-punto::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: hero-fiesta-late 2.4s ease-out infinite; }
+  @keyframes hero-fiesta-late { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.6); opacity: 0; } }
+
+  /* "Descubre más": línea con un punto que baja; se desvanece al hacer scroll. */
+  .hero-cue { transition: opacity 0.4s, transform 0.4s; }
+  .hero-cue.is-oculto { opacity: 0; pointer-events: none; }
+  .hero-cue-linea { position: relative; display: block; width: 1.5px; height: 36px; overflow: hidden; border-radius: 2px; background: rgb(255 255 255 / 0.3); }
+  .hero-cue-linea::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: #fff; animation: hero-cue-baja 2s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+  @keyframes hero-cue-baja { to { top: 100%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fiesta-punto::after, .hero-cue-linea::after { animation: none; }
+    .hero-cue-linea::after { top: 30%; }
+  }
+</style>
