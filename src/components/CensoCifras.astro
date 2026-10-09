@@ -51,7 +51,7 @@ const bloques = [
       </div>
       <div class="lg:col-span-5 rounded-2xl bg-white border border-line p-6 md:p-8">
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-ink-soft">Somos</p>
-        <p class="mt-1 font-heading text-6xl md:text-7xl font-semibold leading-none text-ink">{fmt(total)}</p>
+        <p class="mt-1 font-heading text-6xl md:text-7xl font-semibold leading-none text-ink" data-contar>{fmt(total)}</p>
         <p class="mt-3 text-ink-soft">
           habitantes: {fmt(mujeres)} mujeres y {fmt(hombres)} hombres.
           <a href="#cambios" class="underline hover:text-ink">¿Cuántos éramos en {anterior.anio}?</a>
@@ -62,7 +62,7 @@ const bloques = [
     <dl class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-line bg-line">
       {censo.resumen.map((r) => (
         <div class="bg-white px-5 py-4">
-          <dd class="font-heading text-2xl font-semibold text-ink">{r.valor}</dd>
+          <dd class="font-heading text-2xl font-semibold text-ink" data-contar>{r.valor}</dd>
           <dt class="mt-0.5 text-sm">{r.etiqueta}</dt>
           {r.def && (
             <details class="censo-def mt-1.5">
@@ -115,9 +115,9 @@ const bloques = [
         </p>
       </div>
       <div class="lg:col-span-7">
-        <div class="censo-cien" aria-hidden="true">
+        <div class="censo-cien" aria-hidden="true" data-graf>
           {Array.from({ length: 100 }, (_, i) => (
-            <svg viewBox="0 0 20 28" class:list={["censo-persona", i < cienInicial.valor && "is-on"]}>
+            <svg viewBox="0 0 20 28" class:list={["censo-persona", i < cienInicial.valor && "is-on"]} style={`--n: ${i}`}>
               <circle cx="10" cy="6" r="5" />
               <path d="M2 27v-8a8 8 0 0 1 16 0v8z" />
             </svg>
@@ -145,6 +145,7 @@ const bloques = [
             <span class:list={["text-sm font-semibold", a.nombre === "Perú" ? "text-ink-soft" : "text-ink"]}>{a.nombre}</span>
             <div
               class="censo-apilada"
+              data-graf
               role="img"
               aria-label={`${a.nombre}: ${censo.edades.grupos.map((g, i) => `${g.etiqueta.toLowerCase()} ${a.valores[i]}%`).join(", ")}`}
             >
@@ -174,9 +175,9 @@ const bloques = [
           <li class="flex items-center gap-2"><span class="censo-swatch censo-m" aria-hidden="true"></span>Mujeres <span class="text-ink-soft">{fmt(mujeres)}</span></li>
         </ul>
 
-        <div class="censo-piramide mt-5" role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo ${censo.anio}. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
-          {piramide.map((r) => (
-            <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]}>
+        <div class="censo-piramide mt-5" data-graf role="img" aria-label={`Pirámide de población del distrito por edad y sexo, Censo ${censo.anio}. ${fmt(hombres)} hombres y ${fmt(mujeres)} mujeres.`}>
+          {piramide.map((r, fila) => (
+            <div class:list={["censo-fila", destacados[r.edad] && "is-destacada"]} style={`--f: ${piramide.length - 1 - fila}`}>
               <div class="censo-lado censo-lado-h">
                 <span class="censo-barra censo-h" style={`width:${(r.hombres / ESCALA) * 100}%`}><span class="censo-valor">{r.hombres}</span></span>
               </div>
@@ -218,7 +219,7 @@ const bloques = [
             <div class="border-t border-line pt-5">
               <dt class="text-sm">{e.indicador}</dt>
               <dd class="mt-1 flex items-baseline gap-3">
-                <span class="font-heading text-4xl font-semibold text-ink">{e.distrito}{e.unidad}</span>
+                <span class="font-heading text-4xl font-semibold text-ink" data-contar>{e.distrito}{e.unidad}</span>
                 <span class="text-sm text-ink-soft">Perú: {e.peru}{e.unidad}</span>
               </dd>
               {e.def && (
@@ -262,7 +263,7 @@ const bloques = [
                         <span aria-hidden="true">{mas ? "▲" : "▼"}</span> {mas ? "más" : "menos"} que el Perú
                       </span>
                     </div>
-                    <div class="mt-4 space-y-2" role="img" aria-label={`${f.indicador}: Pomabamba ${pct(f.distrito)}, Perú ${pct(f.peru)}`}>
+                    <div class="mt-4 space-y-2" data-graf role="img" aria-label={`${f.indicador}: Pomabamba ${pct(f.distrito)}, Perú ${pct(f.peru)}`}>
                       <div class="censo-par">
                         <span class="censo-par-nombre">Pomabamba</span>
                         <span class="censo-par-pista"><span class="censo-par-barra bg-primary" style={`width:${f.distrito}%`}></span></span>
@@ -327,12 +328,12 @@ const bloques = [
           <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
             <div class="bg-white px-5 py-4">
               <dt class="text-sm">Censo {anterior.anio}</dt>
-              <dd class="mt-1 font-heading text-4xl font-semibold text-ink-soft">{fmt(anterior.total)}</dd>
+              <dd class="mt-1 font-heading text-4xl font-semibold text-ink-soft" data-contar>{fmt(anterior.total)}</dd>
               <dd class="text-sm">personas censadas</dd>
             </div>
             <div class="bg-white px-5 py-4">
               <dt class="text-sm">Censo {censo.anio}</dt>
-              <dd class="mt-1 font-heading text-4xl font-semibold text-ink">{fmt(total)}</dd>
+              <dd class="mt-1 font-heading text-4xl font-semibold text-ink" data-contar>{fmt(total)}</dd>
               <dd class="text-sm">personas censadas</dd>
             </div>
           </dl>
@@ -373,10 +374,10 @@ const bloques = [
                           <span class="text-ink-soft">{pct(i.antes)}</span> → <strong>{pct(i.ahora)}</strong>
                         </span>
                       </div>
-                      <div class="censo-cambio mt-2" role="img" aria-label={`${i.etiqueta}: ${pct(i.antes)} en ${anterior.anio} y ${pct(i.ahora)} en ${censo.anio}, ${puntos(dif)} puntos.`}>
+                      <div class:list={["censo-cambio mt-2", dif < 0 && "is-baja"]} data-graf role="img" aria-label={`${i.etiqueta}: ${pct(i.antes)} en ${anterior.anio} y ${pct(i.ahora)} en ${censo.anio}, ${puntos(dif)} puntos.`}>
                         <span class="censo-cambio-tramo" style={`left:${Math.min(i.antes, i.ahora)}%;width:${Math.abs(dif)}%`}></span>
                         <span class="censo-antes" style={`left:${i.antes}%`}></span>
-                        <span class="censo-ahora" style={`left:${i.ahora}%`}></span>
+                        <span class="censo-ahora" style={`left:${i.ahora}%;--desde:${i.antes}%`}></span>
                       </div>
                       <p class="mt-1 text-xs text-ink-soft">{puntos(dif)} puntos</p>
                     </li>
@@ -427,6 +428,50 @@ const bloques = [
 </section>
 
 <script>
+  // Gráficos que se dibujan al llegar a ellos ([data-graf]) y cifras que cuentan hasta su
+  // valor ([data-contar]). Solo con las animaciones activas (html.anim, ver BaseLayout):
+  // sin ellas, gráficos y cifras se muestran completos desde el inicio.
+  function contar(el: HTMLElement) {
+    const final = el.textContent ?? "";
+    const m = final.match(/^([\d,]+)(\.\d+)?/);
+    if (!m) return;
+    const decimales = m[2] ? m[2].length - 1 : 0;
+    const objetivo = Number((m[1] + (m[2] ?? "")).replace(/,/g, ""));
+    const resto = final.slice(m[0].length);
+    // Ancho fijo mientras cuenta: la cifra no empuja lo que tiene al lado.
+    const ancho = el.getBoundingClientRect().width;
+    if (getComputedStyle(el).display === "inline") el.style.display = "inline-block";
+    el.style.minWidth = `${ancho}px`;
+    el.style.fontVariantNumeric = "tabular-nums";
+    const inicio = performance.now();
+    const DURACION = 1100;
+    const paso = (t: number) => {
+      const avance = Math.min(1, (t - inicio) / DURACION);
+      const v = objetivo * (1 - Math.pow(1 - avance, 3));
+      el.textContent = avance < 1 ? v.toLocaleString("en-US", { minimumFractionDigits: decimales, maximumFractionDigits: decimales }) + resto : final;
+      if (avance < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    // Misma condición que BaseLayout usa para html.anim (sin depender del orden de los scripts).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          if (el.hasAttribute("data-contar")) contar(el);
+          else el.classList.add("is-visible");
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.35 }
+    );
+    document.querySelectorAll("[data-graf], [data-contar]").forEach((el) => observer.observe(el));
+  });
+
   // "Pomabamba en 100 personas": cambia el dato al elegir otro botón.
   document.addEventListener("astro:page-load", () => {
     document.querySelectorAll<HTMLElement>("[data-cien]").forEach((root) => {
@@ -486,6 +531,7 @@ const bloques = [
   .censo-chip[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
   .censo-cien { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px 4px; max-width: 26rem; margin-inline: auto; }
   .censo-persona { width: 100%; height: auto; fill: var(--color-line); transition: fill 200ms; }
+  :global(html.anim) .censo-persona { transition-delay: calc(var(--n) * 9ms); }
   .censo-persona.is-on { fill: var(--color-primary); }
   @media (prefers-reduced-motion: reduce) { .censo-persona { transition: none; } }
 
@@ -543,4 +589,33 @@ const bloques = [
   }
   .censo-badge.is-mas { background: var(--color-primary-soft); }
   .censo-badge.is-menos { background: var(--color-sand-200); }
+</style>
+
+<style>
+  /* Animación de los gráficos al llegar a ellos. Estado inicial solo con html.anim y mientras
+     el gráfico no tenga .is-visible; la transición lleva al estado final, que es el normal. */
+  :global(html.anim) [data-graf]:not(.is-visible) .censo-persona.is-on { fill: var(--color-line); }
+
+  /* Barra apilada de edades: se descubre de izquierda a derecha. */
+  .censo-apilada { clip-path: inset(0 0 0 0 round 0.5rem); transition: clip-path 1s var(--ease-out-expo); }
+  :global(html.anim) .censo-apilada:not(.is-visible) { clip-path: inset(0 100% 0 0 round 0.5rem); }
+
+  /* Pirámide: cada barra crece desde el centro, de abajo hacia arriba; la cifra aparece con ella. */
+  .censo-barra { transition: clip-path 0.8s var(--ease-out-expo); transition-delay: calc(var(--f, 0) * 35ms); }
+  .censo-lado-h .censo-barra { clip-path: inset(-2px 0 -2px -3rem); }
+  .censo-lado:not(.censo-lado-h) .censo-barra { clip-path: inset(-2px -3rem -2px 0); }
+  :global(html.anim) .censo-piramide:not(.is-visible) .censo-lado-h .censo-barra { clip-path: inset(-2px 0 -2px 100%); }
+  :global(html.anim) .censo-piramide:not(.is-visible) .censo-lado:not(.censo-lado-h) .censo-barra { clip-path: inset(-2px 100% -2px 0); }
+
+  /* Comparación con el Perú: las dos barras crecen, Pomabamba primero. */
+  .censo-par-barra { transform-origin: left center; transition: transform 0.9s var(--ease-out-expo); }
+  .censo-par + .censo-par .censo-par-barra { transition-delay: 120ms; }
+  :global(html.anim) [data-graf]:not(.is-visible) .censo-par-barra { transform: scaleX(0); }
+
+  /* Del censo anterior al actual: el punto lleno viaja desde el valor de antes. */
+  .censo-ahora { transition: left 1s var(--ease-out-expo) 150ms; }
+  .censo-cambio-tramo { transition: clip-path 1s var(--ease-out-expo) 150ms; clip-path: inset(0); }
+  :global(html.anim) .censo-cambio:not(.is-visible) .censo-ahora { left: var(--desde) !important; }
+  :global(html.anim) .censo-cambio:not(.is-visible) .censo-cambio-tramo { clip-path: inset(0 100% 0 0); }
+  :global(html.anim) .censo-cambio.is-baja:not(.is-visible) .censo-cambio-tramo { clip-path: inset(0 0 0 100%); }
 </style>

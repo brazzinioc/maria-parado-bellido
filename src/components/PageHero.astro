@@ -2,6 +2,8 @@
 /**
  * PageHero - Encabezado fotográfico para páginas internas.
  * Incluye breadcrumbs visibles (el schema BreadcrumbList lo genera BaseLayout).
+ * Entrada animada: la foto se acerca despacio y los textos aparecen escalonados.
+ * Con transitionName, la foto continúa la de la tarjeta del listado (transición de vista).
  */
 interface Crumb {
   name: string;
@@ -17,6 +19,7 @@ interface Props {
   imagePosition?: string;
   breadcrumbs?: Crumb[];
   size?: "md" | "lg";
+  transitionName?: string;
 }
 
 const {
@@ -28,7 +31,17 @@ const {
   imagePosition = "center",
   breadcrumbs = [],
   size = "md",
+  transitionName,
 } = Astro.props;
+
+const imgAttrs = {
+  src: image,
+  alt: imageAlt,
+  loading: "eager" as const,
+  fetchpriority: "high" as const,
+  class: "page-hero-img absolute inset-0 h-full w-full object-cover",
+  style: `object-position: ${imagePosition}`,
+};
 ---
 
 <header
@@ -37,19 +50,12 @@ const {
     size === "lg" ? "min-h-[70vh]" : "min-h-[52vh]",
   ]}
 >
-  <img
-    src={image}
-    alt={imageAlt}
-    loading="eager"
-    fetchpriority="high"
-    class="absolute inset-0 h-full w-full object-cover"
-    style={`object-position: ${imagePosition}`}
-  />
+  {transitionName ? <img {...imgAttrs} transition:name={transitionName} /> : <img {...imgAttrs} />}
   <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/10" aria-hidden="true"></div>
 
   <div class="container-custom relative w-full pb-10 md:pb-14 pt-24">
     {breadcrumbs.length > 0 && (
-      <nav aria-label="Breadcrumb" class="mb-6">
+      <nav aria-label="Breadcrumb" class="page-hero-in mb-6" style="--i: 0">
         <ol class="flex flex-wrap items-center gap-2 text-sm text-white/75">
           {breadcrumbs.map((crumb, i) => (
             <li class="flex items-center gap-2">
@@ -65,14 +71,22 @@ const {
       </nav>
     )}
     <div class="max-w-3xl">
-      {eyebrow && <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent mb-3">{eyebrow}</p>}
-      <h1 class="font-heading font-semibold !text-white text-4xl md:text-6xl leading-[1.05]">{title}</h1>
-      {intro && <p class="mt-4 text-lg md:text-xl text-white/85 max-w-2xl">{intro}</p>}
+      {eyebrow && <p class="page-hero-in text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent mb-3" style="--i: 1">{eyebrow}</p>}
+      <h1 class="page-hero-in font-heading font-semibold !text-white text-4xl md:text-6xl leading-[1.05]" style="--i: 1">{title}</h1>
+      {intro && <p class="page-hero-in mt-4 text-lg md:text-xl text-white/85 max-w-2xl" style="--i: 2">{intro}</p>}
       {Astro.slots.has("actions") && (
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="page-hero-in mt-8 flex flex-wrap gap-3" style="--i: 3">
           <slot name="actions" />
         </div>
       )}
     </div>
   </div>
 </header>
+
+<style>
+  /* Solo transform y opacidad: no mueve el resto de la página ni retrasa la carga de la foto. */
+  .page-hero-img { animation: page-hero-zoom 1.8s var(--ease-out-expo) both; }
+  .page-hero-in { animation: page-hero-in 0.7s var(--ease-out-expo) both; animation-delay: calc(var(--i, 0) * 90ms + 60ms); }
+  @keyframes page-hero-zoom { from { transform: scale(1.06); } }
+  @keyframes page-hero-in { from { opacity: 0; transform: translateY(14px); } }
+</style>

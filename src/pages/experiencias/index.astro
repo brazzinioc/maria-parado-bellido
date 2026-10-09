@@ -51,7 +51,7 @@ const structuredData = [
             href={`/experiencias/${exp.slug}/`}
             class:list={["group relative block aspect-[4/3] overflow-hidden rounded-2xl", i % 2 === 1 && "lg:order-2"]}
           >
-            <img src={exp.image} alt={exp.imageAlt} sizes="(min-width: 768px) 50vw, 100vw" loading={i === 0 ? "eager" : "lazy"} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={exp.image} alt={exp.imageAlt} transition:name={`foto-exp-${exp.slug}`} sizes="(min-width: 768px) 50vw, 100vw" loading={i === 0 ? "eager" : "lazy"} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
           </a>
           <div class="max-w-xl">
             <span class="eyebrow">{exp.eyebrow}</span>
