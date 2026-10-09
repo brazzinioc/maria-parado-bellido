@@ -318,16 +318,21 @@
   }
 }
 
-/* Animaciones suaves para scroll reveal */
-.reveal {
+/* Aparición al hacer scroll. Solo oculta si el script la activó (html.anim): sin JavaScript,
+   para buscadores o con «reducir movimiento», el contenido se ve completo desde el inicio.
+   BaseLayout marca .reveal lo que está fuera de la pantalla al cargar y lo activa al llegar. */
+html.anim .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(var(--reveal-y, 18px));
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
-
-.reveal.active {
+html.anim .reveal.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+@media (max-width: 640px) {
+  html.anim .reveal { --reveal-y: 10px; }
 }
 
 /* ==========================================

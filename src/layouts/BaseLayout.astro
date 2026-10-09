@@ -652,23 +652,46 @@ const navLinkIdle = "text-ink hover:text-primary";
       });
       }
 
+      // Aparición al hacer scroll. Se marcan solo los bloques que al cargar están fuera de la
+      // pantalla (lo visible no parpadea) y se activan en cascada al llegar a ellos. Con
+      // «reducir movimiento» no se activa nada. Cada página puede excluir un bloque con
+      // data-no-reveal o marcar uno propio con la clase .reveal.
+      const REVEAL_AUTO = [
+        "main section :is(.eyebrow, .section-heading)",
+        "main .grid > :is(a, article, li, div, figure, dl)",
+        "main :is(ol, ul).grid > li",
+        "main figure",
+        "main details",
+      ].join(",");
+
       function initRevealAnimations() {
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: "0px 0px -50px 0px",
-        };
+        const motion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window;
+        document.documentElement.classList.toggle("anim", motion);
+        if (!motion) return;
 
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("active");
-            }
-          });
-        }, observerOptions);
+        const limite = window.innerHeight * 0.92;
+        document.querySelectorAll(REVEAL_AUTO).forEach((el) => {
+          if (el.closest("header, footer, [data-no-reveal], .reveal")) return;
+          if (el.getBoundingClientRect().top > limite) el.classList.add("reveal");
+        });
 
-        document
-          .querySelectorAll(".reveal:not(.active)")
-          .forEach((el) => observer.observe(el));
+        const observer = new IntersectionObserver(
+          (entries) => {
+            // Los que entran juntos (una fila de tarjetas) aparecen uno tras otro.
+            entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left)
+              .forEach((entry, i) => {
+                const el = entry.target;
+                el.style.setProperty("--reveal-delay", `${Math.min(i, 5) * 70}ms`);
+                el.classList.add("active");
+                observer.unobserve(el);
+              });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        );
+
+        document.querySelectorAll(".reveal:not(.active)").forEach((el) => observer.observe(el));
       }
 
       // Difiere los widgets flotantes (Tu Opinión, WhatsApp) mientras se ve
@@ -767,10 +790,6 @@ const navLinkIdle = "text-ink hover:text-primary";
           transition-duration: 0.01ms !important;
         }
 
-        .reveal {
-          opacity: 1 !important;
-          transform: none !important;
-        }
       }
 
       /* Main content focus for skip link */

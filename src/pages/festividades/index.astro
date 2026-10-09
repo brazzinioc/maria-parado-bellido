@@ -118,7 +118,7 @@ const festivitiesStructuredData = [
           <div class="container-custom">
             <a href={`/festividades/${next.slug}/`} class="group grid grid-cols-1 lg:grid-cols-12 overflow-hidden rounded-3xl bg-white border border-line transition-shadow hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)]">
               <div class="relative lg:col-span-7 aspect-[16/10] lg:aspect-auto lg:min-h-[380px] overflow-hidden bg-sand-200">
-                <img src={festivityCoverImage(next)} alt={altFor(next)} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={festivityCoverImage(next)} alt={altFor(next)} transition:name={`foto-fiesta-${next.slug}`} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div class="lg:col-span-5 flex flex-col justify-center p-6 md:p-10">
                 <p class="eyebrow">Próxima fiesta</p>
@@ -178,7 +178,11 @@ const festivitiesStructuredData = [
               g.items.map((f) => (
                 <a href={`/festividades/${f.slug}/`} data-month={g.m} data-name={f.name} class="group flex flex-col overflow-hidden rounded-2xl bg-white border border-line transition-colors hover:border-primary/50">
                   <div class="relative aspect-[16/10] overflow-hidden bg-sand-200">
-                    <img src={festivityCoverImage(f)} alt={altFor(f)} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    {f.slug === next?.slug ? (
+                      <img src={festivityCoverImage(f)} alt={altFor(f)} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <img src={festivityCoverImage(f)} alt={altFor(f)} transition:name={`foto-fiesta-${f.slug}`} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    )}
                   </div>
                   <div class="flex flex-1 flex-col p-5 md:p-6">
                     <p class="text-xs font-semibold uppercase tracking-[0.15em] text-primary">{g.name}</p>
