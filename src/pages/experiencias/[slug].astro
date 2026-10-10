@@ -4,9 +4,10 @@ import PageHero from "../../components/PageHero.astro";
 import PhotoCard from "../../components/PhotoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import PriceNote from "../../components/PriceNote.astro";
+import AporteNote from "../../components/AporteNote.astro";
 import ExperienceTourCard from "../../components/ExperienceTourCard.astro";
 import { getExperiences, type Experience } from "../../lib/content";
-import { fetchPlaces, fetchTours } from "../../lib/api";
+import { fetchPlaces, fetchTours, fetchSiteSettings } from "../../lib/api";
 import { placeCategoryLabel, placeCoverImage } from "../../lib/places";
 import { whatsappUrl } from "../../lib/whatsapp";
 
@@ -34,6 +35,7 @@ const DIFFICULTY_FILTERS = [
   { key: "moderate", label: "Moderada" },
   { key: "hard", label: "Exigente" },
 ] as const;
+const { showPrices } = await fetchSiteSettings();
 const tours = (await fetchTours())
   .filter((t) => t.experience === experience.slug)
   .sort(
@@ -125,7 +127,7 @@ const structuredData = [
     transitionName={`foto-exp-${experience.slug}`}
   >
     <a slot="actions" href="#rutas" class="btn-primary">
-      {tours.length > 0 ? "Ver rutas y precios" : "Cómo organizarlo"}
+      {tours.length === 0 ? "Cómo organizarlo" : showPrices ? "Ver rutas y precios" : "Ver rutas"}
     </a>
     <a slot="actions" href={contactUrl} target="_blank" rel="noopener noreferrer" class="btn-ghost-light">
       Consultar por WhatsApp
@@ -203,7 +205,7 @@ const structuredData = [
       {tours.length > 0 ? (
         <>
           <SectionHeading
-            eyebrow="Rutas y precios"
+            eyebrow={showPrices ? "Rutas y precios" : "Rutas"}
             title={tours.length === 1 ? "Una ruta para empezar" : "Elige tu ruta"}
             intro="Salidas con guías del distrito. Escríbenos para confirmar fechas y disponibilidad."
             align="left"
@@ -220,13 +222,16 @@ const structuredData = [
               ))}
             </div>
           )}
-          {tours.some((t) => t.price > 0) && (
+          {!showPrices && (
+            <AporteNote class="-mt-2 mb-8 max-w-3xl" para={experience.slug === "turismo-vivencial" ? "vivencial" : "ruta"} />
+          )}
+          {showPrices && tours.some((t) => t.price > 0) && (
             <PriceNote class="-mt-2 mb-8 max-w-3xl" text="* Precios referenciales por persona. Pueden variar según la temporada, el tamaño del grupo, la disponibilidad de guías y otras condiciones. Confirma el precio final por WhatsApp antes de reservar." />
           )}
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6" data-route-list>
             {tours.map((tour, i) => (
               <div class="grid" data-difficulty={tour.difficulty ?? "none"}>
-                <ExperienceTourCard tour={tour} fallbackImage={`/images/placeholders/ruta-${experience.slug}-${(i % 3) + 1}.svg`} />
+                <ExperienceTourCard tour={tour} showPrices={showPrices} fallbackImage={`/images/placeholders/ruta-${experience.slug}-${(i % 3) + 1}.svg`} />
               </div>
             ))}
           </div>
@@ -237,9 +242,10 @@ const structuredData = [
             <span class="eyebrow">Rutas a medida</span>
             <h2 class="font-heading text-3xl md:text-4xl font-semibold leading-tight mb-3">Armamos tu {activity} contigo</h2>
             <p class="text-lg leading-relaxed">
-              Todavía no publicamos rutas con precio para esta experiencia. Cuéntanos tus fechas y tu nivel, y te
+              Todavía no publicamos rutas para esta experiencia. Cuéntanos tus fechas y tu nivel, y te
               conectamos con un guía o una familia del distrito.
             </p>
+            {!showPrices && <AporteNote class="mt-5" para={experience.slug === "turismo-vivencial" ? "vivencial" : "ruta"} />}
           </div>
           <div class="flex md:justify-end">
             <a href={contactUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">Escribir por WhatsApp</a>

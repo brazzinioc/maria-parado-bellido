@@ -95,6 +95,32 @@ function mapFestivityFromDB(f: any): Festivity {
 // Tours y Festividades (via stored procedures del CMS)
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Ajustes del sitio (CMS → Ajustes → "Precios en el sitio")
+// ---------------------------------------------------------------------------
+
+export interface SiteSettings {
+  /** false: no se muestran precios; el pago es un aporte voluntario. */
+  showPrices: boolean;
+}
+
+let siteSettingsCache: SiteSettings | null = null;
+
+// Se lee de t_page_content (page_key 'site_settings'). Si falta o falla, no se muestran
+// precios: es la opción segura mientras el sitio está en modo aporte voluntario.
+export async function fetchSiteSettings(): Promise<SiteSettings> {
+  if (siteSettingsCache) return siteSettingsCache;
+  const { data, error } = await supabase
+    .from('t_page_content')
+    .select('content')
+    .eq('page_key', 'site_settings')
+    .maybeSingle();
+  if (error) console.error('Error fetching site settings:', error);
+  const content = (data?.content ?? {}) as { show_prices?: unknown };
+  siteSettingsCache = { showPrices: content.show_prices === true };
+  return siteSettingsCache;
+}
+
 export async function fetchTours(): Promise<Tour[]> {
   if (toursCache) return toursCache;
 
@@ -341,7 +367,7 @@ function getFallbackTours(): Tour[] {
       description:
         'Este trekking sigue antiguos caminos rurales y senderos de montaña del distrito de María Parado de Bellido, conectando comunidades, miradores y áreas de pastoreo. La ruta sube por laderas y crestas, pasando por montañas y valles donde se interpretan los pisos ecológicos, el uso tradicional del territorio y la relación de la población con la ganadería y la agricultura de altura.',
       duration_hours: 8,
-      price: 50.0,
+      price: 0,
       currency: 'PEN',
       locations: [
         { name: 'Caminos Rurales y Laderas de Montaña', lat: -13.590, lng: -74.250 }
@@ -364,7 +390,7 @@ function getFallbackTours(): Tour[] {
       description:
         'Ruta en bicicleta por carreteras, pampas y montañas del distrito de María Parado de Bellido, conectando chacras, comunidades y paisajes abiertos de la sierra. El recorrido permite conocer la organización comunal, la agricultura familiar y la geografía andina, con paradas interpretativas y contacto directo con la población local. Se transita por carreteras rurales, extensas pampas y tramos ascendentes entre montañas, ofreciendo vistas panorámicas y experiencias culturales.',
       duration_hours: 8,
-      price: 40.0,
+      price: 0,
       currency: 'PEN',
       locations: [
         { name: 'Ruta Rural Pomabamba y Comunidades', lat: -13.605, lng: -74.240 }
@@ -387,7 +413,7 @@ function getFallbackTours(): Tour[] {
       description:
         'Comparte una experiencia vivencial junto a familias del distrito de María Parado de Bellido, participando en labores agrícolas en chacras según la temporada. El tour incluye la explicación de prácticas tradicionales como la minka, la preparación de alimentos locales y el intercambio cultural con la comunidad.',
       duration_hours: 4,
-      price: 45.0,
+      price: 0,
       currency: 'PEN',
       locations: [
         { name: 'Chacras Comunales de Pomabamba', lat: -13.600, lng: -74.233 }
