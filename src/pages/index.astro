@@ -56,6 +56,12 @@ const upcomingFestivities = (notOver.length ? notOver : byStart).slice(0, 3);
 // navegador lo recalcula con la fecha del día (data-fiestas), para que no quede desactualizado.
 const nextFiesta = notOver[0];
 const heroFiestas = byStart.map((f) => ({ n: f.name, s: f.slug, i: f.start_date.slice(0, 10), f: f.end_date.slice(0, 10) }));
+// Bloque de calendario del aviso: día y mes abreviado ("1", "NOV").
+const diaMes = (iso: string) => {
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  const mes = new Date(y, m - 1, d).toLocaleDateString("es-PE", { month: "short" }).replace(".", "").toUpperCase();
+  return { dia: String(d), mes };
+};
 const fechaCorta = (iso: string) => {
   const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("es-PE", { day: "numeric", month: "long" });
@@ -149,15 +155,22 @@ const homeStructuredData = [
           {nextFiesta && (
             <a
               href={`/festividades/${nextFiesta.slug}/`}
-              class="hero-fiesta group mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-sm text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+              class="hero-fiesta group mb-6 inline-flex max-w-full items-stretch overflow-hidden rounded-2xl bg-white text-ink shadow-[0_14px_34px_-12px_rgb(0_0_0/0.6)] transition-transform hover:-translate-y-0.5"
+              aria-label={`Próxima fiesta: ${nextFiesta.name}, ${fechaCorta(nextFiesta.start_date)}`}
               data-hero-fiesta
               data-fiestas={JSON.stringify(heroFiestas)}
             >
-              <span class="hero-fiesta-punto" aria-hidden="true"></span>
-              <span class="hidden sm:inline whitespace-nowrap text-white/80" data-hf-etiqueta>Próxima fiesta</span>
-              <strong class="truncate font-semibold" data-hf-nombre>{nextFiesta.name}</strong>
-              <span class="whitespace-nowrap text-white/80" data-hf-cuando>· {fechaCorta(nextFiesta.start_date)}</span>
-              <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+              <span class="flex flex-shrink-0 flex-col items-center justify-center bg-primary px-3.5 py-2 leading-none text-white" aria-hidden="true">
+                <span class="font-heading text-[28px] font-semibold" data-hf-dia>{diaMes(nextFiesta.start_date).dia}</span>
+                <span class="mt-1 text-[11px] font-bold tracking-[0.15em]" data-hf-mes>{diaMes(nextFiesta.start_date).mes}</span>
+              </span>
+              <span class="flex min-w-0 flex-col justify-center px-4 py-2 leading-tight" aria-hidden="true">
+                <span class="whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.15em] text-primary-dark" data-hf-etiqueta>Próxima fiesta</span>
+                <span class="mt-0.5 flex min-w-0 items-center gap-1.5 font-heading text-lg md:text-xl font-semibold">
+                  <span class="truncate" data-hf-nombre>{nextFiesta.name}</span>
+                  <span class="font-sans text-base transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+              </span>
             </a>
           )}
           <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-white/80 mb-4">
@@ -475,14 +488,13 @@ const homeStructuredData = [
         const dias = Math.round((fecha(prox.i).getTime() - hoy.getTime()) / DIA);
         const set = (sel: string, t: string) => { const el = chip.querySelector(sel); if (el) el.textContent = t; };
         chip.href = `/festividades/${prox.s}/`;
+        const inicio = fecha(prox.i);
         set("[data-hf-nombre]", prox.n);
-        if (dias <= 0) {
-          set("[data-hf-etiqueta]", "Hoy en fiesta");
-          set("[data-hf-cuando]", "");
-        } else {
-          set("[data-hf-etiqueta]", "Próxima fiesta");
-          set("[data-hf-cuando]", dias === 1 ? "· mañana" : dias <= 60 ? `· en ${dias} días` : `· ${fecha(prox.i).toLocaleDateString("es-PE", { day: "numeric", month: "long" })}`);
-        }
+        set("[data-hf-dia]", String(inicio.getDate()));
+        set("[data-hf-mes]", inicio.toLocaleDateString("es-PE", { month: "short" }).replace(".", "").toUpperCase());
+        const cuando = dias <= 0 ? "Hoy en fiesta" : dias === 1 ? "Próxima fiesta · mañana" : dias <= 60 ? `Próxima fiesta · en ${dias} días` : "Próxima fiesta";
+        set("[data-hf-etiqueta]", cuando);
+        chip.setAttribute("aria-label", `${cuando}: ${prox.n}, ${inicio.toLocaleDateString("es-PE", { day: "numeric", month: "long" })}`);
       }
     }
 
@@ -505,10 +517,9 @@ const homeStructuredData = [
 </script>
 
 <style>
-  /* Aviso de la próxima fiesta: punto que late suave. */
-  .hero-fiesta-punto { position: relative; width: 8px; height: 8px; flex-shrink: 0; border-radius: 9999px; background: var(--color-accent); }
-  .hero-fiesta-punto::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: hero-fiesta-late 2.4s ease-out infinite; }
-  @keyframes hero-fiesta-late { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.6); opacity: 0; } }
+  /* Aviso de la próxima fiesta: tarjeta de calendario que entra justo después del título. */
+  .hero-fiesta { animation: hero-fiesta-in 0.7s var(--ease-out-expo) 0.5s both; }
+  @keyframes hero-fiesta-in { from { opacity: 0; transform: translateY(10px); } }
 
   /* "Descubre más": línea con un punto que baja; se desvanece al hacer scroll. */
   .hero-cue { transition: opacity 0.4s, transform 0.4s; }
@@ -517,7 +528,7 @@ const homeStructuredData = [
   .hero-cue-linea::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: #fff; animation: hero-cue-baja 2s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
   @keyframes hero-cue-baja { to { top: 100%; } }
   @media (prefers-reduced-motion: reduce) {
-    .hero-fiesta-punto::after, .hero-cue-linea::after { animation: none; }
+    .hero-cue-linea::after { animation: none; }
     .hero-cue-linea::after { top: 30%; }
   }
 </style>
