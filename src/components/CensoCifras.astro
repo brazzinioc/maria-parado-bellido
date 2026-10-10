@@ -139,13 +139,15 @@ const bloques = [
           <li class="flex items-center gap-2"><span class={`censo-swatch censo-edad-${g.id}`} aria-hidden="true"></span>{g.etiqueta} <span class="text-ink-soft">({g.rango})</span></li>
         ))}
       </ul>
-      <div class="mt-5 space-y-4">
+      <!-- data-graf va en el contenedor: la barra empieza recortada (clip-path) y el navegador
+           la daría por invisible, así que nunca se activaría si se observara a sí misma. -->
+      <div class="censo-edades mt-5 space-y-4" data-graf>
         {censo.edades.ambitos.map((a) => (
           <div class="grid grid-cols-1 sm:grid-cols-[7rem_1fr] items-center gap-x-4 gap-y-1.5">
             <span class:list={["text-sm font-semibold", a.nombre === "Perú" ? "text-ink-soft" : "text-ink"]}>{a.nombre}</span>
             <div
               class="censo-apilada"
-              data-graf
+              data-no-reveal
               role="img"
               aria-label={`${a.nombre}: ${censo.edades.grupos.map((g, i) => `${g.etiqueta.toLowerCase()} ${a.valores[i]}%`).join(", ")}`}
             >
@@ -598,7 +600,8 @@ const bloques = [
 
   /* Barra apilada de edades: se descubre de izquierda a derecha. */
   .censo-apilada { clip-path: inset(0 0 0 0 round 0.5rem); transition: clip-path 1s var(--ease-out-expo); }
-  :global(html.anim) .censo-apilada:not(.is-visible) { clip-path: inset(0 100% 0 0 round 0.5rem); }
+  :global(html.anim) .censo-edades:not(.is-visible) .censo-apilada { clip-path: inset(0 100% 0 0 round 0.5rem); }
+  .censo-edades > * + * .censo-apilada { transition-delay: 150ms; }
 
   /* Pirámide: cada barra crece desde el centro, de abajo hacia arriba; la cifra aparece con ella. */
   .censo-barra { transition: clip-path 0.8s var(--ease-out-expo); transition-delay: calc(var(--f, 0) * 35ms); }
