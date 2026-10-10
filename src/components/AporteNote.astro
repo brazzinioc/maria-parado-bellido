@@ -1,0 +1,39 @@
+---
+/**
+ * AporteNote - Aviso de que el pago es un aporte voluntario (sin precio fijo).
+ * Se muestra en lugar de los precios cuando en el CMS están ocultos (Ajustes →
+ * "Precios en el sitio"). El texto cambia según quién recibe el aporte.
+ */
+interface Props {
+  /** ruta: guía y comunidad · vivencial: familia anfitriona · lugar: comunidad */
+  para: "ruta" | "vivencial" | "lugar";
+  class?: string;
+}
+
+const { para, class: className } = Astro.props;
+
+const textos = {
+  ruta: {
+    titulo: "Sin precio fijo: tu aporte es voluntario",
+    texto: "Lo que aportes es una donación: una parte es para tu guía y otra para la comunidad de Pomabamba. Coordina los detalles por WhatsApp al reservar.",
+  },
+  vivencial: {
+    titulo: "Sin precio fijo: tu aporte es voluntario",
+    texto: "Lo que aportes es una donación para la familia o las familias que te reciben en su casa. Coordina los detalles por WhatsApp.",
+  },
+  lugar: {
+    titulo: "Aporte voluntario",
+    texto: "No se cobra una entrada fija: lo que aportes es una donación para la comunidad que cuida este lugar.",
+  },
+};
+const { titulo, texto } = textos[para];
+---
+
+<div class:list={["flex gap-3 rounded-2xl bg-accent-soft p-4 md:p-5", className]} role="note">
+  <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" />
+  </svg>
+  <p class="text-sm leading-relaxed text-ink">
+    <strong class="font-semibold">{titulo}.</strong> {texto}
+  </p>
+</div>

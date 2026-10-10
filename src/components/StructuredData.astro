@@ -183,8 +183,8 @@ const generateSchema = () => {
           addressRegion: "Ayacucho",
           addressCountry: "PE",
         },
-        isAccessibleForFree: !data.entryFee,
-        ...(data.entryFee && {
+        ...(data.entryFee !== undefined && data.entryFee !== null && { isAccessibleForFree: !data.entryFee }),
+        ...(data.entryFee > 0 && {
           offers: {
             "@type": "Offer",
             price: data.entryFee,
@@ -272,7 +272,7 @@ const generateSchema = () => {
               longitude: loc.lng,
             },
           })) || [],
-        offers: {
+        ...(data.price > 0 && { offers: {
           "@type": "Offer",
           price: data.price,
           priceCurrency: data.currency || "PEN",
@@ -281,7 +281,7 @@ const generateSchema = () => {
           priceValidUntil: new Date(
             Date.now() + 365 * 24 * 60 * 60 * 1000,
           ).toISOString(),
-        },
+        } }),
         duration: `PT${data.duration_hours}H`,
         provider: data.guide
           ? {

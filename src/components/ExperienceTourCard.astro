@@ -1,7 +1,7 @@
 ---
 /**
  * ExperienceTourCard - Ruta o programa (tour del CMS) dentro de una experiencia.
- * Muestra lo necesario para decidir (duración, dificultad, grupo, precio, guía)
+ * Muestra lo necesario para decidir (duración, dificultad, grupo, precio o aporte, guía)
  * y lleva directo a reservar por WhatsApp.
  */
 import type { Tour } from "../types";
@@ -11,9 +11,11 @@ interface Props {
   tour: Tour;
   /** Imagen si el tour no tiene fotos propias. */
   fallbackImage: string;
+  /** false: en lugar del precio se indica "Aporte voluntario" (CMS → Ajustes). */
+  showPrices?: boolean;
 }
 
-const { tour, fallbackImage } = Astro.props;
+const { tour, fallbackImage, showPrices = false } = Astro.props;
 
 const difficultyLabels = { easy: "Fácil", moderate: "Moderada", hard: "Exigente" };
 
@@ -50,7 +52,12 @@ const guideUrl = guide && isDialable(guide.phone)
 <article class="flex flex-col overflow-hidden rounded-2xl border border-line bg-white">
   <div class="relative aspect-[16/10] overflow-hidden bg-sand-200">
     <img src={image} alt={tour.title} loading="lazy" sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
-    {tour.price > 0 && (
+    {!showPrices && (
+      <p class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm font-semibold text-ink shadow-sm">
+        Aporte voluntario
+      </p>
+    )}
+    {showPrices && tour.price > 0 && (
       <p class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-sm text-ink shadow-sm">
         Desde <strong class="font-semibold">{formatPrice(tour.price, tour.currency)}</strong>
         <span class="text-ink-soft"> / persona</span><span class="text-ink-soft" aria-hidden="true">*</span>

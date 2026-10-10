@@ -4,7 +4,7 @@ import PageHero from "../../components/PageHero.astro";
 import PhotoCard from "../../components/PhotoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import type { TouristPlace } from "../../types";
-import { fetchPlaces } from "../../lib/api";
+import { fetchPlaces, fetchSiteSettings } from "../../lib/api";
 import { placeCategoryLabel, placeCoverImage } from "../../lib/places";
 
 // Contenido 100% desde el CMS: si no hay lugares publicados, la pagina queda vacia
@@ -63,9 +63,11 @@ const breadcrumbs = [
 ];
 
 // Generar Place schema para cada lugar turístico
+// Sin precios (CMS → Ajustes), los datos para buscadores tampoco llevan el costo de entrada.
+const { showPrices } = await fetchSiteSettings();
 const placeSchemas = touristPlaces.map((place) => ({
   type: "place" as const,
-  data: place,
+  data: showPrices ? place : { ...place, entryFee: undefined },
 }));
 
 // ItemList schema para la lista de lugares (solo si hay lugares publicados)

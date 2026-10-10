@@ -2,10 +2,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import PriceNote from "../../components/PriceNote.astro";
+import AporteNote from "../../components/AporteNote.astro";
 import PhotoCard from "../../components/PhotoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import InteractiveMap from "../../components/InteractiveMap";
-import { fetchPlaces } from "../../lib/api";
+import { fetchPlaces, fetchSiteSettings } from "../../lib/api";
 import { getExperiences } from "../../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../../lib/places";
 import type { TouristPlace } from "../../types";
@@ -42,14 +43,19 @@ const paragraphs = place.description.split(/\n{2,}/);
 const cover = placeCoverImage(place);
 const extraImages = place.images?.slice(1, 5) ?? [];
 
+const { showPrices } = await fetchSiteSettings();
+
 const facts = [
   { label: "Tipo", value: categoryLabel },
   place.location.name && { label: "Ubicación", value: place.location.name },
   place.bestTimeToVisit && { label: "Mejor época", value: place.bestTimeToVisit },
-  place.entryFee !== undefined && {
-    label: "Entrada",
-    value: place.entryFee > 0 ? `S/ ${place.entryFee.toFixed(2)}*` : "Libre",
-  },
+  // Sin precios (CMS → Ajustes): la entrada se indica como aporte voluntario en todos los lugares.
+  !showPrices
+    ? { label: "Entrada", value: "Aporte voluntario" }
+    : place.entryFee !== undefined && {
+        label: "Entrada",
+        value: place.entryFee > 0 ? `S/ ${place.entryFee.toFixed(2)}*` : "Libre",
+      },
 ].filter(Boolean) as { label: string; value: string }[];
 
 const mapMarkers = [
@@ -79,7 +85,7 @@ const description =
   image={cover}
   keywords={[place.name, `${place.name} Ayacucho`, "turismo Cangallo", "María Parado de Bellido", categoryLabel]}
   breadcrumbs={breadcrumbs}
-  structuredData={[{ type: "place" as const, data: place }]}
+  structuredData={[{ type: "place" as const, data: showPrices ? place : { ...place, entryFee: undefined } }]}
 >
   <PageHero
     eyebrow={categoryLabel}
@@ -117,7 +123,8 @@ const description =
             </div>
           ))}
         </dl>
-        {place.entryFee !== undefined && place.entryFee > 0 && (
+        {!showPrices && <AporteNote para="lugar" />}
+        {showPrices && place.entryFee !== undefined && place.entryFee > 0 && (
           <PriceNote class="mt-3 px-1" text="* Precio referencial de la entrada. Puede variar según la temporada u otras condiciones; confírmalo antes de tu visita." />
         )}
 
