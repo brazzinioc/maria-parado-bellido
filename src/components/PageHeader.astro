@@ -38,7 +38,7 @@ const variantClasses = {
 
 <header class={`relative py-14 md:py-20 border-b border-line ${variantClasses[variant]}`}>
   <div class="container-custom relative z-10">
-    <!-- Breadcrumbs -->
+    {/* Breadcrumbs */}
     <nav aria-label="Breadcrumb" class="mb-6">
       <ol class="flex flex-wrap items-center gap-2 text-sm" itemscope itemtype="https://schema.org/BreadcrumbList">
         {fullBreadcrumbs.map((crumb, index) => (
@@ -72,7 +72,7 @@ const variantClasses = {
       </ol>
     </nav>
 
-    <!-- Title Section -->
+    {/* Title Section */}
     <div class="max-w-4xl">
       <h1 class="text-4xl md:text-6xl font-heading font-semibold text-ink leading-[1.05]">
         {title}

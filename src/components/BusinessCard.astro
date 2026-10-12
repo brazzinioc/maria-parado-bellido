@@ -27,7 +27,7 @@ const { bg, text, icon, label } = categoryStyles[business.category];
 ---
 
 <article class="card group flex flex-col">
-  <!-- Image placeholder or gradient -->
+  {/* Image placeholder or gradient */}
   <div class="h-44 bg-sand relative overflow-hidden">
     {business.images && business.images.length > 0 ? (
       <img
@@ -42,14 +42,14 @@ const { bg, text, icon, label } = categoryStyles[business.category];
       </div>
     )}
 
-    <!-- Category Badge -->
+    {/* Category Badge */}
     <div class="absolute top-3 left-3">
       <span class={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold ${bg} ${text} backdrop-blur-sm`}>
         {label}
       </span>
     </div>
 
-    <!-- Verified Badge -->
+    {/* Verified Badge */}
     {business.isVerified && (
       <div class="absolute top-3 right-3">
         <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-secondary text-white">
@@ -62,19 +62,19 @@ const { bg, text, icon, label } = categoryStyles[business.category];
     )}
   </div>
 
-  <!-- Content -->
+  {/* Content */}
   <div class="p-5 flex flex-col flex-1">
-    <!-- Name -->
+    {/* Name */}
     <h3 class="font-heading font-semibold text-2xl text-ink mb-2">
       {business.name}
     </h3>
 
-    <!-- Description -->
+    {/* Description */}
     <p class="text-sm mb-4 line-clamp-2">
       {business.description}
     </p>
 
-    <!-- Meta Info -->
+    {/* Meta Info */}
     <div class="space-y-2 text-sm mb-4">
       <div class="flex items-start gap-2">
         <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@ const { bg, text, icon, label } = categoryStyles[business.category];
       )}
     </div>
 
-    <!-- Services Tags -->
+    {/* Services Tags */}
     {business.services && business.services.length > 0 && (
       <div class="flex flex-wrap gap-1.5 mb-4">
         {business.services.slice(0, 3).map((service) => (
@@ -117,7 +117,7 @@ const { bg, text, icon, label } = categoryStyles[business.category];
       </div>
     )}
 
-    <!-- Contact Buttons -->
+    {/* Contact Buttons */}
     <div class="flex gap-2">
       {business.phone && (
         <a

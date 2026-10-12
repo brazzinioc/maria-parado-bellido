@@ -113,7 +113,7 @@ const festivitiesStructuredData = [
     </section>
   ) : (
     <>
-      <!-- Próxima fiesta -->
+      {/* Próxima fiesta */}
       {next && (
         <section class="py-16 md:py-20">
           <div class="container-custom">
@@ -139,7 +139,7 @@ const festivitiesStructuredData = [
         </section>
       )}
 
-      <!-- Calendario por meses -->
+      {/* Calendario por meses */}
       <section class="pb-20 md:pb-28">
         <div class="container-custom">
           <div class="max-w-3xl mb-8">
@@ -151,7 +151,7 @@ const festivitiesStructuredData = [
             </p>
           </div>
 
-          <!-- Filtro por mes: de enero a diciembre, con el mes actual seleccionado (lo fija el script en el navegador). -->
+          {/* Filtro por mes: de enero a diciembre, con el mes actual seleccionado (lo fija el script en el navegador). */}
           <div role="tablist" aria-label="Filtrar fiestas por mes" class="mb-10 grid grid-cols-4 sm:grid-cols-7 lg:grid-cols-13 gap-1.5" data-fiestas-filtro>
             {byMonth.map((g) => (
               <button
@@ -206,7 +206,7 @@ const festivitiesStructuredData = [
     </>
   )}
 
-  <!-- Cargontes (la foto se agregará más adelante) -->
+  {/* Cargontes (la foto se agregará más adelante) */}
   <section class="py-20 md:py-28 bg-secondary text-white">
     <div class="container-custom grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
       <div class="lg:col-span-5">
@@ -232,7 +232,7 @@ const festivitiesStructuredData = [
     </div>
   </section>
 
-  <!-- CTA -->
+  {/* CTA */}
   <section class="py-20 md:py-28">
     <div class="container-custom text-center max-w-2xl">
       <span class="eyebrow">Sigue explorando</span>

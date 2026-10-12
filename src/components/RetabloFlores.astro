@@ -106,12 +106,12 @@ const config = sizeConfig[size];
     aria-hidden="true"
   >
     <defs>
-      <!-- Filtro de sombra suave para profundidad -->
+      {/* Filtro de sombra suave para profundidad */}
       <filter id={`${uniqueId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.2)"/>
       </filter>
 
-      <!-- Gradientes para flores -->
+      {/* Gradientes para flores */}
       <radialGradient id={`${uniqueId}-clavel-rojo`} cx="50%" cy="40%" r="60%">
         <stop offset="0%" stop-color={colors.rojoClaro}/>
         <stop offset="60%" stop-color={colors.rojo}/>
@@ -142,7 +142,7 @@ const config = sizeConfig[size];
         <stop offset="100%" stop-color="#155D34"/>
       </linearGradient>
 
-      <!-- Gradientes para colibri -->
+      {/* Gradientes para colibri */}
       <linearGradient id={`${uniqueId}-colibri-cuerpo`} x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color={colors.verdeJade}/>
         <stop offset="50%" stop-color={colors.verde}/>
@@ -164,10 +164,10 @@ const config = sizeConfig[size];
     {/* VARIANTE: FLORES */}
     {(variant === 'flores' || variant === 'composicion') && (
       <g class="flores-group">
-        <!-- Clavel rojo grande (flor principal) -->
+        {/* Clavel rojo grande (flor principal) */}
         <g class={`flor-clavel ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0s;">
           <g transform={size === 'large' ? 'translate(100, 90)' : size === 'medium' ? 'translate(75, 70)' : 'translate(55, 52)'}>
-            <!-- Tallo -->
+            {/* Tallo */}
             <path
               d={size === 'large' ? 'M0 25 Q-5 50 -2 80 Q0 110 5 130' : 'M0 18 Q-3 35 -1 55 Q0 75 3 90'}
               stroke={colors.verdeOscuro}
@@ -175,13 +175,13 @@ const config = sizeConfig[size];
               fill="none"
               stroke-linecap="round"
             />
-            <!-- Hojas del tallo -->
+            {/* Hojas del tallo */}
             <ellipse cx="-8" cy={size === 'large' ? 55 : 40} rx="12" ry="5" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(-30 -8 ${size === 'large' ? 55 : 40})`}/>
             <ellipse cx="6" cy={size === 'large' ? 75 : 55} rx="10" ry="4" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(25 6 ${size === 'large' ? 75 : 55})`}/>
 
-            <!-- Petalos del clavel (multiples capas para efecto rizado) -->
+            {/* Petalos del clavel (multiples capas para efecto rizado) */}
             <g transform="translate(0, 0)">
-              <!-- Capa externa de petalos -->
+              {/* Capa externa de petalos */}
               {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
                 <ellipse
                   cx="0"
@@ -193,7 +193,7 @@ const config = sizeConfig[size];
                   opacity="0.9"
                 />
               ))}
-              <!-- Capa media de petalos -->
+              {/* Capa media de petalos */}
               {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((angle) => (
                 <ellipse
                   cx="0"
@@ -205,7 +205,7 @@ const config = sizeConfig[size];
                   opacity="0.85"
                 />
               ))}
-              <!-- Borde ondulado caracteristico del clavel -->
+              {/* Borde ondulado caracteristico del clavel */}
               {[0, 60, 120, 180, 240, 300].map((angle) => (
                 <path
                   d={size === 'large'
@@ -217,17 +217,17 @@ const config = sizeConfig[size];
                   fill="none"
                 />
               ))}
-              <!-- Centro del clavel -->
+              {/* Centro del clavel */}
               <circle cx="0" cy="0" r={size === 'large' ? 8 : 6} fill={`url(#${uniqueId}-centro-flor)`}/>
               <circle cx="-2" cy="-2" r={size === 'large' ? 3 : 2} fill="white" opacity="0.3"/>
             </g>
           </g>
         </g>
 
-        <!-- Rosa fucsia (flor secundaria) -->
+        {/* Rosa fucsia (flor secundaria) */}
         <g class={`flor-rosa ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0.3s;">
           <g transform={size === 'large' ? 'translate(170, 140)' : size === 'medium' ? 'translate(130, 110)' : 'translate(100, 85)'}>
-            <!-- Tallo -->
+            {/* Tallo */}
             <path
               d={size === 'large' ? 'M0 20 Q5 45 3 70' : 'M0 15 Q3 32 2 50'}
               stroke={colors.verdeOscuro}
@@ -235,12 +235,12 @@ const config = sizeConfig[size];
               fill="none"
               stroke-linecap="round"
             />
-            <!-- Hoja -->
+            {/* Hoja */}
             <ellipse cx="8" cy={size === 'large' ? 40 : 30} rx="10" ry="4" fill={`url(#${uniqueId}-hoja)`} transform={`rotate(20 8 ${size === 'large' ? 40 : 30})`}/>
 
-            <!-- Petalos de rosa (espiral caracteristica) -->
+            {/* Petalos de rosa (espiral caracteristica) */}
             <g transform="translate(0, 0)">
-              <!-- Petalos externos -->
+              {/* Petalos externos */}
               {[0, 72, 144, 216, 288].map((angle) => (
                 <ellipse
                   cx="0"
@@ -252,7 +252,7 @@ const config = sizeConfig[size];
                   opacity="0.9"
                 />
               ))}
-              <!-- Petalos internos -->
+              {/* Petalos internos */}
               {[36, 108, 180, 252, 324].map((angle) => (
                 <ellipse
                   cx="0"
@@ -264,24 +264,24 @@ const config = sizeConfig[size];
                   opacity="0.85"
                 />
               ))}
-              <!-- Centro -->
+              {/* Centro */}
               <circle cx="0" cy="0" r={size === 'large' ? 6 : 4.5} fill={`url(#${uniqueId}-centro-flor)`}/>
               <circle cx="-1.5" cy="-1.5" r={size === 'large' ? 2 : 1.5} fill="white" opacity="0.25"/>
             </g>
           </g>
         </g>
 
-        <!-- Flor naranja pequena -->
+        {/* Flor naranja pequena */}
         <g class={`flor-pequena ${animated ? 'flor-sway' : ''}`} filter={`url(#${uniqueId}-shadow)`} style="--delay: 0.5s;">
           <g transform={size === 'large' ? 'translate(55, 160)' : size === 'medium' ? 'translate(45, 125)' : 'translate(35, 95)'}>
-            <!-- Tallo corto -->
+            {/* Tallo corto */}
             <path
               d={size === 'large' ? 'M0 12 L0 40' : 'M0 9 L0 28'}
               stroke={colors.verdeOscuro}
               stroke-width="2"
               fill="none"
             />
-            <!-- Petalos simples -->
+            {/* Petalos simples */}
             {[0, 60, 120, 180, 240, 300].map((angle) => (
               <ellipse
                 cx="0"
@@ -297,7 +297,7 @@ const config = sizeConfig[size];
           </g>
         </g>
 
-        <!-- Hojas decorativas sueltas -->
+        {/* Hojas decorativas sueltas */}
         <g class="hojas-decorativas">
           <ellipse
             cx={size === 'large' ? 140 : size === 'medium' ? 105 : 80}
@@ -322,13 +322,13 @@ const config = sizeConfig[size];
     {/* VARIANTE: COLIBRIES */}
     {(variant === 'colibries' || variant === 'composicion') && (
       <g class="colibries-group">
-        <!-- Colibri principal volando hacia la derecha -->
+        {/* Colibri principal volando hacia la derecha */}
         <g
           class={`colibri ${animated ? 'colibri-hover' : ''}`}
           transform={size === 'large' ? 'translate(180, 60)' : size === 'medium' ? 'translate(140, 45)' : 'translate(105, 35)'}
           filter={`url(#${uniqueId}-shadow)`}
         >
-          <!-- Cuerpo del colibri -->
+          {/* Cuerpo del colibri */}
           <ellipse
             cx="0"
             cy="0"
@@ -338,7 +338,7 @@ const config = sizeConfig[size];
             transform="rotate(-15)"
           />
 
-          <!-- Pecho iridiscente -->
+          {/* Pecho iridiscente */}
           <ellipse
             cx={size === 'large' ? -5 : -4}
             cy={size === 'large' ? 3 : 2}
@@ -348,7 +348,7 @@ const config = sizeConfig[size];
             opacity="0.8"
           />
 
-          <!-- Cabeza -->
+          {/* Cabeza */}
           <circle
             cx={size === 'large' ? -18 : size === 'medium' ? -14 : -10}
             cy={size === 'large' ? -3 : -2}
@@ -356,7 +356,7 @@ const config = sizeConfig[size];
             fill={colors.verdeOscuro}
           />
 
-          <!-- Ojo -->
+          {/* Ojo */}
           <circle
             cx={size === 'large' ? -20 : size === 'medium' ? -16 : -11}
             cy={size === 'large' ? -4 : -3}
@@ -370,7 +370,7 @@ const config = sizeConfig[size];
             fill="white"
           />
 
-          <!-- Pico largo -->
+          {/* Pico largo */}
           <path
             d={size === 'large'
               ? 'M-25 -2 L-45 0 L-25 2 Z'
@@ -381,7 +381,7 @@ const config = sizeConfig[size];
             fill={colors.tierra}
           />
 
-          <!-- Ala superior -->
+          {/* Ala superior */}
           <path
             d={size === 'large'
               ? 'M5 -5 Q25 -30 40 -20 Q30 -10 15 -3 Z'
@@ -394,7 +394,7 @@ const config = sizeConfig[size];
             opacity="0.9"
           />
 
-          <!-- Ala inferior -->
+          {/* Ala inferior */}
           <path
             d={size === 'large'
               ? 'M5 8 Q20 25 35 18 Q25 12 12 8 Z'
@@ -407,7 +407,7 @@ const config = sizeConfig[size];
             opacity="0.85"
           />
 
-          <!-- Cola -->
+          {/* Cola */}
           <path
             d={size === 'large'
               ? 'M15 2 Q25 5 30 12 Q22 8 18 5 Q28 10 32 18 Q20 12 15 5 Z'
@@ -419,28 +419,28 @@ const config = sizeConfig[size];
           />
         </g>
 
-        <!-- Colibri secundario (mas pequeno, diferente angulo) - solo en composicion y tamanios grandes -->
+        {/* Colibri secundario (mas pequeno, diferente angulo) - solo en composicion y tamanios grandes */}
         {variant === 'composicion' && size !== 'small' && (
           <g
             class={`colibri-small ${animated ? 'colibri-hover-delay' : ''}`}
             transform={size === 'large' ? 'translate(230, 180) scale(-0.6, 0.6)' : 'translate(175, 140) scale(-0.5, 0.5)'}
             filter={`url(#${uniqueId}-shadow)`}
           >
-            <!-- Cuerpo -->
+            {/* Cuerpo */}
             <ellipse cx="0" cy="0" rx="14" ry="8" fill={colors.purpura} transform="rotate(10)"/>
-            <!-- Pecho -->
+            {/* Pecho */}
             <ellipse cx="-4" cy="2" rx="6" ry="4.5" fill={colors.amarillo} opacity="0.7"/>
-            <!-- Cabeza -->
+            {/* Cabeza */}
             <circle cx="-14" cy="-2" r="5.5" fill={colors.purpura}/>
-            <!-- Ojo -->
+            {/* Ojo */}
             <circle cx="-15.5" cy="-3" r="1.5" fill="black"/>
             <circle cx="-15.8" cy="-3.3" r="0.5" fill="white"/>
-            <!-- Pico -->
+            {/* Pico */}
             <path d="M-19 -1 L-32 0 L-19 1 Z" fill={colors.tierra}/>
-            <!-- Alas -->
+            {/* Alas */}
             <path d="M4 -4 Q18 -22 28 -14 Q20 -7 10 -2 Z" fill={colors.turquesa} opacity="0.85"/>
             <path d="M4 5 Q15 18 25 12 Q18 8 9 5 Z" fill={colors.turquesa} opacity="0.8"/>
-            <!-- Cola -->
+            {/* Cola */}
             <path d="M12 1 Q20 4 24 10 Q16 6 14 3.5 Q22 8 25 14 Q14 9 12 3.5 Z" fill="#6C3483"/>
           </g>
         )}

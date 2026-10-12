@@ -134,7 +134,7 @@ const positionClasses = {
           height={config.size}
           patternUnits="userSpaceOnUse"
         >
-          <!-- Greca escalonada principal -->
+          {/* Greca escalonada principal */}
           <path
             d={`
               M0 ${config.size * 0.5}
@@ -152,7 +152,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth}
             fill="none"
           />
-          <!-- Greca escalonada espejo (inferior) -->
+          {/* Greca escalonada espejo (inferior) */}
           <path
             d={`
               M0 ${config.size * 0.5}
@@ -170,7 +170,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth}
             fill="none"
           />
-          <!-- Punto central decorativo -->
+          {/* Punto central decorativo */}
           <circle
             cx={config.size * 0.5}
             cy={config.size * 0.5}
@@ -190,7 +190,7 @@ const positionClasses = {
           height={config.size}
           patternUnits="userSpaceOnUse"
         >
-          <!-- Rombo exterior -->
+          {/* Rombo exterior */}
           <polygon
             points={`
               ${config.size * 0.5},${config.size * 0.1}
@@ -202,7 +202,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth}
             fill="none"
           />
-          <!-- Rombo medio -->
+          {/* Rombo medio */}
           <polygon
             points={`
               ${config.size * 0.5},${config.size * 0.25}
@@ -214,7 +214,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth}
             fill="none"
           />
-          <!-- Rombo interior -->
+          {/* Rombo interior */}
           <polygon
             points={`
               ${config.size * 0.5},${config.size * 0.38}
@@ -227,7 +227,7 @@ const positionClasses = {
             fill={colors.highlight}
             fill-opacity="0.3"
           />
-          <!-- Centro (ojo/semilla) -->
+          {/* Centro (ojo/semilla) */}
           <circle
             cx={config.size * 0.5}
             cy={config.size * 0.5}
@@ -247,7 +247,7 @@ const positionClasses = {
           height={config.size * 0.5}
           patternUnits="userSpaceOnUse"
         >
-          <!-- Linea zigzag principal -->
+          {/* Linea zigzag principal */}
           <polyline
             points={`
               0,${config.size * 0.25}
@@ -262,7 +262,7 @@ const positionClasses = {
             stroke-linecap="round"
             stroke-linejoin="round"
           />
-          <!-- Linea zigzag secundaria (paralela) -->
+          {/* Linea zigzag secundaria (paralela) */}
           <polyline
             points={`
               0,${config.size * 0.35}
@@ -277,7 +277,7 @@ const positionClasses = {
             stroke-linecap="round"
             stroke-linejoin="round"
           />
-          <!-- Puntos en los vertices -->
+          {/* Puntos en los vertices */}
           <circle cx={config.size * 0.25} cy={config.size * 0.05} r={config.size * 0.025} fill={colors.accent}/>
           <circle cx={config.size * 0.75} cy={config.size * 0.05} r={config.size * 0.025} fill={colors.accent}/>
         </pattern>
@@ -293,7 +293,7 @@ const positionClasses = {
           height={config.size}
           patternUnits="userSpaceOnUse"
         >
-          <!-- Chakana completa -->
+          {/* Chakana completa */}
           <path
             d={`
               M${config.size * 0.5} ${config.size * 0.1}
@@ -327,7 +327,7 @@ const positionClasses = {
             fill={colors.secondary}
             fill-opacity="0.15"
           />
-          <!-- Circulo central (vacio cosmico) -->
+          {/* Circulo central (vacio cosmico) */}
           <circle
             cx={config.size * 0.5}
             cy={config.size * 0.5}
@@ -336,7 +336,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth * 0.8}
             fill="none"
           />
-          <!-- Punto central -->
+          {/* Punto central */}
           <circle
             cx={config.size * 0.5}
             cy={config.size * 0.5}
@@ -356,7 +356,7 @@ const positionClasses = {
           height={config.size}
           patternUnits="userSpaceOnUse"
         >
-          <!-- Marco del tocapu -->
+          {/* Marco del tocapu */}
           <rect
             x={config.size * 0.05}
             y={config.size * 0.05}
@@ -366,7 +366,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth}
             fill="none"
           />
-          <!-- Marco interno -->
+          {/* Marco interno */}
           <rect
             x={config.size * 0.15}
             y={config.size * 0.15}
@@ -376,7 +376,7 @@ const positionClasses = {
             stroke-width={config.strokeWidth * 0.7}
             fill="none"
           />
-          <!-- Diagonales internas (simbolo geometrico) -->
+          {/* Diagonales internas (simbolo geometrico) */}
           <line
             x1={config.size * 0.25}
             y1={config.size * 0.25}
@@ -393,7 +393,7 @@ const positionClasses = {
             stroke={colors.accent}
             stroke-width={config.strokeWidth * 0.6}
           />
-          <!-- Cuadrado central -->
+          {/* Cuadrado central */}
           <rect
             x={config.size * 0.4}
             y={config.size * 0.4}
@@ -402,7 +402,7 @@ const positionClasses = {
             fill={colors.highlight}
             fill-opacity="0.4"
           />
-          <!-- Puntos en esquinas -->
+          {/* Puntos en esquinas */}
           <circle cx={config.size * 0.25} cy={config.size * 0.25} r={config.size * 0.025} fill={colors.dark}/>
           <circle cx={config.size * 0.75} cy={config.size * 0.25} r={config.size * 0.025} fill={colors.dark}/>
           <circle cx={config.size * 0.25} cy={config.size * 0.75} r={config.size * 0.025} fill={colors.dark}/>
@@ -411,14 +411,14 @@ const positionClasses = {
       )}
     </defs>
 
-    <!-- Aplicar patron(es) -->
+    {/* Aplicar patron(es) */}
     {pattern === 'mixto' ? (
       <g>
-        <!-- Fondo con grecas -->
+        {/* Fondo con grecas */}
         <rect width="100%" height="33%" fill={`url(#${uniqueId}-grecas)`}/>
-        <!-- Seccion media con rombos -->
+        {/* Seccion media con rombos */}
         <rect y="33%" width="100%" height="34%" fill={`url(#${uniqueId}-rombos)`}/>
-        <!-- Seccion inferior con chakana -->
+        {/* Seccion inferior con chakana */}
         <rect y="67%" width="100%" height="33%" fill={`url(#${uniqueId}-chakana)`}/>
       </g>
     ) : (
