@@ -5,210 +5,12 @@ import SectionHeading from "../../components/SectionHeading.astro";
 import BusinessCard from "../../components/BusinessCard.astro";
 import type { Business } from "../../types";
 import { fetchBusinesses } from "../../lib/api";
+import { whatsappUrl } from "../../lib/whatsapp";
 
-// Fallback usado solo si el CMS no devuelve negocios publicados
-const fallbackBusinesses: Business[] = [
-  // Hospedajes
-  {
-    id: "1",
-    name: "Hospedaje Los Andes",
-    slug: "hospedaje-los-andes",
-    category: "hostal",
-    description: "Hospedaje familiar con habitaciones cómodas y agua caliente las 24 horas. Vista panorámica al valle del río Pampas. Desayuno incluido con productos locales.",
-    address: "Jr. María Parado de Bellido 120, Pomabamba",
-    phone: "066-123456",
-    whatsapp: "51966123456",
-    hours: "Recepción 24 horas",
-    priceRange: "economico",
-    services: ["Agua caliente", "WiFi", "Desayuno incluido", "Estacionamiento"],
-    isVerified: true
-  },
-  {
-    id: "2",
-    name: "Posada Rural Allcaqapata",
-    slug: "posada-rural-allcaqapata",
-    category: "hostal",
-    description: "Experiencia de turismo vivencial en casa tradicional andina. Habitaciones con decoración típica ayacuchana. Ideal para conectar con la naturaleza y la cultura local.",
-    address: "Sector Allcaqapata, a 15 min de la plaza",
-    phone: "066-234567",
-    whatsapp: "51966234567",
-    hours: "Check-in: 2PM - Check-out: 12PM",
-    priceRange: "moderado",
-    services: ["Turismo vivencial", "Fogata nocturna", "Guía local", "Comida típica"],
-    isVerified: true
-  },
-
-  // Restaurantes
-  {
-    id: "3",
-    name: "Restaurante Sabores de mi Tierra",
-    slug: "sabores-de-mi-tierra",
-    category: "restaurante",
-    description: "Cocina tradicional ayacuchana con ingredientes frescos de la zona. Especialidad en pachamanca, puca picante y patachi. Ambiente acogedor con vista a la plaza.",
-    address: "Plaza Principal de Pomabamba s/n",
-    phone: "066-345678",
-    whatsapp: "51966345678",
-    hours: "7:00 AM - 8:00 PM",
-    priceRange: "economico",
-    services: ["Desayunos", "Menú del día", "Platos a la carta", "Para llevar"],
-    isVerified: true
-  },
-  {
-    id: "4",
-    name: "Picantería Doña Juana",
-    slug: "picanteria-dona-juana",
-    category: "restaurante",
-    description: "La mejor chicharronería del distrito. Chicharrón dorado con mote, canchita y sarsa criolla. Solo fines de semana. Chicha de jora de la casa.",
-    address: "Jr. Libertad 45, Pomabamba",
-    phone: "066-456789",
-    hours: "Sábados y Domingos: 8:00 AM - 4:00 PM",
-    priceRange: "economico",
-    services: ["Chicharrones", "Caldos", "Chicha de jora"],
-    isVerified: false
-  },
-  {
-    id: "5",
-    name: "Recreo Campestre El Molle",
-    slug: "recreo-campestre-el-molle",
-    category: "restaurante",
-    description: "Restaurante campestre con amplios jardines y zona de juegos para niños. Pachamanca los domingos bajo pedido. Trucha frita del río Pampas.",
-    address: "Carretera a Urihuana, Km 2",
-    whatsapp: "51966567890",
-    hours: "Viernes a Domingo: 10:00 AM - 6:00 PM",
-    priceRange: "moderado",
-    services: ["Pachamanca", "Área de camping", "Juegos infantiles", "Estacionamiento amplio"],
-    isVerified: true
-  },
-
-  // Tiendas
-  {
-    id: "6",
-    name: "Bodega Central",
-    slug: "bodega-central",
-    category: "tienda",
-    description: "Tienda de abarrotes con productos de primera necesidad. Agente BCP y Yape disponible. Recargas de celular todas las operadoras.",
-    address: "Jr. María Parado de Bellido 85, Pomabamba",
-    phone: "066-567890",
-    hours: "6:00 AM - 9:00 PM",
-    priceRange: "economico",
-    services: ["Abarrotes", "Agente bancario", "Recargas", "Gas doméstico"],
-    isVerified: true
-  },
-  {
-    id: "7",
-    name: "Ferretería El Constructor",
-    slug: "ferreteria-el-constructor",
-    category: "tienda",
-    description: "Materiales de construcción, herramientas y artículos de ferretería en general. Cemento, fierro, calaminas y más.",
-    address: "Av. Los Libertadores 234, Pomabamba",
-    phone: "066-678901",
-    hours: "7:00 AM - 6:00 PM",
-    priceRange: "moderado",
-    services: ["Cemento", "Fierro", "Herramientas", "Pinturas"],
-    isVerified: false
-  },
-
-  // Transporte
-  {
-    id: "8",
-    name: "Transportes Cangallo Express",
-    slug: "transportes-cangallo-express",
-    category: "transporte",
-    description: "Servicio de combis y autos colectivos a Cangallo, Ayacucho y comunidades del distrito. Salidas diarias desde la plaza principal.",
-    address: "Terminal terrestre, Plaza Principal",
-    phone: "066-789012",
-    whatsapp: "51966789012",
-    hours: "Salidas: 5:00 AM, 7:00 AM, 2:00 PM",
-    priceRange: "economico",
-    services: ["Ruta a Cangallo", "Ruta a Ayacucho", "Encomiendas"],
-    isVerified: true
-  },
-  {
-    id: "9",
-    name: "Mototaxis Pomabamba",
-    slug: "mototaxis-pomabamba",
-    category: "transporte",
-    description: "Asociación de mototaxistas para traslados dentro del pueblo y comunidades cercanas. Servicio las 24 horas.",
-    address: "Paradero Plaza Principal",
-    whatsapp: "51966890123",
-    hours: "24 horas",
-    priceRange: "economico",
-    services: ["Traslados locales", "Tours cortos", "Servicio nocturno"],
-    isVerified: false
-  },
-
-  // Artesanía
-  {
-    id: "10",
-    name: "Artesanías Warmi Maki",
-    slug: "artesanias-warmi-maki",
-    category: "artesania",
-    description: "Textiles tradicionales hechos a mano por artesanas de la comunidad. Mantas, chumpis, llicllas y tejidos con tintes naturales. Técnicas ancestrales transmitidas por generaciones.",
-    address: "Jr. Artesanos 12, Pomabamba",
-    whatsapp: "51966901234",
-    hours: "9:00 AM - 5:00 PM (Lunes a Sábado)",
-    priceRange: "moderado",
-    services: ["Textiles", "Bordados", "Talleres demostrativos", "Envíos a Lima"],
-    isVerified: true
-  },
-  {
-    id: "11",
-    name: "Taller de Cerámica Awaq",
-    slug: "taller-ceramica-awaq",
-    category: "artesania",
-    description: "Cerámica decorativa y utilitaria con diseños inspirados en iconografía Wari y Chanca. Réplicas arqueológicas y piezas contemporáneas.",
-    address: "Sector Silverio Pata, Pomabamba",
-    phone: "066-012345",
-    hours: "Visitas con cita previa",
-    priceRange: "premium",
-    services: ["Cerámica decorativa", "Réplicas arqueológicas", "Talleres para visitantes"],
-    isVerified: true
-  },
-
-  // Servicios
-  {
-    id: "12",
-    name: "Farmacia San Francisco",
-    slug: "farmacia-san-francisco",
-    category: "servicio",
-    description: "Medicamentos genéricos y de marca. Atención de primeros auxilios. Inyectables y toma de presión arterial.",
-    address: "Jr. Lima 56, Pomabamba",
-    phone: "066-123789",
-    hours: "7:00 AM - 10:00 PM",
-    priceRange: "moderado",
-    services: ["Medicamentos", "Inyectables", "Primeros auxilios"],
-    isVerified: true
-  },
-  {
-    id: "13",
-    name: "Cabinas Internet Cyber Net",
-    slug: "cyber-net",
-    category: "servicio",
-    description: "Servicio de internet, impresiones, fotocopias y escaneo. Llamadas nacionales e internacionales. Zona WiFi para clientes.",
-    address: "Jr. María Parado de Bellido 98, Pomabamba",
-    phone: "066-234890",
-    hours: "8:00 AM - 10:00 PM",
-    priceRange: "economico",
-    services: ["Internet", "Impresiones", "Fotocopias", "Llamadas"],
-    isVerified: false
-  },
-  {
-    id: "14",
-    name: "Guía Turístico Don Cirilo",
-    slug: "guia-turistico-don-cirilo",
-    category: "servicio",
-    description: "Guía local con 20 años de experiencia. Conocedor de la historia, flora, fauna y sitios arqueológicos del distrito. Tours personalizados en español y quechua.",
-    address: "Consultar por WhatsApp",
-    whatsapp: "51966345901",
-    priceRange: "moderado",
-    services: ["Tours guiados", "Trekking", "Turismo vivencial", "Traducciones quechua"],
-    isVerified: true
-  }
-];
-
-// Contenido desde el CMS; si no hay negocios publicados, usa el fallback
-const dbBusinesses = await fetchBusinesses();
-const businesses = dbBusinesses.length ? dbBusinesses : fallbackBusinesses;
+// Negocios solo desde el CMS. No hay datos de ejemplo: se publicarían teléfonos y WhatsApp
+// inventados que pueden ser de personas reales. Cada negocio debe autorizar su publicación.
+const businesses = await fetchBusinesses();
+const hasBusinesses = businesses.length > 0;
 
 // Agrupar por categoría
 const categories = [
@@ -253,7 +55,7 @@ const businessSchemas = verifiedBusinesses.map((business) => ({
 }));
 
 // ItemList schema para el directorio
-const directorioStructuredData = [
+const directorioStructuredData = hasBusinesses ? [
   {
     type: "itemList" as const,
     data: {
@@ -267,10 +69,9 @@ const directorioStructuredData = [
     },
   },
   ...businessSchemas,
-];
+] : [];
 
-const whatsappNumber = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || "+51999888777").replace(/\D/g, "");
-const registerUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, quiero registrar mi negocio en el directorio")}`;
+const registerUrl = whatsappUrl("Hola, quiero registrar mi negocio en el directorio de servicios del sitio.");
 ---
 
 <BaseLayout
@@ -290,7 +91,23 @@ const registerUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("
     breadcrumbs={breadcrumbs}
   />
 
-  <nav aria-label="Categorías" class="sticky top-[80px] md:top-[92px] z-40 bg-sand/95 backdrop-blur border-b border-line">
+  {!hasBusinesses && (
+    <section class="py-16 md:py-20">
+      <div class="container-custom">
+        <div class="rounded-2xl border border-dashed border-line bg-white p-8 md:p-10 max-w-3xl">
+          <span class="eyebrow">Próximamente</span>
+          <h2 class="font-heading text-3xl font-semibold leading-tight text-ink">Estamos sumando a los negocios del distrito</h2>
+          <p class="mt-3 text-lg leading-relaxed">
+            Pronto encontrarás aquí hospedajes, restaurantes, transporte y otros servicios de Pomabamba. Mientras
+            tanto, escríbenos y te ayudamos a organizar tu estadía.
+          </p>
+          <a href={whatsappUrl("Hola, busco hospedaje, comida o transporte en Pomabamba. ¿Me pueden ayudar?")} target="_blank" rel="noopener noreferrer" class="btn-primary mt-6">Escríbenos por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {hasBusinesses && <nav aria-label="Categorías" class="sticky top-[80px] md:top-[92px] z-40 bg-sand/95 backdrop-blur border-b border-line">
     <ul class="container-custom flex gap-2 overflow-x-auto py-3 text-sm">
       {businessesByCategory.filter((c) => c.items.length > 0).map((cat) => (
         <li>
@@ -300,7 +117,7 @@ const registerUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("
         </li>
       ))}
     </ul>
-  </nav>
+  </nav>}
 
   {businessesByCategory.map((category, i) => category.items.length > 0 && (
     <section id={category.key} class:list={["py-16 md:py-20 scroll-mt-40", i % 2 === 1 && "bg-white"]}>
