@@ -44,3 +44,5 @@ raw-media/
 # IA
 .claude/
 CLAUDE.md
+# auditoría responsive (npm run test:responsive)
+.responsive/

@@ -287,6 +287,8 @@
 
   .section-heading {
     @apply text-3xl md:text-5xl font-heading font-semibold text-ink mb-5 leading-[1.1];
+    /* En columnas angostas, una palabra larga se parte en vez de desbordar. */
+    overflow-wrap: break-word;
   }
 
   .section-heading-alt {
