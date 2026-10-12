@@ -45,7 +45,7 @@ const formatRange = (f: Festivity) => {
   return `${s.d} de ${MONTHS[s.m].toLowerCase()} al ${e.d} de ${MONTHS[e.m].toLowerCase()}`;
 };
 const excerpt = (text: string, max = 150) => (text.length > max ? `${text.slice(0, text.lastIndexOf(" ", max))}…` : text);
-const altFor = (f: Festivity) => `${f.name} en Pomabamba, María Parado de Bellido, Ayacucho`;
+const altFor = (f: Festivity) => `${f.name} en Pomabamba, Ayacucho`;
 
 const dances = ["Chinlili", "Chimaycha", "Qacchwa", "Toril", "Rejoneras", "Wacqrapukus"];
 
@@ -69,8 +69,8 @@ const festivitiesStructuredData = [
   {
     type: "itemList" as const,
     data: {
-      name: "Calendario de fiestas de Pomabamba, María Parado de Bellido",
-      description: "Fiestas patronales y costumbristas del distrito María Parado de Bellido, Cangallo, Ayacucho.",
+      name: "Calendario de fiestas de Pomabamba, Ayacucho",
+      description: "Fiestas patronales y costumbristas de Pomabamba, Ayacucho.",
       items: ordered.map((f) => ({
         name: f.name,
         description: f.description,
@@ -85,7 +85,7 @@ const festivitiesStructuredData = [
 
 <BaseLayout
   title="Fiestas de Pomabamba, Ayacucho: calendario festivo"
-  description="Calendario de fiestas de Pomabamba, María Parado de Bellido (Cangallo, Ayacucho): carnavales, fiesta patronal de San Francisco de Asís, San Cristóbal y San José, cargontes y danzas tradicionales."
+  description="Calendario de fiestas de Pomabamba, Ayacucho: carnavales, fiesta patronal de San Francisco de Asís, San Cristóbal y San José, cargontes y danzas tradicionales."
   image="/images/hero-festivities.webp"
   keywords={festivitiesKeywords}
   breadcrumbs={breadcrumbs}
@@ -97,7 +97,7 @@ const festivitiesStructuredData = [
     title="Vive nuestras fiestas"
     intro="La fe y la tradición se encuentran en las fiestas de Pomabamba: procesiones, danzas, música y comida compartida durante todo el año."
     image="/images/hero-festivities.webp"
-    imageAlt="Procesión con banderas blancas por los cerros de Pomabamba, María Parado de Bellido, Ayacucho"
+    imageAlt="Procesión con banderas blancas por los cerros de Pomabamba, Ayacucho"
     breadcrumbs={breadcrumbs}
   />
 
