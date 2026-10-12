@@ -59,8 +59,8 @@ const directorioStructuredData = hasBusinesses ? [
   {
     type: "itemList" as const,
     data: {
-      name: "Directorio de Negocios de María Parado de Bellido",
-      description: "Guía completa de hospedajes, restaurantes, tiendas, transporte, artesanía y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho.",
+      name: "Servicios en Pomabamba, Ayacucho",
+      description: "Hospedajes, restaurantes, tiendas, transporte, artesanía y servicios en Pomabamba, Ayacucho.",
       items: businesses.map((b) => ({
         name: b.name,
         description: b.description,
@@ -76,8 +76,8 @@ const registerUrl = whatsappUrl("Hola, tengo un negocio en Pomabamba y quiero ap
 ---
 
 <BaseLayout
-  title="Servicios en Pomabamba: hospedaje, comida y transporte"
-  description="Encuentra hospedajes, restaurantes, tiendas, transporte y servicios en el distrito María Parado de Bellido, Cangallo, Ayacucho."
+  title="Servicios en Pomabamba, Ayacucho: hospedaje y comida"
+  description="Encuentra hospedajes, restaurantes, tiendas, transporte y otros servicios en Pomabamba, Ayacucho (provincia de Cangallo)."
   image="/images/hero_1.webp"
   keywords={directorioKeywords}
   breadcrumbs={breadcrumbs}
@@ -160,7 +160,7 @@ const registerUrl = whatsappUrl("Hola, tengo un negocio en Pomabamba y quiero ap
     <div class="container-custom">
       <SectionHeading
         eyebrow="Tu visita"
-        title="¿Listo para conocer María Parado de Bellido?"
+        title="¿Listo para conocer Pomabamba?"
         intro="Te ayudamos a planificar tu visita para descubrir la riqueza cultural, histórica y natural del distrito."
       />
       <div class="flex flex-col sm:flex-row gap-3 justify-center">

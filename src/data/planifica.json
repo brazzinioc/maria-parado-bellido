@@ -1,6 +1,6 @@
 {
   "_nota": "Contenido de respaldo para 'Planifica tu visita'. Preparado para migrar al CMS (tabla t_visit_info). Verificar rutas, tiempos y datos antes de producción.",
-  "intro": "Todo lo que necesitas para llegar a Pomabamba y disfrutar tu visita a María Parado de Bellido.",
+  "intro": "Todo lo que necesitas para llegar a Pomabamba y disfrutar tu visita.",
   "highlights": [
     { "label": "Altitud", "value": "3,236 msnm" },
     { "label": "Desde Ayacucho", "value": "≈ 3 horas" },
