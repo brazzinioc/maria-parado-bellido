@@ -22,7 +22,7 @@ const upcoming = events
   .filter((e) => e.isRecurring || dayOf(e.date) >= today)
   .sort((a, b) => dayOf(a.date) - dayOf(b.date));
 
-const avisarUrl = whatsappUrl("Hola, quiero avisar de una actividad en mi comunidad para la Agenda del distrito.");
+const avisarUrl = whatsappUrl("Hola, quiero avisar de una actividad de mi comunidad para publicarla en la agenda de Pomabamba.");
 
 const activityTypes = [
   { title: "Faena comunal", image: "evento-faena", text: "Trabajo de todos los comuneros para el bien común: limpieza de canales de riego, arreglo de caminos y obras de la comunidad." },
@@ -53,6 +53,7 @@ const breadcrumbs = [
   image="/images/hero_5.webp"
   keywords={["agenda Pomabamba", "feria de Pomabamba", "faenas comunales Ayacucho", "calendario agrícola Ayacucho", "vida comunal Cangallo"]}
   breadcrumbs={breadcrumbs}
+  whatsappMessage="Hola, vi la agenda de Pomabamba y quiero más información sobre una actividad."
 >
   <PageHero
     eyebrow="Agenda del distrito"

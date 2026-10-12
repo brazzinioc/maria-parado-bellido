@@ -1,7 +1,7 @@
 ---
 // WhatsApp Floating CTA Button
 // Follows Ayacucho design aesthetic with cultural color palette
-// Phone number: +51 999 888 777
+import { whatsappUrl as buildWhatsappUrl } from "../lib/whatsapp";
 
 interface Props {
   phoneNumber?: string;
@@ -9,13 +9,12 @@ interface Props {
 }
 
 const {
-  phoneNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || "+51999888777", // Use env variable or fallback
-  message = "Hola! Me gustaría obtener más información sobre María Parado de Bellido"
+  phoneNumber,
+  message = "Hola, quiero visitar Pomabamba (Cangallo, Ayacucho). ¿Me pueden dar información?"
 } = Astro.props;
 
-// Encode message for URL
-const encodedMessage = encodeURIComponent(message);
-const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+// wa.me exige el número solo con dígitos (sin «+»); el helper lo limpia.
+const whatsappUrl = phoneNumber ? buildWhatsappUrl(message, phoneNumber) : buildWhatsappUrl(message);
 ---
 
 <!-- WhatsApp Floating Button -->

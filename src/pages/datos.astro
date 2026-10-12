@@ -45,7 +45,7 @@ const structuredData = [
   },
 ];
 
-const aportarUrl = whatsappUrl("Hola, quiero aportar información sobre mi comunidad para la sección Pomabamba en datos.");
+const aportarUrl = whatsappUrl("Hola, quiero aportar información sobre mi comunidad para la página de datos de Pomabamba.");
 
 type Tema = { href?: string; titulo: string; texto: string; fuente: string; icono: string };
 const temas: Tema[] = [
@@ -68,6 +68,7 @@ const temas: Tema[] = [
   keywords={keywords}
   breadcrumbs={breadcrumbs}
   structuredData={structuredData}
+  whatsappMessage="Hola, tengo una consulta sobre los datos de Pomabamba publicados en la web."
 >
   <PageHero
     eyebrow="Datos del distrito"

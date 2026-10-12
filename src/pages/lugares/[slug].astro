@@ -86,6 +86,7 @@ const description =
   keywords={[place.name, `${place.name} Ayacucho`, "turismo Cangallo", "María Parado de Bellido", categoryLabel]}
   breadcrumbs={breadcrumbs}
   structuredData={[{ type: "place" as const, data: showPrices ? place : { ...place, entryFee: undefined } }]}
+  whatsappMessage={`Hola, quiero visitar "${place.name}". ¿Cómo llego desde Pomabamba y necesito un guía?`}
 >
   <PageHero
     eyebrow={categoryLabel}

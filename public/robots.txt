@@ -1,10 +1,8 @@
-# robots.txt — María Parado de Bellido (Pomabamba, Ayacucho)
+# robots.txt — Pomabamba, María Parado de Bellido (Cangallo, Ayacucho)
 # https://www.mariaparadodebellido.com
 
-# EN DESARROLLO: el sitio está cerrado a los buscadores a propósito.
-# Al lanzarlo, borrar la línea «Disallow: /» (se mantiene /api/).
 User-agent: *
-Disallow: /
+Allow: /
 Disallow: /api/
 
 Sitemap: https://www.mariaparadodebellido.com/sitemap-index.xml

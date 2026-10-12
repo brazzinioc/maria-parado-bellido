@@ -71,7 +71,8 @@ const directorioStructuredData = hasBusinesses ? [
   ...businessSchemas,
 ] : [];
 
-const registerUrl = whatsappUrl("Hola, quiero registrar mi negocio en el directorio de servicios del sitio.");
+const buscarMensaje = "Hola, busco hospedaje, comida o transporte en Pomabamba. ¿Qué me recomiendan?";
+const registerUrl = whatsappUrl("Hola, tengo un negocio en Pomabamba y quiero aparecer en la sección de servicios de la web.");
 ---
 
 <BaseLayout
@@ -81,6 +82,7 @@ const registerUrl = whatsappUrl("Hola, quiero registrar mi negocio en el directo
   keywords={directorioKeywords}
   breadcrumbs={breadcrumbs}
   structuredData={directorioStructuredData}
+  whatsappMessage={buscarMensaje}
 >
   <PageHero
     eyebrow="Servicios"
@@ -101,7 +103,7 @@ const registerUrl = whatsappUrl("Hola, quiero registrar mi negocio en el directo
             Pronto encontrarás aquí hospedajes, restaurantes, transporte y otros servicios de Pomabamba. Mientras
             tanto, escríbenos y te ayudamos a organizar tu estadía.
           </p>
-          <a href={whatsappUrl("Hola, busco hospedaje, comida o transporte en Pomabamba. ¿Me pueden ayudar?")} target="_blank" rel="noopener noreferrer" class="btn-primary mt-6">Escríbenos por WhatsApp</a>
+          <a href={whatsappUrl(buscarMensaje)} target="_blank" rel="noopener noreferrer" class="btn-primary mt-6">Escríbenos por WhatsApp</a>
         </div>
       </div>
     </section>

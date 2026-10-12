@@ -43,9 +43,9 @@ const meta = [
   { label: "Grupo", value: tour.max_participants ? `Hasta ${tour.max_participants}` : "" },
 ].filter((m) => m.value);
 const stops = tour.locations.map((l) => l.name).filter(Boolean);
-const bookUrl = whatsappUrl(`Hola, quiero reservar la ruta "${tour.title}". ¿Qué fechas tienen disponibles?`);
+const bookUrl = whatsappUrl(`Hola, vi "${tour.title}" en la web de turismo de Pomabamba y quiero reservar. ¿Qué fechas tienen disponibles?`);
 const guideUrl = guide && isDialable(guide.phone)
-  ? whatsappUrl(`Hola ${guide.name.split(" ")[0]}, vi la ruta "${tour.title}" en la web y quiero hacer una consulta.`, guide.phone)
+  ? whatsappUrl(`Hola, ${guide.name.split(" ")[0]}. Vi "${tour.title}" en la web de turismo de Pomabamba y tengo una consulta.`, guide.phone)
   : undefined;
 ---
 
