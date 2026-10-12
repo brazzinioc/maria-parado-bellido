@@ -10,8 +10,9 @@
  *   correctos. En GA hay que desactivar «Cambios de página basados en eventos
  *   del historial del navegador» (Flujo de datos → Medición mejorada → Vistas de
  *   página → Configuración avanzada) para no contarlas dos veces.
- * - Eventos propios: contact_whatsapp (clic en un enlace de WhatsApp) y
- *   click_reservar (botones de reserva de las rutas).
+ * - Eventos propios: contact_whatsapp (clic en un enlace de WhatsApp),
+ *   click_reservar (botones de reserva de las rutas) y abrir_encuesta (invitación
+ *   a la encuesta del pie de página).
  */
 const { measurementId } = Astro.props;
 const GA_MEASUREMENT_ID = measurementId || import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
@@ -45,6 +46,10 @@ const enabled =
           var link = e.target instanceof Element ? e.target.closest("a[href]") : null;
           if (!link) return;
           var href = link.getAttribute("href") || "";
+          if (link.hasAttribute("data-encuesta")) {
+            gtag("event", "abrir_encuesta", { page_path: location.pathname });
+            return;
+          }
           if (/wa\.me|api\.whatsapp\.com/.test(href)) {
             var label = (link.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80);
             gtag("event", /reservar/i.test(label) ? "click_reservar" : "contact_whatsapp", {

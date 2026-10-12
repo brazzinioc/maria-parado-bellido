@@ -3,7 +3,9 @@ import { ClientRouter } from "astro:transitions";
 import SEO from "../components/SEO.astro";
 import StructuredData from "../components/StructuredData.astro";
 import WhatsAppCTA from "../components/WhatsAppCTA.astro";
-import FeedbackWidget from "../components/FeedbackWidget.astro";
+// Botón flotante «Tu Opinión» desactivado: la encuesta ahora se invita desde el pie de página.
+// Para volver a mostrarlo, descomentar este import y <FeedbackWidget /> más abajo.
+// import FeedbackWidget from "../components/FeedbackWidget.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import { whatsappUrl } from "../lib/whatsapp";
 import type { BreadcrumbItem } from "../types";
@@ -100,6 +102,9 @@ const hasSocial = Object.values(socialLinks).some(Boolean);
 const navLinkBase = "px-4 py-2 rounded-full font-medium text-sm transition-colors duration-200 focus-ring";
 const navLinkActive = "text-primary bg-primary-soft";
 const navLinkIdle = "text-ink hover:text-primary";
+
+// Encuesta de opinión (variable de entorno en Vercel).
+const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL;
 ---
 
 <!doctype html>
@@ -382,8 +387,8 @@ const navLinkIdle = "text-ink hover:text-primary";
     <!-- WhatsApp Floating CTA Button -->
     <WhatsAppCTA message={whatsappMessage} />
 
-    <!-- Feedback Widget -->
-    <FeedbackWidget />
+    <!-- Feedback Widget: desactivado (ver el import). La encuesta está en el pie de página. -->
+    {/* <FeedbackWidget /> */}
 
     <!-- Footer -->
     <footer
@@ -515,23 +520,25 @@ const navLinkIdle = "text-ink hover:text-primary";
           </div>
         </div>
 
+        <!-- Invitación a la encuesta (PUBLIC_FEEDBACK_URL). Sin la variable, no se muestra. -->
+        {feedbackUrl && (
+          <div class="mb-10 flex flex-col gap-4 rounded-2xl border border-white/15 bg-white/5 p-5 md:flex-row md:items-center md:justify-between md:gap-8 md:p-6">
+            <div>
+              <p class="font-heading text-xl font-semibold text-white">¿Nos ayudas a mejorar?</p>
+              <p class="mt-1 text-sm text-white/70">Cuéntanos qué te pareció el sitio en una encuesta corta.</p>
+            </div>
+            <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" data-encuesta class="btn-ghost-light flex-shrink-0 self-start md:self-auto">
+              Dar mi opinión <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        )}
+
         <!-- Bottom bar -->
         <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
           <p class="text-white/50 text-center sm:text-left">
             © {new Date().getFullYear()} María Parado de Bellido - Turismo Ayacucho · Proyecto comunitario
           </p>
-          <p class="text-white/50 text-xs flex items-center gap-2">
-            <span>Hecho con ❤️ para nuestra comunidad</span>
-            <span class="sm:hidden">·</span>
-            <a
-              href={import.meta.env.PUBLIC_FEEDBACK_URL || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="sm:hidden text-accent hover:text-white transition-colors"
-            >
-              Tu Opinión
-            </a>
-          </p>
+          <p class="text-white/50 text-xs">Hecho con ❤️ para nuestra comunidad</p>
         </div>
       </div>
     </footer>
@@ -694,7 +701,7 @@ const navLinkIdle = "text-ink hover:text-primary";
         document.querySelectorAll(".reveal:not(.active)").forEach((el) => observer.observe(el));
       }
 
-      // Difiere los widgets flotantes (Tu Opinión, WhatsApp) mientras se ve
+      // Difiere el botón flotante de WhatsApp mientras se ve
       // el hero cinematográfico de la home, para no competir con su CTA
       // principal. Se revelan apenas el hero sale del viewport y quedan
       // visibles el resto de la sesión en esa página (sin volver a
