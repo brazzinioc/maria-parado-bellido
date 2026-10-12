@@ -25,8 +25,8 @@ const enabled =
 {enabled && (
   <>
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    {/* El <head> se conserva entre navegaciones: el script corre una sola vez por visita. */}
     <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
-      // El <head> se conserva entre navegaciones: esto corre una sola vez por visita.
       if (!window.__gaReady) {
         window.__gaReady = true;
         window.dataLayer = window.dataLayer || [];

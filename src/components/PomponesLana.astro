@@ -277,7 +277,7 @@ const posClass = orientation === 'vertical'
     aria-hidden="true"
   >
     <defs>
-      <!-- Filtro de textura esponjosa de lana -->
+      {/* Filtro de textura esponjosa de lana */}
       <filter id={`${uniqueId}-wool`} x="-50%" y="-50%" width="200%" height="200%">
         <feTurbulence
           type="fractalNoise"
@@ -295,14 +295,14 @@ const posClass = orientation === 'vertical'
         />
       </filter>
 
-      <!-- Filtro de borde difuso -->
+      {/* Filtro de borde difuso */}
       <filter id={`${uniqueId}-fluffy`} x="-25%" y="-25%" width="150%" height="150%">
         <feGaussianBlur stdDeviation="1.2" in="SourceGraphic" result="blur"/>
         <feMorphology operator="dilate" radius="0.5" in="blur" result="dilate"/>
         <feComposite in="SourceGraphic" in2="dilate" operator="over"/>
       </filter>
 
-      <!-- Patron de textura de fibras de lana -->
+      {/* Patron de textura de fibras de lana */}
       <pattern id={`${uniqueId}-fibers`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
         <path d="M0 5 Q2.5 3 5 5 Q7.5 7 10 5" stroke="white" stroke-width="0.4" fill="none" opacity="0.3"/>
         <path d="M0 2 Q5 0 10 2" stroke="white" stroke-width="0.3" fill="none" opacity="0.2"/>
@@ -311,7 +311,7 @@ const posClass = orientation === 'vertical'
         <circle cx="7" cy="3" r="0.6" fill="white" opacity="0.15"/>
       </pattern>
 
-      <!-- Gradientes radiales para cada pompon -->
+      {/* Gradientes radiales para cada pompon */}
       {pompones.map((p, i) => (
         <radialGradient id={`${uniqueId}-grad-${i}`} cx="35%" cy="35%" r="65%">
           <stop offset="0%" stop-color={lighten(p.color, 55)} />
@@ -322,10 +322,10 @@ const posClass = orientation === 'vertical'
       ))}
     </defs>
 
-    <!-- Cuerda de lana trenzada -->
+    {/* Cuerda de lana trenzada */}
     {showCord && (
       <g class="cord-group">
-        <!-- Sombra de la cuerda -->
+        {/* Sombra de la cuerda */}
         <path
           d={cordPath}
           stroke="rgba(0,0,0,0.15)"
@@ -333,7 +333,7 @@ const posClass = orientation === 'vertical'
           fill="none"
           transform="translate(2, 2)"
         />
-        <!-- Cuerda base -->
+        {/* Cuerda base */}
         <path
           d={cordPath}
           stroke="#8B6F47"
@@ -341,7 +341,7 @@ const posClass = orientation === 'vertical'
           fill="none"
           stroke-linecap="round"
         />
-        <!-- Textura de trenzado -->
+        {/* Textura de trenzado */}
         <path
           d={cordPath}
           stroke="#A67C52"
@@ -350,7 +350,7 @@ const posClass = orientation === 'vertical'
           stroke-dasharray="4 3"
           opacity="0.6"
         />
-        <!-- Brillo superior -->
+        {/* Brillo superior */}
         <path
           d={cordPath}
           stroke="#C4A574"
@@ -362,7 +362,7 @@ const posClass = orientation === 'vertical'
       </g>
     )}
 
-    <!-- Pompones de lana con forma autentica -->
+    {/* Pompones de lana con forma autentica */}
     {pompones.map((pompon, index) => {
       // Pre-calcular path de forma esponjosa
       const fluffyPath = generateFluffyPath(pompon.x, pompon.y, pompon.size, pompon.tufts, pompon.squish);
@@ -373,7 +373,7 @@ const posClass = orientation === 'vertical'
           style={`--delay: ${pompon.delay}s; --sway-amount: ${3 + (index % 3)}px;`}
           transform={`rotate(${pompon.rotation} ${pompon.x} ${pompon.y})`}
         >
-          <!-- Sombra proyectada con forma irregular -->
+          {/* Sombra proyectada con forma irregular */}
           <path
             d={fluffyPath}
             fill="rgba(0,0,0,0.15)"
@@ -382,28 +382,28 @@ const posClass = orientation === 'vertical'
             transform-origin={`${pompon.x}px ${pompon.y}px`}
           />
 
-          <!-- Capa base del pompon con forma esponjosa y textura de lana -->
+          {/* Capa base del pompon con forma esponjosa y textura de lana */}
           <path
             d={fluffyPath}
             fill={`url(#${uniqueId}-grad-${index})`}
             filter={`url(#${uniqueId}-wool)`}
           />
 
-          <!-- Segunda capa ligeramente mas pequena para profundidad -->
+          {/* Segunda capa ligeramente mas pequena para profundidad */}
           <path
             d={generateFluffyPath(pompon.x, pompon.y, pompon.size * 0.88, pompon.tufts, pompon.squish)}
             fill={pompon.color}
             opacity="0.7"
           />
 
-          <!-- Textura de fibras superpuesta -->
+          {/* Textura de fibras superpuesta */}
           <path
             d={fluffyPath}
             fill={`url(#${uniqueId}-fibers)`}
             opacity="0.4"
           />
 
-          <!-- Capa de brillo interno (iluminacion superior izquierda) -->
+          {/* Capa de brillo interno (iluminacion superior izquierda) */}
           <ellipse
             cx={pompon.x - pompon.size * 0.22}
             cy={pompon.y - pompon.size * 0.22}
@@ -414,7 +414,7 @@ const posClass = orientation === 'vertical'
             opacity="0.4"
           />
 
-          <!-- Capa de profundidad (sombra inferior derecha) -->
+          {/* Capa de profundidad (sombra inferior derecha) */}
           <ellipse
             cx={pompon.x + pompon.size * 0.2}
             cy={pompon.y + pompon.size * 0.2}
@@ -424,7 +424,7 @@ const posClass = orientation === 'vertical'
             opacity="0.3"
           />
 
-          <!-- Hebras de lana saliendo del pompon (textura caracteristica) -->
+          {/* Hebras de lana saliendo del pompon (textura caracteristica) */}
           <g class="wool-fibers">
             {pompon.fibers.map((fiber, fi) => {
               const angleRad = fiber.angle * Math.PI / 180;
@@ -458,7 +458,7 @@ const posClass = orientation === 'vertical'
             })}
           </g>
 
-          <!-- Centro del pompon (donde se ata) - ligeramente visible -->
+          {/* Centro del pompon (donde se ata) - ligeramente visible */}
           <circle
             cx={pompon.x}
             cy={pompon.y}
@@ -467,7 +467,7 @@ const posClass = orientation === 'vertical'
             opacity="0.2"
           />
 
-          <!-- Puntos de brillo especular (luz reflejada en fibras) -->
+          {/* Puntos de brillo especular (luz reflejada en fibras) */}
           <circle
             cx={pompon.x - pompon.size * 0.3}
             cy={pompon.y - pompon.size * 0.32}
@@ -482,7 +482,7 @@ const posClass = orientation === 'vertical'
             fill="white"
             opacity="0.25"
           />
-          <!-- Pequenos brillos adicionales simulando luz en fibras individuales -->
+          {/* Pequenos brillos adicionales simulando luz en fibras individuales */}
           <circle
             cx={pompon.x + pompon.size * 0.25}
             cy={pompon.y - pompon.size * 0.28}

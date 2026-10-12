@@ -60,7 +60,7 @@ const metaDescription = resumen(description);
 const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 ---
 
-<!-- Primary Meta Tags -->
+{/* Primary Meta Tags */}
 <title>{fullTitle}</title>
 <meta name="title" content={fullTitle} />
 <meta name="description" content={metaDescription} />
@@ -68,12 +68,12 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <meta name="author" content={author} />
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Robots & Indexing -->
+{/* Robots & Indexing */}
 <meta name="robots" content={robotsContent} />
 <meta name="googlebot" content={robotsContent} />
 <meta name="bingbot" content={robotsContent} />
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:type" content={article ? "article" : type} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={fullTitle} />
@@ -97,7 +97,7 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
   </>
 )}
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={fullTitle} />
@@ -105,7 +105,7 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <meta name="twitter:image" content={imageUrl} />
 <meta name="twitter:image:alt" content={title} />
 
-<!-- Geographic & Language -->
+{/* Geographic & Language */}
 <meta name="language" content="es" />
 <meta http-equiv="content-language" content="es-PE" />
 <meta name="geo.region" content="PE-AYA" />
@@ -113,22 +113,22 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
 <meta name="geo.position" content="-13.6014;-74.2342" />
 <meta name="ICBM" content="-13.6014, -74.2342" />
 
-<!-- Mobile & Theme -->
+{/* Mobile & Theme */}
 <meta name="theme-color" content="#b5452a" />
 <meta name="msapplication-TileColor" content="#b5452a" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="María Parado de Bellido" />
 
-<!-- Hreflang for Spanish Peru -->
+{/* Hreflang for Spanish Peru */}
 <link rel="alternate" hreflang="es-PE" href={canonicalURL} />
 <link rel="alternate" hreflang="es" href={canonicalURL} />
 <link rel="alternate" hreflang="x-default" href={canonicalURL} />
 
-<!-- Preload critical assets -->
+{/* Preload critical assets */}
 <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
-<!-- Favicon variants -->
+{/* Favicon variants */}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

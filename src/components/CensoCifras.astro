@@ -39,7 +39,7 @@ const bloques = [
 
 <section id="poblacion" class="scroll-mt-40 py-20 md:py-28">
   <div class="container-custom">
-    <!-- ¿Quiénes somos? -->
+    {/* ¿Quiénes somos? */}
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
       <div class="lg:col-span-7">
         <span class="eyebrow">Población · Censos Nacionales {censo.anio}</span>
@@ -74,7 +74,7 @@ const bloques = [
       ))}
     </dl>
 
-    <!-- Lo que dice el censo -->
+    {/* Lo que dice el censo */}
     <div class="mt-16">
       <h3 class="font-heading text-3xl font-semibold text-ink">Lo que dice el censo, en cinco frases</h3>
       <ol class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -88,7 +88,7 @@ const bloques = [
       </ol>
     </div>
 
-    <!-- Pomabamba en 100 personas -->
+    {/* Pomabamba en 100 personas */}
     <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center rounded-3xl bg-white border border-line p-6 md:p-10" data-cien>
       <div class="lg:col-span-5">
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-primary">Imagina que somos 100</p>
@@ -130,7 +130,7 @@ const bloques = [
       </div>
     </div>
 
-    <!-- ¿Qué edad tenemos? -->
+    {/* ¿Qué edad tenemos? */}
     <div class="mt-16">
       <h3 class="font-heading text-3xl font-semibold text-ink">¿Qué edad tenemos?</h3>
       <p class="mt-2 max-w-3xl">De cada 100 personas, cuántas son niños, jóvenes y adultos, o adultos mayores.</p>
@@ -139,8 +139,8 @@ const bloques = [
           <li class="flex items-center gap-2"><span class={`censo-swatch censo-edad-${g.id}`} aria-hidden="true"></span>{g.etiqueta} <span class="text-ink-soft">({g.rango})</span></li>
         ))}
       </ul>
-      <!-- data-graf va en el contenedor: la barra empieza recortada (clip-path) y el navegador
-           la daría por invisible, así que nunca se activaría si se observara a sí misma. -->
+      {/* data-graf va en el contenedor: la barra empieza recortada (clip-path) y el navegador
+           la daría por invisible, así que nunca se activaría si se observara a sí misma. */}
       <div class="censo-edades mt-5 space-y-4" data-graf>
         {censo.edades.ambitos.map((a) => (
           <div class="grid grid-cols-1 sm:grid-cols-[7rem_1fr] items-center gap-x-4 gap-y-1.5">
@@ -161,7 +161,7 @@ const bloques = [
       <p class="mt-4 text-sm text-ink-soft">Hay menos niños y más adultos mayores que en el promedio del país.</p>
     </div>
 
-    <!-- Pirámide + envejecimiento -->
+    {/* Pirámide + envejecimiento */}
     <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
       <figure class="lg:col-span-7 rounded-2xl bg-white border border-line p-5 md:p-8">
         <figcaption>
@@ -238,7 +238,7 @@ const bloques = [
       </div>
     </div>
 
-    <!-- ¿Qué hablamos? ¿Cómo vivimos? ¿Qué aprendemos? -->
+    {/* ¿Qué hablamos? ¿Cómo vivimos? ¿Qué aprendemos? */}
     <div class="mt-20">
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda de las comparaciones">
         <li class="flex items-center gap-2"><span class="censo-swatch bg-primary" aria-hidden="true"></span>Pomabamba (distrito)</li>
@@ -320,7 +320,7 @@ const bloques = [
       </details>
     </div>
 
-    <!-- ¿Cómo hemos cambiado? -->
+    {/* ¿Cómo hemos cambiado? */}
     <div id="cambios" class="scroll-mt-40 mt-20">
       <p class="text-sm font-semibold uppercase tracking-[0.15em] text-primary">Del censo {anterior.anio} al {censo.anio}</p>
       <h3 class="mt-2 font-heading text-3xl font-semibold text-ink">¿Cómo hemos cambiado?</h3>
@@ -396,7 +396,7 @@ const bloques = [
       </div>
     </div>
 
-    <!-- Para el aula -->
+    {/* Para el aula */}
     <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 rounded-3xl bg-secondary-soft p-6 md:p-10">
       <div class="lg:col-span-4">
         <p class="text-sm font-semibold uppercase tracking-[0.15em] text-secondary">Para docentes y estudiantes</p>

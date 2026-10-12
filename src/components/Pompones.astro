@@ -91,14 +91,14 @@ const lighten = (hex: string): string => {
     aria-hidden="true"
   >
     <defs>
-      <!-- Filtro de textura esponjosa -->
+      {/* Filtro de textura esponjosa */}
       <filter id={`${uniqueId}-fluffy`}>
         <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
         <feDisplacementMap in="SourceGraphic" in2="noise" scale="6"/>
         <feGaussianBlur stdDeviation="1"/>
       </filter>
 
-      <!-- Gradientes para cada pompon -->
+      {/* Gradientes para cada pompon */}
       {pompones.map((p, i) => (
         <radialGradient id={`${uniqueId}-grad-${i}`}>
           <stop offset="0%" stop-color={lighten(p.color)}/>
@@ -108,13 +108,13 @@ const lighten = (hex: string): string => {
       ))}
     </defs>
 
-    <!-- Pompones -->
+    {/* Pompones */}
     {pompones.map((pompon, i) => (
       <g
         class={animated ? 'pompon-item' : ''}
         style={`--delay: ${pompon.delay}s`}
       >
-        <!-- Pompon principal -->
+        {/* Pompon principal */}
         <circle
           cx={pompon.cx}
           cy={pompon.cy}
@@ -123,7 +123,7 @@ const lighten = (hex: string): string => {
           filter={`url(#${uniqueId}-fluffy)`}
           opacity="0.9"
         />
-        <!-- Capa de brillo interno -->
+        {/* Capa de brillo interno */}
         <circle
           cx={pompon.cx - pompon.r * 0.15}
           cy={pompon.cy - pompon.r * 0.15}
@@ -132,7 +132,7 @@ const lighten = (hex: string): string => {
           opacity="0.4"
           filter={`url(#${uniqueId}-fluffy)`}
         />
-        <!-- Punto de brillo -->
+        {/* Punto de brillo */}
         <circle
           cx={pompon.cx - pompon.r * 0.25}
           cy={pompon.cy - pompon.r * 0.25}

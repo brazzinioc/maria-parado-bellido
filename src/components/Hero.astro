@@ -33,7 +33,7 @@ const heightClasses = {
   class={`relative w-full ${heightClasses[height]} overflow-hidden`}
   data-hero
 >
-  <!-- Background Image with Parallax -->
+  {/* Background Image with Parallax */}
   <div class="absolute inset-0 hero-parallax">
     <img
       src={image}
@@ -43,33 +43,33 @@ const heightClasses = {
     />
   </div>
 
-  <!-- Modern Mesh Gradient Overlay -->
+  {/* Modern Mesh Gradient Overlay */}
   <div class="absolute inset-0 hero-overlay">
-    <!-- Base gradient layer -->
+    {/* Base gradient layer */}
     <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70"></div>
 
-    <!-- Mesh gradient with Ayacucho colors (subtle) -->
+    {/* Mesh gradient with Ayacucho colors (subtle) */}
     <div class="absolute inset-0 opacity-40 mix-blend-overlay">
       <div class="absolute top-0 left-0 w-2/3 h-2/3 bg-gradient-to-br from-fucsia/30 to-transparent blur-3xl hero-mesh-1"></div>
       <div class="absolute bottom-0 right-0 w-2/3 h-2/3 bg-gradient-to-tl from-turquesa/25 to-transparent blur-3xl hero-mesh-2"></div>
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 bg-gradient-radial from-amarillo/15 to-transparent blur-2xl"></div>
     </div>
 
-    <!-- Bottom gradient for text readability -->
+    {/* Bottom gradient for text readability */}
     <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
   </div>
 
-  <!-- Weather Widget Slot (optional) -->
+  {/* Weather Widget Slot (optional) */}
   {showWeatherSlot && (
     <div class="absolute top-6 right-6 z-30">
       <slot name="weather" />
     </div>
   )}
 
-  <!-- Content -->
+  {/* Content */}
   <div class="relative h-full flex items-center justify-center text-center z-20">
     <div class="container-custom px-6">
-      <!-- Glassmorphism container (optional) -->
+      {/* Glassmorphism container (optional) */}
       <div class={variant === 'glassmorphism'
         ? 'bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl max-w-4xl mx-auto'
         : ''}>
@@ -87,7 +87,7 @@ const heightClasses = {
     </div>
   </div>
 
-  <!-- Modern Scroll Indicator -->
+  {/* Modern Scroll Indicator */}
   {showScrollIndicator && (
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 scroll-indicator cursor-pointer">
       <div class="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 group">
