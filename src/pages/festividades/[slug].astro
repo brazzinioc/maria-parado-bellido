@@ -4,6 +4,7 @@ import PageHero from "../../components/PageHero.astro";
 import { fetchFestivities } from "../../lib/api";
 import type { Festivity } from "../../types";
 import { festivityCoverImage } from "../../lib/placeholders";
+import { LUGAR } from "../../lib/seo";
 
 // Genera una pagina estatica por cada festividad publicada en el CMS
 export async function getStaticPaths() {
@@ -76,7 +77,7 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title={`${festivity.name} en Pomabamba${festivity.name.length <= 38 ? ", Ayacucho" : ""}`}
+  title={`${festivity.name} en ${LUGAR}`}
   description={festivity.description}
   image={festivityCoverImage(festivity)}
   article={true}

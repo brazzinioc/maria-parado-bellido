@@ -1,5 +1,6 @@
 ---
 import type { SEOProps } from "../types";
+import { LUGAR, resumen } from "../lib/seo";
 
 interface Props extends SEOProps {
   type?: "website" | "article" | "place";
@@ -31,7 +32,7 @@ const imageUrl = new URL(image, imageBase).href;
 
 // Título completo: Google corta a ~60 caracteres. Se agrega la marca solo si el
 // título no la nombra ya (ni a Pomabamba) y si cabe.
-const brandSuffix = " | Pomabamba, Ayacucho";
+const brandSuffix = ` | ${LUGAR}`;
 const fullTitle =
   /Pomabamba/.test(title) || title.length + brandSuffix.length > 60
     ? title
@@ -52,10 +53,8 @@ const baseKeywords = [
 ];
 const allKeywords = [...new Set([...keywords, ...baseKeywords])].join(", ");
 
-// Descripción truncada para meta (max 160 chars)
-const metaDescription = description.length > 160
-  ? description.substring(0, 157) + "..."
-  : description;
+// Descripción de hasta 160 caracteres, sin cortar palabras ni oraciones a la mitad.
+const metaDescription = resumen(description);
 
 // Robots directive
 const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";

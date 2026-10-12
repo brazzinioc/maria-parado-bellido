@@ -10,6 +10,7 @@ import { fetchPlaces, fetchSiteSettings } from "../../lib/api";
 import { getExperiences } from "../../lib/content";
 import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../../lib/places";
 import type { TouristPlace } from "../../types";
+import { LUGAR, tituloCon } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const places = await fetchPlaces();
@@ -75,13 +76,15 @@ const breadcrumbs = [
   { name: place.name, url: `/lugares/${place.slug}/` },
 ];
 
-const description =
-  place.description.length > 155 ? `${place.description.slice(0, 152).trimEnd()}…` : place.description;
+const seoTitle = tituloCon(
+  `${place.name}: ${categoryLabel.toLowerCase()} en ${LUGAR}`,
+  `${place.name} en ${LUGAR}`,
+);
 ---
 
 <BaseLayout
-  title={`${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba`.length <= 49 ? `${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba, Ayacucho` : `${place.name}: ${categoryLabel.toLowerCase()} en Pomabamba`}
-  description={description}
+  title={seoTitle}
+  description={place.description}
   image={cover}
   keywords={[place.name, `${place.name} Ayacucho`, "turismo Cangallo", "María Parado de Bellido", categoryLabel]}
   breadcrumbs={breadcrumbs}
