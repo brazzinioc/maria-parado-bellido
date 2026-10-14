@@ -234,7 +234,6 @@
 
   :root {
     --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .13 0 0 0 0 .11 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    --grano-fuerte: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .13 0 0 0 0 .11 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   h1,
@@ -350,17 +349,8 @@ html.anim .reveal.active {
 }
 html.anim .reveal { --reveal-y: 8px; }
 
-/* Ilustraciones provisionales (mientras llegan las fotos): textura de impresión encima y
-   colores algo apagados, para que se lean como grabado y no como vector de plantilla. */
-:where(a, div, figure, header, li):has(> img[src*="/placeholders/"])::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--grano-fuerte);
-  mix-blend-mode: multiply;
-  opacity: 0.55;
-  pointer-events: none;
-}
+/* Ilustraciones provisionales (mientras llegan las fotos): colores algo apagados.
+   Sin capas encima: una capa absoluta en un contenedor sin posición propia tapaba la página. */
 img[src*="/placeholders/"] { filter: saturate(0.78) contrast(0.96); }
 
 /* Etiquetas pequeñas: en lugar de MAYÚSCULAS ESPACIADAS (la firma de las plantillas),
