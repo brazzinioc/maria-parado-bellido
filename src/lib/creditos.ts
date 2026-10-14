@@ -1,7 +1,7 @@
 /**
  * Créditos de las fotos que no son del proyecto (src/data/creditos.json).
  * Para acreditar una foto nueva basta con agregarla al JSON: la (i) sobre la foto
- * (FotoCredito) y la página /creditos/ la toman de ahí.
+ * (FotoCredito) la toma de ahí.
  */
 import datos from "../data/creditos.json";
 

@@ -8,49 +8,27 @@
     {
       "src": "/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp",
       "titulo": "Comuneros con sus caballos en la puna",
-      "fuente": "facebook-muni",
-      "usadaEn": [
-        { "pagina": "Nuestra historia", "url": "/historia/" },
-        { "pagina": "Inicio", "url": "/" }
-      ]
+      "fuente": "facebook-muni"
     },
     {
       "src": "/images/comparsa-carnaval-pomabamba-ayacucho.webp",
       "titulo": "Comparsa de carnaval en la plaza",
-      "fuente": "facebook-muni",
-      "usadaEn": [
-        { "pagina": "Inicio", "url": "/" },
-        { "pagina": "Nuestra historia", "url": "/historia/" }
-      ]
+      "fuente": "facebook-muni"
     },
     {
       "src": "/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp",
       "titulo": "Agricultor con maíz nativo en una feria",
-      "fuente": "facebook-muni",
-      "usadaEn": [
-        { "pagina": "Inicio", "url": "/" },
-        { "pagina": "Nuestra historia", "url": "/historia/" }
-      ]
+      "fuente": "facebook-muni"
     },
     {
       "src": "/images/hero-festivities.webp",
       "titulo": "Procesión por los cerros de Pomabamba",
-      "fuente": "facebook-muni",
-      "usadaEn": [
-        { "pagina": "Fiestas", "url": "/festividades/" },
-        { "pagina": "Páginas de cada fiesta sin foto propia", "url": "/festividades/" },
-        { "pagina": "Nuestra historia", "url": "/historia/" }
-      ]
+      "fuente": "facebook-muni"
     },
     {
       "src": "/images/experiencias/faena-limpieza-canal-turismo-vivencial-pomabamba-ayacucho.webp",
       "titulo": "Faena comunal de limpieza de un canal",
-      "fuente": "facebook-muni",
-      "usadaEn": [
-        { "pagina": "Turismo vivencial", "url": "/experiencias/turismo-vivencial/" },
-        { "pagina": "Agenda", "url": "/comunidad/" },
-        { "pagina": "Nuestra historia", "url": "/historia/" }
-      ]
+      "fuente": "facebook-muni"
     }
   ]
 }

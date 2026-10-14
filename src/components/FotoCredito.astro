@@ -1,11 +1,12 @@
 ---
 /**
  * FotoCredito - Botón (i) sobre una foto que no es del proyecto. Al tocarlo muestra
- * el crédito y un enlace a /creditos/. Si la foto no está en src/data/creditos.json,
- * no muestra nada. El contenedor de la foto debe tener position: relative.
+ * el crédito y un enlace para que el autor pida retirarla o corregir el crédito.
+ * Si la foto no está en src/data/creditos.json, no muestra nada. El contenedor de la foto debe tener position: relative.
  * Es un <details>: funciona con teclado y sin JavaScript.
  */
 import { creditoDe } from "../lib/creditos";
+import { whatsappUrl } from "../lib/whatsapp";
 
 interface Props {
   src?: string;
@@ -15,6 +16,7 @@ interface Props {
 
 const { src, posicion = "abajo" } = Astro.props;
 const credito = creditoDe(src);
+const reclamoUrl = whatsappUrl("Hola, escribo por una foto publicada en la web de turismo de Pomabamba.");
 ---
 
 {credito && (
@@ -27,7 +29,7 @@ const credito = creditoDe(src);
     </summary>
     <p>
       <span>Foto: {credito}.</span>
-      <a href="/creditos/">Ver créditos</a>
+      <a href={reclamoUrl} target="_blank" rel="noopener noreferrer">¿Es tuya? Escríbenos</a>
     </p>
   </details>
 )}
