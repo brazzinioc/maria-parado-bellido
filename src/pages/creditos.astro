@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { fotosAcreditadas } from "../lib/creditos";
+import { whatsappUrl } from "../lib/whatsapp";
+
+const breadcrumbs = [
+  { name: "Inicio", url: "/" },
+  { name: "Créditos", url: "/creditos/" },
+];
+
+const reclamoUrl = whatsappUrl("Hola, escribo por una foto publicada en la web de turismo de Pomabamba (página de créditos).");
+const compartirUrl = whatsappUrl("Hola, tengo fotos de Pomabamba y quiero compartirlas para la web de turismo.");
+---
+
+<BaseLayout
+  title="Créditos de las fotos"
+  description="Autores y fuentes de las fotos que usa este sitio comunitario de turismo de Pomabamba, Ayacucho."
+  breadcrumbs={breadcrumbs}
+  noindex={true}
+  whatsappMessage="Hola, escribo por una foto publicada en la web de turismo de Pomabamba."
+>
+  <PageHeader
+    title="Créditos"
+    subtitle="Reconocemos a quienes tomaron las fotos que no son del proyecto"
+    icon="📷"
+    variant="default"
+  />
+
+  <div class="container-custom py-12 md:py-16">
+    <div class="max-w-4xl mx-auto space-y-12">
+
+      <div class="rounded-xl border-l-4 border-primary bg-white p-6 text-gray-700">
+        <p>
+          Este es un <strong>proyecto comunitario e independiente</strong>. Citar la fuente de una foto es reconocer a
+          quien la tomó o la publicó: no significa que exista relación, convenio ni respaldo entre ese autor o
+          institución y este proyecto.
+        </p>
+      </div>
+
+      <section>
+        <h2 class="text-2xl font-heading font-bold text-gray-800 mb-6">Fotos</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {fotosAcreditadas.map((foto) => (
+            <li class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+              <img src={foto.src} alt={foto.titulo} loading="lazy" class="aspect-[16/10] w-full object-cover" />
+              <div class="p-5">
+                <h3 class="font-heading text-lg font-semibold text-gray-800">{foto.titulo}</h3>
+                <p class="mt-1 text-sm text-gray-700">Foto: {foto.credito}.</p>
+                <p class="mt-3 text-sm text-gray-600">
+                  Aparece en:{" "}
+                  {foto.usadaEn.map((u, i) => (
+                    <>
+                      {i > 0 && ", "}
+                      <a href={u.url} class="text-primary underline underline-offset-2 hover:text-primary-dark">{u.pagina}</a>
+                    </>
+                  ))}
+                  .
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="rounded-2xl bg-crema/50 border border-crema-dark p-6 md:p-8">
+        <h2 class="text-xl font-heading font-bold text-gray-800 mb-3">¿Es tuya alguna de estas fotos?</h2>
+        <p class="text-gray-700">
+          Si tomaste o publicaste alguna de estas fotos y prefieres que la retiremos, o que corrijamos el crédito,
+          escríbenos y lo hacemos de inmediato.
+        </p>
+        <a href={reclamoUrl} target="_blank" rel="noopener noreferrer" class="btn-primary mt-5">Escríbenos por WhatsApp</a>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-heading font-bold text-gray-800 mb-3">¿Tienes fotos de Pomabamba?</h2>
+        <p class="text-gray-700">
+          Queremos mostrar Pomabamba con fotos de su propia gente y de quienes la visitan. Si quieres compartir las
+          tuyas, aparecerás en esta página con tu nombre.
+        </p>
+        <a href={compartirUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary mt-5">Compartir mis fotos</a>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-heading font-bold text-gray-800 mb-3">Otras fuentes</h2>
+        <ul class="space-y-2 text-gray-700">
+          <li>Mapas: © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2">OpenStreetMap</a>.</li>
+          <li>Cifras de población: Instituto Nacional de Estadística e Informática (INEI). Ver <a href="/datos/" class="text-primary underline underline-offset-2">Pomabamba en datos</a>.</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</BaseLayout>

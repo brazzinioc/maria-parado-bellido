@@ -19,7 +19,7 @@ export default defineConfig({
     ogImages(),
     // Quita del HTML final cualquier <!-- comentario --> que se haya colado (ver el archivo).
     sinComentarios(),
-    sitemap({ filter: (page) => !page.includes('/404') }),
+    sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/creditos') }),
   ],
 
   output: 'static',

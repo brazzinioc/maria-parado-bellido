@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FotoCredito from "../components/FotoCredito.astro";
 import PageHero from "../components/PageHero.astro";
 
 // SEO Keywords para página de historia
@@ -461,8 +462,9 @@ const potentials = [
       <div class="space-y-16 md:space-y-24">
         {culture.map((item, i) => (
           <article class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
-            <div class:list={["md:col-span-6", i % 2 === 1 && "md:order-2"]}>
+            <div class:list={["relative md:col-span-6", i % 2 === 1 && "md:order-2"]}>
               <img src={item.image} alt={item.alt} loading="lazy" sizes="(min-width: 768px) 50vw, 100vw" class="aspect-[4/3] w-full rounded-3xl object-cover" />
+              <FotoCredito src={item.image} />
             </div>
             <div class:list={["md:col-span-6", i % 2 === 1 && "md:order-1"]}>
               <p class="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">

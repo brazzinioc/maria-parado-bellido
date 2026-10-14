@@ -5,6 +5,8 @@
  * Entrada animada: la foto se acerca despacio y los textos aparecen escalonados.
  * Con transitionName, la foto continúa la de la tarjeta del listado (transición de vista).
  */
+import FotoCredito from "./FotoCredito.astro";
+
 interface Crumb {
   name: string;
   url: string;
@@ -52,6 +54,7 @@ const imgAttrs = {
 >
   {transitionName ? <img {...imgAttrs} transition:name={transitionName} /> : <img {...imgAttrs} />}
   <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-ink/10" aria-hidden="true"></div>
+  <FotoCredito src={image} />
 
   <div class="container-custom relative w-full pb-10 md:pb-14 pt-24">
     {breadcrumbs.length > 0 && (

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FotoCredito from "../components/FotoCredito.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import PhotoCard from "../components/PhotoCard.astro";
 import WeatherStat from "../components/WeatherStat";
@@ -293,6 +294,7 @@ const homeStructuredData = [
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover"
         />
+        <FotoCredito src="/images/comparsa-carnaval-pomabamba-ayacucho.webp" />
       </div>
       <div class="max-w-xl lg:col-span-5">
         <span class="eyebrow">Nuestra identidad</span>
@@ -382,9 +384,11 @@ const homeStructuredData = [
       <div class="grid grid-cols-2 gap-4">
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
           <img src="/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp" alt="Agricultor con poncho y sombrero mostrando mazorcas de maíz nativo de colores en una feria de Pomabamba, Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+          <FotoCredito src="/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp" />
         </div>
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl mt-10">
           <img src="/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp" alt="Comuneros con ponchos y sus caballos reunidos en la puna de Pomabamba, Ayacucho" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+          <FotoCredito src="/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp" />
         </div>
       </div>
     </div>
@@ -440,6 +444,7 @@ const homeStructuredData = [
               ]}
             >
               <img src={item.image} alt={item.alt} loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <FotoCredito src={item.image} posicion="arriba" />
               {item.caption && (
                 <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-3 pt-8 text-sm font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity">
                   {item.caption}
