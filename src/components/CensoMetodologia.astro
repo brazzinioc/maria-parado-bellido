@@ -1,0 +1,323 @@
+---
+/**
+ * CensoMetodologia - Método, fórmulas y comprobaciones detrás de las cifras de /datos.
+ * Pensado para el aula: cada fórmula en notación matemática, qué significa cada símbolo y
+ * un ejemplo con los datos reales de la página (src/lib/censo.ts), así nunca se desactualiza.
+ * Las fórmulas se escriben en HTML (fracciones con .frac) y se insertan con set:html: son
+ * textos fijos de este archivo, no datos de usuarios.
+ */
+import { censo, operacion, formula, base, intervaloBase } from "../lib/censo";
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+const dec = (n: number, d = 1) => n.toFixed(d);
+const { anterior } = censo.evolucion;
+const { total, hombres, mujeres } = censo.poblacion;
+
+const QUECHUA = "Población censada de 3 años y más que aprendió a hablar quechua en su niñez";
+const NO_LEE = "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir";
+const DESAGUE = "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública";
+const INTERNET_HOGAR = "Hogares que tienen conexión a internet";
+
+const quechua = operacion(QUECHUA);
+const quechuaPeru = operacion(QUECHUA, "peru");
+const rango = intervaloBase(quechua);
+const internet = operacion(INTERNET_HOGAR);
+const leerAntes = censo.evolucion.indicadores.find((i) => i.inei === NO_LEE)!;
+const desague = censo.evolucion.indicadores.find((i) => i.inei === DESAGUE)!;
+const delta = Math.round((desague.ahora - desague.antes) * 10) / 10;
+const variacion = Math.round(((desague.ahora - desague.antes) / desague.antes) * 1000) / 10;
+const veces = Math.round((quechua.porcentaje / quechuaPeru.porcentaje) * 10) / 10;
+const ie = censo.envejecimiento[0];
+const ninos = censo.edades.calculos[0];
+const hogares = censo.universos.find((u) => u.clave === "hogares")!.actual!.n;
+const pQ = Math.round((quechua.valor / quechua.base) * 1000) / 1000;
+const pI = Math.round((internet.valor / internet.base) * 1000) / 1000;
+
+const frac = (arriba: string, abajo: string) => `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+
+const pasos = [
+  { titulo: "Pregunta", texto: "¿Quiénes somos, cómo vivimos y cómo hemos cambiado? Cada sección de la página responde una pregunta concreta." },
+  { titulo: "Fuente", texto: `Se usan solo datos oficiales y públicos: los Censos Nacionales ${censo.anio} y ${anterior.anio} del INEI.` },
+  { titulo: "Obtención", texto: `Las cifras de ${censo.anio} se descargan de la plataforma de resultados del INEI; las de ${anterior.anio}, de tablas hechas en REDATAM. Se guardan sin cambios en archivos CSV que cualquiera puede descargar.` },
+  { titulo: "Verificación", texto: "Antes de publicar se comprueba que las partes sumen el todo y que cada porcentaje, recalculado con su numerador y su denominador, dé lo mismo que publica el INEI. Si algo no cuadra, la página no se publica." },
+  { titulo: "Cálculo", texto: "Con fórmulas de estadística descriptiva: proporciones, razones, índices, mediana y diferencias. Están todas abajo." },
+  { titulo: "Interpretación y límites", texto: "Cada resultado se explica en palabras sencillas y se dice qué no se puede concluir de él." },
+  { titulo: "Reproducibilidad", texto: "Los datos se pueden descargar y cada operación tiene un ejemplo: cualquiera puede repetir los cálculos con una calculadora o una hoja de cálculo y llegar al mismo resultado." },
+];
+
+const formulas = [
+  {
+    nombre: "Proporción y porcentaje",
+    expr: `p = ${frac("x", "N")} &nbsp;&nbsp;&nbsp; % = ${frac("x", "N")} × 100`,
+    simbolos: "x: cuántos cumplen algo · N: total del universo (ver la tabla de universos).",
+    ejemplo: `Aprendieron quechua: ${formula(quechua)}. La proporción es p = ${dec(pQ, 3)}.`,
+  },
+  {
+    nombre: "Complemento",
+    expr: `1 − p &nbsp;&nbsp;&nbsp; 100% − %`,
+    simbolos: "La parte que no cumple. Una persona o sabe leer o no sabe: las dos partes suman el total.",
+    ejemplo: `En ${anterior.anio}, el ${dec(100 - leerAntes.antes)}% de las personas de 15 años y más no sabía leer ni escribir; sabía hacerlo el 100 − ${dec(100 - leerAntes.antes)} = ${dec(leerAntes.antes)}%.`,
+  },
+  {
+    nombre: "Índice (razón × 100)",
+    expr: `IE = ${frac("P<sub>60+</sub>", "P<sub>0–14</sub>")} × 100`,
+    simbolos: "P60+: personas de 60 años y más · P0–14: niñas y niños de 0 a 14 años. Cuántos mayores hay por cada 100 niños.",
+    ejemplo: `${ie.calculo}. Si IE &gt; 100, hay más mayores que niños.`,
+  },
+  {
+    nombre: "Densidad",
+    expr: `D = ${frac("P", "S")}`,
+    simbolos: "P: población · S: superficie en km². Es un promedio: la gente no vive repartida por igual.",
+    ejemplo: `${fmt(total)} ÷ ≈${censo.metodo.superficie} km² = ${censo.metodo.densidad} hab./km². La superficie se deduce despejando: S = P ÷ D = ${fmt(total)} ÷ ${censo.metodo.densidad}.`,
+  },
+  {
+    nombre: "Mediana",
+    expr: `posición = ${frac("N + 1", "2")}`,
+    simbolos: "Con los datos ordenados de menor a mayor, la mediana es el valor en esa posición. Si cae entre dos personas, se promedian sus edades.",
+    ejemplo: `(${fmt(total)} + 1) ÷ 2 = ${fmt(censo.metodo.mediana.posicion)}: entre la persona ${fmt(Math.floor(censo.metodo.mediana.posicion))} y la ${fmt(Math.ceil(censo.metodo.mediana.posicion))}, ambas en el grupo de ${censo.metodo.mediana.grupo} años. El INEI, con la edad exacta, obtiene ${censo.metodo.mediana.valor} años.`,
+  },
+  {
+    nombre: "Diferencia en puntos porcentuales",
+    expr: `Δ = %<sub>${censo.anio}</sub> − %<sub>${anterior.anio}</sub>`,
+    simbolos: "Cuánto cambió un porcentaje entre los dos censos, en puntos.",
+    ejemplo: `Desagüe: ${dec(desague.ahora)} − ${dec(desague.antes)} = ${dec(delta)} puntos.`,
+  },
+  {
+    nombre: "Variación relativa",
+    expr: `${frac(`%<sub>${censo.anio}</sub> − %<sub>${anterior.anio}</sub>`, `%<sub>${anterior.anio}</sub>`)} × 100`,
+    simbolos: "Cuánto creció respecto del punto de partida. No es lo mismo que los puntos porcentuales.",
+    ejemplo: `Desagüe: (${dec(desague.ahora)} − ${dec(desague.antes)}) ÷ ${dec(desague.antes)} × 100 = ${dec(variacion)}%. Subió ${dec(delta)} puntos, que es un ${dec(variacion)}% más que en ${anterior.anio}.`,
+  },
+  {
+    nombre: "Cociente («veces»)",
+    expr: `${frac("%<sub>A</sub>", "%<sub>B</sub>")}`,
+    simbolos: "Cuántas veces cabe un porcentaje en otro.",
+    ejemplo: `Quechua: ${dec(quechua.porcentaje)} ÷ ${dec(quechuaPeru.porcentaje)} = ${dec(veces)} → «casi siete veces» el promedio del Perú.`,
+  },
+  {
+    nombre: "Redondeo y su error",
+    expr: `% publicado ± 0.05 &nbsp;&nbsp;&nbsp; ${frac("x", "% + 0.05")} × 100 ≤ N ≤ ${frac("x", "% − 0.05")} × 100`,
+    simbolos: "El INEI redondea los porcentajes a un decimal, así que el valor real puede estar hasta 0.05 por encima o por debajo. Cuando el total N no se publica, solo se puede acotar.",
+    ejemplo: `Personas de 3 años y más en ${censo.anio}: con x = ${fmt(quechua.valor)} y ${dec(quechua.porcentaje)}%, N está entre ${fmt(rango.min)} y ${fmt(rango.max)}. Por eso se escribe ${base(quechua)}.`,
+  },
+];
+
+const citaInei = `Instituto Nacional de Estadística e Informática (INEI). (${censo.anio}). ${censo.fuente.replace(/^INEI, /, "")}. Distrito de María Parado de Bellido (ubigeo ${censo.ubigeo}). ${censo.url}`;
+const citaPagina = `Pomabamba en datos. (${new Date().getFullYear()}). Población del distrito de María Parado de Bellido según los Censos Nacionales ${censo.anio} y ${anterior.anio}, con datos del INEI. https://www.mariaparadodebellido.com/datos/`;
+---
+
+<section id="metodologia" class="scroll-mt-40 py-20 md:py-28 bg-white border-y border-line">
+  <div class="container-custom">
+    <div class="max-w-3xl">
+      <span class="eyebrow">Metodología</span>
+      <h2 class="section-heading">¿Cómo se calcularon estas cifras?</h2>
+      <p class="text-lg leading-relaxed">
+        El método, las fórmulas y las comprobaciones detrás de cada número de esta página. Sirve para revisar los datos,
+        repetir los cálculos en clase y citarlos bien.
+      </p>
+    </div>
+
+    <div class="metodo mt-12 space-y-16">
+      {/* 1. Método */}
+      <div>
+        <h3>1. El método, paso a paso</h3>
+        <ol class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {pasos.map((p, i) => (
+            <li class="metodo-caja">
+              <p class="metodo-etiqueta">Paso {i + 1}</p>
+              <p class="mt-1 font-semibold text-ink">{p.titulo}</p>
+              <p class="mt-1 text-sm">{p.texto}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* 2. Fuentes */}
+      <div>
+        <h3>2. De dónde vienen los datos</h3>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="metodo-caja">
+            <p class="metodo-etiqueta">Censo {censo.anio}</p>
+            <p class="mt-1">
+              {censo.fuente}. Para el distrito (ubigeo {censo.ubigeo}), la provincia de Cangallo, el departamento de Ayacucho y el Perú,
+              se tomaron de la <a href={censo.url} target="_blank" rel="noopener noreferrer">plataforma de resultados del INEI</a> los
+              {" "}{censo.indicadores} indicadores del tema «Población» y la pirámide de edades, sin cambiar ningún valor.
+            </p>
+          </div>
+          <div class="metodo-caja">
+            <p class="metodo-etiqueta">Censo {anterior.anio}</p>
+            <p class="mt-1">
+              {anterior.fuente}. Sus resultados por distrito se consultan en
+              {" "}<a href={anterior.url} target="_blank" rel="noopener noreferrer">REDATAM</a>, la herramienta del INEI para hacer tablas
+              con los datos del censo. Con las tablas del distrito se calcularon los mismos indicadores que el INEI publica en {censo.anio}.
+            </p>
+          </div>
+        </div>
+        <p class="mt-4 max-w-4xl">
+          Las cifras de Pomabamba son las del <strong>distrito entero</strong>: el pueblo y todas sus comunidades y anexos.
+        </p>
+      </div>
+
+      {/* 3. Censo, no encuesta */}
+      <div>
+        <h3>3. Un censo no es una encuesta: ¿hay probabilidad y margen de error?</h3>
+        <div class="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="metodo-caja">
+            <p class="metodo-etiqueta">Población completa</p>
+            <p class="mt-1">
+              Una <strong>encuesta</strong> pregunta a una muestra (por ejemplo, a 1 de cada 100 hogares) y estima el resto con
+              probabilidades; por eso sus resultados llevan un <strong>margen de error</strong>. Un <strong>censo</strong> intenta
+              contar a <strong>todas</strong> las personas: no hay muestra, así que no hay error de muestreo ni intervalos de confianza
+              que calcular. Las cifras de esta página son <strong>estadística descriptiva</strong>: describen al distrito completo.
+            </p>
+          </div>
+          <div class="metodo-caja">
+            <p class="metodo-etiqueta">Una proporción como probabilidad</p>
+            <p class="mt-1">
+              Una proporción sí se puede leer como probabilidad. Si se elige al azar a una persona de 3 años o más del distrito,
+              la probabilidad de que haya aprendido a hablar en quechua es
+            </p>
+            <p class="metodo-expr" set:html={`P(quechua) = ${frac(fmt(quechua.valor), base(quechua))} ≈ ${dec(pQ, 3)}`} />
+            <p>
+              y la de que no, 1 − {dec(pQ, 3)} = {dec(1 - pQ, 3)}. Si se elige un hogar al azar, la probabilidad de que tenga internet
+              es {fmt(internet.valor)} ÷ {fmt(internet.base)} ≈ {dec(pI, 3)}.
+            </p>
+          </div>
+          <div class="metodo-caja">
+            <p class="metodo-etiqueta">Errores que sí existen</p>
+            <p class="mt-1">
+              Aunque no haya muestra, un censo tiene <strong>errores no muestrales</strong>: personas que no se llegaron a censar
+              (omisión), respuestas equivocadas o incompletas, y el <strong>redondeo</strong> de los porcentajes a un decimal (fórmula 9).
+              Con números pequeños pesan más: en el distrito hay {fmt(hogares)} hogares, así que un solo hogar es el
+              {" "}{dec(100 / hogares, 2)}% del total.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Universos */}
+      <div>
+        <h3>4. El denominador: los universos</h3>
+        <p class="mt-3 max-w-3xl">
+          En toda proporción, N es el total sobre el que se calcula: el <strong>universo</strong>. No todas las preguntas se hacen a
+          todas las personas (la lengua materna, desde los 3 años; la educación, desde los 15), así que N cambia según el dato.
+          Comparar porcentajes con universos distintos lleva a errores.
+        </p>
+        <div class="mt-5 overflow-x-auto">
+          <table class="metodo-tabla">
+            <thead>
+              <tr><th>Universo (N)</th><th class="text-right">{censo.anio}</th><th class="text-right">{anterior.anio}</th><th>Cómo se obtiene</th></tr>
+            </thead>
+            <tbody>
+              {censo.universos.map((u) => (
+                <tr>
+                  <td><strong>{u.nombre}</strong></td>
+                  <td class="text-right tabular-nums whitespace-nowrap">{u.actual ? `${u.actual.exacta ? "" : "≈"}${fmt(u.actual.n)}` : "—"}</td>
+                  <td class="text-right tabular-nums whitespace-nowrap">{u.anterior ? `${u.anterior.exacta ? "" : "≈"}${fmt(u.anterior.n)}` : "—"}</td>
+                  <td class="text-sm">{u.nota ?? "Lo publica el INEI."}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 5. Fórmulas */}
+      <div>
+        <h3>5. Las fórmulas</h3>
+        <p class="mt-3 max-w-3xl">Cada fórmula con el significado de sus símbolos y un ejemplo de esta misma página.</p>
+        <ol class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {formulas.map((f, i) => (
+            <li class="metodo-caja">
+              <p class="metodo-etiqueta">{i + 1}. {f.nombre}</p>
+              <p class="metodo-expr" set:html={f.expr} />
+              <p class="text-sm">{f.simbolos}</p>
+              <p class="mt-2 text-sm"><strong>Ejemplo:</strong> <span set:html={f.ejemplo} /></p>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-4 max-w-4xl text-sm">
+          Al redondear a enteros («de cada 100») o a fracciones («9 de cada 10»), las partes pueden sumar 99 o 101. Las cifras
+          exactas están siempre en los desplegables «¿Cómo se calculó?» de cada sección.
+        </p>
+      </div>
+
+      {/* 6. Comprobaciones */}
+      <div>
+        <h3>6. Comprobaciones</h3>
+        <p class="mt-3 max-w-3xl">
+          Antes de publicar, el sitio verifica que las partes sumen el todo en los dos censos, y que cada porcentaje, recalculado
+          como x ÷ N × 100, coincida con el del INEI dentro del redondeo (± 0.05). Estas son las sumas:
+        </p>
+        <ul class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {censo.comprobaciones.map((c) => (
+            <li class="flex gap-3 rounded-xl border border-line bg-white p-4 text-sm">
+              <span class="metodo-ok" aria-hidden="true">✓</span>
+              <span><strong>{c.anio}:</strong> {c.texto}<br /><span class="tabular-nums text-ink-soft">{c.cuenta}</span></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 7. Comparar censos */}
+      <div>
+        <h3>7. Cómo se comparan {anterior.anio} y {censo.anio}</h3>
+        <ul class="metodo-lista mt-4">
+          <li>
+            <strong>Los totales no se comparan directamente.</strong> En {anterior.anio} se contó a cada persona donde estaba el día del
+            censo (censo {anterior.metodo}); en {censo.anio}, donde vive habitualmente (censo {censo.evolucion.metodoActual}). Por eso
+            {" "}{fmt(anterior.total)} y {fmt(total)} no miden el crecimiento real de la población.
+          </li>
+          <li><strong>Se comparan proporciones</strong>, que no dependen de cuántas personas se contaron, con la diferencia en puntos (fórmula 6).</li>
+          <li><strong>Mismas definiciones:</strong> cada indicador de {anterior.anio} se calculó con la definición que usa el INEI en {censo.anio} (ver «¿Cómo se calcularon las cifras de {anterior.anio}?», más arriba).</li>
+        </ul>
+      </div>
+
+      {/* 8. Límites */}
+      <div>
+        <h3>8. Lo que estos datos no dicen</h3>
+        <ul class="metodo-lista mt-4">
+          <li>Las respuestas son las que dio cada hogar al censista; no se comprueban una por una.</li>
+          <li>Describen al distrito; no explican las causas. Que haya menos niños que adolescentes es un hecho; por qué ocurre (menos nacimientos, migración) es una hipótesis que hay que investigar.</li>
+          <li>Que la vivienda tenga agua por red pública no dice si llega todo el día ni si es apta para beber.</li>
+          <li>Las cifras describen el distrito el año de cada censo; la realidad cambia entre un censo y otro.</li>
+        </ul>
+      </div>
+
+      {/* 9. Citar */}
+      <div>
+        <h3>9. Cómo citar</h3>
+        <p class="mt-3 max-w-3xl">Si usas estos datos en un trabajo, cita la fuente original (el INEI) y, si te sirvió, esta página:</p>
+        <div class="mt-4 space-y-3">
+          <p class="metodo-cita">{citaInei}</p>
+          <p class="metodo-cita">{citaPagina}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .metodo h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 600; color: var(--color-ink); line-height: 1.2; }
+  .metodo p, .metodo li { line-height: 1.65; }
+  .metodo a { text-decoration: underline; text-underline-offset: 2px; color: var(--color-primary-dark); }
+  .metodo-caja { border: 1px solid var(--color-line); border-radius: 1rem; background: var(--color-sand); padding: 1.25rem; }
+  .metodo-etiqueta { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-secondary); }
+  .metodo-lista { list-style: disc; padding-left: 1.25rem; display: grid; gap: 0.6rem; max-width: 56rem; }
+  .metodo-tabla { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.9375rem; }
+  .metodo-tabla th, .metodo-tabla td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--color-line); text-align: left; vertical-align: top; }
+  .metodo-tabla th { font-weight: 600; color: var(--color-ink); }
+  .metodo-tabla .text-right { text-align: right; }
+  .metodo-cita { border-left: 3px solid var(--color-secondary); padding: 0.5rem 0 0.5rem 1rem; font-size: 0.9375rem; overflow-wrap: anywhere; }
+  .metodo-ok { display: grid; place-items: center; flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 9999px; background: var(--color-secondary); color: #fff; font-weight: 700; }
+
+  /* Fórmulas: notación matemática con fracciones apiladas, sin librerías. */
+  .metodo-expr {
+    margin: 0.6rem 0; overflow-x: auto; white-space: nowrap;
+    font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; font-style: italic; color: var(--color-ink);
+  }
+  .metodo-expr :global(sub) { font-size: 0.65em; font-style: normal; }
+  .metodo-expr :global(.frac) { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 0.15em; }
+  .metodo-expr :global(.frac > span) { padding: 0 0.25em; line-height: 1.3; }
+  .metodo-expr :global(.frac > span:first-child) { border-bottom: 1.5px solid currentColor; }
+</style>
