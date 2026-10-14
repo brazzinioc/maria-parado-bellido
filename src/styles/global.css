@@ -120,10 +120,17 @@
   --color-transparent: transparent;
 
   /* Fuentes */
-  /* Dos familias: serif cálida para titulares, sans legible para texto */
-  --font-heading: "Fraunces Variable", Fraunces, Georgia, serif;
-  --font-body: "Inter Variable", Inter, system-ui, sans-serif;
-  --font-decorative: "Fraunces Variable", Fraunces, Georgia, serif;
+  /* Titulares en Newsreader, una serif de periódico (con cursiva para los antetítulos);
+     texto en Source Sans 3, una sans humanista de trazo más cálido que las geométricas. */
+  --font-heading: "Newsreader Variable", Newsreader, Georgia, serif;
+  --font-body: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
+  --font-decorative: "Newsreader Variable", Newsreader, Georgia, serif;
+
+  /* Esquinas: poco redondeadas, como papel cortado, no como botones de app. */
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.875rem;
 
   /* Animaciones personalizadas */
   --animate-fade-in: fadeIn 0.8s ease-in-out;
@@ -220,6 +227,13 @@
   body {
     @apply bg-sand text-ink-soft font-body antialiased;
     overflow-x: clip;
+    font-size: 1.0625rem;
+    /* Grano de papel muy sutil: el fondo deja de verse como un color plano de pantalla. */
+    background-image: var(--grano);
+  }
+
+  :root {
+    --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .13 0 0 0 0 .11 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   h1,
@@ -239,28 +253,28 @@
 
   /* Botones: sólidos y sobrios, sin degradados ni escalados */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-    font-semibold text-sm bg-primary text-white transition-colors duration-200
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md
+    font-semibold text-[0.95rem] bg-primary text-white transition-colors duration-200
     hover:bg-primary-dark focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-    font-semibold text-sm border border-ink/15 bg-white text-ink transition-colors duration-200
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md
+    font-semibold text-[0.95rem] border border-ink/15 bg-white text-ink transition-colors duration-200
     hover:border-ink/40 focus:outline-none focus-visible:ring-4 focus-visible:ring-ink/20;
   }
 
   /* Variante para fondos fotográficos u oscuros */
   .btn-ghost-light {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-    font-semibold text-sm border border-white/60 text-white backdrop-blur-sm bg-white/10
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md
+    font-semibold text-[0.95rem] border border-white/60 text-white backdrop-blur-sm bg-white/10
     transition-colors duration-200 hover:bg-white hover:text-ink
     focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40;
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-    font-semibold text-sm bg-secondary text-white transition-colors duration-200
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md
+    font-semibold text-[0.95rem] bg-secondary text-white transition-colors duration-200
     hover:bg-secondary-dark focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/30;
   }
 
@@ -272,7 +286,7 @@
 
   .card {
     @apply bg-white rounded-2xl overflow-hidden border border-line
-    transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)];
+    transition-colors duration-300 hover:border-ink/30;
   }
 
   .card-colorful {
@@ -280,19 +294,19 @@
     transition-shadow duration-300 hover:shadow-[0_18px_40px_-20px_rgba(43,33,28,0.35)];
   }
 
-  /* Antetítulo: mayúsculas pequeñas con tracking */
+  /* Antetítulo: cursiva de la serif, como la volanta de un periódico o una nota al margen. */
   .eyebrow {
-    @apply inline-block text-xs font-semibold uppercase tracking-[0.18em] text-primary mb-3;
+    @apply inline-block font-heading italic text-lg font-normal text-primary mb-2;
   }
 
   .section-heading {
-    @apply text-3xl md:text-5xl font-heading font-semibold text-ink mb-5 leading-[1.1];
+    @apply text-[2.15rem] md:text-[3.4rem] font-heading font-medium text-ink mb-5 leading-[1.04] tracking-[-0.015em];
     /* En columnas angostas, una palabra larga se parte en vez de desbordar. */
     overflow-wrap: break-word;
   }
 
   .section-heading-alt {
-    @apply text-3xl md:text-5xl font-heading font-semibold text-ink mb-5 leading-[1.1];
+    @apply text-[2.15rem] md:text-[3.4rem] font-heading font-medium text-ink mb-5 leading-[1.04] tracking-[-0.015em];
   }
 
   .text-evocative {
@@ -333,8 +347,21 @@ html.anim .reveal.active {
   opacity: 1;
   transform: none;
 }
-@media (max-width: 640px) {
-  html.anim .reveal { --reveal-y: 10px; }
+html.anim .reveal { --reveal-y: 8px; }
+
+/* Ilustraciones provisionales (mientras llegan las fotos): colores algo apagados.
+   Sin capas encima: una capa absoluta en un contenedor sin posición propia tapaba la página. */
+img[src*="/placeholders/"] { filter: saturate(0.78) contrast(0.96); }
+
+/* Etiquetas pequeñas: en lugar de MAYÚSCULAS ESPACIADAS (la firma de las plantillas),
+   cursiva de la serif, como una nota al margen. Solo la marca del logo sigue en mayúsculas. */
+.uppercase:is([class*="tracking-["], [class*="tracking-wide"]):not(.marca) {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 500;
+  font-size: max(1em, 0.95rem);
 }
 
 /* ==========================================
