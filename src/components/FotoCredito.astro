@@ -1,0 +1,107 @@
+---
+/**
+ * FotoCredito - Botón (i) sobre una foto que no es del proyecto. Al tocarlo muestra
+ * el crédito y un enlace para que el autor pida retirarla o corregir el crédito.
+ * Si la foto no está en src/data/creditos.json, no muestra nada. El contenedor de la foto debe tener position: relative.
+ * Es un <details>: funciona con teclado y sin JavaScript.
+ */
+import { creditoDe } from "../lib/creditos";
+import { whatsappUrl } from "../lib/whatsapp";
+
+interface Props {
+  src?: string;
+  /** Esquina donde va el botón. */
+  posicion?: "abajo" | "arriba";
+}
+
+const { src, posicion = "abajo" } = Astro.props;
+const credito = creditoDe(src);
+const reclamoUrl = whatsappUrl("Hola, escribo por una foto publicada en la web de turismo de Pomabamba.");
+---
+
+{credito && (
+  <details class:list={["foto-credito", posicion === "arriba" ? "foto-credito-arriba" : "foto-credito-abajo"]}>
+    <summary aria-label="Ver el crédito de la foto" title="Crédito de la foto">
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="9.5" />
+        <path d="M12 11v6M12 7.5v.01" />
+      </svg>
+    </summary>
+    <p>
+      <span>Foto: {credito}.</span>
+      <a href={reclamoUrl} target="_blank" rel="noopener noreferrer">¿Es tuya? Escríbenos</a>
+    </p>
+  </details>
+)}
+
+<style>
+  /* Ocupa el ancho de la foto (así el texto nunca se sale de ella) pero solo el botón
+     y el texto reciben clics: el resto de la franja deja pasar el clic a la foto. */
+  .foto-credito {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    z-index: 5;
+    pointer-events: none;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  .foto-credito-abajo { bottom: 0.75rem; }
+  .foto-credito-arriba { top: 0.75rem; }
+  .foto-credito summary {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: auto;
+    border-radius: 9999px;
+    color: #fff;
+    background: rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    list-style: none;
+    pointer-events: auto;
+    opacity: 0.85;
+    transition: opacity 0.2s, background-color 0.2s;
+  }
+  .foto-credito summary::-webkit-details-marker { display: none; }
+  .foto-credito summary:hover,
+  .foto-credito[open] summary { opacity: 1; background: rgb(0 0 0 / 0.7); }
+  .foto-credito summary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .foto-credito p {
+    position: absolute;
+    right: 0;
+    width: max-content;
+    max-width: min(18rem, 100%);
+    pointer-events: auto;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.75rem;
+    color: #fff;
+    background: rgb(20 20 20 / 0.88);
+    backdrop-filter: blur(6px);
+    text-align: left;
+  }
+  .foto-credito-abajo p { bottom: calc(100% + 0.4rem); }
+  .foto-credito-arriba p { top: calc(100% + 0.4rem); }
+  .foto-credito a {
+    display: block;
+    margin-top: 0.25rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    color: #fff;
+  }
+</style>
+
+<script>
+  // Cierra la (i) abierta al tocar fuera de ella o al pulsar Escape.
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll<HTMLDetailsElement>("details.foto-credito[open]").forEach((d) => {
+      if (!d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll<HTMLDetailsElement>("details.foto-credito[open]").forEach((d) => (d.open = false));
+  });
+</script>

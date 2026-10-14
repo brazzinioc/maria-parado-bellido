@@ -1,0 +1,34 @@
+{
+  "fuentes": {
+    "facebook-muni": {
+      "credito": "página de Facebook «Municipalidad Distrital de María Parado de Bellido Gestión 2023 - 2026»"
+    }
+  },
+  "fotos": [
+    {
+      "src": "/images/comuneros-caballos-ponchos-puna-pomabamba-ayacucho.webp",
+      "titulo": "Comuneros con sus caballos en la puna",
+      "fuente": "facebook-muni"
+    },
+    {
+      "src": "/images/comparsa-carnaval-pomabamba-ayacucho.webp",
+      "titulo": "Comparsa de carnaval en la plaza",
+      "fuente": "facebook-muni"
+    },
+    {
+      "src": "/images/agricultor-maiz-nativo-feria-pomabamba-ayacucho.webp",
+      "titulo": "Agricultor con maíz nativo en una feria",
+      "fuente": "facebook-muni"
+    },
+    {
+      "src": "/images/hero-festivities.webp",
+      "titulo": "Procesión por los cerros de Pomabamba",
+      "fuente": "facebook-muni"
+    },
+    {
+      "src": "/images/experiencias/faena-limpieza-canal-turismo-vivencial-pomabamba-ayacucho.webp",
+      "titulo": "Faena comunal de limpieza de un canal",
+      "fuente": "facebook-muni"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import FotoCredito from "../../components/FotoCredito.astro";
 import PageHero from "../../components/PageHero.astro";
 import PhotoCard from "../../components/PhotoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
@@ -164,13 +165,16 @@ const structuredData = [
         ))}
         {experience.secondaryImage && (
           <figure class="mt-8">
-            <img
-              src={experience.secondaryImage.src}
-              alt={experience.secondaryImage.alt}
-              loading="lazy"
-              class="aspect-[16/10] w-full rounded-2xl object-cover"
-              style={`object-position: ${experience.secondaryImage.position ?? "center"}`}
-            />
+            <div class="relative">
+              <img
+                src={experience.secondaryImage.src}
+                alt={experience.secondaryImage.alt}
+                loading="lazy"
+                class="aspect-[16/10] w-full rounded-2xl object-cover"
+                style={`object-position: ${experience.secondaryImage.position ?? "center"}`}
+              />
+              <FotoCredito src={experience.secondaryImage.src} />
+            </div>
             {experience.secondaryImage.caption && (
               <figcaption class="mt-2 text-sm text-ink-soft">{experience.secondaryImage.caption}</figcaption>
             )}
