@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import CensoCifras from "../components/CensoCifras.astro";
+import CensoMetodologia from "../components/CensoMetodologia.astro";
 import { censo } from "../lib/censo";
 import { whatsappUrl } from "../lib/whatsapp";
 
@@ -54,6 +55,7 @@ const temas: Tema[] = [
   { titulo: "Agua", texto: "Puquiales y reservorios, con sus ubicaciones.", fuente: "En preparación", icono: "M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z" },
   { titulo: "Vías y transporte", texto: "Caminos, trochas y bases de transporte.", fuente: "En preparación", icono: "M8 7h8m-8 5h8m-8 5h8M4 21V3m16 18V3" },
   { titulo: "Producción", texto: "Cultivos, ganado y campañas agrícolas.", fuente: "En preparación", icono: "M12 21V11m0 0c0-3 2-6 6-6 0 4-2 6-6 6zm0 0c0-3-2-6-6-6 0 4 2 6 6 6z" },
+  { href: "#metodologia", titulo: "Metodología", texto: "Cómo se calculó cada cifra, paso a paso, y cómo citarla.", fuente: "Fuentes, fórmulas y límites", icono: "M9 7h6m-6 4h6m-6 4h4M5 3h14a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z" },
   { href: "#descargas", titulo: "Descargas y fuentes", texto: "Datos abiertos en CSV y referencias completas.", fuente: "Para docentes y estudiantes", icono: "M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" },
 ];
 
@@ -115,6 +117,8 @@ const temas: Tema[] = [
   </section>
 
   <CensoCifras />
+
+  <CensoMetodologia />
 
   {/* Próximamente */}
   <section class="py-16 md:py-20">

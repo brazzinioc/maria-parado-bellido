@@ -73,6 +73,16 @@ const bloques = [
         </div>
       ))}
     </dl>
+    <details class="censo-metodo mt-3">
+      <summary>¿Cómo se calcularon estas cifras?</summary>
+      <ul>
+        <li><strong>Habitantes:</strong> {fmt(mujeres)} mujeres + {fmt(hombres)} hombres = {fmt(total)} personas censadas como residentes habituales del distrito.</li>
+        <li><strong>Hogares y viviendas:</strong> los cuenta el INEI. De las {fmt(censo.metodo.viviendas.censadas)} viviendas censadas, {fmt(censo.metodo.viviendas.habitadas)} tenían personas que viven en ellas y estaban presentes, y {fmt(censo.metodo.viviendas.desocupadas)} estaban desocupadas. Por eso hay más viviendas que hogares ({censo.resumen[0].valor}); además, en una vivienda puede vivir más de un hogar.</li>
+        <li><strong>Densidad:</strong> población ÷ superficie. {fmt(total)} personas ÷ ≈{censo.metodo.superficie} km² = {censo.metodo.densidad} habitantes por km². La superficie es la que usa el INEI; se deduce de su propio dato ({fmt(total)} ÷ {censo.metodo.densidad}).</li>
+        <li><strong>Edad mediana:</strong> si se ordena a las {fmt(total)} personas de menor a mayor edad, la del medio está en la posición (N + 1) ÷ 2 = ({fmt(total)} + 1) ÷ 2 = {fmt(censo.metodo.mediana.posicion)}, es decir, entre la {fmt(Math.floor(censo.metodo.mediana.posicion))} y la {fmt(Math.ceil(censo.metodo.mediana.posicion))}. En la pirámide, las dos caen en el grupo de {censo.metodo.mediana.grupo} años; el INEI, con la edad exacta de cada persona, obtiene {censo.metodo.mediana.valor} años.</li>
+      </ul>
+      <a href="#metodologia">Ver la metodología completa</a>
+    </details>
 
     {/* Lo que dice el censo */}
     <div class="mt-16">
@@ -86,6 +96,27 @@ const bloques = [
           </li>
         ))}
       </ol>
+      <details class="censo-metodo mt-4">
+        <summary>¿De dónde salen estas frases?</summary>
+        <p>Cada frase redondea un dato del censo a una fracción fácil de recordar («9 de 10» en lugar de 90.9%). Estos son los datos exactos:</p>
+        <div class="overflow-x-auto">
+          <table>
+            <thead><tr><th>Frase</th><th>Dato</th><th>Cálculo</th></tr></thead>
+            <tbody>
+              {censo.hallazgos.flatMap((h) =>
+                h.evidencia.map((e, i) => (
+                  <tr>
+                    {i === 0 && <td rowspan={h.evidencia.length}><strong>{h.cifra}</strong> {h.texto}</td>}
+                    <td class="whitespace-nowrap">{e.nombre}: <strong>{e.dato}</strong></td>
+                    <td>{e.calculo}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <p>Si el denominador lleva «≈», el INEI no lo publica para ese ámbito y se deduce del propio porcentaje.</p>
+      </details>
     </div>
 
     {/* Pomabamba en 100 personas */}
@@ -104,6 +135,7 @@ const bloques = [
               data-peru={c.peru}
               data-texto={c.texto}
               data-base={c.base}
+              data-calculo={`${c.calculo} → ${c.valor} de cada 100.`}
             >{c.chip}</button>
           ))}
         </div>
@@ -112,6 +144,7 @@ const bloques = [
           <span class="mt-2 block text-lg font-semibold text-ink">de cada 100 <span data-cien-texto>{cienInicial.texto}</span></span>
           <span class="mt-2 block text-ink-soft">En el Perú: <strong class="text-ink" data-cien-peru>{cienInicial.peru}</strong> de cada 100.</span>
           <span class="mt-1 block text-sm text-ink-soft" data-cien-base>{cienInicial.base}</span>
+          <span class="mt-1 block text-sm text-ink-soft">Cálculo: <span data-cien-calculo>{`${cienInicial.calculo} → ${cienInicial.valor} de cada 100.`}</span></span>
         </p>
       </div>
       <div class="lg:col-span-7">
@@ -159,6 +192,14 @@ const bloques = [
         ))}
       </div>
       <p class="mt-4 text-sm text-ink-soft">Hay menos niños y más adultos mayores que en el promedio del país.</p>
+      <details class="censo-metodo mt-3">
+        <summary>¿Cómo se calculó?</summary>
+        <p>Cada grupo de edad se divide entre toda la población y se multiplica por 100:</p>
+        <ul>
+          {censo.edades.calculos.map((c) => <li><strong>{c.etiqueta}:</strong> {c.calculo}</li>)}
+        </ul>
+        <p>Los tres grupos juntos son toda la población, así que suman 100%. Dentro de la barra, cada cifra está redondeada al entero.</p>
+      </details>
     </div>
 
     {/* Pirámide + envejecimiento */}
@@ -207,6 +248,15 @@ const bloques = [
             );
           })}
         </ul>
+        <details class="censo-metodo mt-4">
+          <summary>¿Cómo se construye la pirámide?</summary>
+          <p>
+            Se cuenta cuántos hombres y cuántas mujeres hay en cada grupo de 5 años de edad (0 a 4, 5 a 9, …); el último grupo junta
+            a todas las personas de 85 años y más. Cada barra es más larga cuantas más personas tiene, con la misma escala a los dos
+            lados, para poder compararlos. Las cifras son personas, no porcentajes, y salen de la pirámide que publica el INEI para
+            el distrito.
+          </p>
+        </details>
       </figure>
 
       <div class="lg:col-span-5">
@@ -224,6 +274,7 @@ const bloques = [
                 <span class="font-heading text-4xl font-semibold text-ink" data-contar>{e.distrito}{e.unidad}</span>
                 <span class="text-sm text-ink-soft">Perú: {e.peru}{e.unidad}</span>
               </dd>
+              <dd class="mt-1 text-xs text-ink-soft">Cálculo: {e.calculo}</dd>
               {e.def && (
                 <dd>
                   <details class="censo-def mt-1.5">
@@ -277,6 +328,7 @@ const bloques = [
                         <span class="censo-par-valor text-ink-soft">{pct(f.peru)}</span>
                       </div>
                     </div>
+                    <p class="mt-3 text-xs text-ink-soft">Pomabamba: {f.calculo} ({f.universo}).</p>
                     {f.def && (
                       <details class="censo-def mt-3">
                         <summary>¿Qué significa?</summary>
@@ -381,13 +433,27 @@ const bloques = [
                         <span class="censo-antes" style={`left:${i.antes}%`}></span>
                         <span class="censo-ahora" style={`left:${i.ahora}%;--desde:${i.antes}%`}></span>
                       </div>
-                      <p class="mt-1 text-xs text-ink-soft">{puntos(dif)} puntos</p>
+                      <p class="mt-1 text-xs text-ink-soft">
+                        {puntos(dif)} puntos ({pct(i.ahora)} − {pct(i.antes)}).
+                        {anterior.anio}: {i.calculoAntes} · {censo.anio}: {i.calculoAhora}
+                      </p>
                     </li>
                   );
                 })}
               </ul>
             </div>
           ))}
+          <details class="censo-metodo mt-6">
+            <summary>¿Cómo se calcularon las cifras de {anterior.anio}?</summary>
+            <p>
+              El INEI no publica para el censo {anterior.anio} los mismos indicadores que para {censo.anio}. Los calculamos con las tablas
+              del censo {anterior.anio} para el distrito, consultadas en REDATAM (la herramienta del INEI para hacer tablas con los datos
+              del censo), con la misma definición que usa el INEI en {censo.anio}:
+            </p>
+            <ul>
+              {evolucion.indicadores.map((i) => <li><strong>{i.etiqueta}:</strong> {i.calculo2017}</li>)}
+            </ul>
+          </details>
           <p class="mt-6 text-sm text-ink-soft">
             Porcentaje de la población, las viviendas habitadas o los hogares del distrito, en una escala de 0 a 100%.
             <a href={anterior.csv} download class="underline hover:text-ink">Descargar el censo {anterior.anio} del distrito (CSV)</a>.
@@ -492,6 +558,7 @@ const bloques = [
           set("[data-cien-texto]", d.texto ?? "");
           set("[data-cien-peru]", d.peru ?? "");
           set("[data-cien-base]", d.base ?? "");
+          set("[data-cien-calculo]", d.calculo ?? "");
         });
       });
     });
@@ -522,6 +589,24 @@ const bloques = [
     margin-top: 0.5rem; padding: 0.625rem 0.75rem; border-radius: 0.5rem;
     background: var(--color-accent-soft); font-size: 0.875rem; line-height: 1.5; color: var(--color-ink);
   }
+
+  /* "¿Cómo se calculó?": el detalle de cada cifra, plegado para no recargar la lectura. */
+  .censo-metodo { font-size: 0.875rem; }
+  .censo-metodo summary {
+    display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; list-style: none;
+    font-weight: 600; color: var(--color-secondary-dark, var(--color-ink));
+  }
+  .censo-metodo summary::-webkit-details-marker { display: none; }
+  .censo-metodo summary::before { content: "＋"; font-weight: 700; color: var(--color-secondary); }
+  .censo-metodo[open] summary::before { content: "−"; }
+  .censo-metodo summary:hover { text-decoration: underline; }
+  .censo-metodo[open] > :not(summary) { margin-top: 0.6rem; }
+  .censo-metodo > p, .censo-metodo > ul, .censo-metodo > div, .censo-metodo > a { max-width: 56rem; line-height: 1.6; color: var(--color-ink); }
+  .censo-metodo ul { list-style: disc; padding-left: 1.25rem; display: grid; gap: 0.35rem; }
+  .censo-metodo a { display: inline-block; font-weight: 600; text-decoration: underline; color: var(--color-primary-dark); }
+  .censo-metodo table { width: 100%; min-width: 560px; border-collapse: collapse; background: #fff; border-radius: 0.75rem; }
+  .censo-metodo th, .censo-metodo td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--color-line); text-align: left; vertical-align: top; }
+  .censo-metodo th { font-weight: 600; color: var(--color-ink); }
 
   /* 100 personas */
   .censo-chip {

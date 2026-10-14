@@ -120,6 +120,10 @@ add("Demográficos", "Población censada de 0 a 14 años", ninos, pct(ninos, tot
 add("Demográficos", "Población censada de 15 a 59 años", adultos, pct(adultos, total));
 add("Demográficos", "Población censada de 60 años y más", mayores, pct(mayores, total));
 add("Demográficos", "Índice de envejecimiento", Math.round((mayores / ninos) * 1000) / 10);
+// Denominadores de los porcentajes, para mostrar cada operación completa en /datos.
+add("Universos", "Población censada de 3 años y más", lenguaTotal, pct(lenguaTotal, total));
+add("Universos", "Población censada de 15 años y más", pob15, pct(pob15, total));
+add("Universos", "Viviendas particulares con ocupantes presentes que viven permanentemente", agua.total);
 add("Educación", "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado", quintoSec + superior, pct(quintoSec + superior, pob15));
 add("Etnicidad", "Población censada de 3 años y más que aprendió a hablar quechua en su niñez", quechua, pct(quechua, lenguaTotal));
 add("Población en edad de trabajar", "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir", noLee, pct(noLee, pob15));

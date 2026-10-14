@@ -30,27 +30,85 @@
     {
       "cifra": "9 de 10",
       "texto": "aprendieron a hablar en quechua",
-      "contexto": "En el Perú, solo 1 de cada 7."
+      "contexto": "En el Perú, solo 1 de cada 7.",
+      "evidencia": [
+        {
+          "inei": "Población censada de 3 años y más que aprendió a hablar quechua en su niñez",
+          "ambito": "distrito"
+        },
+        {
+          "inei": "Población censada de 3 años y más que aprendió a hablar quechua en su niñez",
+          "ambito": "peru"
+        }
+      ]
     },
     {
       "cifra": "97",
       "texto": "adultos mayores por cada 100 niños",
-      "contexto": "En el Perú, 65. Somos un pueblo que envejece."
+      "contexto": "En el Perú, 65. Somos un pueblo que envejece.",
+      "evidencia": [
+        {
+          "inei": "Índice de envejecimiento",
+          "ambito": "distrito",
+          "indice": [
+            "Población censada de 60 años y más",
+            "Población censada de 0 a 14 años"
+          ]
+        },
+        {
+          "inei": "Índice de envejecimiento",
+          "ambito": "peru",
+          "indice": [
+            "Población censada de 60 años y más",
+            "Población censada de 0 a 14 años"
+          ]
+        }
+      ]
     },
     {
       "cifra": "97%",
       "texto": "de las viviendas habitadas tiene agua por red pública",
-      "contexto": "Pero solo 1 de cada 4 tiene desagüe."
+      "contexto": "Pero solo 1 de cada 4 tiene desagüe.",
+      "evidencia": [
+        {
+          "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública",
+          "ambito": "distrito"
+        },
+        {
+          "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública",
+          "ambito": "distrito"
+        }
+      ]
     },
     {
       "cifra": "1 de 3",
       "texto": "personas de 15 años o más terminó la secundaria",
-      "contexto": "En el Perú, 2 de cada 3."
+      "contexto": "En el Perú, 2 de cada 3.",
+      "evidencia": [
+        {
+          "inei": "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado",
+          "ambito": "distrito"
+        },
+        {
+          "inei": "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado",
+          "ambito": "peru"
+        }
+      ]
     },
     {
       "cifra": "3 de 10",
       "texto": "hogares tienen conexión a internet",
-      "contexto": "En el Perú, casi 7 de cada 10."
+      "contexto": "En el Perú, casi 7 de cada 10.",
+      "evidencia": [
+        {
+          "inei": "Hogares que tienen conexión a internet",
+          "ambito": "distrito"
+        },
+        {
+          "inei": "Hogares que tienen conexión a internet",
+          "ambito": "peru"
+        }
+      ]
     }
   ],
   "cien": [
@@ -80,8 +138,7 @@
       "chip": "Leen y escriben",
       "texto": "saben leer y escribir",
       "base": "Población de 15 años y más.",
-      "inei": "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir",
-      "complemento": true
+      "inei": "Tasa de alfabetismo de la población de 15 años y más"
     },
     {
       "id": "internet",
@@ -187,9 +244,8 @@
       "filas": [
         {
           "indicador": "Sabe leer y escribir (15 años y más)",
-          "inei": "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir",
-          "complemento": true,
-          "def": "Alfabetismo: personas de 15 años o más que saben leer y escribir. Se calcula restando del total a quienes, según el censo, no saben leer ni escribir."
+          "inei": "Tasa de alfabetismo de la población de 15 años y más",
+          "def": "Alfabetismo: porcentaje de personas de 15 años o más que saben leer y escribir, según lo que declara cada persona en el censo."
         },
         {
           "indicador": "Secundaria completa o más (15 años y más)",
@@ -219,58 +275,69 @@
       {
         "grupo": "Personas",
         "etiqueta": "Niñas y niños de 0 a 14 años",
-        "inei": "Población censada de 0 a 14 años"
+        "inei": "Población censada de 0 a 14 años",
+        "calculo2017": "Personas de 0 a 14 años (suma de los grupos de edad) ÷ población censada."
       },
       {
         "grupo": "Personas",
         "etiqueta": "Adultos mayores de 60 años y más",
-        "inei": "Población censada de 60 años y más"
+        "inei": "Población censada de 60 años y más",
+        "calculo2017": "Personas de 60 años y más ÷ población censada."
       },
       {
         "grupo": "Personas",
         "etiqueta": "Aprendió quechua en su niñez",
-        "inei": "Población censada de 3 años y más que aprendió a hablar quechua en su niñez"
+        "inei": "Población censada de 3 años y más que aprendió a hablar quechua en su niñez",
+        "calculo2017": "Personas de 3 años y más cuya lengua materna es el quechua (pregunta «¿El idioma o lengua con el que aprendió a hablar en su niñez?») ÷ población de 3 años y más."
       },
       {
         "grupo": "Educación",
         "etiqueta": "Sabe leer y escribir (15 años y más)",
         "inei": "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir",
-        "complemento": true
+        "complemento": true,
+        "calculo2017": "Se resta de 100% el porcentaje de personas de 15 años y más que declararon no saber leer ni escribir."
       },
       {
         "grupo": "Educación",
         "etiqueta": "Secundaria completa o más (15 años y más)",
-        "inei": "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado"
+        "inei": "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado",
+        "calculo2017": "Personas de 15 años y más que aprobaron el quinto año de secundaria o alcanzaron un nivel superior (técnico, universitario o posgrado) ÷ población de 15 años y más."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Agua por red pública",
-        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública"
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública",
+        "calculo2017": "Viviendas habitadas con agua de red pública dentro de la vivienda o fuera de ella pero dentro de la edificación ÷ viviendas habitadas."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Electricidad por red pública",
-        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública"
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública",
+        "calculo2017": "Viviendas habitadas con alumbrado eléctrico por red pública ÷ viviendas habitadas."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Desagüe conectado a red pública",
-        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública"
+        "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública",
+        "calculo2017": "Viviendas habitadas con servicio higiénico conectado a la red pública de desagüe, dentro de la vivienda o fuera de ella pero dentro de la edificación ÷ viviendas habitadas."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Cocina con gas, electricidad u otra energía limpia",
-        "inei": "Hogares que utilizan energía o combustible limpios para cocinar"
+        "inei": "Hogares que utilizan energía o combustible limpios para cocinar",
+        "calculo2017": "Hogares que cocinan con electricidad, gas en balón (GLP) o gas natural ÷ hogares. Se calcula restando del total los hogares que no usan ninguna de las tres: 718 − 407 = 311."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Hogares con conexión a internet",
-        "inei": "Hogares que tienen conexión a internet"
+        "inei": "Hogares que tienen conexión a internet",
+        "calculo2017": "Hogares que declararon tener conexión a internet ÷ hogares."
       },
       {
         "grupo": "Vivienda y hogar",
         "etiqueta": "Hogares de una sola persona",
-        "inei": "Porcentaje de hogares unipersonales"
+        "inei": "Porcentaje de hogares unipersonales",
+        "calculo2017": "Hogares formados por una sola persona ÷ hogares."
       }
     ]
   },
@@ -280,5 +347,59 @@
     "Casi todas las viviendas tienen agua por red pública, pero pocas tienen desagüe. ¿Qué consecuencias tiene para la salud y para el río?",
     "El 90.9% aprendió quechua en su niñez. ¿Cómo podemos lograr que las nuevas generaciones lo sigan hablando?",
     "Entre 2017 y 2025, los hogares con internet pasaron de casi ninguno a 3 de cada 10. ¿Qué cambió en tu familia o en tu comunidad con la llegada de internet?"
-  ]
+  ],
+  "universos": {
+    "poblacion": {
+      "texto": "personas",
+      "nombre": "Toda la población censada",
+      "inei": "Población censada"
+    },
+    "pob3": {
+      "texto": "personas de 3 años y más",
+      "nombre": "Población de 3 años y más",
+      "inei": "Población censada de 3 años y más",
+      "nota": "En 2025 el INEI no publica este total para el distrito: se deduce del propio dato (por ejemplo, 2,884 personas son el 90.9%), por eso va con «≈»."
+    },
+    "pob15": {
+      "texto": "personas de 15 años y más",
+      "nombre": "Población de 15 años y más",
+      "inei": "Población censada de 15 años y más",
+      "suma": [
+        "Tasa de alfabetismo de la población de 15 años y más",
+        "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir"
+      ],
+      "nota": "En 2025 se obtiene sumando quienes saben leer y escribir y quienes no: entre los dos son todas las personas de 15 años y más."
+    },
+    "viviendas": {
+      "texto": "viviendas habitadas",
+      "nombre": "Viviendas particulares con ocupantes presentes que viven permanentemente",
+      "inei": "Viviendas particulares con ocupantes presentes que viven permanentemente",
+      "nota": "No cuenta las viviendas desocupadas ni aquellas cuyos ocupantes estaban ausentes el día del censo."
+    },
+    "hogares": {
+      "texto": "hogares",
+      "nombre": "Hogares censados",
+      "inei": "Hogares censados"
+    }
+  },
+  "indicadoresUniverso": {
+    "Población censada de 3 años y más que aprendió a hablar quechua en su niñez": "pob3",
+    "Población de 3 años y más que utilizó internet": "pob3",
+    "Población censada de 0 a 14 años": "poblacion",
+    "Población censada de 15 a 59 años": "poblacion",
+    "Población censada de 60 años y más": "poblacion",
+    "Población censada hombres": "poblacion",
+    "Población censada mujeres": "poblacion",
+    "Población censada cuya identificación étnica corresponde a un pueblo indígena u originario": "poblacion",
+    "Tasa de alfabetismo de la población de 15 años y más": "pob15",
+    "Población censada en edad de trabajar de 15 años y más que no sabe leer ni escribir": "pob15",
+    "Población de 15 años y más con secundaria completa u otro nivel mayor alcanzado": "pob15",
+    "Viviendas particulares con ocupantes presentes que viven permanentemente con abastecimiento de agua por red pública": "viviendas",
+    "Viviendas particulares con ocupantes presentes que viven permanentemente con servicio higiénico conectado a red pública": "viviendas",
+    "Viviendas particulares con ocupantes presentes que viven permanentemente con suministro de energía eléctrica por red pública": "viviendas",
+    "Hogares que utilizan energía o combustible limpios para cocinar": "hogares",
+    "Hogares que tienen conexión a internet": "hogares",
+    "Porcentaje de hogares unipersonales": "hogares",
+    "Porcentaje de hogares conformados solo por adultos mayores": "hogares"
+  }
 }
