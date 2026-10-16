@@ -175,11 +175,21 @@ const temas: Tema[] = [
             <span class="block text-sm">Los mismos indicadores que en {censo.anio}, para comparar. Solo el distrito.</span>
           </span>
         </a>
+        <a href="/datos/limite-distrital-pomabamba-maria-parado-de-bellido-ayacucho.geojson" download class="flex items-center gap-4 rounded-2xl border border-line bg-sand p-5 transition-colors hover:border-secondary/60">
+          <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-secondary text-white" aria-hidden="true">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block font-semibold text-ink">Límite del distrito (GeoJSON)</span>
+            <span class="block text-sm">El polígono oficial del INEI, en coordenadas WGS 84. Se abre en QGIS, geojson.io o Google Earth.</span>
+          </span>
+        </a>
         <div>
           <h3 class="font-heading text-xl font-semibold text-ink">Fuentes</h3>
           <ul class="mt-3 space-y-2 list-disc pl-5 text-sm">
             <li id="fuente-inei" class="scroll-mt-40">Instituto Nacional de Estadística e Informática (INEI). ({censo.anio}). <em>{censo.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={new URL(censo.url).origin} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.url).host}</a></li>
             <li>Instituto Nacional de Estadística e Informática (INEI). ({censo.evolucion.anterior.anio}). <em>{censo.evolucion.anterior.fuente.replace(/^INEI, /, "")}.</em> Distrito de María Parado de Bellido, ubigeo {censo.ubigeo}. <a href={censo.evolucion.anterior.url} target="_blank" rel="noopener noreferrer" class="underline">{new URL(censo.evolucion.anterior.url).host}</a></li>
+            <li>Instituto Nacional de Estadística e Informática (INEI). <em>Límites distritales</em>, Infraestructura de Datos Espaciales del INEI. Ubigeo {censo.ubigeo}. <a href="https://ide.inei.gob.pe/" target="_blank" rel="noopener noreferrer" class="underline">ide.inei.gob.pe</a></li>
           </ul>
         </div>
       </div>

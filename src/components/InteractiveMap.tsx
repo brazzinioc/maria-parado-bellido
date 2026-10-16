@@ -15,7 +15,14 @@ interface Props {
   center?: [number, number];
   zoom?: number;
   className?: string;
+  /** Dibuja el límite del distrito (capa vectorial del INEI). */
+  limite?: boolean;
+  /** Encuadra el mapa para que se vea el distrito completo, en lugar de center/zoom. */
+  ajustarAlDistrito?: boolean;
 }
+
+// Límite distrital oficial (INEI), en GeoJSON. Es un archivo de datos abiertos del sitio.
+const LIMITE_URL = '/datos/limite-distrital-pomabamba-maria-parado-de-bellido-ayacucho.geojson';
 
 const escapeHtml = (value: string) =>
   value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
@@ -25,6 +32,8 @@ export default function InteractiveMap({
   center = [-13.604606929004502, -74.23605195432597],
   zoom = 13,
   className = '',
+  limite = true,
+  ajustarAlDistrito = false,
 }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +60,24 @@ export default function InteractiveMap({
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19,
         }).addTo(map);
+
+        // Límite del distrito: línea discontinua terracota con un relleno muy leve. No recibe
+        // clics, para que los marcadores de encima sigan funcionando.
+        if (limite) {
+          try {
+            const res = await fetch(LIMITE_URL);
+            if (res.ok) {
+              const capa = L.geoJSON(await res.json(), {
+                interactive: false,
+                style: { color: '#b5452a', weight: 2.5, opacity: 0.9, dashArray: '7 5', fillColor: '#b5452a', fillOpacity: 0.05 },
+              }).addTo(map);
+              map.attributionControl.addAttribution('Límite distrital: INEI');
+              if (ajustarAlDistrito) map.fitBounds(capa.getBounds(), { padding: [16, 16] });
+            }
+          } catch {
+            // Sin el límite, el mapa sigue funcionando con los marcadores.
+          }
+        }
 
         // Custom icons
         const icons: Record<string, any> = {
@@ -131,7 +158,7 @@ export default function InteractiveMap({
         map.remove();
       }
     };
-  }, [markers, center, zoom]);
+  }, [markers, center, zoom, limite, ajustarAlDistrito]);
 
   return (
     <div className={`relative isolate z-0 overflow-hidden rounded-2xl ${className}`}>
