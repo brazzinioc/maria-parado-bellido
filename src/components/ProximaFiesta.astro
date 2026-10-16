@@ -1,0 +1,47 @@
+---
+// Aviso de la próxima fiesta, como una cifra más de la fila de indicadores del hero.
+// El sitio es estático: se elige al compilar y el navegador lo recalcula con la fecha
+// del día (data-fiestas, ver el script de index.astro), para que no quede desactualizado.
+interface Props {
+  fiesta: { name: string; slug: string; start_date: string };
+  fiestas: { n: string; s: string; i: string; f: string }[];
+  /** "dark": sobre el video del hero. "light": franja clara de mobile. */
+  variant?: "dark" | "light";
+  class?: string;
+}
+
+const { fiesta, fiestas, variant = "dark", class: className = "" } = Astro.props;
+const oscuro = variant === "dark";
+
+const [y, m, d] = fiesta.start_date.slice(0, 10).split("-").map(Number);
+const inicio = new Date(y, m - 1, d);
+const mes = inicio.toLocaleDateString("es-PE", { month: "short" }).replace(".", "").toUpperCase();
+const fechaLarga = inicio.toLocaleDateString("es-PE", { day: "numeric", month: "long" });
+---
+
+<a
+  href={`/festividades/${fiesta.slug}/`}
+  class:list={["hero-fiesta group flex min-w-0 items-center gap-3", oscuro ? "text-white" : "text-ink", className]}
+  aria-label={`Próxima fiesta: ${fiesta.name}, ${fechaLarga}`}
+  data-hero-fiesta
+  data-fiestas={JSON.stringify(fiestas)}
+>
+  <span class="flex h-11 w-11 flex-shrink-0 flex-col items-center justify-center rounded-lg bg-primary leading-none text-white" aria-hidden="true">
+    <span class="font-heading text-lg font-semibold" data-hf-dia>{d}</span>
+    <span class="mt-0.5 text-[9px] font-bold tracking-[0.12em]" data-hf-mes>{mes}</span>
+  </span>
+  <span class="flex min-w-0 flex-col leading-tight" aria-hidden="true">
+    <span class:list={["text-sm", oscuro ? "text-white/75" : "text-ink-soft"]} data-hf-etiqueta>Próxima fiesta</span>
+    <span class="flex min-w-0 items-center gap-1.5 font-heading text-lg md:text-xl font-semibold">
+      <span class="truncate group-hover:underline underline-offset-4 decoration-1" data-hf-nombre>{fiesta.name}</span>
+      <span class="font-sans text-base transition-transform group-hover:translate-x-0.5">→</span>
+    </span>
+  </span>
+</a>
+
+<style>
+  /* Entra un poco después que el resto del hero, para que se note que es un aviso. */
+  .hero-fiesta { animation: hero-fiesta-in 0.7s var(--ease-out-expo) 0.5s both; }
+  @keyframes hero-fiesta-in { from { opacity: 0; transform: translateY(8px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-fiesta { animation: none; } }
+</style>
