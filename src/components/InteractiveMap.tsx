@@ -61,15 +61,21 @@ export default function InteractiveMap({
           maxZoom: 19,
         }).addTo(map);
 
-        // Límite del distrito: línea discontinua terracota con un relleno muy leve. No recibe
-        // clics, para que los marcadores de encima sigan funcionando.
+        // Límite del distrito: línea discontinua en verde puna (los marcadores son terracota y
+        // las carreteras del mapa base, naranjas) sobre un borde blanco que la separa del fondo,
+        // con un relleno muy leve. No recibe clics, para que los marcadores sigan funcionando.
         if (limite) {
           try {
             const res = await fetch(LIMITE_URL);
             if (res.ok) {
-              const capa = L.geoJSON(await res.json(), {
+              const datos = await res.json();
+              L.geoJSON(datos, {
                 interactive: false,
-                style: { color: '#b5452a', weight: 2.5, opacity: 0.9, dashArray: '7 5', fillColor: '#b5452a', fillOpacity: 0.05 },
+                style: { color: '#ffffff', weight: 6, opacity: 0.85, fill: false },
+              }).addTo(map);
+              const capa = L.geoJSON(datos, {
+                interactive: false,
+                style: { color: '#2f5d46', weight: 3, opacity: 1, dashArray: '8 5', fillColor: '#2f5d46', fillOpacity: 0.06 },
               }).addTo(map);
               map.attributionControl.addAttribution('Límite distrital: INEI');
               if (ajustarAlDistrito) map.fitBounds(capa.getBounds(), { padding: [16, 16] });
