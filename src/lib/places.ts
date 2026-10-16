@@ -42,6 +42,22 @@ export function placeCategoryLabel(category: TouristPlace['category']): string {
   return CATEGORY_LABELS[category] ?? 'Lugar';
 }
 
+// Color de cada tipo de lugar en los mapas (pines, leyenda y tarjetas), con la paleta del
+// sitio. El verde natural es más claro que el del límite del distrito para no confundirse.
+export const PLACE_CATEGORY_COLORS: Record<TouristPlace['category'], string> = {
+  archaeological: '#b5452a',
+  natural: '#4f8a3c',
+  historical: '#a8680f',
+  cultural: '#6b4a7a',
+};
+
+// Orden fijo de la leyenda.
+export const PLACE_CATEGORIES: TouristPlace['category'][] = ['archaeological', 'natural', 'historical', 'cultural'];
+
+export function placeCategoryColor(category: TouristPlace['category']): string {
+  return PLACE_CATEGORY_COLORS[category] ?? '#5e5049';
+}
+
 export function placeCoverImage(place: TouristPlace): string {
   return place.images?.[0] || placeIllustration(place);
 }

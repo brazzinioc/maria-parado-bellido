@@ -471,3 +471,32 @@ img[src*="/placeholders/"] { filter: saturate(0.78) contrast(0.96); }
 .shine-effect:hover::after {
   transform: rotate(30deg) translateX(100%);
 }
+
+/* ==========================================
+   MAPAS (InteractiveMap)
+   ========================================== */
+/* Pin por tipo de lugar: el divIcon no lleva fondo ni borde propios. */
+.mapa-pin { background: none; border: 0; filter: drop-shadow(0 2px 3px rgb(43 33 28 / 0.35)); }
+
+/* Tarjeta del pin: misma estructura que las tarjetas de la lista junto al mapa. */
+.mapa-popup .leaflet-popup-content-wrapper { border-radius: 0.75rem; padding: 0; box-shadow: 0 10px 30px -12px rgb(43 33 28 / 0.45); }
+.mapa-popup .leaflet-popup-content { margin: 0; width: 280px !important; max-width: calc(100vw - 72px); }
+.mapa-popup a.leaflet-popup-close-button { top: 6px; right: 6px; color: var(--color-ink-soft); }
+.mapa-tarjeta { display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem 2rem 0.75rem 0.75rem; color: var(--color-ink); text-decoration: none; font-family: var(--font-body); }
+a.mapa-tarjeta:hover .mapa-tarjeta-titulo { color: var(--color-primary); }
+.mapa-tarjeta-img { width: 4rem; height: 4rem; flex-shrink: 0; border-radius: 0.5rem; object-fit: cover; }
+.mapa-tarjeta-texto { display: flex; flex-direction: column; min-width: 0; }
+.mapa-tarjeta-titulo { font-weight: 600; font-size: 1rem; line-height: 1.25; color: var(--color-ink); transition: color 0.15s; }
+.mapa-tarjeta-sub { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem; font-size: 0.875rem; color: var(--color-ink-soft); white-space: nowrap; }
+.mapa-tarjeta-punto, .mapa-punto { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 9999px; flex-shrink: 0; }
+.mapa-tarjeta-ver { margin-top: 0.35rem; font-size: 0.8125rem; font-weight: 600; color: var(--color-primary); white-space: nowrap; }
+
+/* Botón de pantalla completa (mismo aspecto que los de zoom). */
+.mapa-boton-completa { display: flex !important; align-items: center; justify-content: center; color: var(--color-ink) !important; }
+
+/* Pantalla completa: nativa (:fullscreen) o, en iPhone, ocupando la ventana con CSS. */
+.mapa-contenedor:fullscreen { width: 100vw; height: 100vh; border-radius: 0; }
+.mapa-contenedor:fullscreen > div { border-radius: 0; }
+.mapa-contenedor.mapa-ventana-completa { position: fixed; inset: 0; z-index: 1000; width: auto; height: auto; border-radius: 0; }
+.mapa-contenedor.mapa-ventana-completa > div { border-radius: 0; }
+html.mapa-abierto, html.mapa-abierto body { overflow: hidden; }

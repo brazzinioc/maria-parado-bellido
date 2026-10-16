@@ -9,7 +9,7 @@ import InteractiveMap from "../components/InteractiveMap";
 import { fetchFestivities, fetchPlaces } from "../lib/api";
 import { festivityCoverImage } from "../lib/placeholders";
 import { getExperiences, getGallery } from "../lib/content";
-import { placeCategoryLabel, placeCoverImage, hasCoordinates } from "../lib/places";
+import { placeCategoryLabel, placeCategoryColor, placeCoverImage, hasCoordinates, PLACE_CATEGORIES } from "../lib/places";
 
 // --- Hero anterior (CMS + fallback de imágenes) ---
 // Deshabilitado: el hero ahora es estático (ver heroSlides más abajo).
@@ -75,10 +75,18 @@ const mapMarkers = mapPlaces.map((p) => ({
   title: p.name,
   type: "place" as const,
   slug: p.slug,
-  image: p.images?.[0],
+  image: placeCoverImage(p),
+  subtitle: placeCategoryLabel(p.category),
+  color: placeCategoryColor(p.category),
+  category: p.category,
   name: p.location.name,
   lat: p.location.lat,
   lng: p.location.lng,
+}));
+// Leyenda del mapa: solo los tipos de lugar que aparecen.
+const mapLegend = PLACE_CATEGORIES.filter((c) => mapPlaces.some((p) => p.category === c)).map((c) => ({
+  label: placeCategoryLabel(c),
+  color: placeCategoryColor(c),
 }));
 
 const galleryItems = gallery.slice(0, 6);
@@ -419,13 +427,25 @@ const homeStructuredData = [
                   <img src={placeCoverImage(place)} alt="" loading="lazy" class="h-16 w-16 rounded-xl object-cover" />
                   <div>
                     <p class="font-semibold text-ink group-hover:text-primary">{place.name}</p>
-                    <p class="text-sm">{placeCategoryLabel(place.category)}</p>
+                    <p class="flex items-center gap-1.5 text-sm">
+                      <span class="mapa-punto" style={`background:${placeCategoryColor(place.category)}`} aria-hidden="true"></span>
+                      {placeCategoryLabel(place.category)}
+                    </p>
                   </div>
                 </a>
               </li>
             ))}
           </ul>
         </div>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink" aria-label="Leyenda del mapa">
+          {mapLegend.map((l) => (
+            <li class="flex items-center gap-2"><span class="mapa-punto" style={`background:${l.color}`} aria-hidden="true"></span>{l.label}</li>
+          ))}
+          <li class="flex items-center gap-2">
+            <svg width="26" height="8" aria-hidden="true"><line x1="1" y1="4" x2="25" y2="4" stroke="#fff" stroke-width="5" /><line x1="1" y1="4" x2="25" y2="4" stroke="#2f5d46" stroke-width="2.5" stroke-dasharray="6 4" /></svg>
+            Límite del distrito
+          </li>
+        </ul>
       </div>
     </section>
   )}
