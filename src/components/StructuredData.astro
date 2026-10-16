@@ -213,10 +213,10 @@ const generateSchema = () => {
           : [`${baseUrl}/images/hero-festivities.webp`],
         location: {
           "@type": "Place",
-          name: data.place?.name || "María Parado de Bellido",
+          name: data.place?.name || "Pomabamba",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "María Parado de Bellido",
+            addressLocality: "Pomabamba",
             addressRegion: "Ayacucho",
             addressCountry: "PE",
           },
@@ -226,20 +226,25 @@ const generateSchema = () => {
             longitude: data.place?.lng || LOCATION.lng,
           },
         },
-        organizer:
-          data.cargontes?.length > 0
-            ? data.cargontes.map((c: any) => ({
-                "@type": "Person",
-                name: c.name,
-                jobTitle: c.role,
-              }))
-            : {
-                "@type": "Organization",
-                name: "Comunidad de María Parado de Bellido",
-              },
+        // Organizador: siempre la comunidad, con nombre y url (Google los pide). Los cargontes
+        // se nombran en la página; aquí no, porque son personas y algunos registros del CMS
+        // venían vacíos, lo que Search Console marcaba como «falta name en organizer».
+        organizer: {
+          "@type": "Organization",
+          name: "Comunidad de Pomabamba",
+          url: `${baseUrl}/festividades/${data.slug || ""}/`,
+        },
         eventStatus: "https://schema.org/EventScheduled",
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         isAccessibleForFree: true,
+        // Las fiestas son gratuitas: Google recomienda declararlo como oferta de precio 0.
+        offers: {
+          "@type": "Offer",
+          price: 0,
+          priceCurrency: "PEN",
+          availability: "https://schema.org/InStock",
+          url: `${baseUrl}/festividades/${data.slug || ""}/`,
+        },
         inLanguage: "es",
         typicalAgeRange: "all ages",
         audience: {
