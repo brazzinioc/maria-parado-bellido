@@ -180,7 +180,8 @@ export default function InteractiveMap({
           }
         }
 
-        // Pines: color e ícono según el tipo de lugar.
+        // Pines: color e ícono según el tipo de lugar, con el nombre como etiqueta.
+        const porId = new Map<string, any>();
         markers.forEach((marker) => {
           const color = marker.color ?? '#b5452a';
           const icon = L.divIcon({
@@ -190,10 +191,75 @@ export default function InteractiveMap({
             iconAnchor: [17, 43],
             popupAnchor: [0, -38],
           });
-          L.marker([marker.lat, marker.lng], { icon, title: marker.title, alt: marker.title })
+          const pin = L.marker([marker.lat, marker.lng], { icon, title: marker.title, alt: marker.title })
             .addTo(map)
-            .bindPopup(tarjetaHtml(marker, color), { className: 'mapa-popup', minWidth: 240, maxWidth: 300 });
+            .bindPopup(tarjetaHtml(marker, color), { className: 'mapa-popup', minWidth: 240, maxWidth: 300 })
+            .bindTooltip(escapeHtml(marker.title), { permanent: true, direction: 'right', offset: [12, -24], className: 'mapa-etiqueta', opacity: 1 });
+          // Al pasar el cursor (o enfocar con el teclado), el nombre se ve aunque estuviera oculto.
+          pin.on('mouseover focus', () => {
+            const el = pin.getTooltip()?.getElement();
+            if (el) { el.style.visibility = 'visible'; el.classList.add('is-activa'); }
+          });
+          pin.on('mouseout blur', () => {
+            pin.getTooltip()?.getElement()?.classList.remove('is-activa');
+            ordenarEtiquetas();
+          });
+          pin.on('popupopen', () => {
+            activoId = marker.id;
+            pin.setZIndexOffset(1000);
+            ordenarEtiquetas();
+          });
+          pin.on('popupclose', () => {
+            if (activoId === marker.id) activoId = undefined;
+            pin.setZIndexOffset(0);
+            ordenarEtiquetas();
+          });
+          porId.set(marker.id, pin);
         });
+
+        // Etiquetas sin encimarse: se muestran en orden y se oculta la que choca con una ya
+        // visible. Al acercar el zoom hay más espacio y aparecen más nombres.
+        // El lugar seleccionado (popup abierto) va primero: su nombre nunca se oculta.
+        let activoId: string | undefined;
+        function ordenarEtiquetas() {
+          const ocupadas: DOMRect[] = [];
+          const activo = activoId ? porId.get(activoId) : undefined;
+          const orden = activo ? [activo, ...[...porId.values()].filter((p) => p !== activo)] : [...porId.values()];
+          orden.forEach((pin) => {
+            const el = pin.getTooltip()?.getElement() as HTMLElement | undefined;
+            if (!el) return;
+            el.style.visibility = 'visible';
+            const r = el.getBoundingClientRect();
+            const choca = ocupadas.some((o) => r.left < o.right + 4 && r.right > o.left - 4 && r.top < o.bottom + 2 && r.bottom > o.top - 2);
+            if (choca) el.style.visibility = 'hidden';
+            else ocupadas.push(r);
+          });
+        }
+        map.on('zoomend moveend resize', ordenarEtiquetas);
+        setTimeout(ordenarEtiquetas, 0);
+
+        // «Ubicar en el mapa» desde las tarjetas de la lista (evento mapa:ubicar con el id).
+        const ubicar = (id: string) => {
+          const pin = porId.get(id);
+          if (!pin) return;
+          const r = wrapper.getBoundingClientRect();
+          if (r.top < 0 || r.bottom > window.innerHeight) wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          map.closePopup();
+          map.flyTo(pin.getLatLng(), Math.max(map.getZoom(), 15), { duration: 0.8 });
+          map.once('moveend', () => pin.openPopup());
+        };
+        const alUbicar = (e: Event) => {
+          (window as any).__mapaUbicarPendiente = undefined;
+          ubicar((e as CustomEvent<{ id: string }>).detail.id);
+        };
+        window.addEventListener('mapa:ubicar', alUbicar);
+        limpiar.push(() => window.removeEventListener('mapa:ubicar', alUbicar));
+        // Si se pidió ubicar antes de que el mapa cargara (se carga al hacerse visible).
+        const pendiente = (window as any).__mapaUbicarPendiente;
+        if (pendiente) {
+          (window as any).__mapaUbicarPendiente = undefined;
+          setTimeout(() => ubicar(pendiente), 300);
+        }
 
         setIsLoading(false);
       } catch (err) {
