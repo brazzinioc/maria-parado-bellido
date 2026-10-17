@@ -1,5 +1,5 @@
 {
-  "_nota": "Galería de respaldo. Reemplazar por fotos reales (propias, de la comunidad o de visitantes). Preparada para migrar al CMS (tabla t_gallery).",
+  "_nota": "Galería de respaldo: se usa cuando el CMS (Galería, tabla t_gallery) tiene menos de 3 fotos publicadas.",
   "items": [
     { "image": "/images/hero_1.webp", "alt": "Vista panorámica de Pomabamba con campos de cultivo andinos", "caption": "Pomabamba" },
     { "image": "/images/hero_3.webp", "alt": "Tradiciones y cultura viva en Pomabamba", "caption": "Tradiciones vivas" },

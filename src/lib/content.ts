@@ -2,7 +2,7 @@
 // Primero intenta leer del CMS; si la tabla aún no existe o no hay registros
 // publicados, usa los JSON de src/data como respaldo. Así la segunda iteración
 // solo necesita crear las tablas en Supabase, sin tocar las páginas.
-import { supabase } from './supabase';
+import { supabase, mediaUrl } from './supabase';
 import experienciasFallback from '../data/experiencias.json';
 import planificaFallback from '../data/planifica.json';
 import galeriaFallback from '../data/galeria.json';
@@ -54,7 +54,12 @@ export interface GalleryItem {
   image: string;
   alt: string;
   caption?: string;
+  /** Crédito cargado en el CMS (fotos que no son del proyecto). */
+  credit?: { author: string; url?: string };
 }
+
+// Con menos fotos la galería de inicio queda pobre: se usa la de respaldo.
+const MIN_GALLERY_ITEMS = 3;
 
 // Lee `content` (jsonb) de los registros publicados de una tabla del CMS.
 // Devuelve null ante cualquier error para que se use el respaldo.
@@ -91,9 +96,38 @@ export async function getVisitInfo(): Promise<VisitInfo> {
   return rows?.[0] ?? (planificaFallback as VisitInfo);
 }
 
+// Galería del CMS (t_gallery). Las columnas van explícitas: anon no puede leer
+// created_by/updated_by, así que un select('*') fallaría.
+async function fetchGallery(): Promise<GalleryItem[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('t_gallery')
+      .select('alt_text, caption, credit_author, credit_url, t_media ( file_path )')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    if (error) {
+      console.error('Error fetching gallery:', error.message);
+      return null;
+    }
+    return (data ?? []).flatMap((row: any) => {
+      const image = mediaUrl(row.t_media?.file_path);
+      if (!image) return [];
+      return [{
+        image,
+        alt: row.alt_text,
+        caption: row.caption ?? undefined,
+        credit: row.credit_author
+          ? { author: row.credit_author, url: /^https?:\/\//.test(row.credit_url ?? '') ? row.credit_url : undefined }
+          : undefined,
+      }];
+    });
+  } catch {
+    return null;
+  }
+}
+
 export async function getGallery(): Promise<GalleryItem[]> {
-  return (
-    (await fetchPublishedContent<GalleryItem>('t_gallery')) ??
-    (galeriaFallback.items as GalleryItem[])
-  );
+  const items = await fetchGallery();
+  return items && items.length >= MIN_GALLERY_ITEMS ? items : (galeriaFallback.items as GalleryItem[]);
 }
