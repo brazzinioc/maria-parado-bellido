@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 import tailwindcss from '@tailwindcss/vite';
+import cmsImages from './tools/cms-images.mjs';
 import responsiveImages from './tools/responsive-images.mjs';
 import ogImages from './tools/og-images.mjs';
 import sinComentarios from './tools/sin-comentarios.mjs';
@@ -13,6 +14,8 @@ export default defineConfig({
 
   integrations: [
     react(),
+    // Fotos del CMS descargadas al sitio (/images/cms/), antes de generar sus variantes (ver el archivo).
+    cmsImages(),
     // Variantes de cada foto y srcset en el HTML final (ver el archivo).
     responsiveImages(),
     // og:image en JPEG 1200x630 para WhatsApp y Facebook (ver el archivo).
